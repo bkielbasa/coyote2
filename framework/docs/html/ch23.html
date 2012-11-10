@@ -1,0 +1,106 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Rozdzia&#322; 23. Filtrowanie danych</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="pt01.html" title="Cz&#281;&#347;&#263; I. Dokumentacja techniczna"><link rel="prev" href="ch22s08.html" title="Statyczna metoda call()"><link rel="next" href="ch23s02.html" title="Metoda setFilters()"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Rozdzia&#322; 23. Filtrowanie danych</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch22s08.html">Poprzedni</a> </td><th width="60%" align="center">Cz&#281;&#347;&#263; I. Dokumentacja techniczna</th><td width="20%" align="right"> <a accesskey="n" href="ch23s02.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="chapter" lang="pl"><div class="titlepage"><div><div><h2 class="title"><a name="id500345"></a>Rozdzia&#322; 23. Filtrowanie danych</h2></div></div></div><div class="toc"><p><b>Spis tre&#347;ci</b></p><dl><dt><span class="section"><a href="ch23.html#id499647">Filtry</a></span></dt><dd><dl><dt><span class="section"><a href="ch23.html#id500474">Pisanie w&#322;asnego filtra</a></span></dt><dt><span class="section"><a href="ch23.html#id500570">Filtr XSS</a></span></dt><dt><span class="section"><a href="ch23.html#id500614">Filtr stripNewLines()</a></span></dt><dt><span class="section"><a href="ch23.html#id500631">Filtr int()</a></span></dt><dt><span class="section"><a href="ch23.html#id500647">Filtr string()</a></span></dt><dt><span class="section"><a href="ch23.html#id500661">Filtr float()</a></span></dt></dl></dd><dt><span class="section"><a href="ch23s02.html">Metoda setFilters()</a></span></dt><dt><span class="section"><a href="ch23s03.html">Statyczna metoda call()</a></span></dt><dt><span class="section"><a href="ch23s04.html">Klasa Filter_Input</a></span></dt><dd><dl><dt><span class="section"><a href="ch23s04.html#id500938">Metoda setRules()</a></span></dt></dl></dd></dl></div><p>Filtrowanie danych umo&#380;liwia usuni&#281;cie, konwersj&#281; i innego rodzaju przekszta&#322;cenia danych.
+        Klasa <tt class="classname">Validate</tt> omawiana wcze&#347;niej umo&#380;liwia jedynie sprawdzenie
+        poprawno&#347;ci danych - nie zapewnia ich przekszta&#322;ce&#324;. Jeste&#347;my wi&#281;c wówczas zmuszeni u&#380;y&#263;
+        mechanizmu filtrowania. </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>Budowa i dzia&#322;anie klasy <font color="red">&lt;clasname&gt;Filter&lt;/clasname&gt;</font> jest
+            bardzo podobne do klasy Validate. Zach&#281;camy do zapoznania si&#281; z kodami &#378;ród&#322;owymi tej
+            klasy. </div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id499647"></a>Filtry</h2></div></div></div><p>Filtry danych mog&#261; by&#263; metodami, klasami lub funkcjami. Dodanie filtra do kolejki
+            umo&#380;liwia metoda <tt class="methodname">addFilter()</tt>, a samo filtrowanie odbywa si&#281; w
+            metodzie
+            <tt class="methodname">filterData()</tt>:</p><pre class="programlisting">&lt;?php
+
+class Bar extends Controller
+{
+	function main()
+	{
+		$value = '&lt;b&gt;Coyote&lt;/b&gt;';
+
+		$filter = &amp;$this-&gt;getLibrary('filter');
+		$filter-&gt;addFilter('htmlspecialchars');
+
+		echo $filter-&gt;filterData($value);
+	}
+}
+?&gt;</pre><p>W tym prostszym przyk&#322;adzie do kolejki dodali&#347;my filtr
+            <span class="emphasis"><em>htmlspecialchars</em></span>. Jak &#322;atwo si&#281; domy&#347;le&#263; klasa
+            <tt class="classname">Filter</tt> wywo&#322;a funkcj&#281; <tt class="function">htmlspecialchars()</tt> na
+            warto&#347;ci <tt class="varname">$value</tt>. Jak wspomnia&#322;em - parametrem metody
+                <tt class="methodname">addFilter()</tt> mo&#380;e by&#263; instancja klasy. Musi ona jednak
+            implementowa&#263; interfejs
+            <tt class="interfacename">IFilter</tt>:</p><pre class="programlisting">&lt;?php
+
+class Bar extends Controller
+{
+	function main()
+	{
+		$value = '     &lt;b&gt;Coyote&lt;/b&gt;       ';
+
+		$filter = &amp;$this-&gt;getLibrary('filter');
+		$filter-&gt;addFilter('trim');
+		$filter-&gt;addFilter('htmlspecialchars');
+		$filter-&gt;addFilter(new Filter_Replace('#', '&amp;', '|'));
+
+		echo $filter-&gt;filterData($value);
+	}
+}
+?&gt;</pre><p>W powy&#380;szym przyk&#322;adzie wykorzystano klas&#281; filtra -
+            <tt class="classname">Filter_Replace</tt>. Usuwa ona z &#322;a&#324;cucha znaki podane w konstruktorze
+            klasy. </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>Parametrem konstruktora mo&#380;e by&#263; równie&#380; tablica znaków. </div><p>Parametrem metody <tt class="methodname">addFilter()</tt> mo&#380;e by&#263; równie&#380; tablica
+            okre&#347;laj&#261;ca nazw&#281; klasy filtra oraz parametry, które zostan&#261; przekazane do konstruktora
+            klasy:</p><pre class="programlisting">
+$filter-&gt;addFilter('trim');
+$filter-&gt;addFilter('htmlspecialchars');
+$filter-&gt;addFilter(array('replace', '#', '&lt;', '|'));
+        </pre><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>Pami&#281;taj, i&#380; pierwszym elementem tablicy przekazywanej do metody addFilter() musi by&#263;
+            nazwa filtra (bez przedrostka <span class="emphasis"><em>Filter</em></span>)</div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id500474"></a>Pisanie w&#322;asnego filtra</h3></div></div></div><p>Oczywi&#347;cie nic nie stoi na przeszkodzie, aby napisa&#263; w&#322;asny filtr danych. Klasy
+                filtrów musz&#261; implementowa&#263; interfejs
+                <tt class="interfacename">IFilter</tt>:</p><pre class="programlisting">interface IFilter 
+{
+	public function filter($value);
+}</pre><p>Musi wi&#281;c posiada&#263; metod&#281; <tt class="methodname">filter()</tt>, która b&#281;dzie
+                wywo&#322;ywana w kolejce przez klas&#281; <tt class="classname">Filter</tt>. Swoj&#261; klas&#281; filtra
+                umie&#347;&#263; w katalogu <tt class="filename">lib/filter</tt>. Plik klasy filtra musi mie&#263;
+                budow&#281; tak&#261; jak ka&#380;da inna biblioteka frameworka - czyli <span class="emphasis"><em>&lt;nazwa
+                    klasy&gt;.class.php</em></span>. </p><p>Dla przyk&#322;adu - mo&#380;emy utworzy&#263; klas&#281;, która b&#281;dzie zamienia&#322;a sk&#322;adni&#281; wikipedii
+                na kod
+                HTML:</p><pre class="programlisting">&lt;?php
+
+class Filter_Wiki implements IFilter
+{
+	public function filter($value)
+	{
+		$value = preg_replace('#\'\'\'(.+?)\'\'\'#', '&lt;b&gt;$1&lt;/b&gt;', $value);
+		$value = preg_replace('#\'\'(.+?)\'\'#', '&lt;i&gt;$1&lt;/i&gt;', $value);
+		$value = preg_replace('#`(.+?)`#', '&lt;tt&gt;$1&lt;/tt&gt;', $value);
+
+		return $value;
+	}
+}
+?&gt;</pre><p>Naturalnie to tylko przyk&#322;ad - budowa klasy jest bardzo prosty. Podobnie jak
+                wykorzystanie tej
+                klasy:</p><pre class="programlisting">&lt;?php
+
+class Bar extends Controller
+{
+	function main()
+	{
+		$value = "''pochylony tekst'', '''pogrubiony tekst'''";
+
+		$filter = &amp;$this-&gt;getLibrary('filter');
+		$filter-&gt;addFilter(new Filter_Wiki);
+
+		echo $filter-&gt;filterData($value);
+	}
+}
+?&gt;</pre></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id500570"></a>Filtr XSS</h3></div></div></div><p>Klasa Filter_Xss umo&#380;liwia usuni&#281;cie potencjalnie niebezpiecznego kodu
+                umo&#380;liwiaj&#261;cego ataki typu XSS. Klasa usuwa z &#322;a&#324;cucha atrbuty znaczników HTML
+                zwi&#261;zane ze zdarzeniami JavaScript oraz - niebezpieczne znaczniki HTML.
+                Przyk&#322;adowo:</p><pre class="programlisting">
+$value = '&lt;a onclick="alert(document.cookie);"&gt;click me&lt;/a&gt;';
+
+$filter = &amp;$this-&gt;getLibrary('filter');
+$filter-&gt;addFilter(new Filter_Xss);
+
+echo $filter-&gt;filterData($value);</pre><p>&#321;a&#324;cuch <tt class="varname">$value</tt> zostanie przekszta&#322;cony
+                na:</p><pre class="programlisting">&amp;lt;a onclick="alert();"&amp;gt;click me&lt;/a&gt;</pre></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id500614"></a>Filtr stripNewLines()</h3></div></div></div><p>Jest to metoda klasy <tt class="classname">Filter</tt>. Umo&#380;liwia usuni&#281;cie znaków
+                nowej linii z &#322;a&#324;cucha.</p></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id500631"></a>Filtr int()</h3></div></div></div><p>Metoda klasy <tt class="classname">Filter</tt>: rzutowanie warto&#347;ci na typ
+            integer.</p></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id500647"></a>Filtr string()</h3></div></div></div><p>Metoda klasy <tt class="classname">Filter</tt>: rzutowanie na typ string.</p></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id500661"></a>Filtr float()</h3></div></div></div><p>Metoda klasy <tt class="classname">Filter</tt>: rzutowanie na typ float.</p></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch22s08.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="pt01.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch23s02.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Statyczna metoda call() </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Metoda setFilters()</td></tr></table></div></body></html>

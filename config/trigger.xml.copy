@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<trigger>		
+		<system.onBeforeAction>
+			<class>user</class>
+			<function>load</function>		
+		</system.onBeforeAction>
+		<system.onBeforeAction>
+			<class>auth</class>
+			<function>load</function>		
+		</system.onBeforeAction>	
+		<system.onShutdown>
+			<class>debug</class>
+			<function>explain</function>
+		</system.onShutdown>
+		<application.onTriggerDelete>
+			<path>controller/adm/trigger.php</path>
+			<class>Trigger_Controller</class>
+			<function>deleteTrigger</function>
+		</application.onTriggerDelete>
+		<application.onTriggerRename>
+			<path>controller/adm/trigger.php</path>
+			<class>Trigger_Controller</class>
+			<function>renameTrigger</function>
+		</application.onTriggerRename>
+		<application.onEventSubmit>	
+			<path>controller/adm/trigger.php</path>
+			<class>Trigger_Controller</class>
+			<function>addEvent</function>
+		</application.onEventSubmit>
+		<application.onEventDelete>
+			<path>controller/adm/trigger.php</path>
+			<class>Trigger_Controller</class>
+			<function>deleteEvent</function>
+		</application.onEventDelete>
+		<application.onPageSubmitComplete>
+			<class>Search</class>
+			<function>buildQueue</function>
+		</application.onPageSubmitComplete>
+		<application.onPageDeleteComplete>
+			<class>Search</class>
+			<function>buildQueue</function>
+		</application.onPageDeleteComplete>
+	</trigger>
+</config>

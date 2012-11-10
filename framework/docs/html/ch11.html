@@ -1,0 +1,33 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Rozdzia&#322; 11. Loader</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="pt01.html" title="Cz&#281;&#347;&#263; I. Dokumentacja techniczna"><link rel="prev" href="ch10s09.html" title="Automatyczne &#322;adowanie zasobów"><link rel="next" href="ch11s02.html" title="Metoda loadFile()"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Rozdzia&#322; 11. Loader</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch10s09.html">Poprzedni</a> </td><th width="60%" align="center">Cz&#281;&#347;&#263; I. Dokumentacja techniczna</th><td width="20%" align="right"> <a accesskey="n" href="ch11s02.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="chapter" lang="pl"><div class="titlepage"><div><div><h2 class="title"><a name="id481374"></a>Rozdzia&#322; 11. Loader</h2></div></div></div><div class="toc"><p><b>Spis tre&#347;ci</b></p><dl><dt><span class="section"><a href="ch11.html#id480694">Metoda autoload()</a></span></dt><dt><span class="section"><a href="ch11s02.html">Metoda loadFile()</a></span></dt><dt><span class="section"><a href="ch11s03.html">Metoda setIncludePath()</a></span></dt><dt><span class="section"><a href="ch11s04.html">Metoda loadClass()</a></span></dt><dt><span class="section"><a href="ch11s05.html">Metoda loadModule()</a></span></dt><dt><span class="section"><a href="ch11s06.html">Metoda fileExists()</a></span></dt><dt><span class="section"><a href="ch11s07.html">Konstruktor klasy</a></span></dt><dt><span class="section"><a href="ch11s08.html">Metoda directory()</a></span></dt><dt><span class="section"><a href="ch11s09.html">Metoda library()</a></span></dt><dt><span class="section"><a href="ch11s10.html">Metoda lang()</a></span></dt><dt><span class="section"><a href="ch11s11.html">Metoda helper()</a></span></dt><dt><span class="section"><a href="ch11s12.html">Metoda database()</a></span></dt><dt><span class="section"><a href="ch11s13.html">Metoda model()</a></span></dt><dt><span class="section"><a href="ch11s14.html">Metoda module()</a></span></dt><dt><span class="section"><a href="ch11s15.html">Metoda view()</a></span></dt><dt><span class="section"><a href="ch11s16.html">W&#322;asna klasa loadera</a></span></dt></dl></div><p>
+        Jest to pierwsza biblioteka &#322;adowana przez klas&#281; <tt class="classname">Core</tt>. Jest to
+        bardzo wa&#380;na klasa, która odpowiada za &#322;adowanie podzespo&#322;ów aplikacji. Klasa posiada
+        zarówno metody statyczne jak i zwyk&#322;e, co umo&#380;liwia u&#380;ycie loadera na wiele sposobów w
+        ka&#380;dym momencie dzia&#322;ania aplikacji. 
+    </p><p>
+        Klasa <tt class="classname">Core</tt> rejestruje metod&#281; <tt class="methodname">autoload()</tt> z
+        klasy <tt class="classname">Load</tt> jako metod&#281; typu autoload PHP. Dzi&#281;ki temu mo&#380;liwe jest u&#380;ycie
+        podzespo&#322;ów aplikacji (bibliotek, helperów) bez jawnego &#322;adowania danego pliku przy pomocy - np.
+        instrukcji <tt class="function">include()</tt>. Wystarczy u&#380;y&#263; danego elementu (np. helpera), aby system
+        sam zidentyfikowa&#322; dane wywo&#322;anie, jako prób&#281; wywo&#322;ania - np. helpera i za&#322;adowa&#322; do projektu odpowiedni plik.
+    </p><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id480694"></a>Metoda autoload()</h2></div></div></div><p>
+            Pierwsz&#261; metod&#261;, któr&#261; warto omówi&#263; jest metoda <tt class="methodname">autoload()</tt>. W
+            przypadku gdy PHP nie mo&#380;e odnale&#378;&#263; danej klasy, do której chcemy si&#281; odwo&#322;a&#263;,
+            wywo&#322;ywana jest ta metoda, która próbuje za&#322;adowa&#263; do projektu &#380;&#261;dan&#261; bibliotek&#281;, model,
+            helper lub kontroler. W tym celu metoda odczytuje przyrostek klasy. Je&#380;eli przyrostek to
+            <span class="emphasis"><em>model</em></span> - oznacza, i&#380; &#380;&#261;dana klasa jest modelem. Je&#380;eli jest to
+                <span class="emphasis"><em>controller</em></span> - klasa jest kontrolerem. W innym przypadku, loader
+            próbuje odszuka&#263; klasy w podkatalogach folderu <tt class="filename">lib</tt> a je&#380;eli i to
+            nie pomo&#380;e - sprawdza, czy dana klasa jest nazw&#261; helpera lub biblioteki. 
+        </p><p>
+            W przypadku korzystania z metody <tt class="methodname">autoload()</tt>, klasa nie
+            zostanie zainicjalizowana. Oznacza to, &#380;e nie zostanie utworzona instancja danej klasy.
+            Przyk&#322;adowo:
+            </p><pre class="programlisting">
+User::foo(); // próba odwo&#322;ania si&#281; do nieistniej&#261;cej klasy User i statycznej metody foo()
+            </pre><p>
+        </p><p>
+            W takim przypadku, przed wy&#347;wietleniem komunikatu z b&#322;&#281;dem, system przeszukuje
+            katalogi <tt class="filename">helper</tt> i <tt class="filename">lib</tt> projektu (zarówno w
+            katalogu z frameworkiem jak i z aplikacj&#261;) i szuka pliku <tt class="filename">user.helper.php</tt> lub <tt class="filename">user.class.php</tt>. Plik jest &#322;adowany
+            do projektu, lecz sama klasa nie jest inicjalizowana.
+        </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch10s09.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="pt01.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch11s02.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Automatyczne &#322;adowanie zasobów </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Metoda loadFile()</td></tr></table></div></body></html>

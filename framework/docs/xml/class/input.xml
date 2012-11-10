@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter>
+    <title>Klasa Input</title>
+    <para>Obecne strony WWW bardzo często zawierają całą masę rozmaitych formularzy umożliwiających
+        interakcje z użytkownikiem oraz rozbudowywania treści strony (Web 2.0). Przykładem może być
+        możliwość dodawania komentarzy na stronie. Strony generowane są dynamicznie często na
+        podstawie czynników zewnętrznych (danych odczytywanych przez użytkownika). Przykładem może
+        być sortowanie listy użytkowników oraz stronnicowanie. Wówczas kolejność odczytanych danych
+        oraz ilość wyświetlanych rekordów odczytywana jest najczęściej dzięki parametrom HTTP GET
+        przekazanym w adresie URL. </para>
+    <para>Klasa <classname>Input</classname> inicjowana jest automatycznie przez framework, w
+        metodzie <methodname>dispatch()</methodname> klasy <classname>Core</classname>. Umożliwia
+        ona odczytanie informacji zewnętrznych. W konstruktorze klasy ładowana jest klasa
+            <classname>Filter</classname> oraz inicjalizowane klasy <classname>Post</classname>,
+            <classname>Get</classname>, <classname>Cookie</classname> oraz
+        <classname>Server</classname> dające dostęp do tablic globalnych <varname>$_POST</varname>, <varname>$_GET</varname>, <varname>$_COOKIE</varname>,
+        <varname>$_SERVER</varname>. <note>Konstruktor klasy sprawdza również ustawienia magic_qutoes_runtime oraz
+            magic_quotes_gpc. Zalecane jest, aby te opcje były wyłączone. </note></para>
+    <section>
+        <title>Odbieranie formularza metodą HTTP POST</title>
+        <para>Utwórzmy prosty kontroler, którego celem będzie wyświetlanie formularza. Po kliknięciu
+            przycisku <emphasis>Wyślij</emphasis>, zawartość formularza będzie przesyłana do odpowiedniej akcji
+            kontrolera. Klasa może wyglądać
+            tak:<programlisting>&lt;?php
+
+class Index extends Controller
+{
+	function main()
+	{
+		$this->load->helper('form');
+		$this->load->helper('url');
+
+		echo Form::open('Index/Submit', array('method' => 'post'));
+		echo Form::input('name') . '&lt;br />';
+		echo Form::submit('', 'Wyślij');
+		echo Form::close();
+	}
+
+	public function submit()
+	{
+	}
+}
+?></programlisting></para>
+        <para>Formularz zostanie przesłany metodą HTTP POST. Takie dane możemy odczytać przy pomocy
+            tablicy globalnej <varname>$_POST</varname> lub - korzystając z metody <methodname>post()</methodname>
+            klasy
+            <classname>Input</classname>:<programlisting>
+public function submit()
+{
+    if ($this->input->getMethod() == Input::POST)
+    {
+    	echo $this->input->post('name');
+    }
+}</programlisting></para>
+        <para>Pierwsza instrukcja sprawdza metodę HTTP; sprawdzamy czy dane wysłane zostały przy
+            pomocy metody HTTP POST. Jeżeli tak - odczytujemy zawartość pola
+            <emphasis>name</emphasis>. </para>
+    </section>
+    <section>
+        <title>Metoda getMethod()</title>
+        <para>Metoda odczytuje parametr REQUEST_METHOD zwraca metodę HTTP użytą w danym żądaniu.
+            Może to być POST, GET, DELETE, PUT, HEAD. Zwraca ona łańcuch odpowiadający nazwie
+            metody. Możemy więc sprawdzić metodę żądania w dwojaki
+            sposób:<programlisting>if ($this->input->getMethod() == 'POST') ...
+// wykorzystanie stałych z klasy Input:
+if ($this->input->getMethod() == Input::POST) ...</programlisting></para>
+        <para>Do tego celu możemy wykorzystać skrócony zapis dzięki metodzie
+            <methodname>isMethod()</methodname>:<programlisting>if ($this->input->isMethod('POST')) ... 
+// lub:
+if ($this->input->isMethod(Input::POST)) ...</programlisting></para>
+    </section>
+    <section>
+        <title>Metoda getHost()</title>
+        <para>Metoda <methodname>getHost()</methodname> zwraca aktualny host na jakim uruchomiony
+            jest skrypt:
+            <programlisting>
+echo $this->input->getHost();                
+            </programlisting></para>
+    </section>
+    <section>
+        <title>Metoda getPage()</title>
+        <para>Metoda zwraca ścieżkę do aktualnie przeglądanej strony:
+            <programlisting>
+echo $this->input->getPage(); // np. /demo/index.php/Index/Submit            
+        </programlisting></para>
+    </section>
+    <section>
+        <title>Metoda getScriptPath()</title>
+        <para> Metoda zwraca katalog, w którym umieszczona jest aplikacja wraz z ewentualną nazwą
+            pliku front controllera (<filename>index.php</filename>).Przykładowo, jeżeli umieściłeś
+            swoją aplikację w katalogu demo, swojego serwera HTTP, metoda zwróci wartość <filename
+                >/demo/</filename> lub <filename>/demo/index.php/</filename> w zależności od
+            ustawień aplikacji. </para>
+    </section>
+    <section>
+        <title>Metoda getBaseUrl()</title>
+        <para> Metoda zwraca bazowy adres WWW dla Twojej strony. Na adres składa się nazwa hosta
+            (odczytywany automatycznie lub - jeżeli zadeklarowano - odczytywany z pola site.host
+            konfiguracji) oraz ewentialna nazwa katalogu, w którym umieszczona została aplikacja:
+            <programlisting>echo $this->input->getBaseUrl(); // http://127.0.0.1/demo/index.php/</programlisting></para>
+    </section>
+    <section>
+        <title>Metoda getCurrentUrl()</title>
+        <para>Metoda zwraca aktualny adres WWW strony.</para>
+    </section>
+    <section>
+        <title>Metoda getPath()</title>
+        <para>Metoda odczytuje wartość PATH_INFO z tablicy globalnej $_SERVER. Wartość ta
+            automatycznie zostaje poddana procesowi walidacji pod względem ataku XSS lub SQL
+            Injection. Metoda automatycznie usunie niebezpieczne znaki (np. cudzysłowia itp), kod
+            HTML. </para>
+    </section>
+    <section>
+        <title>Metoda getIp()</title>
+        <para>Metoda zwraca aktualny adres IP użytkownika.</para>
+    </section>
+    <section>
+        <title>Metoda getUserAgent()</title>
+        <para>Metoda odczytuje i zwraca wartość HTTP_USER_AGENT z tablicy globalnej
+                <varname>$_SERVER</varname>. Wartość ta jest automatycznie filtrowana pod względem
+            ataków XSS oraz SQL Injection.</para>
+    </section>
+    <section>
+        <title>Metoda getReferer()</title>
+        <para>Metoda odczytuje wartość HTTP_REFERER z tablicy <varname>$_SERVER</varname>.
+                <note>Pełeną listę metod klasy Input możesz znaleźć w dokumentacji API frameworka.
+            </note></para>
+    </section>
+    <section>
+        <title>Metoda post()</title>
+        <para>Metoda zapewnia dostęp do elementów tablicy <varname>$_POST</varname>. W
+            rzeczywistości metoda pobiera i zwraca te dane korzystając z klasy
+            <classname>Post</classname>. Zwracane dane są automatycznie filtrowane pod kątem ataków
+            XSS. <note>Więcej informacji na temat tej klasy znajdziesz w dalszej części poświęconej
+                klasie Gpc. </note></para>
+        <para> Drugim, opcjonalnym parametrem tej metody jest wartość domyślna w przypadku, gdy nie
+            można odnaleźć podanego klucza w tablicy <varname>$_POST</varname>.
+            <programlisting>echo $this->input->post('name', 'Adam Boduch');
+// jeżeli brak będzie klucza name w tablicy $_POST, zwrócona zostanie wartość Adam Boduch</programlisting></para>
+    </section>
+    <section>
+        <title>Metoda get()</title>
+        <para>Metoda zapewnia dostęp do elementów tablicy <varname>$_GET</varname>. W rzeczywistości
+            metoda pobiera i zwraca te dane korzystając z klasy <classname>Get</classname>. Zwracane
+            dane są automatycznie filtrowane pod kątem ataków XSS oraz niebezpiecznych
+                znaków.<note>Więcej informacji na temat tej klasy znajdziesz w dalszej części
+                poświęconej klasie Gpc. </note></para>
+        <para> Drugim, opcjonalnym parametrem tej metody jest wartość domyślna w przypadku, gdy nie
+            można odnaleźć podanego klucza w tablicy <varname>$_GET</varname>.
+            <programlisting>echo $this->input->get('name', 'Adam Boduch');
+// jeżeli brak będzie klucza name w tablicy $_GET, zwrócona zostanie wartość Adam Boduch</programlisting></para>
+    </section>
+    <section>
+        <title>Metoda cookie()</title>
+        <para>Metoda zapewnia dostęp do elementów tablicy <varname>$_COOKIE</varname>. W
+            rzeczywistości metoda pobiera i zwraca te dane korzystając z klasy
+            <classname>Cookie</classname>. Zwracane dane są automatycznie filtrowane pod kątem
+            ataków XSS. <note>Więcej informacji na temat tej klasy znajdziesz w dalszej części
+                poświęconej klasie Gpc. </note></para>
+        <para> Drugim, opcjonalnym parametrem tej metody jest wartość domyślna w przypadku, gdy nie
+            można odnaleźć podanego klucza w tablicy <varname>$_COOKIE</varname>.
+            <programlisting>echo $this->input->cookie('name', 'Adam Boduch');
+// jeżeli brak będzie klucza name w tablicy $_COOKIE, zwrócona zostanie wartość Adam Boduch</programlisting></para>
+        <para>Do nazwy ciastka automatycznie dołączany jest prefiks. Jeżeli takowy został
+            zadeklarowany w pliku konfiguracji pod nazwą <emphasis>cookie.prefix</emphasis>. </para>
+    </section>
+    <section>
+        <title>Metoda server()</title>
+        <para>Metoda zapewnia dostęp do elementów tablicy <varname>$_SERVER</varname>. W
+            rzeczywistości metoda pobiera i zwraca te dane korzystając z klasy
+            <classname>Server</classname>.  <note>Więcej informacji na temat tej klasy znajdziesz w
+                dalszej części poświęconej klasie Gpc. </note></para>
+        <para> Drugim, opcjonalnym parametrem tej metody jest wartość domyślna w przypadku, gdy nie
+            można odnaleźć podanego klucza w tablicy <varname>$_SERVER</varname>.
+            <programlisting>echo $this->input->server('HTTP_REFERER', $this->input->getBaseUrl());</programlisting></para>
+    </section>
+</chapter>

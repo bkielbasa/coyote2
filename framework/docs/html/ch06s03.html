@@ -1,0 +1,23 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Metoda getLibrary()</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch06.html" title="Rozdzia&#322; 6. Klasa Controller"><link rel="prev" href="ch06s02.html" title="Metoda getContext()"><link rel="next" href="ch06s04.html" title="Metoda getModel()"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Metoda getLibrary()</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch06s02.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 6. Klasa Controller</th><td width="20%" align="right"> <a accesskey="n" href="ch06s04.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id476169"></a>Metoda getLibrary()</h2></div></div></div><p>
+            Na starcie aplikacji, tylko niektóre, najpotrzebniejsze biblioteki s&#261; &#322;adowane do j&#261;dra
+            systemu. Oczywistym jest, &#380;e nie wszystkie biblioteki musz&#261; by&#263; za&#322;adowane do aplikacji, 
+            je&#380;eli nie s&#261; wykorzystywane. Ma to zwi&#261;zek z wydajno&#347;ci&#261; aplikacji (niepotrzebne marnowanie zasobów).
+        </p><p>
+            W ka&#380;dej chwili mo&#380;esz jednak z dowolnego miejsca w aplikacji (kontroler, widok, model) za&#322;adowa&#263;
+            potrzebn&#261; w danej chwili bibliotek&#281;. Jest na to kilka sposobów. W kontrolerze, masz dost&#281;p do
+            metody <tt class="methodname">getLibrary()</tt>, pierwotnie zadeklarowanej w klasie <tt class="classname">Controller</tt>.
+        </p><p>
+            Metoda realizuje za&#322;adowanie biblioteki do projektu, a nast&#281;pnie - zwrócenie jej
+            referencji. Identyczny efekt da u&#380;ycie metody <tt class="methodname">library()</tt> z
+            loadera: 
+            
+            </p><pre class="programlisting">
+$foo = &amp;$this-&gt;load-&gt;library('foo');
+$foo = &amp;$this-&gt;getLibrary('foo');
+            </pre><p>
+            
+            </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>
+                Pami&#281;taj, &#380;e metoda <tt class="methodname">getLibrary()</tt> dost&#281;pna jest jedynie w klasach kontrolerów
+                dziedzicz&#261;cych po klasie <tt class="classname">Controller</tt>.
+            </div><p>
+        </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch06s02.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch06.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch06s04.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Metoda getContext() </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Metoda getModel()</td></tr></table></div></body></html>

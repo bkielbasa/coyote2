@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../../docbook/html/docbook.xsl"?>
+<appendix>
+    <title>Standard kodowania</title>
+    
+    <para>
+        Dokument przedstawia standard kodowania kodu PHP w projekcie Coyote Framework. 
+        Każdy deweloper biorący udział w projekcie powinien dostosować się do reguł opisanych
+        w tym dokumencie. Stosowanie tych samych reguł pisania kodu PHP ma na celu
+        zwiększenie przejrzystości projektu, ułatwienia w zarządzaniu kodem oraz minimalizacji
+        błedów w projekcie.
+    </para>
+    
+    <section>
+        <title>Formatowanie plików PHP</title>
+        
+        <section>
+            <title>Znaczniki PHP</title>
+            
+            <para>
+                W plikach zawierających sam kod PHP, nie jest konieczne stosowanie znacznika
+                zamykającego "?>". Aczkolwiek w projekcie, w każdym pliku stosowane są
+                znaczniki zamykające.
+            </para>
+            
+            <para>
+                W szablonach, w kodzie mieszanym (PHP i xHTML) stosuje się znaczniki skrócone,
+                tzw. <emphasis>short tags</emphasis>. Wielu programistów odradza stosowanie 
+                znaczników skróconych ze względu na to, iż mogą one być wyłączone w konfiguracji
+                PHP. Innym argumentem są problemy ze znacznikiem otwierającym XML - &lt;?xml.                 
+            </para>
+            
+            <para>
+                Łatwym sposobem na włączenie skróconych znaczników jest umieszczenie funkcji
+                <methodname>ini_set()</methodname> we front controllerze.
+            </para>
+        </section>
+        
+        <section>
+            <title>Wcięcia</title>
+            
+            <para>
+                Zabronione jest używanie spacji jako formy wcięć w kodzie. Zamiast tego powinno
+                się używać znaku tabulacji.                
+            </para>
+            
+            <note>
+                Zaleca się ostrożność w stosowaniu edytorów z włączoną funkcją auto formatowania.
+                Należy zwrócić uwagę, czy twój edytor nie zamienia tabulacji na spacje.
+            </note>
+        </section>
+        
+        <section>
+            <title>Maksymalna długość linii</title>
+            
+            <para>
+                Długość poszczególnej linii kodu nie powinna przekraczać 80 znaków.
+            </para>
+        </section>
+        
+        <section>
+            <title>Kodowanie plików PHP</title>
+            
+            <para>
+                Pliki PHP powinny posiadać kodowanie UTF-8.
+            </para>
+        </section>
+    </section>
+    
+    <section>
+        <title>Konwencja nazewnictwa</title>
+        
+        <para>
+            W Coyote stosujemy angielski zapis kodu. Tzn. nie nazywamy zmiennych <varname>$idUzytkownika</varname>
+            tylko <varname>$userId</varname>. Tyczy się to również nazw klas, metod czy funkcji.
+        </para>
+        
+        <section>
+            <title>Nazewnictwo plików</title>
+            
+            <para>
+                Pliki powinny posiadać rozszerzenia .php. Nazwy plików piszemy małymi znakami -
+                np. <filename>foo.php</filename>, <filename>bar.php</filename> zamiast
+                <filename>Foo.php</filename>. Dodatkowo biblioteki frameworka (gromadzone w katalogu
+                <filename>/lib</filename>) powinny posiadać końcówkę .class - np.
+                <filename>foo.class.php</filename>. 
+            </para>
+            
+            <para>
+                Analogicznie pliki helperów - <filename>bar.helper.php</filename> (z katalogu
+                <filename>/helper</filename>) oraz pliki językowe (z katalogu<filename>
+                    /i18n</filename>) - <filename>foo.lang.php</filename> oraz modele (z katalog
+                <filename>/model</filename>) - <filename>foo.model.php</filename>. 
+            </para>
+        </section>
+        
+        <section>
+            <title>Nazewnictwo klas</title>
+            
+            <para>
+                Dla wyróżnienia, pierwsza litera w nazwie klasy powinna być zapisana wielką literą
+                - np. <classname>Lang</classname>, <classname>Config</classname> itp. Jako separator w
+                nazwie, powinno być użyte podkreślenie - np. <classname>Front_Controller</classname>,
+                zamiast <classname>FrontController</classname>. Wyjątkami są nazwy klas wyjątków,
+                które zapisujemy: <classname>SqlErrorException</classname>,
+                <classname>UserErrorException</classname> (z przyrostkiem
+                <emphasis>Exception</emphasis>). 
+            </para>
+            
+        </section>
+        
+        <section>
+            <title>Nazewnictwo interfejsów</title>
+            
+            <para>
+                Nazwy interfejsów powinna poprzedzać wielka litera I - np.
+                <interfacename>IConfig</interfacename>, <interfacename>IDb</interfacename>. 
+            </para>
+
+			<note>
+				Uwaga! Począwszy od wersji 1.2, nazwy interfejsów powinny posidać przyrostek
+				<emphasis>Interface</emphasis> - np. <interfacename>Config_Interface</interfacename>,
+				<interfacename>Db_Interface</interfacename>.
+			</note>
+            
+        </section>
+        
+        <section>
+            <title>Nazewnictwo metod</title>
+            
+            <para>
+                Począwszy od wersji 0.9.4-rc2 zmieniono sposób zapisu nazw metod. Zamiast znaku
+                podkreślenia (_) stosuje się styl wielbłądzi, jednak pierwszy znak w nazwie musi być
+                pisany mała literą - np. <methodname>getByName()</methodname>,
+                <methodname>findUser()</methodname> zamiast <methodname>get_by_name()</methodname>
+                oraz <methodname>find_user()</methodname>. Stare nazewnictwo może jeszcze figurować w
+                niektórych bibliotekach, lecz zostanie poprawione w kolejnych wersjach.
+            </para>
+            
+            <para>
+                Dopuszczalne jest poprzedzanie nazw metod znakami __ (np. w kontrolerach) dla
+                podkreślenia, iż dana metoda mimo, iż jest oznaczona jako public, jest metodą
+                pomocniczą (wykorzystywaną np. jako metoda zwrotna lub metoda wykorzystywana przez
+                żądania AJAX). 
+            </para>
+            
+        </section>
+        
+        <section>
+            <title>Nazewnictwo funkcji</title>
+            
+            <para>
+                Cały framework jest praktycznie obiektowy. Oparty o model MVC. Z funkcjami mamy do
+                czynienia bardzo rzadko - praktycznie jedynie w helperach. Wówczas dopuszczalne jest
+                użycie znaku podkreślenia (_) zamiast stylu wielbłądziego - np.
+                <methodname>html_img()</methodname>,<methodname>information_box()</methodname>.
+            </para>
+            
+        </section>
+        
+        <section>
+            <title>Nazewnictwo zmiennych</title>
+            
+            <para>
+                Zaleca się używanie stylu wielbłądziego w przypadku zmiennych oraz pól klas,
+                podobnie jak w przypadku metod.                
+            </para>
+        </section>
+        
+        <section>
+            <title>Nazewnictwo stałych</title>
+            
+            <para>
+                Nazwy stałych powinny zawierać wyłącznie wielkie litery. Dozwolone jest używanie znaków
+                "_"
+            </para>
+            
+        </section>
+    </section>
+    
+    <section>
+        <title>Formatowanie kodu</title>
+        
+        <section>
+            <title>Łańcuchy</title>
+            
+            <para>
+                Stosujemy apostrofy tam gdzie to jest możliwe.
+                
+                <programlisting>
+<![CDATA[
+$a = 'Hello World';
+]]>                   
+                    
+                </programlisting>
+            </para>
+            
+            <para>
+                W miare możliwości używamy operatora "." pozostawiając jedną spację pomiędzy
+                wyrazami:
+                
+                <programlisting>
+<![CDATA[
+$a = 'Hello ' . 'World';
+]]>                    
+                    
+                </programlisting>
+            </para>
+            
+            <para>
+                Tam gdzie jest to konieczne (w celu zwiększania czytelności) możemy używać
+                apostrofu:
+                
+                <programlisting>
+<![CDATA[
+$a = 'Mam na imię ' . $name . ', lat: ' . $age . ', mam ' . $height . ' cm wzrostu';
+$a = "Mam na imię $name, lat: $age, mam $height cm wzrostu"; // czytelniej
+]]>                                 
+                </programlisting>
+            </para>
+            
+        </section>
+
+		<section>
+			<title>Odstępy</title>
+
+			<para>
+				W miarę możliwości należy stosować odstępy między liniami oraz specje pomiędzy
+				wywołaniami operatorów, aby zwiększyć czytelność kodu.
+			</para>
+
+			<programlisting>
+<![CDATA[
+$a='Hello'.' '.'World'; // źle
+$a = 'Hello' . ' ' . 'World'; // dobrze
+
+if($x<1) {
+	echo 'Źle';
+}
+
+if ($x < 1)
+{
+	echo 'Dobrze';
+}
+]]>
+			</programlisting>
+		</section>
+        
+        <section>
+            <title>Klasy</title>            
+            
+            <para>
+                Klasy muszą być deklarowane zgodnie z nazewnictwem opisanym w poprzedniej części.
+                Dodatkowo klamra otwierająca musi znajdować się w kolejnej
+                linii:
+                <programlisting>
+<![CDATA[
+/** 
+* Komentarz
+*/
+class Foo
+{
+// metody
+}
+
+class Foo {
+// Źle }
+]]>           
+                    
+                </programlisting>
+            </para>
+            
+            <para>
+                Pomiędzy słowem kluczowym class, a nazwą klasy musi się znaleźć jedna spacja
+                przerwy. Dobrym zwyczajem jest umieszczanie komentarza opisującego działanie klasy,
+                zgodnie z konwencją akceptowaną przez oprogramowanie PHPDoc. 
+            </para>
+            
+        </section>
+        
+        <section>
+            <title>Pola klasy</title>
+            
+            
+            <para>
+                Pola klasy muszą być oznaczone jako <emphasis>private</emphasis>,
+                <emphasis>public</emphasis> lub <emphasis>protected</emphasis>:
+                
+                <programlisting>
+<![CDATA[
+// Dobrze
+class Foo
+{
+    private $bar;
+    private $foo;
+}
+
+// Źle
+class Foo
+{
+    private
+    $bar;
+    $foo;
+}
+]]>                    
+                    
+                </programlisting>
+            </para>
+            
+        </section>
+        
+        <section>
+            <title>Metody klasy</title>
+            
+            <para>
+                W nazewnictwie metod stosujemy styl wielbłądzi. Należy pamiętać o wcięciach 
+                w kodzie w wielkości jednej tabulacji.
+                
+                <programlisting>
+<![CDATA[
+class Foo
+{
+    public function Bar() // Dobrze
+    {
+    // instrukcje
+    }
+    
+    function FooBar() {  // Źle
+    }
+    
+    public function foobar() // Źle
+    {
+    }
+}
+]]>                    
+                    
+                </programlisting>
+                
+                Klamra otwierająca powinna znajdować się w nowej linii.
+            </para>
+            
+        </section>
+    </section>
+</appendix>

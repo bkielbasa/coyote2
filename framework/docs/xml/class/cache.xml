@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter>
+    <title>Cache</title>
+
+    <para>
+		Cache, czyli mechanizm składowania danych w celu przyspieszenia operacji. Jest stosowany w
+        wielu rozwiązaniach informatycznych, m.in. w przeglądarkach WWW. Cache służy przyspieszeniu
+        działania aplikacji, co również może nastąpić w przypadku frameworka Coyote. Przykładowo:
+        nasza aplikacja wymaga dostępności pewnych danych zapisannych w bazie danych. Dane są
+        podzielone na kilka tabel, lecz same wartości nieczesto się zmieniają. W takim przypadku
+        możemy odciążyć bazę danych i przenieść ciężar odczytu tych danych na klasę
+        <classname>Cache</classname>. 
+	</para>
+
+	<para>
+		Coyote Framework udostępnia kilka adapterów cache, takich jak cache oparty na
+		plikach tekstowych oraz oparty o akceleratory - eAccelerator, APC.
+	</para>
+
+    <section>
+        <title>Inicjalizacja klasy</title>
+
+        <para>
+			Bibliotekę (klasę) <classname>Cache</classname> ładujemy do projektu tak jak każdą
+            inną klasę. Ważnym jest, aby utworzyć w katalogu z projektem folder <filename>
+			/cache</filename> i ustawić mu prawa zapisu (jedynie na systemach Unix).
+			Jest to istotne w przypadku adapterów opartych o pliki tekstowe, które w tym
+			właśnie katalogu zapisują dane z cache.
+		</para>
+
+        <para>
+			Zaprezentujmy prosty przykład wykorzystania klasy
+            <classname>Cache</classname>:
+
+			<programlisting>
+&lt;?php
+                
+class Bar extends Controller
+{
+    function main()
+    {
+        $cache = $this->load->library('cache');
+        
+        if (!$cache->start('foo'))
+        {
+            Benchmark::start('foo');
+        
+            for ($i = 0; $i &lt; 500000; $i++)
+            {
+                $result[] = $i * log($i);
+            }
+            sort($result);
+            Benchmark::stop('foo');
+            
+            echo "Dokonano $i iteracji pętli w czasie... " . Benchmark::elapsed('foo') . ' sek.';
+            $cache->end('foo');
+        }
+        else
+        {
+            echo '&lt;hr />';
+            echo 'Te dane zostały odcztyane z cache';
+        }    
+    }
+}
+?>
+			</programlisting>
+		</para>
+		
+        <para>
+			Mamy tutaj prosty kontroler. W kodzie dokonujemy 500 tys. iteracji pętil, dokonujemy
+            bezsensownych operacji, tak, aby wydłużyć czas działania skryptu. Instrukcje te zostaną
+            wykonane tylko raz, następnie zostaną zapisane w <classname>Cache</classname>. Przy
+            kolejnym odświeżeniu strony instrukcje nie zostaną wykonane po raz kolejny - dane
+            zostaną odczytane z cache. 
+		</para>
+
+        <para>
+			W naszym przykładzie, cachowanie danych zaczyna się po wywołaniu metody
+            <methodname>start()</methodname> z klasy <classname>Cache</classname>. Metoda ta
+            zwraca wartość true i wyświetlane na ekranie cachowane dane jeżeli te istnieją w cache.
+            W przeciwnym wypadku (jeżeli dane nie są w cache), zwraca wartość false, co owocuje
+            wykonaniem naszej bezsensownej pętil. Cachowanie kończy się w momencie wykonania metody
+            <methodname>end()</methodname>. Innymi słowy do cache wędruje wszystko, co
+            wyświetlone zostanie w oknie przeglądarki pomiędzy metodą
+            <methodname>start()</methodname> a <methodname>end()</methodname>. 
+		</para>
+
+        <para>
+			Podstawowym warunkiem prawidłowego działania takiej aplikacji jest nazwa klucza (w tym
+            przypadku <emphasis>foo</emphasis>), który musimy podać jako parametr w metodzie
+            <methodname>start()</methodname> oraz <methodname>end()</methodname>. 
+			
+			Nazwa klucza oznacza nazwę pod jaką będą figurować nasze cachowane dane. Dane są skladowane w pliku,
+			w katalogu <filename>/cache</filename>.
+
+			<note>
+				Metoda end() może posiadać drugi, opcjonalny parametr określający liczbę
+				sekund, jakie cachowane dane będą ważne (domyślnie jest to 0, czyli dane nie zostaną
+				przeterminowane). Np. wartość 120 oznacza iz po upływie 2 minut od czasu składowania
+				danych w cache, te przestaną być aktualne.
+			</note>
+		</para>
+    </section>
+
+    <section>
+        <title>Metody put() oraz get()</title>
+
+        <para>
+			Innym rozwiązaniem jakie oferuje klasa <classname>Cache</classname>, jest
+            wykorzystanie metod <classname>put()</classname> oraz <classname>get()</classname>.
+            Metoda <classname>put()</classname> służy do umieszczania w bazie danych różnego rodzaju
+            danych - np. tablicy, obiektów. Zacznijmy jednak od czegoś prostszego -
+            łańcucha:<programlisting>
+$cache = $this->load->library('cache');
+
+if (!$cache->get('string'))
+{
+    echo $s = 'Losowa liczba: ' . rand(1, 1000);
+    $cache->put('string', $s);
+}
+else
+{
+    echo $cache->get('string');
+}		
+            </programlisting></para>
+        <para>Pierwszy warunek sprawdza, czy klucz <emphasis>string</emphasis> znajduje się w cache.
+            Jeżeli nie - generujemy nowy łańcuch i umieszczamy go w cache. W przeciwnym przypadku -
+            wyświetlamy zawartość klucza <emphasis>string</emphasis> z cache.</para>
+        <para>Podobnie ma się sprawa z zapisywaniem tablic, czy całych obiektów:</para>
+        <programlisting>
+if (!$cache->get('class'))
+{ 
+    $foo = new FooBar();
+    $foo->a = rand(1, 1000);
+    $foo->b = 'foo';
+    
+    $cache->put('class', serialize($foo));
+}
+else
+{
+    $foo = new FooBar();
+    $foo = unserialize($cache->get('class'));
+}		
+
+debug($foo);          
+        </programlisting>
+        <para>Następuje tutaj proces serializacji obiektu i zapisu do cache. Po ponownym odświeżeniu
+            strony, zawartość obiektu (tzn. pól obiektu) będzie taka sama. </para>
+        <para>Powiedzieliśmy już, że dane zapisywane są w pliku <filename>cache_data.php</filename>
+            w katalogu <filename>/cache</filename>. Metoda <methodname>put()</methodname> ma tę
+            przewagę, iz umozliwia zapisanie danej wartości w innym pliku. Dlaczego to takie
+            istostne? Ponieważ zawartość pliku <filename>cache_data.php</filename> jest odczytywana
+            w momencie ładowania biblioteki. Czyli jeżeli dodamy klasę <classname>Cache</classname>
+            do listy w pliku autoload (automatycznie ładowane zasoby), ta, za każdym odświeżeniem
+            strony, wczyta do pamięci zwartość pliku <filename>cache_data.php</filename>. Niby
+            dobrze, ale jeżeli ten plik ma załóżmy - 60 kB, a danych nie potrzebujemy przy każdym
+            odświeżeniu strony (tzn. w każdym konstrolerze)? Możemy te dane zapisać w innym pliku i
+            odczytywać jeżeli są potrzebne. W takim przypadku, nazwa klucza, musi posiadać
+            podkreślenie na początku, czyli np.: _foo, _bar, _data. Czyli modyfikując poprzedni
+            przykład, możemy zrobić
+            tak:<programlisting>
+if (!$cache->get('_class'))
+{ 
+    $foo = new FooBar();
+    $foo->a = rand(1, 1000);
+    $foo->b = 'foo';
+    
+    $cache->put('_class', serialize($foo), 60);
+}
+else
+{
+    $foo = new FooBar();
+    $foo = unserialize($cache->get('_class'));
+}		
+
+debug($foo);</programlisting></para>
+        <para>Teraz, dane zostaną zapisane w pliku <filename>data_class.php</filename> i zostaną
+            odczytane jedynie wtedy, gdy ich potrzebujemy. Zwróć uwagę, że tutaj użyłem trzeciego
+            parametru w metodzie <methodname>put()</methodname>. Trzeci, opcjonalny parametr oznacza
+            ważność danych. Oznacza to, że ważność danych wygaśnie po jednej minucie i wtedy nastąpi
+            odświeżenie cache. </para>
+    </section>
+    <section>
+        <title>Niszczenie danych</title>
+        <para>Kasowanie danych w cache możliwe jest dzięki metodzie
+            <methodname>destroy()</methodname>. W jej parametrze należy podać - jak łatwo się
+            domyśleć - nazwę klucza. Np.:</para>
+        <programlisting>
+$cache->destroy('_class');         
+        </programlisting>
+    </section>
+    <section>
+        <title>Adaptery cache</title>
+        <para>Biblioteka <classname>Cache</classname> funkcjonuje w oparciu o wzorzec adaptera.
+            Domyślnym adapterem jest <filename>Cache_File</filename>, który znajduje się w pliku
+                <filename>file.class.php</filename>, w katalogu <filename>/lib/cache</filename>
+            frameworka. Oprócz tego, we frameworku dostępny jest adapter obsługjący eAccelerator. </para>
+        <para>Adapter to klasa odpowiadająca za składowanie danych. Przykładowo, adapter <filename
+                >Cache_File</filename> składuje dane na dysku twardym komputera. Adapter
+            eAccelerator składuje dane w pamięci RAM i wykorzystuje bibliotekę eaccelerator. Możemy
+            napisać własny adapter, który będzie składował dane - np. w bazie danych, czy innym
+            źródle. </para>
+        <para>Adaptery cache muszą znajdować się w katalogu <filename>/lib/cache/</filename>. Klasa
+            adaptera musi nosić przedrostek <emphasis>Cache_</emphasis> i implementować interfejs
+                <classname>IConfig</classname>, który jest
+            następujacy:<programlisting>interface ICache
+{
+	public function get($var_name);
+	public function put($var_name, $data, $ttl = 0);
+	public function start($cache_id);
+	public function end($cache_id, $ttl = 0);
+	public function destroy($var_name = '');
+	public function load();
+	public function save();
+	public function exists($var_name);
+}</programlisting></para>
+        <para>Nazwę adaptera należy podać w konstruktorze klasy <classname>Cache</classname>, czyli
+            np.:<programlisting>$cache = &amp;$this->load->library('cache', 'db');
+// lub:
+$cache = new Cache('db');</programlisting></para>
+        <para>W takim przypadku szukany będzie adapter o nazwie <emphasis>db</emphasis>, który od
+            tej pory obsługiwać będzie mechanizm cachowania. W tym przypadku klasa adaptera musi
+            nosić nazwę <classname>Cache_Db</classname> i być umieszczona w pliku <filename
+                >db.class.php</filename>, w katalogu <filename>/lib/cache</filename>.</para>
+        <para>W konstruktorze klasy <classname>Cache</classname> możemy również przekazać instancję
+            klasy adaptera:<programlisting>$cache = new Cache(new Cache_Db);</programlisting></para>
+        <para>Klasa <classname>Cache</classname> posiada również metodę
+            <methodname>setAdapter()</methodname>, dzięki której możemy zmienić adapter w trakcie
+            działania
+        aplikacji:<programlisting>$cache->setAdapter(new Cache_Db);</programlisting></para>
+    </section>
+</chapter>

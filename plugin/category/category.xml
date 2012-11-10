@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<installation type="plugin">
+	<name>category</name>	
+	<text>Wtyczka prezentuje kategorię, w jakiej znajduje się dana strona</text>
+	<author>Adam Boduch</author>
+	<version>1.0-dev</version>
+	<system>1.0-rc1</system>
+	
+	<option type="checkbox">
+		<name>enableCategory</name>
+		<text>Wyświetlaj kategorię strony</text>
+		<title>Wyświetlaj kategorię, do jakiej przypisana jest strona</title>
+		<values default="1" />
+		<auth>a_</auth>
+	</option>
+</installation>

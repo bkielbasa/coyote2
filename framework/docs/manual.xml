@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN" "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd"
+[
+<!ENTITY ref.overview SYSTEM "xml/ref/overview.xml">
+<!ENTITY ref.installation SYSTEM "xml/ref/installation.xml">
+<!ENTITY ref.introduction SYSTEM "xml/ref/introduction.xml">
+<!ENTITY ref.front-controller SYSTEM "xml/ref/front-controller.xml">
+<!ENTITY ref.libraries SYSTEM "xml/ref/libraries.xml">
+<!ENTITY ref.helpers SYSTEM "xml/ref/helpers.xml">
+<!ENTITY ref.models SYSTEM "xml/ref/models.xml">
+<!ENTITY ref.modules SYSTEM "xml/ref/modules.xml">
+
+<!ENTITY class.output SYSTEM "xml/class/output.xml">
+<!ENTITY class.upload SYSTEM "xml/class/upload.xml">
+<!ENTITY class.filter SYSTEM "xml/class/filter.xml">
+<!ENTITY class.validate SYSTEM "xml/class/validate.xml">
+<!ENTITY class.gpc SYSTEM "xml/class/gpc.xml">
+<!ENTITY class.acl SYSTEM "xml/class/acl.xml">
+<!ENTITY class.trigger SYSTEM "xml/class/trigger.xml">
+<!ENTITY class.cache SYSTEM "xml/class/cache.xml">
+<!ENTITY class.model SYSTEM "xml/class/model.xml">
+<!ENTITY class.input SYSTEM "xml/class/input.xml">
+<!ENTITY class.route SYSTEM "xml/class/route.xml">
+<!ENTITY class.view SYSTEM "xml/class/view.xml">
+<!ENTITY class.db SYSTEM "xml/class/db.xml">
+<!ENTITY class.dispatcher SYSTEM "xml/class/dispatcher.xml">
+<!ENTITY class.controller SYSTEM "xml/class/controller.xml">
+<!ENTITY class.load SYSTEM "xml/class/load.xml">
+<!ENTITY class.core SYSTEM "xml/class/core.xml">
+<!ENTITY class.config SYSTEM "xml/class/config.xml">
+<!ENTITY class.ftp SYSTEM "xml/class/ftp.xml">
+<!ENTITY class.email SYSTEM "xml/class/email.xml">
+<!ENTITY class.forms SYSTEM "xml/class/forms.xml">
+<!ENTITY class.image SYSTEM "xml/class/image.xml">
+<!ENTITY class.pagination SYSTEM "xml/class/pagination.xml">
+
+<!ENTITY appendix.coding-standards SYSTEM "xml/appendix/coding-standards.xml">
+
+]>
+<book lang="pl">
+  <bookinfo>
+    <title>Dokumentacja projektu Coyote Framework 1.1.2</title>
+    <copyright>
+      <year>2003</year>
+      <year>2004</year>
+      <year>2005</year>
+      <year>2006</year>
+      <year>2007</year>
+      <year>2008</year>
+      <year>2009</year>
+      <year>2010</year>
+      <holder>Adam Boduch, Qyon</holder>
+    </copyright>
+  </bookinfo>
+  <preface>
+    <title>Wprowadzenie</title>
+    
+    <para>
+      Zimą 2003 roku pojawł się pomysł na rozpoczęcie projektu, którego celem miało być
+      zaprojektowanie systemu obsługującego serwis 4programmers.net. Tak narodził się Coyote,
+      którego pierwsza wersja nosiła numer 0.9. Tak powstały kolejne wersje 0.9.1, 0.9.2 oraz 0.9.3.
+      W 2007 roku system został przekształcony w projekt framework'a, który został napisany od nowa.
+      Na jego podstawie zbudowany jest cały serwis 4programmers.net. 
+    </para>
+    
+    <para>
+      Więcej informacji na temat projektu można znaleźć na stronie systemu zarządzania 
+      projektem: <ulink url="http://redmine.boduch.net">redmine.boduch.net</ulink>
+      
+      <warning>Poniższa dokumentacja dotyczy wersji 1.1.2 frameworka. </warning>
+    </para>
+  </preface>
+
+  <part>
+    <title>Dokumentacja techniczna</title>
+    
+    <emphasis> 
+      Framework (rama projektowa, szkielet) to w programowaniu struktura wspomagająca
+      tworzenie, rozwój i testowanie powstającej aplikacji. Z reguły na framework składają się
+      programy wspomagające, biblioteki kodu źródłowego i inne podobne narzędzia. To szkielet
+      działania aplikacji, który zapewnia podstawowe mechanizmy i może być wypełniany właściwą
+      treścią programu. Np. w programowaniu gier na szkielet może składać się utworzenie pustego
+      okna, kod inicjalizacji i finalizacji biblioteki graficznej (jak DirectX czy OpenGL), a także
+      dodatkowe moduły wspomagające, jak wczytywanie tekstur z różnych formatów plików, funkcje
+      rysujące podstawowe figury geometryczne, tekst itp. 
+    </emphasis>
+    
+    <para>
+      źródło: Wikipedia.Coyote Framework powstał specjalnie z myślą o serwisie
+      4programmers.net, ale oczywiście może być również z powodzeniem wykorzystywany w innych
+      aplikacjach PHP.
+    </para>
+    
+    &ref.overview;
+    &ref.installation;
+    &ref.introduction;
+    &ref.front-controller;
+    &class.core; 
+    &class.controller;
+    &ref.libraries;
+    &ref.helpers;
+    &ref.models;
+    
+    &class.config;
+    
+    &class.load; 
+    
+    &class.dispatcher;
+    &class.db;
+    &class.view;
+    &class.route;
+    &class.input;
+    &class.gpc;
+    &class.model; 
+    &class.trigger;
+    &class.cache; 
+    &class.acl;
+    &class.validate;
+    &class.filter;
+    &class.upload;
+    &class.output; 
+    &class.ftp;
+    &class.email; 
+    &class.forms; 
+    &class.image; 
+    &class.pagination; 
+    
+    &ref.modules;
+    
+    &appendix.coding-standards;
+  </part>
+</book>

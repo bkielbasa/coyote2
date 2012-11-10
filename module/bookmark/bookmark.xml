@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<installation type="module">
+	<name>bookmark</name>
+	<text>Zakładki</text>
+	<version>1.0-pre1</version>
+	<system>1.0-pre1</system>
+	<author>Adam Boduch</author>
+	
+	<setup>
+		<schema>install/schema.sql</schema>
+
+		<table>bookmark_rank</table>
+		<table>bookmark_user</table>
+		<table>bookmark</table>
+
+		<connector>
+			<name>bookmark</name>
+			<text>Strona główna zakładek</text>
+			<class>bookmark</class>
+			<controller>bookmark</controller>
+			<action>main</action>
+			<folder></folder>
+		</connector>
+		<connector>
+			<name>bookmarkView</name>
+			<text>Zakładka</text>
+			<class>bookmark_view</class>
+			<controller>bookmark</controller>
+			<action>view</action>
+			<folder></folder>
+		</connector>
+
+		<snippet>
+			<name>bookmark</name>
+			<class>bookmark</class>
+			<text>Wyświetlanie listy najpopularniejszych zakładek</text>
+		</snippet>
+
+	</setup>
+
+	<ucp>
+		<menu>
+			<name>Zakładki</name>
+			<controller>bookmark</controller>
+			<action></action>
+		</menu>
+	</ucp>
+</installation>

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter>
+    <title>Biblioteki</title>
+    
+    <para>
+        Biblioteki w Coyote mają postać zwykłych klas. Mogą one zostać użyte w każdym miejscu
+        aplikacji w momencie, gdy ich potrzebujemy. W Coyote biblioteki znajdują się w katalogu
+        <filename>lib</filename>. Nic nie stoi na przeszkodzie, abyś umieścił swoje biblioteki,
+        właśnie w katalogu <filename>lib</filename> swojego projektu. Możesz np. potrzebować w
+        swojej aplikacji biblioteki usuwającej wszystkie niepotrzebne znaczniki HTML z łańcucha.
+        Taką bibliotekę możesz wykorzystać w każdym miejscu swojej aplikacji. Przeprowadźmy prosty
+        eksperyment. Utwórz w katalogu swojej aplikacji folder <filename>lib</filename>. W katalogu
+        tym umieść plik <filename>foo.class.php</filename>, który będzie naszą biblioteką.
+        
+        Biblioteki muszą posiadać sufiks .<emphasis>class.php</emphasis>. Kod naszej biblioteki może
+        wyglądać
+        tak:
+        <programlisting>
+&lt;?php
+
+class Foo
+{
+    public function bar()
+    {
+        echo 'Metoda bar() z biblioteki Foo';
+    }
+}
+?>
+        </programlisting>
+    </para>
+    
+    <para>
+        Biblioteki możemy wykorzystywać w każdym miejscu aplikacji - w innych bibliotekach lub
+        kontrolerach. Np. w ten sposób:
+        <programlisting>
+$foo = new Foo;
+$foo->bar();
+        </programlisting>
+    </para>
+    
+    <para>
+        Tworzymy obiekt klasy <classname>Foo</classname>, a następnie wywołujemy metodę
+        <methodname>bar()</methodname>. Plik PHP z klasą <classname>Foo</classname> jest ładowany przez loader, który
+        poszukuje pliku <filename>foo.class.php</filename> w katalogu <filename>lib</filename>. 
+    </para>
+    
+    <para>
+        Jest to jeden ze sposobów załadowania biblioteki w programie. Tworzymy tutaj nowy obiekt
+        klasy, ale nie zawsze jest to pożądane. Ba, być może musisz wykorzystać obiekt klasy
+        <classname>Foo</classname> w wielu miejscach aplikacji (w kontrolerze oraz w innej
+        bibliotece). Może zaistnieć sytuacja, w której nie chcemy tworzyć kilku instancji tej samej
+        klasy. Tutaj, z pomocą przychodzi loader, który przechowuje referencję do instancji klasy.
+        Możesz ją uzyskać dzięki statycznej metodzie
+        <methodname>loadClass()</methodname>:
+        
+        <programlisting>
+$foo = &amp;Load::loadClass('foo');
+$foo->bar();
+
+// inne operacje
+// ponowne uzycie biblioteki
+$foo = &amp;load::loadClass('foo');
+$foo->bar();
+        </programlisting>
+    </para>
+    
+    <para>
+        W takim kodzie, nastąpi podwójne użycie metody <methodname>bar()</methodname> jednakże z
+        tej samej instancji klasy <classname>Foo</classname>. Innymi słowy nie są tworzone dwie
+        instancje klasy <classname>Foo</classname>.
+    </para>
+        
+    <section>
+        <title>Metoda statyczne loadera</title>
+        
+        <para>
+            Klasa loadera (<classname>Load</classname>) posiada użyteczną, statyczną metodę
+            <methodname>loadClass()</methodname>. Umożliwia załadowania i utworzenie instancji
+            klasy lub - załadowanie klasy statycznej. Poniższe instrukcje są
+            równoważne:
+            <programlisting>
+$foo = &amp;$this->load->library('foo');
+$foo1 = &amp;Load::loadClass('foo');
+$foo2 = new Foo;
+            </programlisting>
+        </para>
+        
+        <para>
+            Metoda <methodname>library()</methodname>, podobnie jak statyczna metoda
+            <methodname>loadClass()</methodname> nie tworzy kolejnej instancji klasy jeżeli ta
+            została już utworzona. Zapobiera również ponownemu wczytaniu danego pliku do projektu. 
+        </para>
+        
+        <para>
+            Metoda <methodname>loadClass()</methodname> posiada dwa kolejne (opcjonalne)
+            parametry. Pierwszy z nich określa, czy tworzona ma być instancja danej klasy (domyślnie
+            true - jest tworzona); drugi - przekazuje parametry do konstruktora klasy jeżeli
+            tworzona jest jego instancja. Przeanalizuj następujący
+            przykład:
+            
+            <programlisting>
+Load::loadClass('user', false);
+User::load(); // użycie statycznej metody z klasy User - nie została utworzona jej instancja
+$this->user->load(); // bład! Nie istnieje instancja klasy User
+            </programlisting>
+        </para>
+        
+        <section>
+            <title>Przekazywanie parametrów do konstruktora</title>
+            
+            <para> 
+                Niekiedy konieczne jest przekazanie do konstruktora metody dodatkowych
+                parametrów. Można to zrobić w prosty sposób wywołując jawnie konstruktor
+                klasy:
+                <programlisting>
+$foo = new Foo('bar', 1); 
+// lub:
+Load::loadClass('foo', true, array('bar', 1));
+                </programlisting>
+            </para>
+        </section>
+    </section>
+    
+    <section>
+        <title>Konwencje w nazewnictwie</title>
+        
+        <para>
+            Pliki bibliotek muszą mieć końcówkę (sufiks) <filename>class.php</filename>, np.
+            <filename>foo.class.php</filename>. Oczywiście nazwa klasy musi odpowiadać nazwie
+            pliku, w którym się znajduje. Tak więc w pliku <filename>foo.class.php</filename> musimy
+            mieć klasę <classname>Foo</classname>. Nazwa klasy może być pisana wielkimi/małymi
+            literami. Generalnie nie ma to znaczenia. </para>
+    </section>
+    
+    <section>
+        <title>Dziedziczenie</title>
+        
+        <para>
+            Ponieważ biblioteki w Coyote to zwykłe klasy, możesz z powodzeniem po nich
+            dziedziczyć. Przkładowo, jeżeli chcesz rozbudować istniejącą w Coyote bibliotekę
+            <classname>email</classname>, możesz to zrobić w następujący sposób: umieść w swojej
+            aplikacji, w folderze <filename>lib</filename>, plik
+            <filename>my_email.class.php</filename>. Plik powinien zawierać deklarację
+            klasy:
+            <programlisting>
+&lt;?php
+
+class My_Class extends Email
+{
+    function __construct()
+    {
+        parent::__construct();
+    }
+}
+?>
+            </programlisting>
+        </para>
+        
+        <para>
+            W tym momencie możesz rozbudować swoją własną klasę <classname>My_Class</classname>.
+        </para>
+    </section>
+    
+    <section>
+        <title>Zastępowanie bibliotek jądra</title>
+        
+        <para>
+            Pliki swojego projektu możesz trzymać
+            oddzielnie od plików frameworka. Była o tym mowa w rozdziale <emphasis>Tworzenie folderu
+                aplikacji</emphasis>. Jeżeli chcemy załadować bibliotekę - dajmy na to - foo, system
+            poszukuje je najpierw w katalogu projektu, a dopiero pózniej - w katalogu frameworka.
+            Oznacza to, że w swoim projekcie, możesz zastąpić istniejące klasy. Innymi słowy, jeżeli nie
+            odpowiada Ci obecna forma biblioteki email, możesz utworzyć własną i umieścić ją w katalogu
+            /lib, swojego projektu. Instrukcja <command>$this->load->library('email');</command>
+            spowoduje załadowanie Twojej klasy email. 
+        </para>
+    
+    </section>
+    
+    <section>
+        <title>Metoda initialize()</title>
+        <para>(PUSTO)</para>
+    </section>
+    
+    <section>
+        <title>Dziedziczenie po klasie Context</title>
+        <para>(PUSTO)</para>
+    </section>
+    
+</chapter>

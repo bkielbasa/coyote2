@@ -1,0 +1,122 @@
+#content
+{
+		padding:			0;
+}
+
+#submenu
+{
+		/*border-bottom:		none;*/
+}
+
+#template-tree
+{
+		float:				left;
+		width:				220px;
+		background:			#f4f4f4;
+		border-right:		2px solid #ddd;
+		padding:			10px;
+		position:			relative;
+		min-height:			300px;
+		overflow-y:			auto;
+		overflow-x:			auto;
+}
+
+#template-tree ol
+{
+		list-style-type:	none;
+		overflow:			hidden;
+		border-bottom:		1px solid #ddd;
+		padding-bottom:		5px;
+}
+
+#template-tree ol li
+{
+		float:				left;
+}
+
+#template-tree ol li a
+{
+		display:			block;
+		width:				16px;
+		padding:			0 3px 0 3px;
+		height:				16px;
+		cursor:				pointer;
+}
+
+#template-toggle
+{
+		background:			url('img/arrowUpIcon.png') no-repeat;
+}
+
+#page-hide
+{
+		background:			url('img/hideBoxIcon.png') no-repeat;
+}
+
+#template-tree h2
+{
+		font-size:			13px;
+		background:			url('img/siteIcon.png') no-repeat 0 0;
+		padding-left:		20px;
+}
+
+#template-tree ul
+{
+		margin-left:		17px;
+		list-style-type:	none;
+}
+
+#template-tree ul li 
+{
+		clear:				both;
+		padding:			2px 0 2px 0;
+}
+
+#template-tree ul li img
+{
+		vertical-align:		middle;
+}
+
+#template-tree ul li em
+{
+		background:			url('img/sub.gif') no-repeat;
+		width:				10px;
+		height:				10px;		
+		display:			block;
+		float:				left;
+		margin:				2px 5px 0 0;
+}
+
+#template-tree ul li em.close
+{
+		background:			url('img/subClose.gif') no-repeat;
+		cursor:				pointer;
+}
+
+#template-tree ul li em.open
+{
+		background:			url('img/subOpen.gif') no-repeat;
+		cursor:				pointer;
+}
+
+#template-tree ul li a
+{
+		font-weight:		normal;
+		color:				#000;
+		font-size:			11px;
+		margin-left:		5px;
+		padding:			2px;
+}
+
+#template-tree ul li a:hover
+{
+		background:			#fff;
+		border:				1px solid #ddd;
+		text-decoration:	none;
+}
+
+#template-content
+{
+		padding:			10px;
+		overflow:			hidden;
+}

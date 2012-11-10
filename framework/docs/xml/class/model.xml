@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter>
+    <title>Klasa Model</title>
+    <para>Powiedzieliśmy wcześniej, iż model może operować na danych pochodzących z różnych źródeł.
+        Bardzo często są to jednak dane pochodzące z bazy i dlatego klasa
+        <classname>Model</classname> (która jest klasą bazową dla wszystkich modeli) posiada metody
+        użyteczne w manipulowaniu danymi. <note>Klasa Model dziedziczy po klasie Context i jest
+            klasą abstrakcyjną. Oznacza to, że z poziomu modeli możliwy jest łatwy dostęp do
+            elementów składowych jądra. </note></para>
+    <para>Zacznijmy od utworzenia modela. W katalogu <filename>model</filename> swojego projektu,
+        utwórz plik <filename>user.model.php</filename>. Będzie to prosta klasa o takiej
+        postaci:<programlisting>
+&lt;?php
+
+class User_Model extends Model
+{
+    protected $name = 'coyote_user';
+}
+
+?></programlisting></para>
+    <para>Jak widzisz, dodaliśmy w klasie chronione pole <varname>$name</varname> określające nazwę
+        tabeli, do której odwoływał się będzie model. <note>Klasa Modelu musi posiadać sufiks
+            _Model. </note></para>
+    <section>
+        <title>Pobieranie danych z tabeli</title>
+        <para>Klasa <classname>Model</classname> udostępnia przydatną metodę
+            <methodname>fetch()</methodname>, która umożliwia pobranie rekordów danej tabeli. Jeżeli
+            posiadamy już model (w naszym przykładzie nazywa się <classname>User_Model</classname>)
+            możemy załadować go w kontrolerze, a następnie pobrać i wyświetilć
+            dane:<programlisting>		$user = &amp;$this->load->model('user');
+// pobierz wszystkie rekordy
+$q = $user->fetch();
+// wyswietl rekordy w formie tablicy
+$this->debug($q->fetch());</programlisting></para>
+        <para>Tym sposobem pobraliśmy wszystkie rekordy z tabeli <emphasis>coyote_user</emphasis>.
+            Metoda <methodname>fetch()</methodname> posiada parametry, dzięki którym możemy określić
+            warunki pobrania rekordów z tabeli SQL. Pierwszy parametr określa warunek
+            WHERE:<programlisting>$q = $user->fetch('user_id &lt; 100');</programlisting></para>
+        <para>Tym sposobem pobrane zostaną rekordy, których kolumna <emphasis>user_id</emphasis>
+            jest mniejsza niż 100. Kolejne, opcjonalne parametry oznaczają: kolejność sortowania
+            danych oraz numer pierwszego pobieranego rekordu oraz ich limit:
+            <programlisting>// SELECT * FROM coyote_user WHERE user_id &lt; 100 ORDER BY user_id DESC LIMIT 10, 10
+$q = $user->fetch('user_id &lt; 100', 'user_id DESC', 10, 10);</programlisting></para>
+        <section>
+            <title>Łączenie tabel</title>
+            <para>W procesie normalizacji unikamy powtórzeń pewnych danych przenosząc je do innych
+                tabel. Przykładowo w tabeli użytkowników znajduje się kolumna
+                    <emphasis>user_location</emphasis>, która jest kluczm obcym do tabeli
+                    <emphasis>coyote_location</emphasis>. Ta natomiast zawiera spis miejscowości.
+                Pobierając dane użytkowników chcielibyśmy mieć od razu nazwę miejscowości, nie w
+                postaci ID, ale łańcucha znaków. W klasie modelu musimy określić referencję do
+                tabel, w sposób następujący:
+                <programlisting>	protected $reference = array(
+                    
+                    'location'		=> array(
+                    'table'			=> 'coyote_location',
+                    'col'			=> 'user_location',
+                    'refCol'		=> 'location_id'
+                    )
+);</programlisting></para>
+            <para>Utworzyliśmy w ten sposób relację w jeden do jednego w naszej tabeli. Nowe
+                odwołanie odnosi się do tabeli <emphasis>coyote_location</emphasis>. Informujemy
+                system, że złączenie odbywa się na kolumnach <emphasis>user_location</emphasis> i
+                    <emphasis>location_id</emphasis>. W ten sposób, wywołując metodę
+                    <methodname>fetch()</methodname> pobieramy dane z dwóch
+                tabel:<programlisting>$q = $user->fetch(null, null, 10);
+$this->debug($q->fetch());</programlisting></para>
+        </section>
+    </section>
+    <section>
+        <title>Metoda locate()</title>
+        <para>Metoda <methodname>locate()</methodname> pozwala na lokalizację rekordów spełniających
+            określone warunki. Pierwszym parametrem metody musi być nazwa kolumny po której odbędzie
+            się szukanie. Drugi parametr musi być tablicą zawierającą argumenty do
+            znalezenia:<programlisting>$q = $user->locate('user_name', array('Admin', 'Adam'));
+$this->debug($q->fetch());</programlisting></para>
+        <para>Takie instrukcje spowodują przeszukanie tabeli <emphasis>coyoter_user</emphasis> pod
+            kątem występowania w kolunie <emphasis>user_name</emphasis> wartości
+            <emphasis>Admin</emphasis> lub <emphasis>Adam</emphasis>. Znalezione rezultaty zostaną
+            zwrócone w formie tablicy asocjacyjnej. </para>
+        <section>
+            <title>Określanie prefiksu</title>
+            <para>Projektując strukturę tabel w bazie danych używam specyficznego zapisu nazw
+                kolumn. Przeważnie kolumny danej tabeli posiadają prefiks, w zależności od nazwy
+                tabeli. Przykładowo, jeżeli nazwa tabeli to <emphasis>coyote_user</emphasis>, kolumy
+                ów tabeli będą posiadały przedrostek <emphasis>user_</emphasis> - np.
+                    <emphasis>user_id</emphasis>, <emphasis>user_name</emphasis>,
+                    <emphasis>user_email</emphasis> itd. Prefiks możemy ustalić w klasie
+                modelu:<programlisting>class User_Model extends Model
+{
+     protected $name = 'coyote_user';
+     protected $prefix = 'user_';
+}</programlisting></para>
+            <para>Dzięki temu możemy używać skróconego zapisu, zamiast stosować metode
+                    <methodname>locate()</methodname>.
+                Przykładowo:<programlisting>$q = $user->getByName('Adam');
+$this->debug($q->fetch());</programlisting></para>
+            <para>System "domyśli się", iż chcemy przeszukać tabelę pod kątem pola
+                    <emphasis>user_name</emphasis>. W parametrze takiej metody możemy podać kilka
+                wartości:<programlisting>$q = $user->getByName('Marcin', 'Adam');</programlisting></para>
+        </section>
+    </section>
+    <section>
+        <title>Określanie klucza głównego</title>
+        <para>W klasie modelu możemy dodatkowo określić nazwę klucza głównego. Dzięki temu będziemy
+            mogli użyć metody <methodname>find()</methodname> która przeszukuje rekordy pod kątem
+            klucza głównego. W tym celu w klasie modelu musimy dokonać kolejnej
+            zmiany:<programlisting>class User_Model extends Model
+{
+      protected $name = 'coyote_user';
+      protected $prefix = 'user_';
+      protected $primary = 'user_id';
+}</programlisting></para>
+        <para>Teraz, w kontrolerze, następujące użycie zwróci rekordy, których
+            <emphasis>user_id</emphasis> = 1 i
+            2:<programlisting>		$q = $user->find(1, 2);
+$this->debug($q->fetch());</programlisting></para>
+    </section>
+    <section>
+        <title>Skrócone operacje na bazie</title>
+        <para>Klasa <classname>Model</classname> udostępnia (podobnie jak <classname>Db</classname>)
+            metody <methodname>select()</methodname>, <methodname>insert()</methodname>,
+                <methodname>update()</methodname>, <methodname>delete()</methodname> itp. Jest to
+            skrócony zapis ponieważ nie musimy w takim przypadku podawać nazwy
+            tabeli:<programlisting>		$user = &amp;$this->load->model('user');
+                
+$user->insert(array('user_name' => 'Foo'));
+$id = $user->nextId();
+                
+$user->update(array('user_name' => 'Bar'), 'user_id = ' . $id);
+$user->delete('user_id = ' . $id);</programlisting></para>
+    </section>
+</chapter>

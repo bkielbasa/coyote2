@@ -1,0 +1,39 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>&#321;adowanie modu&#322;ów do aplikacji</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch31.html" title="Rozdzia&#322; 31. Budowa modu&#322;owa"><link rel="prev" href="ch31.html" title="Rozdzia&#322; 31. Budowa modu&#322;owa"><link rel="next" href="ch31s03.html" title="Konfiguracja modu&#322;ów"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">&#321;adowanie modu&#322;ów do aplikacji</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch31.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 31. Budowa modu&#322;owa</th><td width="20%" align="right"> <a accesskey="n" href="ch31s03.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id502244"></a>&#321;adowanie modu&#322;ów do aplikacji</h2></div></div></div><p>
+            Modu&#322;y zgrupowane w podkatalogu <tt class="filename">/module</tt> nie s&#261; automatycznie &#322;adowane 
+            do projektu. Mo&#380;na to zrobi&#263; jawnie lub okre&#347;li&#263; w pliku konfiguracji, jakie modu&#322;y 
+            maj&#261; by&#263; do&#322;&#261;czane na starcie programu.
+        </p><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id503123"></a>Jawne za&#322;adowanie modu&#322;u</h3></div></div></div><p>
+                Aby za&#322;adowa&#263; modu&#322; do projektu w trakcie dzia&#322;ania aplikacji, mo&#380;emy skorzysta&#263; 
+                ze statycznej metody <tt class="methodname">loadModule()</tt> klasy <tt class="classname">Load</tt>.                                
+            </p><pre class="programlisting">
+Load::loadModule('foo');                
+            </pre><p>
+                Mo&#380;na te&#380; skorzysta&#263; z metody <tt class="methodname">module()</tt>, równie&#380; z klasy <tt class="classname">Load</tt>:
+            </p><pre class="programlisting">
+$this-&gt;load-&gt;module('foo');                 
+            </pre></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id503181"></a>Automatyczne &#322;adowanie modu&#322;u</h3></div></div></div><p>
+                Aby za&#322;adowa&#263; modu&#322; w sposób automatyczny, zaraz przy starcie aplikacji, nale&#380;y w pliku
+                konfiguracji okre&#347;li&#263; jego nazw&#281;. Mo&#380;emy to zrobi&#263; w dowolnym pliku konfiguracyjnym; mo&#380;emy
+                równie&#380; utworzy&#263; nowy plik - np. <tt class="filename">module.xml</tt>, w którym b&#281;d&#261; znajdowa&#263;
+                si&#281; nazwy modu&#322;ów, które b&#281;d&#261; &#322;adowane automatycznie:
+            </p><pre class="programlisting">
+
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;config&gt;
+	&lt;module&gt;foo&lt;/module&gt;
+	&lt;module&gt;bar&lt;/module&gt;
+&lt;/config&gt;
+                
+            </pre><p>
+                Oczywi&#347;cie, to nie wystarczy je&#380;eli plik <tt class="filename">module.xml</tt> nie b&#281;dzie 
+                wczytywany do konfiguracji projektu. Otwórz plik front controllera - <tt class="filename">index.php</tt>
+                i dopisz w nim instrukcj&#281;, która wczyta nasz plik <tt class="filename">module.xml</tt>:
+            </p><pre class="programlisting">
+Core::setConfigPath('config/module.xml');                
+            </pre><p>
+                &#321;adowanie modu&#322;ów do aplikacji odbywa si&#281; podczas inicjalizacji programu, w metodzie
+                <tt class="filename">bootstrap()</tt> w klasie <tt class="classname">Core</tt>. Po wczytaniu 
+                konfiguracji programu, sprawdzane jest, czy w konfiguracji nie znajduj&#261; si&#281; nazwy
+                modu&#322;ów, które powinny zosta&#263; za&#322;adowane. Po za&#322;adowaniu modu&#322;u, jest on traktowany
+                jako integralna cz&#281;&#347;&#263; aplikacji.
+            </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch31.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch31.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch31s03.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Rozdzia&#322; 31. Budowa modu&#322;owa </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Konfiguracja modu&#322;ów</td></tr></table></div></body></html>

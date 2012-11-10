@@ -1,0 +1,1473 @@
+
+== Tabela ''coyote_accessor'' ==
+
+Zawiera informacje o powiązaniach między artykułami (linki); InnoDB free: 148480
+
+=== Struktura tabeli coyote_accessor ===
+
+||Kolumna||Typ||Opis||
+||accessor_from||smallint(5) unsigned||ID artykułu w którym znajduje się odnośnik||
+||accessor_to||smallint(5) unsigned||ID artykułu do którego prowadzi odnośnik||
+		
+	
+=== Klucze tabeli coyote_accessor ===
+
+||Klucz||Kolumna||
+||accessor_from_2||accessor_from||			
+||accessor_from_2||accessor_to||			
+||accessor_from||accessor_from||			
+||accessor_to||accessor_to||			
+		
+	
+		
+== Tabela ''coyote_action'' ==
+
+Akcje, które mogą być podpinane do triggerów; InnoDB free: 148480 kB
+
+=== Struktura tabeli coyote_action ===
+
+||Kolumna||Typ||Opis||
+||action_id||smallint(5) unsigned (auto_increment)||Unikalne ID akcji||
+||action_name||varchar(100)||Nazwa akcji (zalecane jest, aby ta nazwa była unikalna).||
+||action_class||varchar(100)||Klasa, która będzie odpowiedzialna za obsługę tej akcji.||
+||action_data||text||Serializowane dane przekazywane do klasy obsługi akcji||
+		
+	
+=== Klucze tabeli coyote_action ===
+
+||Klucz||Kolumna||
+||PRIMARY||action_id||			
+		
+	
+		
+== Tabela ''coyote_adm_log'' ==
+
+Dziennik operacji panelu administracyjnego
+
+=== Struktura tabeli coyote_adm_log ===
+
+||Kolumna||Typ||Opis||
+||log_id||int(10) unsigned (auto_increment)||||
+||log_user||mediumint(8) unsigned||||
+||log_time||int(11)||||
+||log_message||varchar(255)||||
+||log_ip||varchar(15)||||
+		
+	
+=== Klucze tabeli coyote_adm_log ===
+
+||Klucz||Kolumna||
+||PRIMARY||log_id||			
+		
+	
+		
+== Tabela ''coyote_adm_menu'' ==
+
+Informacje o menu w panelu administracyjnym
+
+=== Struktura tabeli coyote_adm_menu ===
+
+||Kolumna||Typ||Opis||
+||menu_id||smallint(5) unsigned (auto_increment)||ID menu||
+||menu_parent||smallint(5) unsigned||ID rodzica||
+||menu_text||varchar(100)||Etykieta menu||
+||menu_auth||varchar(20)||Dodatkowe uprawnienie, które wymagane jest, aby możliwy był dostęp do tej zakładki||
+||menu_controller||varchar(100)||Nazwa kontrolera||
+||menu_action||varchar(100)||Nazwa akcji ||
+||menu_order||smallint(5) unsigned||Kolejność wyświetlania zakładki||
+		
+	
+=== Klucze tabeli coyote_adm_menu ===
+
+||Klucz||Kolumna||
+||PRIMARY||menu_id||			
+		
+	
+		
+== Tabela ''coyote_adm_session'' ==
+
+Lista zalogowanych w panelu administracyjnym
+
+=== Struktura tabeli coyote_adm_session ===
+
+||Kolumna||Typ||Opis||
+||session_id||varchar(32)||ID sesji (z tabeli coyote_session)||
+||session_user_id||mediumint(8) unsigned||ID zalogowanego użytkownika||
+||session_time||int(11)||Czas logowania||
+		
+	
+=== Klucze tabeli coyote_adm_session ===
+
+||Klucz||Kolumna||
+||PRIMARY||session_id||			
+		
+	
+		
+== Tabela ''coyote_article'' ==
+
+Lista artykułów ; InnoDB free: 148480 kB
+
+=== Struktura tabeli coyote_article ===
+
+||Kolumna||Typ||Opis||
+||article_id||smallint(5) unsigned (auto_increment)||ID artykułu (wartość unikalna)||
+||article_subject||varchar(100)||Tytuł artykułu||
+||article_counter||int(8) unsigned||Licznik odwiedzin danego tekstu||
+||article_lock||tinyint(1) unsigned||Określa, czy tekst został zablokowany. Możliwe wartości: 0 lub 1||
+		
+	
+=== Klucze tabeli coyote_article ===
+
+||Klucz||Kolumna||
+||PRIMARY||article_id||			
+||article_subject||article_subject||			
+		
+	
+		
+== Tabela ''coyote_attachment'' ==
+
+Tabela przechowuje informacje o załącznikach do tekstów; InnoDB free: 148480 kB
+
+=== Struktura tabeli coyote_attachment ===
+
+||Kolumna||Typ||Opis||
+||attachment_id||smallint(6) unsigned (auto_increment)||Unikalny ID załącznika||
+||attachment_name||varchar(50)||Nazwa pliku||
+||attachment_file||varchar(50)||Nazwa pliku na serwerze||
+||attachment_size||mediumint(9) unsigned||Rozmiar pliku||
+||attachment_image||tinyint(1) unsigned||Wartość posiada wartość 1 jeżeli załącznik jest obrazkiem||
+||attachment_width||smallint(6) unsigned||Szerokość obrazka jeśli załącznik jest obrazkiem||
+||attachment_height||smallint(6) unsigned||Wysokość obrazka jeżeli załącznik jest obrazem||
+		
+	
+=== Klucze tabeli coyote_attachment ===
+
+||Klucz||Kolumna||
+||PRIMARY||attachment_id||			
+		
+	
+		
+== Tabela ''coyote_auth_data'' ==
+
+Informacje o kontroli dostępu dla grup; InnoDB free: 148480 kB; (`data_group`) R
+
+=== Struktura tabeli coyote_auth_data ===
+
+||Kolumna||Typ||Opis||
+||data_group||mediumint(8) unsigned||ID grupy (klucz obcy do tabeli coyote_group)||
+||data_option||smallint(5) unsigned||ID opcji (klucz obcy do tabeli coyote_auth_option)||
+||data_value||tinyint(1)||Wartość konfiguracyjna. Moze przybrać wartość 1 lub zero||
+		
+	
+=== Klucze tabeli coyote_auth_data ===
+
+||Klucz||Kolumna||
+||data_role||data_group||			
+||data_option||data_option||			
+		
+	
+		
+== Tabela ''coyote_auth_group'' ==
+
+Lista użytkowników i grup do których przynależą; InnoDB free: 148480 kB; (`user_
+
+=== Struktura tabeli coyote_auth_group ===
+
+||Kolumna||Typ||Opis||
+||user_id||mediumint(8) unsigned||ID użytkownika (klucz obcy z tabeli coyote_useR)||
+||group_id||mediumint(8) unsigned||ID grupy||
+		
+	
+=== Klucze tabeli coyote_auth_group ===
+
+||Klucz||Kolumna||
+||user_id||user_id||			
+||group_id||group_id||			
+		
+	
+		
+== Tabela ''coyote_auth_option'' ==
+
+Access Control List; lista opcji dostępu; InnoDB free: 148480 kB
+
+=== Struktura tabeli coyote_auth_option ===
+
+||Kolumna||Typ||Opis||
+||option_id||smallint(5) unsigned (auto_increment)||ID opcji (unikalne)||
+||option_text||varchar(17)||Nazwa opcji dostępu||
+||option_label||varchar(100)||Krótki opis pozycji||
+||option_default||tinyint(1) unsigned||Domyślna wartość konfiguracji. Może przyjąć wartość 1 lub zero||
+		
+	
+=== Klucze tabeli coyote_auth_option ===
+
+||Klucz||Kolumna||
+||PRIMARY||option_id||			
+		
+	
+		
+== Tabela ''coyote_ban'' ==
+
+
+
+=== Struktura tabeli coyote_ban ===
+
+||Kolumna||Typ||Opis||
+||ban_id||smallint(5) unsigned (auto_increment)||||
+||ban_user_id||mediumint(8) unsigned||||
+||ban_ip||varchar(50)||Pole może zawierać wyrażenia regularne||
+||ban_email||varchar(100)||||
+||ban_timeout||int(11)||||
+||ban_reason||varchar(255)||||
+||ban_admin||mediumint(8) unsigned||||
+||ban_flood||int(11)||||
+		
+	
+=== Klucze tabeli coyote_ban ===
+
+||Klucz||Kolumna||
+||PRIMARY||ban_id||			
+||ban_user_id_ip||ban_user_id||			
+||ban_user_id_ip||ban_ip||			
+||ban_user_id_ip||ban_timeout||			
+		
+	
+		
+== Tabela ''coyote_block'' ==
+
+Tabela przechowuje informacje o blokach; InnoDB free: 148480 kB; (`block_module`
+
+=== Struktura tabeli coyote_block ===
+
+||Kolumna||Typ||Opis||
+||block_id||smallint(5) unsigned (auto_increment)||Unikalne ID bloku||
+||block_name||varchar(100)||Nazwa bloku||
+||block_region||varchar(100)||Nazwa regionu do którego przynależy blok (może to być wartość pusta)||
+||block_module||smallint(5) unsigned||ID modułu do którego odwołuje się dany blok||
+||block_trigger||smallint(5) unsigned||ID triggera, który będzie wywoływany w momencie wyświetlenia bloku||
+||block_auth||varchar(20)||Dodatkowe uprawnienie konieczne do wyświetlenia bloku||
+||block_header||text||Kod HTML (lub PHP) który zostanie wyświetlony wraz z blokiem (nagłówek)||
+||block_footer||text||Kod HTML (lub PHP), który zostanie wyświetlony wraz z blokiem (stopka)||
+||block_template||smallint(5) unsigned||||
+||block_pages||text||Lista stron na których blok zostanei wyświetlony (lub pominięty)||
+||block_scope||tinyint(3) unsigned||Opcje wyświetlania. Określa, czy blok będzie wyświetlany, czy ukrywany dla stron określonych w block_pages||
+||block_cache||tinyint(1) unsigned||Opcje cachowania. Określa, czy blok powinien być zapisywany w cache||
+||block_order||smallint(5) unsigned||Kolejność wyświetlania bloku||
+		
+	
+=== Klucze tabeli coyote_block ===
+
+||Klucz||Kolumna||
+||PRIMARY||block_id||			
+||block_trigger||block_trigger||			
+||block_module||block_module||			
+		
+	
+		
+== Tabela ''coyote_block_group'' ==
+
+Określa dla jakich grup, dany blok powinien być wyświetlany; InnoDB free: 148480
+
+=== Struktura tabeli coyote_block_group ===
+
+||Kolumna||Typ||Opis||
+||group_id||mediumint(8) unsigned||ID grupy||
+||group_block||smallint(5) unsigned||ID bloku||
+		
+	
+=== Klucze tabeli coyote_block_group ===
+
+||Klucz||Kolumna||
+||group_id||group_id||			
+||group_block||group_block||			
+		
+	
+		
+== Tabela ''coyote_broken'' ==
+
+Lista pustych, nieaktywnych linków; InnoDB free: 148480 kB; (`broken_from`) REFE
+
+=== Struktura tabeli coyote_broken ===
+
+||Kolumna||Typ||Opis||
+||broken_from||smallint(5) unsigned||ID tekstu, w którym znajduje się link (klucz obcy do coyote_article,article_id)||
+||broken_subject||char(100)||Tytuł artykułu, który nie istnieje||
+		
+	
+=== Klucze tabeli coyote_broken ===
+
+||Klucz||Kolumna||
+||broken_from||broken_from||			
+		
+	
+		
+== Tabela ''coyote_category'' ==
+
+Lista tekstów przynależnych do danej kategorii; InnoDB free: 148480 kB
+
+=== Struktura tabeli coyote_category ===
+
+||Kolumna||Typ||Opis||
+||category_id||smallint(5) unsigned||ID artykułu, który jest jednocześnie kategorią (klucz obcy do tabeli coyote_article)||
+||category_article||smallint(5) unsigned||ID tekstu znajdującego się w danej kategorii. Klucz obcy do tabeli coyote_article||
+||category_tree||mediumint(8) unsigned (auto_increment)||||
+||category_parent||mediumint(8) unsigned||||
+||category_counter||mediumint(8) unsigned||||
+||left_id||mediumint(8) unsigned||||
+||right_id||mediumint(8) unsigned||||
+		
+	
+=== Klucze tabeli coyote_category ===
+
+||Klucz||Kolumna||
+||PRIMARY||category_tree||			
+||category_id||category_id||			
+||category_article||category_article||			
+		
+	
+		
+== Tabela ''coyote_comment'' ==
+
+Moduł komentarzy
+
+=== Struktura tabeli coyote_comment ===
+
+||Kolumna||Typ||Opis||
+||comment_id||mediumint(8) unsigned (auto_increment)||Unikalne ID komentarza||
+||comment_user||mediumint(8) unsigned||ID użytkownika, który napisał komentarz||
+||comment_username||varchar(50)||Nazwa użytkownika jeśli włączona jest możliwość pisania dla anonimów||
+||comment_time||int(11)||Data napisania komentarza (timestamp)||
+||comment_content||text||Treść komentarza||
+||comment_ip||varchar(15)||IP użytkownika||
+		
+	
+=== Klucze tabeli coyote_comment ===
+
+||Klucz||Kolumna||
+||PRIMARY||comment_id||			
+		
+	
+		
+== Tabela ''coyote_comment_v'' ==
+
+VIEW
+
+=== Struktura tabeli coyote_comment_v ===
+
+||Kolumna||Typ||Opis||
+||comment_id||mediumint(8) unsigned||Unikalne ID komentarza||
+||comment_user||mediumint(8) unsigned||ID użytkownika, który napisał komentarz||
+||comment_username||varchar(50)||Nazwa użytkownika jeśli włączona jest możliwość pisania dla anonimów||
+||comment_time||int(11)||Data napisania komentarza (timestamp)||
+||comment_content||text||Treść komentarza||
+||comment_ip||varchar(15)||IP użytkownika||
+||id||int(11)||ID komentarza, tekstu itp||
+||module||smallint(5) unsigned||ID modułu||
+||plugin||smallint(5) unsigned||ID modułu przyłączonego (plugin)||
+||param||int(11)||Dodatkowy parametr||
+		
+	
+=== Klucze tabeli coyote_comment_v ===
+
+||Klucz||Kolumna||
+		
+	
+		
+== Tabela ''coyote_config'' ==
+
+Dodatkowe opcje konfiguracyjne projektu 
+
+=== Struktura tabeli coyote_config ===
+
+||Kolumna||Typ||Opis||
+||config_name||varchar(120)||Nazwa klucza||
+||config_value||varchar(255)||Wartość klucza||
+		
+	
+=== Klucze tabeli coyote_config ===
+
+||Klucz||Kolumna||
+		
+	
+		
+== Tabela ''coyote_forum'' ==
+
+Tabela przechowująca informacje o forach; InnoDB free: 148480 kB
+
+=== Struktura tabeli coyote_forum ===
+
+||Kolumna||Typ||Opis||
+||forum_id||smallint(5) unsigned (auto_increment)||Unikalne ID forum||
+||forum_parent||smallint(5) unsigned||ID forum nadrzędnego||
+||left_id||smallint(5) unsigned||left id (używane przez model nested set model)||
+||right_id||smallint(5) unsigned||right id (używane przez model nested set model)||
+||forum_subject||varchar(100)||Nazwa forum||
+||forum_description||varchar(255)||Krótki opis forum||
+||forum_url||varchar(255)||Adres URL jeżeli forum ma służyć jako link (przekierowanie)||
+||forum_topics||mediumint(8) unsigned||Liczba tematów na forum||
+||forum_posts||mediumint(8) unsigned||Liczba postów na forum||
+||forum_last_post_id||mediumint(8) unsigned||ID ostatniego postu na forum||
+||forum_lock||tinyint(1) unsigned||Wartość 1 oznacza, iż forum jest zablokowane (nie można w nim pisać)||
+||forum_order||tinyint(2) unsigned||Kolejność wyświetlania forum||
+||forum_rules||text||Opis reguł i zasad (opcjonalnie)||
+||forum_type||tinyint(1) unsigned||Typ forum (forum, kategoria, przekierowanie)||
+||forum_prune||smallint(5) unsigned||Określa ilość dni po upłynięciu których, posty powinny być kasowane (0 - nie usuwa żadnych)||
+		
+	
+=== Klucze tabeli coyote_forum ===
+
+||Klucz||Kolumna||
+||id||forum_id||			
+		
+	
+		
+== Tabela ''coyote_forum_auth'' ==
+
+Uprawnienia dostępu do danego forum dla danej grupy; InnoDB free: 148480 kB; (`a
+
+=== Struktura tabeli coyote_forum_auth ===
+
+||Kolumna||Typ||Opis||
+||auth_forum||smallint(5) unsigned||ID forum||
+||auth_option||smallint(5) unsigned||ID opcji (z tabeli coyote_auth_option)||
+||auth_group||mediumint(8) unsigned||ID grupy||
+||auth_value||tinyint(1) unsigned||Wartość (1 - dozwolona; 0 - zabroniona)||
+		
+	
+=== Klucze tabeli coyote_forum_auth ===
+
+||Klucz||Kolumna||
+||auth_forum||auth_forum||			
+||auth_group||auth_group||			
+||auth_option||auth_option||			
+		
+	
+		
+== Tabela ''coyote_forum_log'' ==
+
+
+
+=== Struktura tabeli coyote_forum_log ===
+
+||Kolumna||Typ||Opis||
+||log_id||smallint(3) (auto_increment)||||
+||log_user_id||smallint(6)||||
+||log_text||text||||
+||log_time||int(11)||||
+		
+	
+=== Klucze tabeli coyote_forum_log ===
+
+||Klucz||Kolumna||
+||log_id||log_id||			
+		
+	
+		
+== Tabela ''coyote_forum_marking'' ==
+
+Informacje o tym, że forum zostało zaznaczone jako przeczyta; InnoDB free: 14848
+
+=== Struktura tabeli coyote_forum_marking ===
+
+||Kolumna||Typ||Opis||
+||user_id||mediumint(8) unsigned||ID użytkownika||
+||forum_id||smallint(5) unsigned||ID forum||
+||mark_time||int(11)||Data i czas (timestamp)||
+		
+	
+=== Klucze tabeli coyote_forum_marking ===
+
+||Klucz||Kolumna||
+||PRIMARY||user_id||			
+||PRIMARY||forum_id||			
+||forum_id||forum_id||			
+		
+	
+		
+== Tabela ''coyote_forum_moderator'' ==
+
+InnoDB free: 148480 kB; (`forum_id`) REFER `coyote_dev/coyote_forum`(`forum_id`)
+
+=== Struktura tabeli coyote_forum_moderator ===
+
+||Kolumna||Typ||Opis||
+||forum_id||smallint(5) unsigned||||
+||forum_user||mediumint(8) unsigned||||
+||forum_group||mediumint(8) unsigned||||
+		
+	
+=== Klucze tabeli coyote_forum_moderator ===
+
+||Klucz||Kolumna||
+||forum_id||forum_id||			
+||forum_group||forum_group||			
+		
+	
+		
+== Tabela ''coyote_group'' ==
+
+Lista grup; InnoDB free: 148480 kB
+
+=== Struktura tabeli coyote_group ===
+
+||Kolumna||Typ||Opis||
+||group_id||mediumint(8) unsigned (auto_increment)||ID grupy||
+||group_name||varchar(40)||Nazwa grupy||
+||group_desc||varchar(85)||Krótki opis grupy||
+||group_leader||mediumint(8) unsigned||ID użytkownika, który jest liderem grupy (najczęściej założyciel)||
+||group_display||tinyint(1)||Określa, czy grupa powinna być wyświetlana na liście||
+||group_open||tinyint(1)||Określa, czy grupa jest grupą otwartą||
+||group_type||tinyint(1)||Typ grupy (wartość 0 mają grupy systemowe - nie do usunięcia)||
+		
+	
+=== Klucze tabeli coyote_group ===
+
+||Klucz||Kolumna||
+||group_id||group_id||			
+		
+	
+		
+== Tabela ''coyote_lang'' ==
+
+
+
+=== Struktura tabeli coyote_lang ===
+
+||Kolumna||Typ||Opis||
+||lang_id||smallint(2) (auto_increment)||||
+||lang_iso||char(0)||||
+||lang_dir||varchar(3)||||
+||lang_author||varchar(10)||||
+||lang_english_name||varchar(6)||||
+||lang_local_name||varchar(6)||||
+		
+	
+=== Klucze tabeli coyote_lang ===
+
+||Klucz||Kolumna||
+||lang_id||lang_id||			
+		
+	
+		
+== Tabela ''coyote_menu'' ==
+
+Moduł menu; InnoDB free: 148480 kB
+
+=== Struktura tabeli coyote_menu ===
+
+||Kolumna||Typ||Opis||
+||menu_id||smallint(5) unsigned (auto_increment)||Unikalne ID menu||
+||menu_name||varchar(100)||Nazwa menu||
+||menu_auth||varchar(20)||Dodatkowe uprawnienie potrzebne, aby wyświetlić menu||
+||menu_tag||varchar(10)||Znacznik HTML odpowiedzialny za wyświetlanie listy||
+||menu_additional||text||Serializowana tablica zawierająca dodatkowe atrybuty dla znacznika HTML||
+||menu_separator||varchar(255)||Znaki stanowiące separator dla pozycji menu (opcjonalnie)||
+		
+	
+=== Klucze tabeli coyote_menu ===
+
+||Klucz||Kolumna||
+||PRIMARY||menu_id||			
+		
+	
+		
+== Tabela ''coyote_menu_group'' ==
+
+Uprawnienia do wyświetlenia pozycji menu; InnoDB free: 148480 kB; (`group_id`) R
+
+=== Struktura tabeli coyote_menu_group ===
+
+||Kolumna||Typ||Opis||
+||group_id||mediumint(8) unsigned||ID grupy||
+||group_item||smallint(5) unsigned||ID pozycji z tabeli coyote_menu_item||
+		
+	
+=== Klucze tabeli coyote_menu_group ===
+
+||Klucz||Kolumna||
+||group_item||group_item||			
+||group_id||group_id||			
+		
+	
+		
+== Tabela ''coyote_menu_item'' ==
+
+Lista pozycji danego menu; InnoDB free: 148480 kB; (`item_menu`) REFER `coyote_d
+
+=== Struktura tabeli coyote_menu_item ===
+
+||Kolumna||Typ||Opis||
+||item_id||smallint(5) unsigned (auto_increment)||ID pozycji||
+||item_menu||smallint(5) unsigned||ID menu (klucz obcy)||
+||item_name||varchar(255)||Etykieta pozycji menu||
+||item_enable||tinyint(1) unsigned||Wartość 1 określa, że pozycja będzie aktywna (wyświetlana)||
+||item_tag||varchar(10)||Znacznik HTML odpowiadający za wyświetlenie pozycji||
+||item_auth||varchar(20)||Dodatkowe uprawnienie potrzebne, aby wyświetlić tę pozycję menu||
+||item_description||varchar(255)||Opis pozycji menu (wyświetlany w atrybucie title odnośnika)||
+||item_additional||text||Serializowana tablica dodatkowych atrybutów dla pozycji menu||
+||item_path||varchar(255)||Ścieżka lub URL do którego prowadzić ma odnośbnik||
+||item_order||smallint(5) unsigned||Kolejność wyświetlania elementu w menu||
+		
+	
+=== Klucze tabeli coyote_menu_item ===
+
+||Klucz||Kolumna||
+||PRIMARY||item_id||			
+||item_menu||item_menu||			
+		
+	
+		
+== Tabela ''coyote_module'' ==
+
+Lista modułów włączonych do projektu; InnoDB free: 148480 kB
+
+=== Struktura tabeli coyote_module ===
+
+||Kolumna||Typ||Opis||
+||module_id||smallint(5) unsigned (auto_increment)||Unikalne ID modułu||
+||module_name||varchar(50)||Nazwa modułu (jednocześnie nazwa katalogu w ktorym się znajduje)||
+||module_type||tinyint(1) unsigned||Wartość zero oznacza moduł systemwoy (nei do usunięcia). Domyślnie wartość 1||
+		
+	
+=== Klucze tabeli coyote_module ===
+
+||Klucz||Kolumna||
+||PRIMARY||module_id||			
+||module_name||module_name||			
+		
+	
+		
+== Tabela ''coyote_module_config'' ==
+
+Konfiguracja pluginu w zależności od modułu do którego jest ; InnoDB free: 14848
+
+=== Struktura tabeli coyote_module_config ===
+
+||Kolumna||Typ||Opis||
+||config_module||smallint(5) unsigned||ID modułu (klucz obcy do tabeli coyote_module)||
+||config_plugin||smallint(5) unsigned||ID pluginu (klucz obcy do tabeli coyote_module!)||
+||config_param||int(11)||Dodatkowy parametr, np. ID tekstu itp. Domyślnie zero||
+||config_data||text||Konfiguracja pluginu w formie kodu XML||
+		
+	
+=== Klucze tabeli coyote_module_config ===
+
+||Klucz||Kolumna||
+||config_module||config_module||			
+||config_plugin||config_plugin||			
+		
+	
+		
+== Tabela ''coyote_module_data'' ==
+
+Tabela powiązań między danymi z pluginów i modułami; InnoDB free: 148480 kB; (`d
+
+=== Struktura tabeli coyote_module_data ===
+
+||Kolumna||Typ||Opis||
+||data_id||int(11)||ID komentarza, tekstu itp||
+||data_module||smallint(5) unsigned||ID modułu||
+||data_plugin||smallint(5) unsigned||ID modułu przyłączonego (plugin)||
+||data_param||int(11)||Dodatkowy parametr||
+		
+	
+=== Klucze tabeli coyote_module_data ===
+
+||Klucz||Kolumna||
+||data_module||data_module||			
+||data_plugin||data_plugin||			
+||data_param||data_param||			
+		
+	
+		
+== Tabela ''coyote_module_plugin'' ==
+
+Lista pluginów dołączonych do modułu; InnoDB free: 148480 kB; (`module_id`) REFE
+
+=== Struktura tabeli coyote_module_plugin ===
+
+||Kolumna||Typ||Opis||
+||module_id||smallint(5) unsigned||ID modułu||
+||plugin_id||smallint(5) unsigned||ID modułu, który jest przyłączony do modułu module_id||
+		
+	
+=== Klucze tabeli coyote_module_plugin ===
+
+||Klucz||Kolumna||
+||module_id||module_id||			
+||plugin_id||plugin_id||			
+		
+	
+		
+== Tabela ''coyote_path'' ==
+
+Zawiera listę ścieżek oraz ID tekstów, do których prowadzą; InnoDB free: 148480 
+
+=== Struktura tabeli coyote_path ===
+
+||Kolumna||Typ||Opis||
+||path_text||tinytext||Ścieżka do artykułu, np. Foo/Bar||
+||path_article||smallint(5) unsigned||ID artykułu do którego prowadzi ścieżka||
+		
+	
+=== Klucze tabeli coyote_path ===
+
+||Klucz||Kolumna||
+||path_article||path_article||			
+		
+	
+		
+== Tabela ''coyote_pm'' ==
+
+
+
+=== Struktura tabeli coyote_pm ===
+
+||Kolumna||Typ||Opis||
+||pm_id||mediumint(8) unsigned (auto_increment)||||
+||pm_read||tinyint(1) unsigned||||
+||pm_subject||varchar(100)||||
+||pm_from||mediumint(8) unsigned||||
+||pm_to||mediumint(8) unsigned||||
+||pm_time||int(11)||||
+||pm_folder||tinyint(4) unsigned||||
+||pm_type||tinyint(4) unsigned||||
+||pm_text||mediumint(8) unsigned||||
+		
+	
+=== Klucze tabeli coyote_pm ===
+
+||Klucz||Kolumna||
+||PRIMARY||pm_id||			
+		
+	
+		
+== Tabela ''coyote_pm_text'' ==
+
+
+
+=== Struktura tabeli coyote_pm_text ===
+
+||Kolumna||Typ||Opis||
+||pm_text_id||mediumint(8) unsigned (auto_increment)||||
+||pm_text||text||||
+		
+	
+=== Klucze tabeli coyote_pm_text ===
+
+||Klucz||Kolumna||
+||PRIMARY||pm_text_id||			
+		
+	
+		
+== Tabela ''coyote_poll'' ==
+
+Moduł ankiet; InnoDB free: 148480 kB
+
+=== Struktura tabeli coyote_poll ===
+
+||Kolumna||Typ||Opis||
+||poll_id||smallint(5) unsigned (auto_increment)||ID ankiety||
+||poll_user||mediumint(8) unsigned||ID użytkownika||
+||poll_subject||varchar(100)||Temat ankiety||
+||poll_start||int(11)||Data rozpoczęcia ankiety||
+||poll_stop||int(11)||Data zakończenia ankiety||
+||poll_votes||smallint(5) unsigned||Liczba oddanych głosów w tej ankiecie||
+||poll_max_options||tinyint(1) unsigned||Ilość możliwych odpowiedzi (domyślnie: 1)||
+||poll_ip||varchar(15)||IP ostatnio głosującego||
+||poll_enable||tinyint(1) unsigned||Wartość 1 oznacza, że ankieta jest aktywna||
+||poll_forum||tinyint(1) unsigned||Wartość 1 oznacza, że ankieta przeznaczona jest dla forum||
+		
+	
+=== Klucze tabeli coyote_poll ===
+
+||Klucz||Kolumna||
+||PRIMARY||poll_id||			
+		
+	
+		
+== Tabela ''coyote_poll_option'' ==
+
+Tabela przechowuje odpowiedzi do ankiet; InnoDB free: 148480 kB; (`option_poll`)
+
+=== Struktura tabeli coyote_poll_option ===
+
+||Kolumna||Typ||Opis||
+||option_id||smallint(5) unsigned (auto_increment)||Unikalne ID pozycji w ankiecie||
+||option_text||varchar(100)||Etykieta odpowiedzi||
+||option_poll||smallint(5) unsigned||ID ankiety (klucz obcy)||
+||option_value||mediumint(8) unsigned||Ilość głosów oddanych na tę pozycję||
+		
+	
+=== Klucze tabeli coyote_poll_option ===
+
+||Klucz||Kolumna||
+||PRIMARY||option_id||			
+||option_poll||option_poll||			
+		
+	
+		
+== Tabela ''coyote_poll_vote'' ==
+
+Przechowuje ID użytkowników, którzy oddali głos w ankiecie; InnoDB free: 148480 
+
+=== Struktura tabeli coyote_poll_vote ===
+
+||Kolumna||Typ||Opis||
+||poll_id||smallint(5) unsigned||ID ankiety (klucz obcy)||
+||user_id||mediumint(8) unsigned||ID użytkownika||
+		
+	
+=== Klucze tabeli coyote_poll_vote ===
+
+||Klucz||Kolumna||
+||poll_id||poll_id||			
+||user_id||user_id||			
+		
+	
+		
+== Tabela ''coyote_post'' ==
+
+VIEW
+
+=== Struktura tabeli coyote_post ===
+
+||Kolumna||Typ||Opis||
+||post_text||text||Treść postu||
+||post_id||mediumint(8) unsigned||Unikalne ID postu||
+||post_topic||mediumint(8) unsigned||ID tematu||
+||post_forum||smallint(5) unsigned||ID forum||
+||post_user||mediumint(8) unsigned||ID użytkownika||
+||post_username||varchar(20)||Nazwa użytkownika jeśli możliwe jest pisanie przez użytkowników anonimowych||
+||post_time||int(11)||Data i czas napisania posta (timestamp)||
+||post_edit_time||int(11)||Data i zcas edycji posta (timestamp)||
+||post_edit_user||mediumint(8) unsigned||ID użytkownika, który ostatnio edytował post||
+||post_enable_smilies||tinyint(1) unsigned||Wartość 1 oznacza, że w poście będą wyświetlane uśmieszki||
+||post_enable_html||tinyint(1) unsigned||Wartość 1 oznacza, że w poście mogą znajdować się znaczniki HTML||
+||post_type||tinyint(1) unsigned||Typ postu (zablokowany, ukryty, normalny)||
+||post_ip||varchar(255)||IP autora postu||
+		
+	
+=== Klucze tabeli coyote_post ===
+
+||Klucz||Kolumna||
+		
+	
+		
+== Tabela ''coyote_post_data'' ==
+
+Przechowuje posty na forum; InnoDB free: 148480 kB; (`post_topic`) REFER `coyote
+
+=== Struktura tabeli coyote_post_data ===
+
+||Kolumna||Typ||Opis||
+||post_id||mediumint(8) unsigned (auto_increment)||Unikalne ID postu||
+||post_topic||mediumint(8) unsigned||ID tematu||
+||post_forum||smallint(5) unsigned||ID forum||
+||post_user||mediumint(8) unsigned||ID użytkownika||
+||post_username||varchar(20)||Nazwa użytkownika jeśli możliwe jest pisanie przez użytkowników anonimowych||
+||post_time||int(11)||Data i czas napisania posta (timestamp)||
+||post_edit_time||int(11)||Data i zcas edycji posta (timestamp)||
+||post_edit_user||mediumint(8) unsigned||ID użytkownika, który ostatnio edytował post||
+||post_enable_smilies||tinyint(1) unsigned||Wartość 1 oznacza, że w poście będą wyświetlane uśmieszki||
+||post_enable_html||tinyint(1) unsigned||Wartość 1 oznacza, że w poście mogą znajdować się znaczniki HTML||
+||post_type||tinyint(1) unsigned||Typ postu (zablokowany, ukryty, normalny)||
+||post_ip||varchar(255)||IP autora postu||
+		
+	
+=== Klucze tabeli coyote_post_data ===
+
+||Klucz||Kolumna||
+||id||post_id||			
+||post_topic||post_topic||			
+||post_user||post_user||			
+||post_forum||post_forum||			
+||post_username||post_username||			
+||post_ip||post_ip||			
+		
+	
+		
+== Tabela ''coyote_post_report'' ==
+
+Raporty na temat postów niezgodnych z regulaminem; InnoDB free: 148480 kB; (`rep
+
+=== Struktura tabeli coyote_post_report ===
+
+||Kolumna||Typ||Opis||
+||report_id||smallint(5) unsigned (auto_increment)||||
+||report_time||int(11)||||
+||report_user||mediumint(8) unsigned||||
+||report_post||mediumint(8) unsigned||||
+||report_topic||mediumint(8) unsigned||||
+||report_text||text||||
+		
+	
+=== Klucze tabeli coyote_post_report ===
+
+||Klucz||Kolumna||
+||PRIMARY||report_id||			
+||report_post||report_post||			
+||report_topic||report_topic||			
+		
+	
+		
+== Tabela ''coyote_post_text'' ==
+
+Zawiera treści postów
+
+=== Struktura tabeli coyote_post_text ===
+
+||Kolumna||Typ||Opis||
+||post_id||mediumint(8) unsigned||ID postu||
+||post_text||text||Treść postu||
+		
+	
+=== Klucze tabeli coyote_post_text ===
+
+||Klucz||Kolumna||
+||post_id||post_id||			
+||post_text||post_text||			
+		
+	
+		
+== Tabela ''coyote_session'' ==
+
+Lista użytkowników zalogowanych w systemie
+
+=== Struktura tabeli coyote_session ===
+
+||Kolumna||Typ||Opis||
+||session_id||char(32)||Unikalne ID sesji||
+||session_user_id||mediumint(8) unsigned||ID użytkownika||
+||session_ip||varchar(16)||IP użytkownika||
+||session_start||int(11)||Utworzenie sesji (pierwsze logowanie)||
+||session_stop||int(11)||Ostatnia aktywność||
+||session_robot||varchar(100)||Ewentualna nazwa robota sieciowego||
+||session_page||varchar(255)||Strona na której aktualnie przebywa użytkownik||
+		
+	
+=== Klucze tabeli coyote_session ===
+
+||Klucz||Kolumna||
+||session_id||session_id||			
+||session_user_id||session_user_id||			
+		
+	
+		
+== Tabela ''coyote_session_log'' ==
+
+
+
+=== Struktura tabeli coyote_session_log ===
+
+||Kolumna||Typ||Opis||
+||log_session||char(32)||||
+||log_user||mediumint(8) unsigned||||
+||log_start||int(10) unsigned||||
+||log_stop||int(10) unsigned||||
+||log_page||varchar(255)||||
+||log_ip||varchar(16)||||
+||log_robot||varchar(100)||||
+		
+	
+=== Klucze tabeli coyote_session_log ===
+
+||Klucz||Kolumna||
+||log_start||log_start||			
+||log_session||log_session||			
+||log_ip||log_ip||			
+		
+	
+		
+== Tabela ''coyote_skill'' ==
+
+InnoDB free: 148480 kB
+
+=== Struktura tabeli coyote_skill ===
+
+||Kolumna||Typ||Opis||
+||skill_id||smallint(5) unsigned (auto_increment)||||
+||skill_text||varchar(20)||||
+		
+	
+=== Klucze tabeli coyote_skill ===
+
+||Klucz||Kolumna||
+||PRIMARY||skill_id||			
+		
+	
+		
+== Tabela ''coyote_template'' ==
+
+
+
+=== Struktura tabeli coyote_template ===
+
+||Kolumna||Typ||Opis||
+||template_id||smallint(2) (auto_increment)||||
+||template_dir||varchar(10)||||
+||template_name||varchar(10)||||
+||template_author||varchar(34)||||
+||template_regdate||int(11)||||
+||template_enabled||tinyint(1)||||
+		
+	
+=== Klucze tabeli coyote_template ===
+
+||Klucz||Kolumna||
+||template_id||template_id||			
+		
+	
+		
+== Tabela ''coyote_text'' ==
+
+Rewizje artykułów
+
+=== Struktura tabeli coyote_text ===
+
+||Kolumna||Typ||Opis||
+||text_id||smallint(5) unsigned||ID artykułu (ID musi odpowiadać kluczowi article_id z tabeli coyote_article)||
+||text_revision||int(10) unsigned (auto_increment)||ID wersji tekstu (pole auto_increment), unikalny ID rekordu||
+||text_content||longtext||Zawartość tekstu||
+||text_time||int(11)||Czas utworzenia rewizji||
+||text_current||tinyint(1) unsigned||Wartość 1 oznacza aktualną wersję||
+||text_log||varchar(200)||Dziennik zmian w wersji||
+||text_user||mediumint(8) unsigned||ID użytkownika ||
+||text_ip||varchar(40)||IP edycji||
+		
+	
+=== Klucze tabeli coyote_text ===
+
+||Klucz||Kolumna||
+||PRIMARY||text_revision||			
+||text_id||text_id||			
+||text_current||text_current||			
+||text_user||text_user||			
+||text_user||text_ip||			
+||text_content||text_content||			
+		
+	
+		
+== Tabela ''coyote_text_attachment'' ==
+
+Lista załączników dodanych w danym tekście; InnoDB free: 148480 kB; (`text_id`) 
+
+=== Struktura tabeli coyote_text_attachment ===
+
+||Kolumna||Typ||Opis||
+||text_id||smallint(5) unsigned||ID tekstu, w którym znajduje się załącznik||
+||text_revision||int(10) unsigned||ID wersji tekstu, w którym znajduje się załącznik||
+||text_attachment||smallint(5) unsigned||ID załącznika (klucz obcy do pola coyote_attachment.attachment_id)||
+		
+	
+=== Klucze tabeli coyote_text_attachment ===
+
+||Klucz||Kolumna||
+||text_id||text_id||			
+||attachment_id||text_attachment||			
+		
+	
+		
+== Tabela ''coyote_text_cache'' ==
+
+Tabela zawiera parsowane treści artykułów
+
+=== Struktura tabeli coyote_text_cache ===
+
+||Kolumna||Typ||Opis||
+||text_id||smallint(5) unsigned||ID artykułu. Odpowiada kolumnie article_id z tabeli coyote_article||
+||text_time||int(11)||Czas cachowania||
+||text_content||longtext||Cachowana wartość tekstu||
+		
+	
+=== Klucze tabeli coyote_text_cache ===
+
+||Klucz||Kolumna||
+||PRIMARY||text_id||			
+		
+	
+		
+== Tabela ''coyote_text_template'' ==
+
+Informacje o szablonach w danych artykułach; InnoDB free: 148480 kB; (`template_
+
+=== Struktura tabeli coyote_text_template ===
+
+||Kolumna||Typ||Opis||
+||template_text||smallint(5) unsigned||ID tekstu, w którym znajduje się szablon||
+||template_revision||int(10) unsigned||ID rewizji tekstu, w którym znajduje się szablon||
+||template_article||smallint(5) unsigned||ID artykułu (szablonu)||
+||template_path||tinytext||Ścieżka do szablonu, np. Delphi/FAQ||
+		
+	
+=== Klucze tabeli coyote_text_template ===
+
+||Klucz||Kolumna||
+||template_text||template_text||			
+||template_revision||template_revision||			
+||template_article||template_article||			
+		
+	
+		
+== Tabela ''coyote_text_v'' ==
+
+VIEW
+
+=== Struktura tabeli coyote_text_v ===
+
+||Kolumna||Typ||Opis||
+||path_text||tinytext||Ścieżka do artykułu, np. Foo/Bar||
+||article_id||smallint(5) unsigned||ID artykułu (wartość unikalna)||
+||article_subject||varchar(100)||Tytuł artykułu||
+||article_counter||int(8) unsigned||Licznik odwiedzin danego tekstu||
+||article_lock||tinyint(1) unsigned||Określa, czy tekst został zablokowany. Możliwe wartości: 0 lub 1||
+||text_revision||int(10) unsigned||ID wersji tekstu (pole auto_increment), unikalny ID rekordu||
+||text_content||longtext||Zawartość tekstu||
+||text_time||int(11)||Czas utworzenia rewizji||
+||text_log||varchar(200)||Dziennik zmian w wersji||
+||text_user||mediumint(8) unsigned||ID użytkownika ||
+||text_ip||varchar(40)||IP edycji||
+||cache_content||longtext||Cachowana wartość tekstu||
+||cache_time||int(11)||Czas cachowania||
+		
+	
+=== Klucze tabeli coyote_text_v ===
+
+||Klucz||Kolumna||
+		
+	
+		
+== Tabela ''coyote_todo'' ==
+
+Prosta lista TODO do tekstów; InnoDB free: 148480 kB; (`todo_article`) REFER `co
+
+=== Struktura tabeli coyote_todo ===
+
+||Kolumna||Typ||Opis||
+||todo_id||mediumint(8) unsigned (auto_increment)||ID pozycji||
+||todo_article||smallint(5) unsigned||ID artykułu (klucz obcy)||
+||todo_subject||varchar(255)||Opis pozycji TODO||
+||todo_time||int(11)||Data utworzenia rekordu (timestamp)||
+||todo_user||mediumint(8) unsigned||ID użytkownika, który dodał wpis||
+||todo_status||tinyint(3) unsigned||Status wpisu||
+||todo_assigned||mediumint(8) unsigned||ID użytkownika, do którego przydzielony został wpis||
+||todo_progress||smallint(5) unsigned||Procentowy wyznacznik postępu w realizacji zadania||
+		
+	
+=== Klucze tabeli coyote_todo ===
+
+||Klucz||Kolumna||
+||PRIMARY||todo_id||			
+||todo_article||todo_article||			
+		
+	
+		
+== Tabela ''coyote_topic'' ==
+
+Zawiera listę tematów na forum; InnoDB free: 148480 kB; (`topic_forum`) REFER `c
+
+=== Struktura tabeli coyote_topic ===
+
+||Kolumna||Typ||Opis||
+||topic_id||mediumint(8) unsigned (auto_increment)||Unikalne ID tematu||
+||topic_subject||varchar(100)||Temat wiadomości||
+||topic_views||mediumint(8) unsigned||Ilość wyświetleń wiadomości||
+||topic_replies||smallint(5) unsigned||Ilość odpowiedzi w temacie||
+||topic_forum||smallint(5) unsigned||ID forum, w którym znajduje się temat||
+||topic_type||tinyint(1) unsigned||Typ tematu (przyklejony, ogłoszenie, normalny)||
+||topic_poll||smallint(5) unsigned||ID ewentualnej ankiety dołączonej do wątku||
+||topic_moved_id||smallint(5) unsigned||ID forum, z którego został przeniesiony temat||
+||topic_first_post_id||mediumint(8) unsigned||ID pierwszego postu w wątku||
+||topic_last_post_id||mediumint(8) unsigned||ID ostatniego postu w wątku||
+		
+	
+=== Klucze tabeli coyote_topic ===
+
+||Klucz||Kolumna||
+||id||topic_id||			
+||topic_forum||topic_forum||			
+||topic_first_post_id||topic_first_post_id||			
+||topic_last_post_id||topic_last_post_id||			
+		
+	
+		
+== Tabela ''coyote_topic_marking'' ==
+
+Zawiera informacje o przeczytanych tematach; InnoDB free: 148480 kB; (`topic_id`
+
+=== Struktura tabeli coyote_topic_marking ===
+
+||Kolumna||Typ||Opis||
+||topic_id||mediumint(8) unsigned||ID tematu||
+||user_id||mediumint(8) unsigned||ID użytkownika||
+||forum_id||smallint(5) unsigned||ID forum||
+		
+	
+=== Klucze tabeli coyote_topic_marking ===
+
+||Klucz||Kolumna||
+||forum_id||forum_id||			
+||topic_id||topic_id||			
+||user_id||user_id||			
+		
+	
+		
+== Tabela ''coyote_topic_watch'' ==
+
+Informacje o obserwowanych tematach; InnoDB free: 148480 kB; (`topic_id`) REFER 
+
+=== Struktura tabeli coyote_topic_watch ===
+
+||Kolumna||Typ||Opis||
+||topic_id||mediumint(8) unsigned||ID tematu||
+||user_id||mediumint(8) unsigned||ID użytkownika||
+		
+	
+=== Klucze tabeli coyote_topic_watch ===
+
+||Klucz||Kolumna||
+||user_id||user_id||			
+||topic_id||topic_id||			
+		
+	
+		
+== Tabela ''coyote_trigger'' ==
+
+Lista triggerów możliwych do wykorzystania ; InnoDB free: 148480 kB
+
+=== Struktura tabeli coyote_trigger ===
+
+||Kolumna||Typ||Opis||
+||trigger_id||smallint(5) unsigned (auto_increment)||Unikalne ID triggera||
+||trigger_name||varchar(100)||Nazwa triggera||
+||trigger_header||varchar(255)||Nagłowek zawierający listę parametrów, które będą przekazywane do zdarzenia (dla zaawansowanych)||
+||trigger_description||varchar(255)||Opis działania triggera||
+||trigger_type||tinyint(1) unsigned||Typ triggera (0 - specjalny - nie można usunąć)||
+		
+	
+=== Klucze tabeli coyote_trigger ===
+
+||Klucz||Kolumna||
+||PRIMARY||trigger_id||			
+		
+	
+		
+== Tabela ''coyote_trigger_event'' ==
+
+Tabela przechowująca listę zdarzeń dla triggerów; InnoDB free: 148480 kB; (`even
+
+=== Struktura tabeli coyote_trigger_event ===
+
+||Kolumna||Typ||Opis||
+||event_id||smallint(5) unsigned (auto_increment)||||
+||event_trigger||smallint(5) unsigned||ID triggera (klucz obcy)||
+||event_action||smallint(5) unsigned||Opcjonalnie ID akcji, która zastąpi wykonanie kodu zdarzenia||
+||event_name||varchar(100)||Nazwa zdarzenia (zalecane jest, aby była to nazwa unikalna w obrębie danego triggera)||
+||event_class||varchar(255)||Nazwa klasy, z której zostanie wywołana metoda (opcjonalnie)||
+||event_function||varchar(255)||Nazwa funkcji lub metody klasy (opcjonalnie)||
+||event_path||varchar(255)||Ścieżka, w której znajduje się plik PHP, który zostanie załadowany||
+||event_params||varchar(255)||Dodatkowy parametr, który zostanie przekazany do metody/funkcji (opcjonalnie)||
+||event_eval||text||Kod PHP, który zostanie wykonany w momencie wystąpienia zdarzenia (opcjonalnie)||
+		
+	
+=== Klucze tabeli coyote_trigger_event ===
+
+||Klucz||Kolumna||
+||PRIMARY||event_id||			
+||event_trigger||event_trigger||			
+||event_action||event_action||			
+		
+	
+		
+== Tabela ''coyote_user'' ==
+
+Tabela przechowuje dane zarejestrowanych użytkowników.; InnoDB free: 148480 kB
+
+=== Struktura tabeli coyote_user ===
+
+||Kolumna||Typ||Opis||
+||user_id||mediumint(8) unsigned (auto_increment)||ID użytkownika. ID = 0 zarezerwowane jest dla użytkownika anonimowego.||
+||user_name||varchar(30)||||
+||user_active||tinyint(1) unsigned||||
+||user_permission||mediumtext||||
+||user_password||char(13)||||
+||user_email||varchar(128)||||
+||user_confirm_email||varchar(128)||||
+||user_actkey||varchar(40)||||
+||user_allow_email||tinyint(1) unsigned||||
+||user_posts||mediumint(6) unsigned||||
+||user_allow_posts||tinyint(1) unsigned||||
+||user_regdate||int(11)||||
+||user_date_format||varchar(32)||||
+||user_flood||int(11)||||
+||user_allow_smilies||tinyint(1) unsigned||||
+||user_allow_sig||tinyint(1) unsigned||||
+||user_lastvisit||int(11)||||
+||user_visits||smallint(6) unsigned||||
+||user_realname||varchar(50)||||
+||user_resume||text||||
+||user_resume_file||varchar(40)||||
+||user_page||text||||
+||user_skilldesc||text||||
+||user_birthday||varchar(10)||||
+||user_location||varchar(30)||||
+||user_gg||varchar(10)||||
+||user_tlen||varchar(30)||||
+||user_icq||varchar(10)||||
+||user_skype||varchar(20)||||
+||user_website||varchar(200)||||
+||user_sig||tinytext||||
+||user_avatar||varchar(85)||||
+||user_photo||varchar(85)||||
+||user_allow_avatar||tinyint(1) unsigned||||
+||user_sort||tinyint(1) unsigned||||
+||user_template||tinyint(1) unsigned||||
+||user_lang||tinyint(1) unsigned||||
+||user_ip||varchar(255)||||
+||user_failed_ip||varchar(255)||||
+||user_lastmark||int(11)||||
+||user_posts_per_page||smallint(2) unsigned||||
+||user_topics_per_page||smallint(2) unsigned||||
+||user_notify_pm||tinyint(1) unsigned||||
+||user_pm||tinyint(4) unsigned||||
+||user_pm_new||tinyint(4) unsigned||||
+		
+	
+=== Klucze tabeli coyote_user ===
+
+||Klucz||Kolumna||
+||PRIMARY||user_id||			
+		
+	
+		
+== Tabela ''coyote_user_attachment'' ==
+
+InnoDB free: 148480 kB; (`attachment_user`) REFER `coyote_dev/coyote_user`(`user
+
+=== Struktura tabeli coyote_user_attachment ===
+
+||Kolumna||Typ||Opis||
+||attachment_id||smallint(6) unsigned (auto_increment)||||
+||attachment_user||mediumint(8) unsigned||||
+||attachment_filename||varchar(12)||||
+||attachment_size||int(10) unsigned||||
+		
+	
+=== Klucze tabeli coyote_user_attachment ===
+
+||Klucz||Kolumna||
+||PRIMARY||attachment_id||			
+||attachment_user||attachment_user||			
+		
+	
+		
+== Tabela ''coyote_user_portfolio'' ==
+
+InnoDB free: 148480 kB; (`portfolio_user`) REFER `coyote_dev/coyote_user`(`user_
+
+=== Struktura tabeli coyote_user_portfolio ===
+
+||Kolumna||Typ||Opis||
+||portfolio_id||mediumint(8) unsigned (auto_increment)||||
+||portfolio_user||mediumint(8) unsigned||||
+||portfolio_name||varchar(100)||||
+||portfolio_desc||text||||
+||portfolio_url||varchar(100)||||
+||portfolio_role||tinyint(1) unsigned||||
+||portfolio_price||tinyint(1) unsigned||||
+||portfolio_currency||tinyint(1) unsigned||||
+||portfolio_thumbnail||varchar(20)||||
+||portfolio_jobcat||tinyint(1) unsigned||||
+		
+	
+=== Klucze tabeli coyote_user_portfolio ===
+
+||Klucz||Kolumna||
+||PRIMARY||portfolio_id||			
+||portfolio_user||portfolio_user||			
+		
+	
+		
+== Tabela ''coyote_user_position'' ==
+
+InnoDB free: 148480 kB; (`position_user`) REFER `coyote_dev/coyote_user`(`user_i
+
+=== Struktura tabeli coyote_user_position ===
+
+||Kolumna||Typ||Opis||
+||position_id||mediumint(8) unsigned (auto_increment)||||
+||position_user||mediumint(8) unsigned||||
+||position_name||varchar(100)||||
+||position_company||varchar(100)||||
+||position_desc||text||||
+||position_start||int(11)||||
+||position_end||int(11)||||
+||position_role||tinyint(4)||||
+		
+	
+=== Klucze tabeli coyote_user_position ===
+
+||Klucz||Kolumna||
+||PRIMARY||position_id||			
+||position_user||position_user||			
+		
+	
+		
+== Tabela ''coyote_user_skill'' ==
+
+InnoDB free: 148480 kB; (`user_id`) REFER `coyote_dev/coyote_user`(`user_id`) ON
+
+=== Struktura tabeli coyote_user_skill ===
+
+||Kolumna||Typ||Opis||
+||user_id||mediumint(8) unsigned||||
+||user_skill||smallint(5) unsigned||||
+||user_experience||tinyint(1) unsigned||||
+||user_lastused||smallint(5) unsigned||||
+||user_rate||tinyint(1) unsigned||||
+		
+	
+=== Klucze tabeli coyote_user_skill ===
+
+||Klucz||Kolumna||
+||user_id||user_id||			
+||user_skill||user_skill||			
+		
+	
+		
+== Tabela ''coyote_watch'' ==
+
+Lista obserwowanych tekstów; InnoDB free: 148480 kB; (`article_id`) REFER `coyot
+
+=== Struktura tabeli coyote_watch ===
+
+||Kolumna||Typ||Opis||
+||article_id||smallint(5) unsigned||ID artykułu||
+||user_id||mediumint(8) unsigned||ID użytkownika obserwującego tekst||
+		
+	
+=== Klucze tabeli coyote_watch ===
+
+||Klucz||Kolumna||
+||article_id||article_id||			
+||user_id||user_id||			
+		
+	
+		
+== Tabela ''coyote_word'' ==
+
+
+
+=== Struktura tabeli coyote_word ===
+
+||Kolumna||Typ||Opis||
+||word_text||varchar(34)||||
+||word_replacement||varchar(34)||||
+		
+	
+=== Klucze tabeli coyote_word ===
+
+||Klucz||Kolumna||
+		
+	
+		

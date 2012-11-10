@@ -1,0 +1,1 @@
+Aby wygenerowac dokumentacje, w formacie HTML, nalezy w konsoli wykonac polecenie "make".

@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../../docbook/html/docbook.xsl"?>
+<chapter>
+    <title>Klasa Core</title>
+    
+    <para>
+        Klasa <classname>Core</classname> (umieszczona w pliku <filename>core.class.php</filename>
+        w katalogu <filename>/lib</filename>) stanowi główną klasę dla całego projektu. Jest to
+        pierwsza klasa jaka zostaje załadowana do projektu. Klasa <classname>Core</classname> nie może być klasą bazową dla
+        innych klas, nie można po niej dziedziczyć. 
+    </para>
+    
+    <section>
+        <title>Przepływ danych</title>
+        
+        <para>
+            Prześledźmy przez chwilę proces inicjalizacji wymaganych bibliotek, klas oraz ich
+            kolejność. Pozwoli to użytkownikowi na lepsze zrozumienie działania frameworka.
+        </para>
+        
+        <para>
+            Jak już wspomnieliśmy, framework implementuje wzorzec front controllera. Czyli każde
+            żądanie w aplikacji kierowane jest do pliku <filename>index.php</filename>. Ten z kolei uruchamia klasę
+                <classname>Core</classname>, która - dalej - rozdziela otrzymane żądania. Podstawową
+            metodą tej klasy jest metoda <methodname>bootstrap()</methodname>, które może przyjmować
+            opcjonanly parametr - ścieżkę do aplikacji z frameworkiem. 
+        </para>
+        
+        <para>
+            W metodzie <methodname>bootstrap()</methodname> framework przeprowadza następujące czynności:
+        </para>
+        
+        <itemizedlist>
+            <listitem>
+                Wywołanie metody statycznej <methodname>setRootPath()</methodname> ustawiającą ścieżkę do
+                katalogu z frameworkiem.
+            </listitem>
+            <listitem>
+                Wywołanie metody statycznej <methodname>setBasePath()</methodname>, która ustawia ścieżkę do 
+                katalogu z aplikacją (w klasie <classname>Core</classname>)
+            </listitem>
+            <listitem>
+                Wywołanie metody <methodname>setIncludePath()</methodname>, która ustawia wartość 
+                <emphasis>include_path</emphasis> na katalogi z frameworkiem oraz z aplikacją.
+            </listitem>
+            <listitem>
+                Załadowanie klasy loadera (klasa <classname>Load</classname>)
+            </listitem>
+            <listitem>
+                Załadowanie klasy <classname>Log</classname>
+            </listitem>
+            <listitem>
+                Załadowanie klasy <classname>Benchmark</classname>
+            </listitem>
+            <listitem>
+                Inicjalizacja konfiguracji oraz załadowanie plików konfiguracyjnych (klasa <classname>Config</classname>)
+            </listitem>
+            <listitem>
+                Ustawienie domyślnych wartości konfiguracyjnych takich jak np. rozszerzenie dla plików szablonów
+            </listitem>
+            <listitem>
+                Wywołanie triggera <emphasis>Trigger.OnReady</emphasis>
+            </listitem>
+            <listitem>
+                Załadowanie klasy <classname>TriggerException</classname> odpowiedzialnej za obsługę wyjątków
+            </listitem>
+            <listitem>
+                Załadowanie ewentualnych modułów do projektu aplikacji
+            </listitem>
+            <listitem>
+                Zwrócenie rezultatu wywołania metody <methodname>getInstance()</methodname>
+            </listitem>
+        </itemizedlist>
+        
+        <para>
+            Pierwszymi instrukcjami jest inicjalizacja pól określających ścieżki do projektu,
+            frameworka oraz pliku konfiguracji (jeżeli istnieje). Następnie wywoływana jest
+            statyczna, prywatna metoda <methodname>setIncludePath()</methodname>, która ustala
+            wartość zmiennej PHP: <varname>include_path</varname>. 
+        </para>
+        
+        <para>
+            Pierwszą klasą ładowaną w projekcie (niezależnie od ustaleń projektu) jest loader
+            (klasa <filename>load.class.php</filename>). Loader służy do ładowania poszczególnych
+            komponentów aplikacji/frameworka. 
+        </para>
+        
+        <para>
+            Następnie do zasobów ładowana jest klasa <classname>Log</classname> (<filename>log.class.php</filename>), 
+            statyczna klasa <classname>Benchmark</classname> (<filename>benchmark.class.php</filename>), klasa 
+            <classname>Trigger</classname> (<filename>trigger.class.php</filename>) obsługująca wyzwalacze (hooki, triggery). 
+        </para>
+        
+        <para>
+            W dalszej części ładowana jest statyczna klasa <classname>Config</classname>,
+                <classname>TriggerException</classname> (do obługi błędów i wyjątków). Następnie
+            następuje bardzo ważny proces włączania ewentualnych modułów do projektu. Póki co
+            powiedzmy sobie, że moduły stanowią rozłączalny element aplikacji. Możemy sobie
+            wyobrazić, że moduły są ładowane do projektu i stanowią jego integralną część na czas
+            działania skryptu. 
+            
+            <note>
+                O modułach będzie mowa w dalszej części podręcznika. 
+            </note>
+        </para>
+        
+        <para>
+            Zauwaz, że metoda <methodname>bootstrap()</methodname> jest metodą statyczną. 
+            Ostatnią instrukcją tej metody, jest zwrócenie rezultatu wywołania:
+            <programlisting>
+Core::getInstance();                            
+            </programlisting>            
+        </para>
+        
+        <section>
+            <title>Metoda getInstance()</title>
+            
+            <para>
+                Klasa <classname>Core</classname> implementuje wzorzec projektowy - <emphasis>singleton</emphasis>.
+            </para>
+            
+            <para>
+                Metoda <methodname>getInstance()</methodname> inicjalizuje klasę <classname>Core</classname> 
+                jeżeli jeszcze nie została utworzona jej instancja. 
+                
+                <note>
+                    W systemie może istnieć tylko jedna instancja klasy <classname>Core</classname>.                     
+                </note>
+            </para>
+            
+            <para>
+                Dzięki metodzie <methodname>getInstance()</methodname>, w każdej chwili, z dowolnego punktu aplikacji
+                masz możliwość uzyskania dostępu do klasy jądra i do jej obiektów:
+                
+                <programlisting>
+<![CDATA[
+$core = &Core::getInstance();
+echo $core->input->getIp(); // wyświetla IP
+]]>                    
+                </programlisting>
+            </para>
+        </section>
+        
+    </section>
+    
+    <section>
+        <title>Korzystanie ze składowych aplikacji</title>
+        
+        <para>
+            Najważniejsze bibioteki, potrzebne dla działania aplikacji ładowane są w metodzie <methodname>dispatch()</methodname>. Tutaj
+            następuje inicjalizacja klasy <classname>Load</classname>, <classname>Input</classname>,
+                <classname>Context</classname> oraz <classname>Output</classname>.
+        </para>
+        
+        <para>
+            Każda biblioteka załadowana do projektu, z użyciem metody
+                <methodname>library()</methodname> klasy <classname>Load</classname>, jest dostępna
+            poprzez pole klasy Core. Metoda <methodname>library()</methodname> ładuje klasę do projektu (przy pomocy
+            statycznej metody <methodname>loadClass()</methodname>), a następnie tworzy referencję do tej klasy, jako pole
+            klasy
+            Core:
+            <programlisting>
+Core::getInstance()->$lib_name = &amp;Load::loadClass($lib_name, true, $params);
+            </programlisting>
+        </para>
+        
+        <para>
+            Aby
+            odwołać się do elementu jądra systemu, należy użyć metody <methodname>getInstance()</methodname>, która zwraca
+            instancję klasy <classname>Core</classname>. Utwórz w swoim projekcie przykładowy kontroler, a następnie dla
+            testów - spróbuj uruchomić taki
+            kod:
+            
+            <programlisting>
+$this->load->library('image');
+Core::getInstance()->image->open('...'); // prawidłowo
+$this->image->open('...'); // prawidłowo
+            </programlisting>
+        </para>
+        
+        <para>Nasza
+            klasa kontrolera dziedziczy po klasie Controller. Ów klasa zapewnia nam skrótowy dostęp
+            do elementów jądra stąd możemy pominąc odwoływanie się poprzez metodę <methodname>getInstance()</methodname>.
+        </para>
+        
+        <para>
+            Niezależnie od ustawień konfiguracji, z poziomu kontrolera
+            (<varname>$this</varname>), dostępne są biblioteki <classname>Router</classname>,
+                <classname>Load</classname>, <classname>Input</classname>,
+            <classname>Output</classname>. Pozostałe klasy są klasami statycznymi, z których można
+            korzystać w każdym miejscu aplikacji (w widokach, modelach czy innych kontrolerach). Np
+            klasa <classname>Benchmark</classname>:
+            
+            <programlisting>		
+Benchmark::start('foo');
+// jakies operacje
+Benchmark::stop('foo');
+
+echo 'Czas wykonania operacji foo: ' . Benchmark::elapsed('foo') . ' sek.';
+            </programlisting>
+        </para>
+        
+        <para>
+            Jak zostało pokazane w poprzednich przykładach, metoda <methodname>library()</methodname> z
+            klasy <classname>Load</classname> ładuje bibliotekę, a oprócz tego, daje do niej dostęp z
+            poziomu operatora <varname>$this</varname>:
+            
+            <programlisting>
+$this->load->library('input');
+echo $this->input->getIp();
+            </programlisting>
+        </para>
+        
+        <para>
+            Inne metody ładowania bibliotek, nie dodają odpowiedniego pola do klasy
+            <classname>Core</classname>, czyli nie są dostępne z poziomu operatora
+            <varname>$this</varname>. Zatrzymajmy się tutaj na chwilę. Klasa
+            <classname>Input</classname> jest ładowana w projekcie niezależnie od tego, czy tego
+            chcemy, czy nie.
+        </para>
+    </section>
+    
+    <section>
+        <title>Elementy jądra</title>
+        
+        <para>
+            Do elementów jądra możesz odwoływać się w każdym miejscu aplikacji. Dla przykładu:
+            utwórzmy nowy helper. Utwórz w swoim projekcie katalog <filename>/helper</filename>, a w
+            nim plik <filename>ip.helper.php</filename>. Napiszemy w nim funkcję <function
+            >ip()</function>, która będzie zwracać adres IP, lecz każdy człon adresu będzie posiadał
+            inny kolor (nie jest to zbyt użyteczna funkcja, lecz zależy nam jedynie na
+            zaprezentowaniu idei). 
+        </para>
+        
+        <para>
+            Cały plik <filename>ip.helper.php</filename> może prezentować się
+            następująco:
+            <programlisting>
+&lt;?php
+            
+function ip()
+{
+    // pobranie instancji jadra
+    $core = &amp;Core::getInstance();
+    
+    $color = array('silver', 'red', 'green', 'blue');
+    $ip = explode('.', $core->input->getIp());
+    
+    foreach ($ip as $k => $value)
+    {
+    $ip[$k] = '&lt;span style="color: ' . $color[$k] . '">' . $value . '&lt;/span>';
+    }
+    return implode('.', $ip);
+}
+            
+?>
+            </programlisting>
+        </para>
+        
+        <para>
+            Najważniejsze w tej funkcji jest pobieranie instancji jądra. Metoda
+                <methodname>getInstance()</methodname> jest metodą statyczną (na tym polega wzorzec
+            singletonu). Uzyskujemy dzięki temu dostęp do biblioteki <classname>input</classname>, z
+            której wykorzystujemy metodę <methodname>getIp()</methodname> do pobrania adresu IP. 
+        </para>
+        
+        <para>
+            W kontrolerze należy załadować nasz helper, tak, aby był dostępny globalnie, w całej
+            aplikacji:
+            <programlisting>            
+// zaladowanie helpera
+$this->load->helper('ip');
+
+// wyswietlenie widoku
+echo $this->load->view('foo');
+            </programlisting>
+        </para>
+        
+        <para>
+            Helpery są przeważnie wykorzystywane w widokach, więc nasz widok <filename>foo.php</filename> może wyglądać
+            tak:
+            <programlisting>
+Mój IP: &lt;?= ip(); ?>
+            </programlisting>
+        </para>
+        
+        <para>
+            Spowoduje to wygenerowanie następującego kodu HTML:
+            <programlisting>
+Mój IP: &lt;span style="color: silver">127&lt;/span>.&lt;span style="color: red">0&lt;/span>.&lt;span style="color: green">0&lt;/span>.&lt;span style="color: blue">1&lt;/span>
+            </programlisting>
+        </para>
+    </section>
+    
+    <section>
+        <title>Metoda dispatch()</title>
+        
+        <para>
+            Statyczna metoda <methodname>bootstrap()</methodname> inicjuje składowe środowiska, natomiast
+            metoda <methodname>dispatch()</methodname> inicjalizuje potrzebne biblioteki i 
+            na podstawie adresu URL, przy pomocy klasy <classname>Router</classname>, kieruje żądanie
+            do klasy <classname>Dispatcher</classname>.            
+        </para>
+        
+        <itemizedlist>
+            <listitem>
+                Wywołanie triggera <emphasis>system.onBeforeSystem</emphasis>
+            </listitem>
+            <listitem>
+                Utworzenie instancji klasy <classname>Load</classname> i przyposanie jej do pola klasy 
+                <classname>Core</classname>.
+            </listitem>
+            <listitem>
+                Konstruktor klasy <classname>Load</classname> ładuje biblioteki: <classname>Context</classname>,
+                <classname>Input</classname>, <classname>Output</classname> oraz pozostałe, zadeklarowane
+                w konfiguracji aplikacji.
+            </listitem>
+            <listitem>
+                Inicjalizacja klasy <classname>Router</classname>, która na podstawie adresu URL "decyduje",
+                jaki kontroler oraz akcję, należy wykonać.
+            </listitem>
+            <listitem>
+                Wywołanie metody <methodname>dispatch()</methodname> z klasy <classname>Dispatcher</classname>,
+                która na podstawie informacji uzyskanych klasy routera, wykona kod z odpowiedniego kontrolera.
+            </listitem>
+            <listitem>
+                Wywołanie triggera <emphasis>system.onShutdown</emphasis>
+            </listitem>
+        </itemizedlist>
+    </section>
+    
+</chapter>

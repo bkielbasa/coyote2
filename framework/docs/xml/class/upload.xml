@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter>
+    <title>Wysyłanie plików na serwer</title>
+    <para>Umieszczenie odpowiedniego formularza HTML umożliwia przesłanie wskazanego przez
+        użytkownika, pliku na serwer, który zajmie się jego odebraniem i - ewentualnie -
+        umieszczenie w konkretnym miejscu.</para>
+    <para>Element &lt;input type="file" /> umieszczony w kodzie HTML spowoduje wyświetlenie
+        odpowiedniej kontrolki przez przeglądarkę internetową. Dzięki temu użytkownik korzystający z
+        witryny, może umieścić na serwerze wybrany plik. Oczywiście pod warunkiem, iż serwer
+        zaakceptuje dany plik. </para>
+    <section>
+        <title>Tworzenie formularza HTML</title>
+        <para>Do utworzenia formularza HTML, można użyć helperów dostarczonych przez framework.
+            Konkretnie, klasę <filename>form.helper.php</filename>. Oto kod przykładowej
+            akcji:<programlisting>&lt;?php
+
+class Test extends Controller
+{
+	function main()
+	{
+		echo Form::openMultipart('Test/Submit');
+		echo Form::file('File');
+		echo Form::submit('', 'Wyślij');
+		echo Form::close();
+	}
+
+	public function submit()
+	{
+
+	}
+}
+?></programlisting></para>
+        <para>Metoda <methodname>main()</methodname>wygeneruje, a następnie prześle do użytkownika
+            taki kod
+            HTML:<programlisting>&lt;form method="POST" enctype="multipart/form-data" action="http://127.0.0.1/coyote-1-0/index.php/Test/Submit" >
+&lt;input type="file" value="" name="File" />
+&lt;input type="submit" value="Wyślij" />
+&lt;/form></programlisting></para>
+    </section>
+    <section>
+        <title>Odczytywanie informacji o odebranym pliku</title>
+        <para>Język PHP udostępnia odpowiedni mechanizm umożliwiający odczyt informacji o pliku.
+            Informacje o plikach wysłanych przez użytkownika, dostępne są poprzez tablicę
+                <varname>$_FILES</varname>, gdzie kluczem tablicy jest nazwa kontrolki &lt;input>.
+            Coyote udostępnia klasę Upload, która w prosty sposób umożliwia odebranie pliku
+            wysłanego przez użytkownika. Oto metoda submit()
+            kontrolera:<programlisting>
+public function submit()
+{
+	$upload = &amp;$this->getLibrary('upload');
+	$upload->setDestination('tmp');
+
+	if ($upload->recive('File'))
+	{
+		echo 'Nazwa pliku: ' . $upload->getFileName() . '&lt;br />';
+		echo 'Rozmiar pliku: ' . $upload->getFileSize() . ' bajtów&lt;br />';
+		echo 'Ścieżka do pliku: ' . $upload->getFilePath() . '&lt;br />';
+		echo 'Rozszerzenie pliku: ' . $upload->getSuffix() . '&lt;br />';
+		echo 'Typ MIME: ' . $upload->getFileMime();
+
+		Core::debug($upload->getFileInfo());
+	}
+}</programlisting></para>
+        <para>Metoda <methodname>setDestination()</methodname> ustawia katalog, w którym zostanie
+            umieszczony plik wysłany przez użytkownika. Metoda <methodname>recive()</methodname>
+            odbiera ów plik i umieszcza w podanym katalogu, dostarczając przy tym informacje o tym
+            pliku. Powyższy przykład prezentuje możliwości tej klasy w zakresie prezentowania
+            informacji o odebranym pliku. W wyniku takiego kodu, dany plik zostanie umieszczony w
+            folderze <filename>tmp</filename>, w głównym katalogu projektu. </para>
+        <section>
+            <title>Metoda setOverwrite()</title>
+            <para>Domyślnie, jeżeli w danym katalogu, znajduje się już plik o podanej nazwie, system
+                wyświetli błąd informujący o próbie zastąpienia ów pliku. Jeżeli chcesz, aby system
+                domyślnie zastępował plik jeżeli taki już istnieje, należy wywołać metodę
+                    <methodname>setOverwrite()</methodname>:<programlisting>$upload->setOverwrite(true); // zastępuj plik jeżeli taki już istnieje</programlisting></para>
+        </section>
+    </section>
+    <section>
+        <title>Walidacja plików</title>
+        <para>Bardzo istostną sprawą jest walidacja odbieranych danych. Nie możemy sobie pozwolić na
+            to, aby użytkownik wysyłał na serwer pliki wykonywalne <emphasis>.exe</emphasis>, czy
+            np. <emphasis>.php</emphasis>. W tym celu możemy wykorzystać walidator
+                <classname>Validate_Upload</classname>. Oto zmodyfikowana metoda
+                <methodname>submit()</methodname>:<programlisting>
+public function submit()
+{
+	// deklaracja interfejsu IValidate
+	Load::loadFile('lib/validate.class.php');
+	$validate = new Validate_Upload;
+
+	$validate->setSuffix('jpg,gif');
+	$validate->setFileSize('1MB');
+
+	if (!$validate->isValid('File'))
+	{
+		Core::debug($validate->getMessages());
+
+		exit;
+	}
+
+	$upload = &amp;$this->getLibrary('upload');
+	$upload->setDestination('tmp');
+
+	if ($upload->recive('File'))
+	{
+		echo 'Nazwa pliku: ' . $upload->getFileName() . '&lt;br />';
+		echo 'Rozmiar pliku: ' . $upload->getFileSize() . ' bajtów&lt;br />';
+		echo 'Ścieżka do pliku: ' . $upload->getFilePath() . '&lt;br />';
+		echo 'Rozszerzenie pliku: ' . $upload->getSuffix() . '&lt;br />';
+		echo 'Typ MIME: ' . $upload->getFileMime();
+
+		Core::debug($upload->getFileInfo());
+	}
+}</programlisting></para>
+        <para>Metoda <methodname>setSuffix()</methodname> ustala możliwe, akceptowalne rozszerzenia,
+            natomiast <methodname>setFileSize()</methodname> maksymalny rozmiar pliku. W tym
+            przykładzie system akceptuje jedynie pliki JPG oraz GIF o maksymalnym rozmiarze 1 MB. </para>
+        <section>
+            <title>Metoda setOptional()</title>
+            <para>Metoda umożliwia określenie, czy wysyłając formularz, użytkownik MUSI określić
+                plik do wysłania, czy też nie. Domyślnie element jest opcjonalny tak więc w
+                przypadku, gdy użytkownik nie określi pliku do wysłania, metoda
+                    <methodname>isValid()</methodname> i tak zwróci true. Aby to zmienić, możesz
+                zastosować taki
+            kod:<programlisting>$validate->setOptional(false);</programlisting></para>
+        </section>
+        <section>
+            <title>Metoda setSuffix()</title>
+            <para>Umożliwia określenie dopuszczalnych rozszerzeń plików. Parametrem metody może być
+                łańcuch zawierający rozszerzenia (oddzielone przecinkiem) lub tablica
+                rozszerzeń:<programlisting>$validate->setSuffix('jpg,gif');
+// lub:
+$validate->setSuffix(array('jpg', 'gif')); </programlisting></para>
+        </section>
+        <section>
+            <title>Metoda setMime()</title>
+            <para>Umożliwia ustalenie dopuszczalnych typów plików. Podobnie jak w przypadku metody
+                    <methodname>setSuffix()</methodname>, parametrem może być łańcuch lub tablica
+                    typów:<programlisting>$validate->setMime('image/jpeg'); // akceptujemy tylko obrazy </programlisting>
+                <note>Klasa Upload, niezależnie od ustawień zabezpiecza przed wysyłaniem plików o
+                    typie application/octet-stream oraz text/x-delimtext. </note></para>
+        </section>
+        <section>
+            <title>Metoda setFileSize()</title>
+            <para>Metoda umożliwia ustalenie maksymalnego rozmiaru dla pliku. Parametrem metody może
+                być liczba określająca maksymalny rozmiar pliku (w bajtach) lub łańcuch typu string.
+                Oto
+                przykłady:<programlisting>$validate->setFileSize(10); // 10 bajtów
+$validate->setFileSize('100KB'); // 100 kilobajtów
+$validate->setFileSize('100MB'); // 100 megabajtów
+$validate->setFileSize('100GB'); // 100 gigabajtów</programlisting></para>
+        </section>
+        <section>
+            <title>Metoda setWidth()</title>
+            <para>Jeżeli spodziewamy się, iż wysyłanym przez użytkownika plikiem będzie obraz,
+                możemy określić maksymalną szerokość oraz wysokość obrazu (w pikselach). Oto
+                przykład:<programlisting>$validate->setWidth(20);
+		$validate->setHeight(20);</programlisting></para>
+        </section>
+        <section>
+            <title>Metoda setHeight()</title>
+            <para>Ustawia maksymalny, możliwy rozmiar odbieranego obrazu. </para>
+        </section>
+        <section>
+            <title>Użycie metody setOptions()</title>
+            <para>Oczywiście, podobnie jak w przypadku innych walidatorów, możliwe jest użycie
+                metody <methodname>setOptions()</methodname> w celu ustawienia konfiguracji
+                walidatora:
+                <programlisting>
+$validate->setOptions(array(
+		'suffix'		=> 'jpg,gif',
+		'filesize'		=> '1MB',
+		'mime'			=> 'image/jpeg'
+	)
+);</programlisting></para>
+            <para>Parametry walidatora możemy określić również w konstruktorze klasy, którego
+                nagłówek wygląda
+                tak:<programlisting>function __construct($optional = true, $filesize = 0, $suffix = null, $mime = null, $width = null, $height = null)
+</programlisting></para>
+        </section>
+    </section>
+</chapter>

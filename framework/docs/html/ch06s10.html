@@ -1,0 +1,37 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Metoda redirect()</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch06.html" title="Rozdzia&#322; 6. Klasa Controller"><link rel="prev" href="ch06s09.html" title="Metoda getFolder()"><link rel="next" href="ch06s11.html" title="Metoda forward()"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Metoda redirect()</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch06s09.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 6. Klasa Controller</th><td width="20%" align="right"> <a accesskey="n" href="ch06s11.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id476419"></a>Metoda redirect()</h2></div></div></div><p> 
+            Umo&#380;liwia przekierowanie na wybrany adres WWW. Nale&#380;y mie&#263; na uwadze, iz po wywo&#322;aniu
+            tej metody, dalszy kod akcji nie b&#281;dzie
+            wykonywany:
+            </p><pre class="programlisting">&lt;?php
+
+class Page_Controller extends Controller
+{
+	function main()
+	{
+		$this-&gt;redirect('http://4programmers.net');
+		$this-&gt;foo(); // ta instrukcja nie zostanie wykonana		
+	}
+
+	private function foo()
+	{
+		///
+	}
+}
+?&gt;
+            </pre><p>
+            
+            Parametrem metody <tt class="methodname">redirect()</tt> mo&#380;e by&#263; adres URL, nazwa regu&#322;y routingu lub
+            &#347;cie&#380;ka do  kontrolera:
+            
+            </p><pre class="programlisting">
+$this-&gt;redirect('User/View'); // przekierowuje do http://serwer.com/User/View
+$this-&gt;redirect('@user'); // przekieruje na adres okreslony regu&#322;&#261; @user
+            </pre><p>
+            
+            Metoda posiada jeszcze jeden, opcjonalny parametr, który okre&#347;la&#263; b&#281;dzie kod przekierowania
+            (dodawany w nag&#322;ówku wysy&#322;anym do
+            przegl&#261;darki):
+            </p><pre class="programlisting">
+$this-&gt;redirect('User/View', 301); // kod 301 - Moved Permanently
+            </pre><p>
+        </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch06s09.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch06.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch06s11.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Metoda getFolder() </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Metoda forward()</td></tr></table></div></body></html>

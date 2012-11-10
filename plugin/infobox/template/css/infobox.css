@@ -1,0 +1,91 @@
+#infobox-layer
+{
+		z-index:				1000;
+		position:				fixed;
+		left:					0;
+		top:					0;
+		width:					100%;
+		height:					100%;
+		background-color:		#fff;
+		filter:					alpha(opacity=50);
+		-moz-opacity:			0.50;
+		opacity:				0.50;
+}
+
+#infobox-wrapper
+{
+		background:				#fff;
+		margin:					20% auto;
+		border:					1px solid #ccc;
+		border-radius:			5px;
+		-moz-border-radius:		5px;
+		-webkit-border-radius:	5px;
+		position:				fixed;
+		z-index:				2000;
+		box-shadow:             0 4px 16px rgba(0,0,0,0.2);
+		-webkit-border-radius:  0 2px 16px rgba(0,0,0,0.2);
+		-moz-border-radius:     0 2px 16px rgba(0,0,0,0.2);
+		max-width:              600px;
+}
+
+#infobox-wrapper h1
+{
+		font-size:              18px;
+		margin:                 20px;
+		white-space:            nowrap;
+		text-overflow:          ellipsis;
+		overflow:               hidden;
+		padding-right:          20px;
+}
+
+.infobox-content
+{
+		text-justify:           auto;
+		margin:                 10px 20px;
+}
+
+.infobox-bottom
+{
+		margin-top:             25px;
+		background-color:       #f8f8f8;
+		padding:                15px 20px;
+		border-top:             1px solid #cccccc;
+		border-bottom-left-radius: 5px;
+		border-bottom-right-radius: 5px;
+		-webkit-border-bottom-left-radius: 5px;
+		-webkit-border-bottom-right-radius: 5px;
+		-moz-border-radius-bottomleft: 5px;
+		-moz-border-radius-bottomright: 5px;
+}
+
+.infobox-bottom button
+{
+		border-radius:          2px;
+		background-color:       #F5F5F5;
+		border:                 1px solid #cccccc;
+		font-size:              13px;
+		padding:                4px 8px;
+		color:                  #444444;
+		cursor:                 pointer;
+}
+
+.infobox-bottom button:hover
+{
+		box-shadow:             1px 1px 4px #D3D3D3;
+}
+
+.infobox-bottom button:focus
+{
+		background-color:       #d9d9d9;
+}
+
+.infobox-close
+{
+		position:               absolute;
+		background:				url('../../../../template/img/icons.png') no-repeat 0 -96px;
+		width:					16px;
+		height:					15px;
+		cursor:					pointer;
+		right:                  10px;
+		top:                    25px;
+}

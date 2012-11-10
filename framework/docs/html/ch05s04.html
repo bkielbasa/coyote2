@@ -1,0 +1,21 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Metoda dispatch()</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch05.html" title="Rozdzia&#322; 5. Klasa Core"><link rel="prev" href="ch05s03.html" title="Elementy j&#261;dra"><link rel="next" href="ch06.html" title="Rozdzia&#322; 6. Klasa Controller"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Metoda dispatch()</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05s03.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 5. Klasa Core</th><td width="20%" align="right"> <a accesskey="n" href="ch06.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id475015"></a>Metoda dispatch()</h2></div></div></div><p>
+            Statyczna metoda <tt class="methodname">bootstrap()</tt> inicjuje sk&#322;adowe &#347;rodowiska, natomiast
+            metoda <tt class="methodname">dispatch()</tt> inicjalizuje potrzebne biblioteki i 
+            na podstawie adresu URL, przy pomocy klasy <tt class="classname">Router</tt>, kieruje &#380;&#261;danie
+            do klasy <tt class="classname">Dispatcher</tt>.            
+        </p><div class="itemizedlist"><ul type="disc"><li>
+                Wywo&#322;anie triggera <span class="emphasis"><em>system.onBeforeSystem</em></span></li><li>
+                Utworzenie instancji klasy <tt class="classname">Load</tt> i przyposanie jej do pola klasy 
+                <tt class="classname">Core</tt>.
+            </li><li>
+                Konstruktor klasy <tt class="classname">Load</tt> &#322;aduje biblioteki: <tt class="classname">Context</tt>,
+                <tt class="classname">Input</tt>, <tt class="classname">Output</tt> oraz pozosta&#322;e, zadeklarowane
+                w konfiguracji aplikacji.
+            </li><li>
+                Inicjalizacja klasy <tt class="classname">Router</tt>, która na podstawie adresu URL "decyduje",
+                jaki kontroler oraz akcj&#281;, nale&#380;y wykona&#263;.
+            </li><li>
+                Wywo&#322;anie metody <tt class="methodname">dispatch()</tt> z klasy <tt class="classname">Dispatcher</tt>,
+                która na podstawie informacji uzyskanych klasy routera, wykona kod z odpowiedniego kontrolera.
+            </li><li>
+                Wywo&#322;anie triggera <span class="emphasis"><em>system.onShutdown</em></span></li></ul></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch05s03.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch05.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch06.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Elementy j&#261;dra </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Rozdzia&#322; 6. Klasa Controller</td></tr></table></div></body></html>

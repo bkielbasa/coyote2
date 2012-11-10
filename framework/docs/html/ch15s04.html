@@ -1,0 +1,34 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Generowanie URL</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch15.html" title="Rozdzia&#322; 15. Mechanizm routingu"><link rel="prev" href="ch15s03.html" title="Subdomeny"><link rel="next" href="ch15s05.html" title="Przechwytywanie wszystkich adresów"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Generowanie URL</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch15s03.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 15. Mechanizm routingu</th><td width="20%" align="right"> <a accesskey="n" href="ch15s05.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id491801"></a>Generowanie URL</h2></div></div></div><p>Kolejnym tematem jest generowanie URL na podstawie informacji zawartych w regu&#322;ach
+            routingu. Oto prosta regu&#322;a routingu o nazwie
+            homepage:</p><pre class="programlisting">
+&lt;route&gt;
+	&lt;name&gt;homepage&lt;/name&gt;
+	&lt;url&gt;/&lt;/url&gt;
+	&lt;controller&gt;index&lt;/controller&gt;
+	&lt;action&gt;main&lt;/action&gt;
+&lt;/route&gt;</pre><p>Jak widzisz regu&#322;a zostanie dopasowana je&#380;eli &#380;&#261;danie tyczy si&#281; g&#322;ównej strony naszego
+            serwisu. Je&#380;eli chcesz wygnerowa&#263; pe&#322;ny URL do g&#322;ównej strony, mo&#380;esz skorzysta&#263; z
+            funkcji <tt class="function">url()</tt> z helpera <tt class="filename">url.helper.php</tt>:</p><pre class="programlisting">echo url('@homepage'); // efekt: http://serwer.com/</pre><p>W funkcji <tt class="function">url()</tt> jako parametr, mo&#380;emy poda&#263; nazw&#281; regu&#322;y na
+            podstawie której wygenerowany zostanie URL (przed nazw&#261; regu&#322;y nale&#380;y umie&#347;ci&#263; znak @).
+            Inny
+            przyk&#322;ad:</p><pre class="programlisting">
+echo url('@user?id=1'); // efekt: http://serwer.com/User/1
+echo url('@user?id=1/Parametr1'); // efekt: http://serwer.com/User/1/Parametr1
+echo url('@user?id=1&amp;controller=Portfolio'); // efekt: http://serwer.com/User/1/Portfolio
+echo url('@user?id=1&amp;a=2'); // efekt: http://serwer.com/User/1?a=2</pre><p>Je&#380;eli wygenerowany URL ma prowadzi&#263; do subdomeny, w regule routingu nale&#380;y ustawi&#263;
+            parametr <span class="emphasis"><em>subdomain</em></span> (oprócz paramtru
+            host):</p><pre class="programlisting">
+&lt;route&gt;
+	&lt;name&gt;user&lt;/name&gt;
+	&lt;url&gt;/User/:id/:controller/:action/*&lt;/url&gt;
+	&lt;default&gt;
+		&lt;controller&gt;user&lt;/controller&gt;
+		&lt;action&gt;main&lt;/action&gt;
+	&lt;/default&gt;
+	&lt;requirements&gt;
+		&lt;id&gt;(\d+)&lt;/id&gt;
+	&lt;/requirements&gt;
+	&lt;host&gt;/^(www\.)?user\.(.+$)/&lt;/host&gt;
+&lt;subdomain&gt;user.serwer.com&lt;/subdomain&gt;
+&lt;/route&gt;
+echo url('@user?id=1'); // efekt: http://user.serwer.com/User/1</pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch15s03.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch15.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch15s05.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Subdomeny </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Przechwytywanie wszystkich adresów</td></tr></table></div></body></html>

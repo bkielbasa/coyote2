@@ -1,0 +1,55 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Rozdzia&#322; 6. Klasa Controller</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="pt01.html" title="Cz&#281;&#347;&#263; I. Dokumentacja techniczna"><link rel="prev" href="ch05s04.html" title="Metoda dispatch()"><link rel="next" href="ch06s02.html" title="Metoda getContext()"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Rozdzia&#322; 6. Klasa Controller</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05s04.html">Poprzedni</a> </td><th width="60%" align="center">Cz&#281;&#347;&#263; I. Dokumentacja techniczna</th><td width="20%" align="right"> <a accesskey="n" href="ch06s02.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="chapter" lang="pl"><div class="titlepage"><div><div><h2 class="title"><a name="id475902"></a>Rozdzia&#322; 6. Klasa Controller</h2></div></div></div><div class="toc"><p><b>Spis tre&#347;ci</b></p><dl><dt><span class="section"><a href="ch06.html#id475944">Tworzenie w&#322;asnych kontrolerów</a></span></dt><dt><span class="section"><a href="ch06s02.html">Metoda getContext()</a></span></dt><dt><span class="section"><a href="ch06s03.html">Metoda getLibrary()</a></span></dt><dt><span class="section"><a href="ch06s04.html">Metoda getModel()</a></span></dt><dt><span class="section"><a href="ch06s05.html">Metoda getModule()</a></span></dt><dt><span class="section"><a href="ch06s06.html">Metoda getFolder()</a></span></dt><dt><span class="section"><a href="ch06s07.html">Metoda getController()</a></span></dt><dt><span class="section"><a href="ch06s08.html">Metoda getAction()</a></span></dt><dt><span class="section"><a href="ch06s09.html">Metoda getFolder()</a></span></dt><dt><span class="section"><a href="ch06s10.html">Metoda redirect()</a></span></dt><dt><span class="section"><a href="ch06s11.html">Metoda forward()</a></span></dt><dt><span class="section"><a href="ch06s12.html">Metoda getArguments()</a></span></dt><dt><span class="section"><a href="ch06s13.html">Metoda getArgument()</a></span></dt></dl></div><p>
+        Wszystkie kontrolery w Coyote musz&#261;... no - mo&#380;e nie musz&#261; (bo nie ma takiego wymogu),
+        ale powinny dziedziczy&#263; po klasie <tt class="classname">Controller</tt>. Klasa ta jest klas&#261;
+        abstrakcyjn&#261; i zapewnia kilka ciekawych metod, które na pewno pomog&#261; w pisaniu w&#322;asnych
+        kontrolerów. Konstruktor tej klasy wygl&#261;da nast&#281;puj&#261;co:
+        </p><pre class="programlisting">
+function __construct() 
+{
+    $this-&gt;router = &amp;Load::loadClass('router');	
+    
+    $this-&gt;get = &amp;$this-&gt;input-&gt;get;
+    $this-&gt;post = &amp;$this-&gt;input-&gt;post;
+    $this-&gt;cookie = &amp;$this-&gt;input-&gt;cookie;
+    $this-&gt;server = &amp;$this-&gt;input-&gt;server;
+}       
+        </pre><p>
+        
+        Konstruktor
+        tej klasy inicjalizuje kilka pól dzi&#281;ki czemu daje nam &#322;atwy dost&#281;p to paru sk&#322;adowych
+        systemu. Przede wszystkim do elementów klasy <tt class="classname">Get</tt>,
+        <tt class="classname">Post</tt>, <tt class="classname">Cookie</tt> czy
+        <tt class="classname">Server</tt>. Jak widzisz, tworzona jest referencja do tych obiektów wiec
+        mo&#380;liwe jest u&#380;ycie podwójnego zapisu w naszmy
+        kontrolerze:
+        
+        </p><pre class="programlisting">
+echo $this-&gt;input-&gt;get-&gt;id; // odczyt $_GET['id']
+echo $this-&gt;get-&gt;id; // j/w
+        </pre><p>
+        
+        </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>
+            Kontrolery to dobre miejsca na umieszczenie ca&#322;ej "logiki" aplikacji. W akcjach (metodach) kontrolerów
+            mo&#380;esz umieszcza&#263; kod, który b&#281;dzie w stanie generowa&#263; stron&#281; WWW (lub inne dane), przy pomocy
+            modeli, bibliotek, helperów.
+        </div><p>
+    </p><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id475944"></a>Tworzenie w&#322;asnych kontrolerów</h2></div></div></div><p>
+            Kontrolery to pliki, które maj&#261; posta&#263; klas PHP. Pliki te powinny by&#263; umieszczone w katalogu
+            <tt class="filename">/controller</tt>, twojego projektu. Nazwa klasy kontrolera powinna odpowiada&#263;
+            nazwie pliku. Oznacza to, &#380;e je&#380;eli tworzymy kontroler o nazwie <span class="emphasis"><em>Foo</em></span>,
+            to klasa <tt class="classname">Foo</tt> (ewentualnie <tt class="classname">Foo_Controller</tt> - taki zapis
+            te&#380; jest mo&#380;liwy), powinna znajdowa&#263; si&#281; w pliku <tt class="filename">foo.php</tt>, w katalogu
+            <tt class="filename">/controller</tt>. Dodatkowo klasa <tt class="classname">Foo</tt> lub 
+            <tt class="classname">Foo_Controller</tt> powinna dziedziczy&#263; po klasie <tt class="classname">Controller</tt>.
+        </p><p>
+            Kontrolery mog&#261; posiada&#263; metody, które jednocze&#347;nie s&#261; <span class="emphasis"><em>akcjami</em></span>. 
+            Domy&#347;lnie, pierwszy cz&#322;on adresu URL oznacza nazw&#281; kontrolera, a drugi - akcj&#281;.
+        </p><p>
+            Innymi s&#322;owy, adres URL http://localhost/demo/Foo/Bar spowoduje wywo&#322;anie akcji <span class="emphasis"><em>Bar</em></span>
+            z kontrolera <span class="emphasis"><em>Foo</em></span>. 
+            
+            </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>
+                Zaawansowane przypisywanie masek adresów do poszczególnych kontrolerów mo&#380;liwe jest przy u&#380;yciu
+                klasy <tt class="classname">Router</tt>.
+            </div><p>
+        </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch05s04.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="pt01.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch06s02.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Metoda dispatch() </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Metoda getContext()</td></tr></table></div></body></html>

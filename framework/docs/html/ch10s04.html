@@ -1,0 +1,54 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Ustawianie warto&#347;ci konfiguracyjnych</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch10.html" title="Rozdzia&#322; 10. Konfiguracja projektu"><link rel="prev" href="ch10s03.html" title="Wy&#347;wietlanie zawarto&#347;ci konfiguracji"><link rel="next" href="ch10s05.html" title="Przestrzenie nazw"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Ustawianie warto&#347;ci konfiguracyjnych</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch10s03.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 10. Konfiguracja projektu</th><td width="20%" align="right"> <a accesskey="n" href="ch10s05.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id479415"></a>Ustawianie warto&#347;ci konfiguracyjnych</h2></div></div></div><p>Aby przypisa&#263; now&#261; warto&#347;&#263; konfiguracji w trakcie dzia&#322;ania aplikacji, nale&#380;y u&#380;y&#263;
+            metody
+            <tt class="methodname">setItem()</tt>:</p><pre class="programlisting">
+echo Config::getItem('application');
+Config::setItem('application', 'My App v.3');
+echo Config::getItem('application');</pre><p>Ustawianie warto&#347;ci w trakcie dzia&#322;ania aplikacji mo&#380;e by&#263; dobrym sposobem na
+            przechowywanie globalnych danych w trakcie dzia&#322;ania programu. Do ustawienia warto&#347;ci
+            danego klucza, mo&#380;na wykorzysta&#263; statyczn&#261; metod&#281; <tt class="methodname">setDefault()</tt>.
+            Rózni si&#281; ona od <tt class="methodname">setItem()</tt> tym, i&#380; warto&#347;&#263; zostanie ustawiona
+            tylko wtedy je&#380;eli ta nie zosta&#322;a ustawiona wcze&#347;niej (innymi s&#322;owy - nie nadpisuje ju&#380;
+            istniej&#261;cej
+            warto&#347;ci):</p><pre class="programlisting">		
+Config::setDefault('application', 'My App v.3');
+echo Config::getItem('application'); // nadal wy&#347;wietli My App
+            </pre><p>Alternatywnym rozwi&#261;zaniem jest zastosowanie instrukcji
+            warunkowej:</p><pre class="programlisting">		
+if (!Config::getItem('application'))
+{
+	Config::setItem('application', 'My App v.3');
+}
+echo Config::getItem('application'); // nadal wy&#347;wietli My App
+            </pre><p>Jednak&#380;e u&#380;ycie metody <tt class="methodname">setDefault()</tt> skraca kod do jednej
+            instrukcji. </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>U&#380;ycie metody setItem() spowoduje zast&#261;pienie istniej&#261;cej warto&#347;ci znajduj&#261;cej si&#281; pod
+            danym kluczem. </div><p>Metoda setItem() zast&#281;puje warto&#347;&#263; je&#380;eli dany klucz zosta&#322; zadeklarowany ju&#380;
+            wcze&#347;niej.
+            Np.:</p><pre class="programlisting">		Config::setItem('foo', 'foo');
+		Config::setItem('foo', 'bar');
+
+		echo Config::getItem('foo'); // wy&#347;wietli "bar"</pre><p>Nieraz przydatne mo&#380;e si&#281; okaza&#263; dodanie warto&#347;ci - zamiast jej zast&#261;pywania.
+            Przyk&#322;adowo - pole <span class="emphasis"><em>templateConfig</em></span> okre&#347;la nazw&#281; pliku
+            konfiguracyjnego dla widoków. Jednak system umo&#380;liwia zadeklarowanie kilku nazw plików,
+            które b&#281;d&#261; przeszukiwane przez Coyote'a. Wówczas mo&#380;emy u&#380;y&#263; metody
+                <tt class="methodname">addItem()</tt>:</p><pre class="programlisting">		
+Config::addItem('foo', 'foo');
+Config::addItem('foo', 'bar');
+
+Core::debug(Config::getItem('foo')); 
+/*
+stdClass Object
+(
+    [0] =&gt; foo
+    [1] =&gt; bar
+)
+*/
+
+Config::addItem('core.templateConfig', 'myConfig.ini');
+Core::debug(Config::getItem('core.templateConfig'));
+/*
+stdClass Object
+(
+    [0] =&gt; config.xml
+    [1] =&gt; myConfig.ini
+)
+		*/</pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch10s03.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch10.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch10s05.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Wy&#347;wietlanie zawarto&#347;ci konfiguracji </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Przestrzenie nazw</td></tr></table></div></body></html>

@@ -1,0 +1,20 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Przypisywanie zdarze&#324; w pliku konfiguracyjnym</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch19.html" title="Rozdzia&#322; 19. Triggery"><link rel="prev" href="ch19s02.html" title="Pisanie zdarze&#324;"><link rel="next" href="ch19s04.html" title="Triggery dost&#281;pne w systemie"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Przypisywanie zdarze&#324; w pliku konfiguracyjnym</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch19s02.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 19. Triggery</th><td width="20%" align="right"> <a accesskey="n" href="ch19s04.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id496342"></a>Przypisywanie zdarze&#324; w pliku konfiguracyjnym</h2></div></div></div><p> W pliku konfiguracyjnym mo&#380;emy okre&#347;li&#263; zdarzenia dla danego triggera. Wówczas zb&#281;dne
+            staje si&#281; r&#281;czne przypisywanie przy pomocy metody <tt class="methodname">add()</tt>.
+            Przyk&#322;adowo, mo&#380;emy przypisa&#263; zdarzenia dla triggera system.shutdown w pliku config.php:
+            </p><pre class="programlisting">
+// obsluga hookow (triggerow)
+$config['core']['trigger'] = true;
+
+$config['trigger']['system.onShutdown'][] = array(
+    'class'			=&gt; 'debug',
+    'function'		=&gt; 'explain',
+    'params'		=&gt; array()
+);
+
+$config['trigger']['system.onShutdown'][] = array(
+    'class'			=&gt; 'foo',
+    'function'		=&gt; 'bar'
+);            
+            </pre><p>
+            Jak widzisz, w rezultacie takiej konfiguracji do triggera
+            <span class="emphasis"><em>system.onShutdown</em></span>, zosta&#322;y przypisane dwa zdarzenia. </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch19s02.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch19.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch19s04.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Pisanie zdarze&#324; </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Triggery dost&#281;pne w systemie</td></tr></table></div></body></html>

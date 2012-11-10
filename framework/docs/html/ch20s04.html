@@ -1,0 +1,29 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Adaptery cache</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch20.html" title="Rozdzia&#322; 20. Cache"><link rel="prev" href="ch20s03.html" title="Niszczenie danych"><link rel="next" href="ch21.html" title="Rozdzia&#322; 21. ACL"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Adaptery cache</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch20s03.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 20. Cache</th><td width="20%" align="right"> <a accesskey="n" href="ch21.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id497830"></a>Adaptery cache</h2></div></div></div><p>Biblioteka <tt class="classname">Cache</tt> funkcjonuje w oparciu o wzorzec adaptera.
+            Domy&#347;lnym adapterem jest <tt class="filename">Cache_File</tt>, który znajduje si&#281; w pliku
+                <tt class="filename">file.class.php</tt>, w katalogu <tt class="filename">/lib/cache</tt>
+            frameworka. Oprócz tego, we frameworku dost&#281;pny jest adapter obs&#322;ugj&#261;cy eAccelerator. </p><p>Adapter to klasa odpowiadaj&#261;ca za sk&#322;adowanie danych. Przyk&#322;adowo, adapter <tt class="filename">Cache_File</tt> sk&#322;aduje dane na dysku twardym komputera. Adapter
+            eAccelerator sk&#322;aduje dane w pami&#281;ci RAM i wykorzystuje bibliotek&#281; eaccelerator. Mo&#380;emy
+            napisa&#263; w&#322;asny adapter, który b&#281;dzie sk&#322;adowa&#322; dane - np. w bazie danych, czy innym
+            &#378;ródle. </p><p>Adaptery cache musz&#261; znajdowa&#263; si&#281; w katalogu <tt class="filename">/lib/cache/</tt>. Klasa
+            adaptera musi nosi&#263; przedrostek <span class="emphasis"><em>Cache_</em></span> i implementowa&#263; interfejs
+                <tt class="classname">IConfig</tt>, który jest
+            nast&#281;pujacy:</p><pre class="programlisting">interface ICache
+{
+	public function get($var_name);
+	public function put($var_name, $data, $ttl = 0);
+	public function start($cache_id);
+	public function end($cache_id, $ttl = 0);
+	public function destroy($var_name = '');
+	public function load();
+	public function save();
+	public function exists($var_name);
+}</pre><p>Nazw&#281; adaptera nale&#380;y poda&#263; w konstruktorze klasy <tt class="classname">Cache</tt>, czyli
+            np.:</p><pre class="programlisting">$cache = &amp;$this-&gt;load-&gt;library('cache', 'db');
+// lub:
+$cache = new Cache('db');</pre><p>W takim przypadku szukany b&#281;dzie adapter o nazwie <span class="emphasis"><em>db</em></span>, który od
+            tej pory obs&#322;ugiwa&#263; b&#281;dzie mechanizm cachowania. W tym przypadku klasa adaptera musi
+            nosi&#263; nazw&#281; <tt class="classname">Cache_Db</tt> i by&#263; umieszczona w pliku <tt class="filename">db.class.php</tt>, w katalogu <tt class="filename">/lib/cache</tt>.</p><p>W konstruktorze klasy <tt class="classname">Cache</tt> mo&#380;emy równie&#380; przekaza&#263; instancj&#281;
+            klasy adaptera:</p><pre class="programlisting">$cache = new Cache(new Cache_Db);</pre><p>Klasa <tt class="classname">Cache</tt> posiada równie&#380; metod&#281;
+            <tt class="methodname">setAdapter()</tt>, dzi&#281;ki której mo&#380;emy zmieni&#263; adapter w trakcie
+            dzia&#322;ania
+        aplikacji:</p><pre class="programlisting">$cache-&gt;setAdapter(new Cache_Db);</pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch20s03.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch20.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch21.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Niszczenie danych </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Rozdzia&#322; 21. ACL</td></tr></table></div></body></html>

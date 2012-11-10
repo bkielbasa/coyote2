@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<installation type="plugin">
+	<name>comment</name>
+	<text>Wtyczka komentarzy</text>
+	<author>Adam Boduch</author>
+	<version>1.0-pre1</version>
+	<system>1.0-pre1</system>
+
+	<option type="select">
+		<name>commentEnableAnonymous</name>
+		<text>Pisanie komentarzy</text>
+		<values default="0">
+			<value id="0">Tylko dla zarejestrowanych</value>
+			<value id="1">Dla wszystkich</value>
+			<value id="2">Nie zezwalaj</value>
+		</values>
+		<auth>a_</auth>
+	</option>	
+	<option type="select">
+		<name>commentEnableHtml</name>
+		<text>Zezwalaj na używanie HTML</text>
+		<values default="0">
+			<value id="0">Nikomu</value>
+			<value id="1">Tylko dla zarejestrowanych</value>
+		</values>
+		<auth>a_</auth>
+	</option>		
+	<option type="select">
+		<name>commentEnableDelete</name>
+		<text>Zezwalaj na usuwanie komentarzy</text>
+		<values default="1">
+			<value id="0">Nikomu</value>
+			<value id="1">Autorom i użytkownikom z uprawnieniami c_delete</value>
+		</values>
+		<auth>a_</auth>
+	</option>
+
+	<setup>
+		<schema>install/schema.sql</schema>
+
+		<table>comment</table>
+
+		<auth value="c_edit" default="0">Edycja komentarzy</auth>
+		<auth value="c_delete" default="0">Usuwanie komentarzy</auth>
+
+		<route>			
+			<name>comment</name>
+			<url>Comment/:action/*</url>
+			<controller>comment</controller>
+			<default>
+				<action>submit</action>
+			</default>
+		</route>
+		
+		<trigger>application.onCommentSubmit</trigger>
+		<trigger>application.onCommentSubmitComplete</trigger>
+		<trigger>application.onCommentDelete</trigger>
+		<trigger>application.onCommentDeleteComplete</trigger>
+	</setup>
+		
+</installation>

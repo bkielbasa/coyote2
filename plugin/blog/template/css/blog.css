@@ -1,0 +1,65 @@
+#blog
+{
+		width:             90%;
+}
+
+.blog-entry
+{
+		padding:           20px 0;
+		overflow:          hidden;
+}
+
+.blog-entry-left
+{
+		padding:           5px 15px 0 15px;
+		float:             left;
+}
+
+.blog-entry-date
+{
+		color:              #ddd;
+		font-size:          36px;
+		border-right:       2px solid #ddd;
+		padding-right:      20px;
+}
+
+.blog-entry-date span
+{
+		font-size:          14px;
+		display:            block;
+}
+
+.blog-entry-right
+{
+		padding-left:       20px;
+		overflow:           hidden;
+}
+
+.blog-entry-user
+{
+		color:              #ddd;
+		margin:             10px 0;
+}
+
+.blog-entry-user img
+{
+		vertical-align:     middle;
+		margin-right:       8px;
+}
+
+.blog-entry-user a
+{
+		color: #9f9f9f;
+}
+
+.blog-entry-link
+{
+		padding:            10px 0;
+		text-align:         right;
+
+}
+
+.blog-entry-link a
+{
+		text-transform:     capitalize;
+}

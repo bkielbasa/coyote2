@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<installation type="module">
+	<name>sitemap</name>
+	<text>Moduł generowania mapy strony</text>
+	<version>1.0-rc2</version>
+	<system>1.0-rc2</system>
+    <author>Adam Boduch</author>
+
+	<option type="select">
+		<name>sitemapCache</name>
+		<text>Odświeżaj plik mapy witryny co</text>
+		<title>Raz wygenerowany plik będzie pobierany z cache przy kolejnym żądaniu</title>
+		<values default="24">
+			<value id="1">1 godzine</value>
+			<value id="2">2 godziny</value>
+			<value id="5">5 godzin</value>
+			<value id="10">10 godzin</value>
+			<value id="15">15 godzin</value>
+			<value id="24">24 godzin</value>
+			<value id="36">36 godzin</value>
+			<value id="48">48 godzin</value>
+			<value id="72">72 godziny</value>
+		</values>
+		<auth>a_</auth>
+	</option>
+	<option type="select">
+		<name>sitemapIndex</name>
+		<text>Podziel mapę witryny na pojedyńcze pliki</text>
+		<title>Mapa witryny nie może zawierać więcej niz 50 tys. adresów oraz przekraczac 10MB. W przypadku większej ilości podstron, musisz wygenerować plik indeksu mapy</title>
+		<values default="0">
+			<value id="0">Nie generuj pliku indeksu mapy</value>
+			<value id="2">Wygeneruj 2 pliki mapy</value>
+			<value id="4">Wygeneruj 4 pliki mapy</value>
+			<value id="6">Wygeneruj 6 plików mapy</value>
+		</values>
+		<auth>a_</auth>
+	</option>
+
+	<setup>
+	
+		<connector>
+			<name>sitemap</name>
+			<class>sitemap</class>
+			<text>Mapa strony XML</text>
+			<controller>sitemap</controller>
+			<action>main</action>
+			<folder></folder>
+		</connector>
+	</setup>
+</installation>

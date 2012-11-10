@@ -1,0 +1,53 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Rozdzia&#322; 18. Klasa Model</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="pt01.html" title="Cz&#281;&#347;&#263; I. Dokumentacja techniczna"><link rel="prev" href="ch17s06.html" title="Implementacja interfejsu ArrayAccess"><link rel="next" href="ch18s02.html" title="Metoda locate()"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Rozdzia&#322; 18. Klasa Model</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch17s06.html">Poprzedni</a> </td><th width="60%" align="center">Cz&#281;&#347;&#263; I. Dokumentacja techniczna</th><td width="20%" align="right"> <a accesskey="n" href="ch18s02.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="chapter" lang="pl"><div class="titlepage"><div><div><h2 class="title"><a name="id494020"></a>Rozdzia&#322; 18. Klasa Model</h2></div></div></div><div class="toc"><p><b>Spis tre&#347;ci</b></p><dl><dt><span class="section"><a href="ch18.html#id493969">Pobieranie danych z tabeli</a></span></dt><dd><dl><dt><span class="section"><a href="ch18.html#id495321">&#321;&#261;czenie tabel</a></span></dt></dl></dd><dt><span class="section"><a href="ch18s02.html">Metoda locate()</a></span></dt><dd><dl><dt><span class="section"><a href="ch18s02.html#id495460">Okre&#347;lanie prefiksu</a></span></dt></dl></dd><dt><span class="section"><a href="ch18s03.html">Okre&#347;lanie klucza g&#322;ównego</a></span></dt><dt><span class="section"><a href="ch18s04.html">Skrócone operacje na bazie</a></span></dt></dl></div><p>Powiedzieli&#347;my wcze&#347;niej, i&#380; model mo&#380;e operowa&#263; na danych pochodz&#261;cych z ró&#380;nych &#378;róde&#322;.
+        Bardzo cz&#281;sto s&#261; to jednak dane pochodz&#261;ce z bazy i dlatego klasa
+        <tt class="classname">Model</tt> (która jest klas&#261; bazow&#261; dla wszystkich modeli) posiada metody
+        u&#380;yteczne w manipulowaniu danymi. </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>Klasa Model dziedziczy po klasie Context i jest
+            klas&#261; abstrakcyjn&#261;. Oznacza to, &#380;e z poziomu modeli mo&#380;liwy jest &#322;atwy dost&#281;p do
+            elementów sk&#322;adowych j&#261;dra. </div><p>Zacznijmy od utworzenia modela. W katalogu <tt class="filename">model</tt> swojego projektu,
+        utwórz plik <tt class="filename">user.model.php</tt>. B&#281;dzie to prosta klasa o takiej
+        postaci:</p><pre class="programlisting">
+&lt;?php
+
+class User_Model extends Model
+{
+    protected $name = 'coyote_user';
+}
+
+?&gt;</pre><p>Jak widzisz, dodali&#347;my w klasie chronione pole <tt class="varname">$name</tt> okre&#347;laj&#261;ce nazw&#281;
+        tabeli, do której odwo&#322;ywa&#322; si&#281; b&#281;dzie model. </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>Klasa Modelu musi posiada&#263; sufiks
+            _Model. </div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id493969"></a>Pobieranie danych z tabeli</h2></div></div></div><p>Klasa <tt class="classname">Model</tt> udost&#281;pnia przydatn&#261; metod&#281;
+            <tt class="methodname">fetch()</tt>, która umo&#380;liwia pobranie rekordów danej tabeli. Je&#380;eli
+            posiadamy ju&#380; model (w naszym przyk&#322;adzie nazywa si&#281; <tt class="classname">User_Model</tt>)
+            mo&#380;emy za&#322;adowa&#263; go w kontrolerze, a nast&#281;pnie pobra&#263; i wy&#347;wietil&#263;
+            dane:</p><pre class="programlisting">		$user = &amp;$this-&gt;load-&gt;model('user');
+// pobierz wszystkie rekordy
+$q = $user-&gt;fetch();
+// wyswietl rekordy w formie tablicy
+$this-&gt;debug($q-&gt;fetch());</pre><p>Tym sposobem pobrali&#347;my wszystkie rekordy z tabeli <span class="emphasis"><em>coyote_user</em></span>.
+            Metoda <tt class="methodname">fetch()</tt> posiada parametry, dzi&#281;ki którym mo&#380;emy okre&#347;li&#263;
+            warunki pobrania rekordów z tabeli SQL. Pierwszy parametr okre&#347;la warunek
+            WHERE:</p><pre class="programlisting">$q = $user-&gt;fetch('user_id &lt; 100');</pre><p>Tym sposobem pobrane zostan&#261; rekordy, których kolumna <span class="emphasis"><em>user_id</em></span>
+            jest mniejsza ni&#380; 100. Kolejne, opcjonalne parametry oznaczaj&#261;: kolejno&#347;&#263; sortowania
+            danych oraz numer pierwszego pobieranego rekordu oraz ich limit:
+            </p><pre class="programlisting">// SELECT * FROM coyote_user WHERE user_id &lt; 100 ORDER BY user_id DESC LIMIT 10, 10
+$q = $user-&gt;fetch('user_id &lt; 100', 'user_id DESC', 10, 10);</pre><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id495321"></a>&#321;&#261;czenie tabel</h3></div></div></div><p>W procesie normalizacji unikamy powtórze&#324; pewnych danych przenosz&#261;c je do innych
+                tabel. Przyk&#322;adowo w tabeli u&#380;ytkowników znajduje si&#281; kolumna
+                    <span class="emphasis"><em>user_location</em></span>, która jest kluczm obcym do tabeli
+                    <span class="emphasis"><em>coyote_location</em></span>. Ta natomiast zawiera spis miejscowo&#347;ci.
+                Pobieraj&#261;c dane u&#380;ytkowników chcieliby&#347;my mie&#263; od razu nazw&#281; miejscowo&#347;ci, nie w
+                postaci ID, ale &#322;a&#324;cucha znaków. W klasie modelu musimy okre&#347;li&#263; referencj&#281; do
+                tabel, w sposób nast&#281;puj&#261;cy:
+                </p><pre class="programlisting">	protected $reference = array(
+                    
+                    'location'		=&gt; array(
+                    'table'			=&gt; 'coyote_location',
+                    'col'			=&gt; 'user_location',
+                    'refCol'		=&gt; 'location_id'
+                    )
+);</pre><p>Utworzyli&#347;my w ten sposób relacj&#281; w jeden do jednego w naszej tabeli. Nowe
+                odwo&#322;anie odnosi si&#281; do tabeli <span class="emphasis"><em>coyote_location</em></span>. Informujemy
+                system, &#380;e z&#322;&#261;czenie odbywa si&#281; na kolumnach <span class="emphasis"><em>user_location</em></span> i
+                    <span class="emphasis"><em>location_id</em></span>. W ten sposób, wywo&#322;uj&#261;c metod&#281;
+                    <tt class="methodname">fetch()</tt> pobieramy dane z dwóch
+                tabel:</p><pre class="programlisting">$q = $user-&gt;fetch(null, null, 10);
+$this-&gt;debug($q-&gt;fetch());</pre></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch17s06.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="pt01.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch18s02.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Implementacja interfejsu ArrayAccess </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Metoda locate()</td></tr></table></div></body></html>

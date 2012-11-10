@@ -1,0 +1,1 @@
+<div class="editor-tab" style="display: none;" title="Podgląd"></div>

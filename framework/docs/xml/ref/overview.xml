@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter>
+    <title>Podstawowe informacje</title>
+    
+    <section>
+        <title>Wymagania sprzętowe</title>
+        
+        <para>
+            Jak każda aplikacja PHP, Coyote do działania potrzebuje interpretera PHP, w wersji 5.1
+            (zalecana wersja 5.3.3). Przydatny może okazać się również serwer ;) Polecamy popularny
+            serwer Apache 2.0.X (aczkolwiek projekt testowany był również w wersji 2.2.X). 
+            Jeżeli Twoja aplikacja w domyśle ma korzystać z bazy danych, musisz
+            zainstalować oraz skonfigurować odpowiedni system bazodanowy.
+        </para>
+        
+        <para>
+            <important>Do wersji 1.1, Coyote Framework obsługuje jedynie bazę MySQL oraz PostgreSQL.
+                Jeżeli chcesz obsługiwać w swojej aplikacji inną bazę, musisz napisać odpowiednią klasę
+                obsługi danych (adapter). Więcej szczegołów znajdziesz w dalszej części
+                podręcznika.
+            </important>
+        </para>
+        
+    </section>
+    
+    <section>
+        <title>Licencja</title>
+        
+        <para>
+            Projekt oparty jest o licencję BSD-new, której treść znajduje się poniżej.
+        </para>
+        
+        <para>
+            <programlisting>
+Copyright (c) 2003-2010, Adam Boduch
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+* Redistributions of source code must retain the above copyright notice,
+this list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above copyright notice,
+this list of conditions and the following disclaimer in the documentation
+and/or other materials provided with the distribution.
+
+* Neither the name of Adam Boduch. nor the names of its
+contributors may be used to endorse or promote products derived from this
+software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.            
+            </programlisting>
+        </para>
+    </section>
+    
+    <section>
+        <title>Autorzy</title>
+        
+        <para>
+            Autorem wersji 1.1 jest Adam Boduch. Jednakże wcześniej wiele osób miało wkład w
+            powstawanie projektu.
+        </para>
+    </section>
+</chapter>

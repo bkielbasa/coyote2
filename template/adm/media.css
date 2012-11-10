@@ -1,0 +1,117 @@
+#part span
+{
+		background:				url('img/bulletGoIcon.png') no-repeat;
+		padding:				1px 6px 2px 6px;
+}
+
+#media
+{
+		border-spacing:			0;
+		border:					none;
+}
+
+#media .alternate
+{
+		background:				#f8f8f8;
+}
+
+#media td
+{
+		background:				none;
+}
+
+#media td a
+{
+		background:				url('img/plainTextIcon.png') no-repeat;
+		padding:				2px 0 2px 18px;
+		color:					#000;
+		font-weight:			normal;
+}
+
+#media .folder
+{
+		background:				url('img/folderIcon.png') no-repeat;
+}
+
+#media .page
+{
+		background:				url('img/pageIcon.png') no-repeat;
+}
+
+#media .php
+{
+		background:				url('img/pagePhpIcon.png') no-repeat;
+}
+
+#media .zip
+{
+		background:				url('img/pageZipIcon.png') no-repeat;
+}
+
+#media .doc
+{
+		background:				url('img/pageWordIcon.png') no-repeat;
+}
+
+#media .xls
+{
+		background:				url('img/pageExcelIcon.png') no-repeat;
+}
+
+#media .pdf
+{
+		background:				url('img/pagePdfIcon.png') no-repeat;
+}
+
+#media .c
+{
+		background:				url('img/pageCIcon.png') no-repeat;
+}
+
+#media .csharp
+{
+		background:				url('img/pageCharpIcon.png') no-repeat;
+}
+
+#media .swf
+{
+		background:				url('img/pageFlashIcon.png') no-repeat;
+}
+
+#media .jpg, #media .gif, #media .png
+{
+		background:				url('img/pagePictureIcon.png') no-repeat;
+}
+
+#media .up
+{
+		background:				url('img/arrowUpIcon.png') no-repeat;
+}
+
+#media .home
+{
+		background:				url('img/houseGoIcon.png') no-repeat;
+}
+
+#media .user
+{
+		background:				url('img/userLoginIcon.png') no-repeat;
+}
+
+#media .report
+{
+		background:				url('img/pageErrorIcon.png') no-repeat;
+}
+
+#media input[class=delete]
+{
+		border:					none;
+		background:				transparent url('img/deleteIcon.png') no-repeat;
+		padding:				0;
+		margin:					0;
+		font-size:				1;
+		line-height:			1;
+		width:					16px;
+		height:					16px;
+}
+

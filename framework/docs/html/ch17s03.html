@@ -1,0 +1,44 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Filtrowanie danych</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch17.html" title="Rozdzia&#322; 17. Klasa GPC"><link rel="prev" href="ch17s02.html" title="Referencja do tablicy"><link rel="next" href="ch17s04.html" title="Odczyt oryginalnych danych"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Filtrowanie danych</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch17s02.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 17. Klasa GPC</th><td width="20%" align="right"> <a accesskey="n" href="ch17s04.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id494197"></a>Filtrowanie danych</h2></div></div></div><p>W konstruktorze klasy <tt class="classname">Gpc</tt> tworzony jest obiekt klasy
+                <tt class="classname">Filter</tt>. Dzi&#281;ki temu dane pochodz&#261;ce z ró&#380;nych &#378;róde&#322; mog&#261; by&#263;
+            filtrowane na ró&#380;ne sposoby. Np. domy&#347;lnym filtrem dla klasy <tt class="classname">Post</tt>
+            jest filter XSS. Usuwa on wszelkie potencjalnie, niebezpieczne znaczniki HTML z tekstu.
+            Dodatkowo usuwa on ewentualne niebezpieczne atrybuty znaczników HTML, mog&#261;ce mie&#263;
+            zwi&#261;zek z JavaScript. Filtr w klasie <tt class="classname">Get</tt> jest bardziej
+            rygorystyczny - usuwa on bowiem ka&#380;dy kod HTML, cudzys&#322;owia oraz inne nieportzebne,
+            potencjalnie niebezpieczne znaki. </p><p>Mo&#380;emy samodzielnie ustala&#263; filtr w danej klasie, w zale&#380;no&#347;ci od potrzeb.
+            Przyk&#322;adowo: w danym kontrolerze chcemy, aby filtr dla klasy <tt class="classname">Get</tt>,
+            by&#322; mniej rygorystyczny. Chcemy bowiem, aby zamienia&#322; jedynie wszelkie znaki &lt; oraz &gt;
+            na &amp;lt; i &amp;gt; Mo&#380;emy to &#322;atwo zmieni&#263;. Przede wszystkim, uzyskujemy dost&#281;p do
+            obiektu filtra dzi&#281;ki metodzie
+            <tt class="methodname">getFilter()</tt>:</p><pre class="programlisting">&lt;?php
+
+class Index extends Controller
+{
+	function main()
+	{
+		// resetowanie ustawien filtra
+		$this-&gt;get-&gt;getFilter()-&gt;reset();
+		$this-&gt;get-&gt;getFilter()-&gt;addFilter('htmlspecialchars');
+
+		echo $this-&gt;get-&gt;id;
+	}
+}
+?&gt;</pre><p>W metodzie <tt class="methodname">main()</tt> pierwsz&#261; czynno&#347;c&#261; jest czyszczenie
+            obecnych ustawie&#324; filtra dla tej klasy. Nast&#281;pnie dodajemy filtr
+                <span class="emphasis"><em>htmlspecialchars</em></span>, który w momencie &#380;&#261;dania odczytu zawarto&#347;ci
+            pola <span class="emphasis"><em>id</em></span> - wywo&#322;a odpowiedni filtr. </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>Wi&#281;cej informacji na temat
+                filtrowania danych znajdziesz w rozdziale po&#347;wi&#281;conym klasie
+                Filter.</div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>Zalecane jest korzystanie z klas Get, Post, Cookie oraz Server
+                do odczytywania zawarto&#347;ci tablic globalnych. Minimalizuje to ryzyko ataku typu SQL
+                Injection lub XSS. </div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id494313"></a>Metoda setFilters()</h3></div></div></div><p>Metoda umo&#380;liwia skrótowe ustawienie filtrów dla danych. Metoda wywo&#322;uje w
+                rzeczywisto&#347;ci metod&#281; <tt class="methodname">setFilters()</tt> z klasy
+                    <tt class="classname">Filter</tt>, czyli usuwa z kolejki ju&#380; ustawione filtry i
+                dodaje nowe:
+                </p><pre class="programlisting">$this-&gt;get-&gt;setFilters('htmlspecialchars'); // dodanie jednego filtru - htmlspecialchars</pre></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id494345"></a>Metoda addFilter()</h3></div></div></div><p>Metoda umo&#380;liwia skrótowe dodanie nowego filtra bez konieczno&#347;ci odwo&#322;ania si&#281; do
+                obiektu klasy <tt class="classname">Filter</tt>. Innymi s&#322;owy wywo&#322;uje metod&#281;
+                    <tt class="methodname">addFilter()</tt> z klasy <tt class="classname">Filter</tt>,
+                powoduj&#261;cym tym samym dodanie nowego filrta na koniec kolejki. </p></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id494375"></a>Dezaktywacja filtrów</h3></div></div></div><p>Je&#380;eli nie chcemy, aby dane by&#322;y filtrowane w danym &#380;&#261;daniu, mo&#380;emy dezaktywowa&#263;
+                wszystkie filtry, korzystaj&#261;c z metody <tt class="methodname">disableFilter()</tt>,
+                klasy
+                <tt class="classname">Gpc</tt>:</p><pre class="programlisting">$this-&gt;get-&gt;disableFilter();</pre><p>Aby przywróci&#263; filtrowanie danych, nale&#380;y wywo&#322;a&#263; metod&#281;
+                    <tt class="methodname">enableFilter()</tt>.</p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch17s02.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch17.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch17s04.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Referencja do tablicy </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Odczyt oryginalnych danych</td></tr></table></div></body></html>

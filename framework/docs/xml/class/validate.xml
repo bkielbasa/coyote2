@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter>
+    <title>Walidacja danych</title>
+    <para>Walidacja jest procesem sprawdzania poprawności danych. Zapewne będzie wykorzystywana
+        dosyć często w Twoich aplikacjach, np. - przy sprawdzaniu poprawności danych wprowadzaonych
+        w formularzu. Coyote udostępnia klasę <classname>Validate</classname>, która może być
+        wykorzystana przez Ciebie do sprawdzania poprawności danych.</para>
+    <section>
+        <title>Inicjalizacja klasy</title>
+        <para>Klasę można zainicjalizować tak jak każdą inną bibliotekę frameworka. Oto prosty
+            przykład użycia mechanizmu walidacji
+            danych:<programlisting>&lt;?php
+
+class Bar extends Controller
+{
+	function main()
+	{
+		$value = 'foobarfoobarfoobar';
+
+		$validate = &amp;$this->getLibrary('validate');
+		$validate->addValidator(new Validate_String(false, 1, 5));
+
+		if (!$validate->isValid($value))
+		{
+			echo 'Łańcuch jest nieprawidłowy';
+		}
+		else
+		{
+			echo 'Łańcuch jest poprawny';
+		}
+	}
+}
+?></programlisting></para>
+        <para>Klasa <classname>Validate</classname> sama w sobie jest bezużyteczna bez walidatorów,
+            które są dodawane przy pomocy metody <methodname>addValidator()</methodname>. W tym
+            przykładzie sprawdzamy poprawość łańcucha danych. Musi on mieć długość od jednego do
+            pięciu znaków. Następnie metoda <methodname>isValid()</methodname> wywołuje w kolejce
+            kolejne walidatory i jeżeli którykolwiek zwrócił false - metoda
+            <methodname>isValid()</methodname> - również zwróci wartość false. </para>
+    </section>
+    <section>
+        <title>Odczyt błędów</title>
+        <para>Każdy walidator zwróci komunikat błędu w przypadku niespełnienia danych kryteriów.
+            Komunikaty błędów mogą być odczytane przy pomocy metody
+            <methodname>getMessages()</methodname> która zwraca tablicę
+            błędów:<programlisting>Core::debug($validate->getMessages());</programlisting></para>
+    </section>
+    <section>
+        <title>Walidatory</title>
+        <para>Walidatory mogą być dodawane do kolejki przy pomocy metody
+            <methodname>addValidator()</methodname>. Zawartość danego pola czy zmiennej może być
+            bowiem analizowana przy pomocy wielu walidatorów. Każdy walidator Coyote musi być klasą
+            implementującą interfejs <interfacename>IValidate</interfacename> oraz dziedziczącą po
+            klasie <classname>Validate_Abstract</classname>. W Coyote klasy walidatorów znajdują się
+            w katalogu <filename>lib/validate</filename>. Zalecane jest, aby nazwa klasy nosiła
+            prefiks <emphasis>Validate_</emphasis>, co pozwoli na lokalizowanie tego pliku przez
+            loader frameworka. </para>
+        <para>Każdy walidator posiada konstruktor, którzy w parametrach może przyjmować różne opcje
+            walidacji. We wcześniejszym przykładzie, w konstruktorze klasy
+                <classname>Validate_String</classname> przekazaliśmy informacje o minimalnej oraz
+            maksymalnej długości łańcucha, ale również informację o tym, czy wartość jest
+            opcjonalna, czy też nie. </para>
+        <para>Każdy walidator może posiadać charakterystyczne dla siebie opcje oraz właściwości. </para>
+        <section>
+            <title>Walidatory wykonywane samodzielnie</title>
+            <para>Możemy wykorzystać walidatory bez korzystania z klasy Validate. Klasa ów dostarcza
+                parę metod, dzięki którym możemy zadeklarować kolejkę walidatorów, lecz jeżeli
+                chcemy skorzystać tylko z jednego walidatora - możemy użyć go bezpośrednio -
+                    np.:<programlisting>&lt;?php
+
+class Bar extends Controller
+{
+	function main()
+	{
+		$value = 'foobarfoobarfoobar';
+
+		// deklaracja interfejsu IValidate w pliku validate.class.php
+		Load::loadClass('validate', false);
+		$validate = new Validate_String(false, 1, 5);
+
+		if (!$validate->isValid($value))
+		{
+			echo 'Łańcuch jest nieprawidłowy';
+
+			Core::debug($validate->getMessages());
+		}
+		else
+		{
+			echo 'Łańcuch jest poprawny';
+		}
+	}
+}
+?></programlisting><note>Zwróc
+                    uwagę, iż mimo, iż niepotrzebna nam klasa Validate, załadowałem ją do projektu
+                    (bez inicjalizacji). Dlatego, iż plik validate.class.php zawiera deklarację
+                    interfejsu IValidate.</note></para>
+        </section>
+        <section>
+            <title>Klasa Validate_String</title>
+            <para>Jak łatwo się domyśleć - klasa <classname>Validate_String</classname> jest
+                walidatorem łańcuchów. Umożliwia sprawdzenie jego długości. Pierwszym parametrem
+                konstruktora jest parametr <parameter>$optional</parameter>, który określa czy
+                łańcuch jest opcjonalny (true), czy nie (false). Jeżeli jest opcjonalny, to pomimo
+                iż jest pusty - walidator nie zwróci wartości false. </para>
+            <para>Warto wspomnieć, iż parametry konstruktora są parametrami opcjonalnymi, można
+                skorzystać z metod, które oferuje klasa
+                <classname>Validate_String</classname>:<programlisting>
+$validate = new Validate_String;
+$validate->setOptional(false);
+$validate->setMin(1);
+$validate->setMax(5);</programlisting></para>
+        </section>
+        <section>
+            <title>Klasa Validate_Int</title>
+            <para>Walidator służy do walidacji wartości liczbowych. Posiada takie same metody, co
+                klasa <classname>Validate_String</classname>, jej działanie jest takie same (poza
+                oczywistym faktem iż sprawdza wielkości liczbowe, a nie długości łańcuchów). </para>
+        </section>
+        <section>
+            <title>Klasa Validate_Email</title>
+            <para>Walidator służy do sprawdzenia poprawności adresu e-mail. Opcjonalnym parametrem
+                konstruktora jest parametr $optional, który określa, czy wartość (adres e-mail) jest
+                opcjonalny (jeżeli jest opcjonalny, w przypadku pustego łańcucha - klasa nie zwróci
+                wartości false).
+                Przykład:<programlisting>&lt;?php
+
+class Bar extends Controller
+{
+	function main()
+	{
+		$value = 'foobarfoobarfoobar';
+
+		$validate = &amp;$this->getLibrary('validate');
+		$validate->addValidator(new Validate_String(false, 1, 5));
+		$validate->addValidator(new Validate_Email(false));
+
+		if (!$validate->isValid($value))
+		{
+			echo 'Łańcuch jest nieprawidłowy';
+
+			Core::debug($validate->getMessages());
+		}
+		else
+		{
+			echo 'Łańcuch jest poprawny';
+		}
+	}
+}
+?></programlisting></para>
+            <para>Zwróć uwagę, iż w tym przypadku używamy dwóch walidatorów, zarówno do sprawdzenia
+                długości łańcucha jak i poprawności pod kątem adresu e-mail. </para>
+        </section>
+        <section>
+            <title>Klasa Validate_Url</title>
+            <para>Jak łatwo się domyśleć - służy do sprawdzenia poprawności adresu URL. Działa
+                podobnie jak klasa <classname>Validate_Email</classname>. Jej jedynym parametrem
+                konstruktora jest parametr <parameter>$optional</parameter>. </para>
+        </section>
+        <section>
+            <title>Klasa Validate_Match</title>
+            <para>Walidator umożliwia sprawdzenie danej wartości pod kątem wyrażenia
+                regularnego:<programlisting>
+$validate = &amp;$this->getLibrary('validate');
+$validate->addValidator(new Validate_String(false, 1, 5));
+
+$matchValidator = new Validate_Match;
+$matchValidator->setPattern('/[a-zA-Z]+/');
+
+$validate->addValidator($matchValidator);</programlisting></para>
+            <para>Walidator posiada metodę <methodname>setPattern()</methodname>, która umożliwia
+                ustawienie wzorca wyrażenia regularnego. Równie dobrze, można ów wzorzec ustawić w
+                konstruktorze klasy. </para>
+        </section>
+        <section>
+            <title>Klasa Validate_Equal</title>
+            <para>Walidator umożliwia porównanie wartości dwóch parametrów. Sprawdza, czy poadne wartości są sobie równe.</para>
+            <programlisting>
+$validate = &amp;$this->getLibrary('validate');
+$validate->addValidator(new Validate_Equal('foo'));
+
+if ($validate->isValid('bar'))
+{
+    echo 'Wartości nie są sobie równe';
+}
+            </programlisting>
+            <para>
+                W powyższym kodzie, metoda <methodname>isValid()</methodname> zwróci FALSE ponieważ łańcuchy foo oraz bar nie są sobie równe.
+                <note>
+                    Walidator rzutuje dwie podane wartości na typ string.
+                </note>
+            </para>
+        </section>
+    </section>
+    <section>
+        <title>Ustawienie komunikatów błędów</title>
+        <para>Każdy walidator ma określony, zadeklarowany zestaw komunikatów błędów. Są one zwracane
+            przez metodę getMessages() klasy Validate lub klasy walidatora. Możemy zmodyfikować
+            treść tych komunikatów dzięki metodzie setTemplate(), która dostępna jest dla każdego
+            walidatora:
+            <programlisting>
+$matchValidator = new Validate_Match;
+$matchValidator->setPattern('/[a-zA-Z]+/');
+$matchValidator->setTemplate(Validate_Match::NOT_MATCH, 'Uuu... wartość %value% jest nieprawidłowa');</programlisting></para>
+        <para>Każdy walidator ma zestaw stałych określających dane komunikaty. Aby dowiedzieć się
+            więcej o tych stałych, zachęcamy do przeglądnięcia kodów źródłowych klas walidatorów. W
+            powyższym przykładzie ustawiliśmy nowy komunikat dla stałej NOT_MATCH. Zwróć uwagę na
+            użycie frazy <emphasis>%value%</emphasis> w komunikacie błędu. W to miejsce zostanie
+            wstawiona walidowana wartóść. </para>
+        <para>Wartość <emphasis>%value%</emphasis> jest dostępna w każdym walidatorze. Ponad to
+            każdy walidator posiada swój zestaw "zmiennych", które zostaną zastąpione określonymi
+            pozycjami.
+            Przykład:<programlisting>&lt;?php
+
+class Bar extends Controller
+{
+	function main()
+	{
+		$value = '12354567567';
+
+		$validate = &amp;$this->getLibrary('validate');
+
+		$stringValidator = new Validate_String(false, 1, 5);
+		$stringValidator->setTemplate(Validate_String::TOO_SHORT, 'Oj nie... %value% nie może być krótsze niż %min% znaków!');
+		$stringValidator->setTemplate(Validate_String::TOO_LONG, 'Khem... %value% jest zbyt długie. Maksymalna długość znaków to %max%');
+		$validate->addValidator($stringValidator);
+
+		$matchValidator = new Validate_Match;
+		$matchValidator->setPattern('/[a-zA-Z]+/');
+		$matchValidator->setTemplate(Validate_Match::NOT_MATCH, 'Uuu... wartość %value% jest nieprawidłowa');
+
+		$validate->addValidator($matchValidator);
+
+		if (!$validate->isValid($value))
+		{
+			echo 'Łańcuch jest nieprawidłowy';
+
+			Core::debug($validate->getMessages());
+		}
+		else
+		{
+			echo 'Łańcuch jest poprawny';
+		}
+	}
+}
+?></programlisting></para>
+    </section>
+    <section>
+        <title>Metoda setOptions()</title>
+        <para>Każdy walidator posiada metodę <methodname>setOptions()</methodname>. Umożliwia ona
+            przekazanie opcji walidatora w formie tablicy. Dochodzimy do tego, że są trzy sposoby
+            przekazywania opcji walidatora:<itemizedlist>
+                <listitem>W konstruktorze klasy</listitem>
+                <listitem>Przy pomocy metod walidatora</listitem>
+                <listitem>Przy pomocy metody setOptions()</listitem>
+            </itemizedlist></para>
+        <para>Spójrz na poniższy
+            przykład:<programlisting>
+$stringValidator = new Validate_String;
+$stringValidator->setTemplate(Validate_String::TOO_SHORT, 'Oj nie... %value% nie może być krótsze niż %min% znaków!');
+$stringValidator->setTemplate(Validate_String::TOO_LONG, 'Khem... %value% jest zbyt długie. Maksymalna długość znaków to %max%');
+
+$stringValidator->setOptions(array(
+		'optional'		=> false,
+		'min'			=> 1,
+		'max'			=> 5
+	)
+);
+$validate->addValidator($stringValidator);</programlisting></para>
+        <para>Działanie metody <methodname>setOptions()</methodname> jest bardzo proste. Odczytuje
+            ona klucze w tablicy i poszukuje w klasie walidatora metod o nazwie
+            <emphasis>setXXX</emphasis>, gdzie <emphasis>XXX</emphasis> to nazwa klucza. </para>
+    </section>
+    <section>
+        <title>Metoda setValidators()</title>
+        <para>Klasa <classname>Validate</classname> posiada metodę
+            <methodname>setValidators()</methodname>, która stanowi alternatywę dla metody
+                <methodname>addValidator()</methodname>. Umożliwia ona przekazanie konfiguracji
+            walidatorów bez konieczności samodzielnego inicjalizowania klas.
+            <programlisting>
+&lt;?php
+
+class Bar extends Controller
+{
+	function main()
+	{
+		$value = '12354567567';
+
+		$validate = &amp;$this->getLibrary('validate');
+		$validate->setValidators(array(
+
+				'string'		=> array(
+
+
+						'optional'			=> false,
+						'min'				=> 1,
+						'max'				=> 5,
+						'templates'			=> array(
+
+							'TOO_SHORT'	=> 'Oj nie... %value% nie może być krótsze niż %min% znaków!',
+							'TOO_LONG'	=> 'Khem... %value% jest zbyt długie. Maksymalna długość znaków to %max%'
+						)
+				),
+				'match'			=> array(
+
+						'pattern'			=> '/[a-zA-Z]+/',
+						'templates'			=> array(
+
+							'NOT_MATCH'	=> 'Uuu... wartość %value% jest nieprawidłowa'
+						)
+				)
+			)
+		);
+
+		if (!$validate->isValid($value))
+		{
+			echo 'Łańcuch jest nieprawidłowy';
+
+			Core::debug($validate->getMessages());
+		}
+		else
+		{
+			echo 'Łańcuch jest poprawny';
+		}
+	}
+}
+?></programlisting></para>
+        <para>Parametrem metody <methodname>setValidators()</methodname> musi być tablica. Kluczami
+            tablicy są nazwy walidatorów, które to z kolei zawierają kolejne tablice określające
+            opcje walidatorów. Klucz <emphasis>templates</emphasis> zawiera informacje o szablonach
+            komunikatów błędów. Zwróć uwagę, iż stałe są tutaj łańcuchami - ujęte w apostrofy.
+            Należy o tym pamiętać. </para>
+        <para>Takie rozwiązanie umożliwia przetrzymywanie konfiguracji walidatorów w plikach
+        konfiguracyjnych i ładowania ich w razie potrzeby do projektu. </para>
+        <para>Możliwe są różne konfigurację tablicy asocjacyjnej przekazywanej do metody <methodname>setValidators()</methodname>.
+        W powyższym przykładzie klucze tablicy określały nazwę walidatora, a wartością była tablica przekazywana do 
+        konstruktora klasy. Możliwe jest przekazanie obiektu klasy walidatora lub - nazwy walidatora - bez parametrów
+        konfiguracji:
+        <programlisting>
+&lt;?php
+
+class Bar extends Controller
+{
+	function main()
+	{
+		$value = '12354567567';
+
+		$validate = &amp;$this->getLibrary('validate');
+		$validate->setValidators(array(
+
+				'string',
+				new Validate_Match('/[a-zA-Z]+/')
+			)
+		);
+
+		if (!$validate->isValid($value))
+		{
+			echo 'Łańcuch jest nieprawidłowy';
+
+			Core::debug($validate->getMessages());
+		}
+		else
+		{
+			echo 'Łańcuch jest poprawny';
+		}
+	}
+}
+?>            
+        </programlisting>
+            Możliwe jest więc przekazywanie samych nazw walidatorów - bez zawierania argumentów, które mają być przekazane
+            do konstruktora klasy. Innym sposobem jest przekazanie parametrów walidatora w formie tablicy:
+            <programlisting>
+$validate->setValidators(array(
+
+		array('string', false, 1, 5),
+		array('match', '/[a-zA-Z]+/')
+	)
+);                
+            </programlisting>
+            Pierwszym elementem tablicy musi być nazwa walidatora (tzn. <emphasis>string</emphasis> oraz <emphasis>match</emphasis>), gdyż
+            kolejne elementy będą przekazywane do konstruktora klasy w formie parametrów.          
+        </para>
+    </section>
+    <section>
+        <title>Metoda reset()</title>
+        <para>Metoda umożliwia wyzerowanie kolejki walidatorów w klasie
+            <classname>Validate</classname></para>
+    </section>
+    <section>
+        <title>Statyczna metoda call()</title>
+        <para>Statyczna metoda <methodname>call()</methodname> klasy <classname>Validate</classname>
+            umożliwia wywołanie jednego walidatora danych bez konieczności inicjalizacji klasy
+                <classname>Validate</classname>:<programlisting>if (!Validate::call('123456', new Validate_String(false, 1, 5))) { ... </programlisting></para>
+    </section>
+</chapter>

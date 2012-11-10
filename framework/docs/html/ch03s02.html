@@ -1,0 +1,191 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Pierwsze kroki</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch03.html" title="Rozdzia&#322; 3. Wprowadzenie"><link rel="prev" href="ch03.html" title="Rozdzia&#322; 3. Wprowadzenie"><link rel="next" href="ch03s03.html" title="Kontrolery"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Pierwsze kroki</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch03.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 3. Wprowadzenie</th><td width="20%" align="right"> <a accesskey="n" href="ch03s03.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id420130"></a>Pierwsze kroki</h2></div></div></div><p>
+            Je&#380;eli poprawnie zainstalowa&#322;e&#347; serwer
+            HTTP, PHP oraz Coyote, mo&#380;emy zaczyna&#263;. Je&#380;eli chcesz mo&#380;esz usun&#261;&#263; pliki strony powitalnej.
+            Wystarczy klikn&#261;&#263; na przycisk <span class="italic">Usu&#324; pliki projektu</span> na
+            g&#322;ównej stronie powitalnej. Od tej pory posiadasz na dysku framework w "czystej" postaci.
+            Je&#380;eli wiesz ju&#380; czym jest architektura MVC, mo&#380;emy przyst&#261;pi&#263; do pierwszej czynno&#347;ci, czyli
+            napisania standardowego <span class="bold"><b>Hello World</b></span>. 
+        </p><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id420153"></a>Hello World</h3></div></div></div><p>
+                Pierwszym krokiem b&#281;dzie utworzenie kontrolera <tt class="filename">index.php</tt>, w
+                katalogu <tt class="filename">controller</tt>. Plik kontrolera musi posiada&#263; tak&#261; sam&#261; nazw&#281;
+                co jego klasa. Tak wi&#281;c utwórz plik <tt class="filename">index.php</tt>, który powinien mie&#263;
+                tak&#261; posta&#263;:
+                </p><pre class="programlisting">
+&lt;?php
+
+class Index extends Controller
+{
+    function main()
+    {
+        echo 'Hello World';
+    }
+}
+?&gt;
+                </pre><p>
+            </p><p>
+                Jak widzisz budowa kontrolera jest prosta. Znajduje si&#281; tutaj metoda
+                <tt class="methodname">main()</tt> która jest g&#322;ówn&#261; metod&#261; ka&#380;dego kontrolera. Innymi
+                s&#322;owy jest domy&#347;ln&#261; <span class="emphasis"><em>akcj&#261;</em></span>. Je&#380;eli w URL nie zostanie przekazana
+                nazwa akcji, zostanie wygenerowany kod domy&#347;lnej - <tt class="methodname">main()</tt>. 
+            </p><p>
+                Napis <span class="emphasis"><em>Hello World</em></span> powinien si&#281; wy&#347;wietli&#263; w momencie wej&#347;cia na
+                g&#322;ówn&#261; stron&#281; projektu, czyli np. http://127.0.0.1/coyote/index.php
+                
+                </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>
+                    Aby unikn&#261;&#263;
+                    konfliktów w nazewnictwie, nazwa klasy kontrolera mo&#380;e posiada&#263; przyrostek _Controller
+                    - np.: Index_Controller.
+                </div><p>
+            </p></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id420232"></a>URL w Coyote</h3></div></div></div><p>
+                Domy&#347;lnie Coyote generuje tzw. przyjazne linki, które z &#322;atwo&#347;ci&#261; s&#261; indeksowane
+                przez wyszukiwarki. Domy&#347;lnie linki w Coyote maj&#261; posta&#263;: 
+                http://serwer.com/Kontroler/Akcja, czyil np. http://serwer.com/Blog/View.
+                
+                System, tak skonstru&#322;owany URL rozpozna i utworzy obiekt odopwiedniej klasy (kontrolera). 
+                W tym przypadku kontrolerem jest <span class="emphasis"><em>Blog</em></span>, a akcj&#261; - <span class="emphasis"><em>View</em></span>. 
+                Innymi s&#322;owy utworzona zostanie instancja klasy <tt class="classname">blog</tt>, znajduj&#261;ca si&#281; w
+                <tt class="filename">controller/blog.php</tt>. Wykonany zostanie kod metody <tt class="methodname">view</tt>. 
+                
+                </p><div class="important" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">WA&#379;NE</h3>
+                    Przyj&#281;to za&#322;o&#380;enie, &#380;e nazwy metod zaczynamy
+                    od ma&#322;ej litery. Nazwa akcji, czy kontrolera zawarta w URL mo&#380;e by&#263; pisana ma&#322;ymi lub
+                    wielkimi literami. Nie ma to znaczenia. Czyli mo&#380;e to by&#263; np. http://serwer.com/Blog/View, 
+                    jak i równie&#380; http://serwer.com/blog/view. 
+                </div><p>
+            </p><p>
+                Domy&#347;lnie ka&#380;dy URL w Coyote kszta&#322;towany jest nast&#281;puj&#261;co: http://sewer.com/index.php/Blog. 
+                Czyli innymi s&#322;owy w URL do&#322;&#261;czana jest nazwa skryptu zawieraj&#261;cego <span class="italic">Front Controller</span>.
+                
+                Oczywi&#347;cie konfiguracja umo&#380;liwia wy&#322;&#261;czenie tego. Wcze&#347;niej jednak trzeba odpowiednio
+                skonfigurowa&#263; serwer, tak, aby ka&#380;de &#380;&#261;danie by&#322;o przekazywane do <span class="italic">Front Controllera</span>. 
+                W tym celu, w g&#322;ównym katalogu projektu umie&#347;&#263; plik <tt class="filename">.htaccess</tt> o nast&#281;puj&#261;cej
+                tre&#347;ci:
+                
+                </p><pre class="programlisting">
+Options +FollowSymlinks
+RewriteEngine on
+#Jesli masz zainstalowany system Coyote w podkatalogu (np. www.example.pl/coyote/)
+#to usun komentarz z ponizszej linii i ustaw prawidlowo nazwe podkatalogu
+#RewriteBase /coyote/
+
+RewriteCond %{REQUEST_FILENAME} !-s [NC]
+RewriteCond %{REQUEST_FILENAME} !-d [NC]
+RewriteRule ^(.+) index.php/$1 [L]
+                </pre><p>
+            </p><p>
+                Takie instrukcje oznaczaj&#261;, i&#380; serwer przy ka&#380;dym &#380;&#261;daniu b&#281;dzie sprawdza&#322;, czy
+                istnieje dany plik lub katalog. Je&#380;eli istnieje - wy&#347;wietla go. Je&#380;eli nie - wykonywany
+                b&#281;dzie skrypt <tt class="filename">index.php</tt>. 
+            </p><p>
+                Ostatni&#261; rzecz&#261;, któr&#261; musisz zrobi&#263;, to ustawienie parametru konfiguracji
+                frameworka. Otwórz plik <tt class="filename">config.xml</tt> (lub inny, zawieraj&#261;cy
+                konfiguracje projektu) i odszukaj w&#322;a&#347;ciwo&#347;&#263; <tt class="varname">frontController</tt>.
+                Zmodyfikuj t&#281; warto&#347;&#263; do takiej postaci:
+            
+                </p><pre class="programlisting">&lt;frontController&gt;&lt;/frontController&gt;</pre><p>
+            </p><p>
+                Od tej pory nasze URL'e b&#281;d&#261; wygl&#261;da&#322;y lepiej. 
+                </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>
+                    Wi&#281;cej informacji o konfiguracji URL, znajdziesz w sekcji po&#347;wi&#281;conej systemowi routingu.
+                </div><p>
+                
+                </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>
+                    Równie dobrze mo&#380;esz usun&#261;&#263; znacznik &lt;fontController&gt; z pliku
+                    konfiguracji. Wi&#281;cej o znaczeniu poszczególnych opcji konfiguracji, dowiesz si&#281; w
+                    sekcji po&#347;wi&#281;conej konfiguracji frameworka. 
+                </div><p>
+            </p></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id420418"></a>Umieszczanie kontrolerów w podkatalogach</h3></div></div></div><p>
+                Kontrolery aplikacji mog&#261; by&#263; gromadzone w podkataloach. Przeprowad&#378;my ma&#322;y test. 
+                W katalogu controller, utwórz folder foo. Nast&#281;pnie umie&#347;&#263; w nim plik bar.php:
+                    </p><pre class="programlisting">
+&lt;?php
+
+class Bar extends Controller
+{
+    function main()
+    {
+        echo 'Hello from: ' . get_class();
+    }
+}
+?&gt;
+                    </pre><p>
+            </p><p>
+                Mo&#380;esz sprawdzi&#263; dzia&#322;anie wpisuj&#261;c w pasku adresu przegl&#261;darki, adres:
+                <tt class="computeroutput">http://serwer.com/Foo/Bar</tt>. 
+                
+                </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>
+                    Jak to dzia&#322;a?
+                    Je&#380;eli wpiszemy w pasku adres URL, taki jak powy&#380;ej, system poszuka w katalogu
+                    controller, kontrolera o nazwie foo. Je&#380;eli go nie odnajdzie - sprawdzi, czy
+                    istnieje katalog Foo. W tym momencie Foo jest traktowane jako <span class="italic">podkatalog</span>. 
+                    A Bar jako nazwa kontrolera.
+                </div><p>
+            </p></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id420485"></a>Parametry</h3></div></div></div><p>
+                Do URL'a mog&#261; by&#263; przekazywane dodatkowe parametry. Przeanalizujmy nast&#281;puj&#261;cy
+                przyk&#322;ad: <tt class="computeroutput">http://serwer.com/Foo/Bar/Main/12/56</tt>
+            </p><p>W tym momencie mo&#380;emy wyró&#380;ni&#263;:</p><p>
+                </p><div class="table"><a name="id420514"></a><p class="title"><b>Tabela 3.1. Parametry URL</b></p><table summary="Parametry URL" border="0"><colgroup><col><col></colgroup><thead><tr><th>Parametr</th><th>Opis</th></tr></thead><tbody><tr><td>Foo</td><td>Nazwa modu&#322;u</td></tr><tr><td>Bar</td><td>Nazwa kontrolera</td></tr><tr><td>Main</td><td>Nazwa akcji</td></tr><tr><td>12</td><td>Parametr</td></tr><tr><td>56</td><td>Parametr</td></tr></tbody></table></div><p>
+            </p><p>
+                Nast&#281;puj&#261;cy kod pobiera list&#281; parametrów przekazanych do
+                URL:
+                </p><pre class="programlisting">
+&lt;?php
+
+class Bar extends Controller
+{
+    function main()
+    {
+        echo 'Hello from: ' . get_class() . '&lt;br /&gt;';
+        echo 'Action: ' . __FUNCTION__ . '&lt;br /&gt;';
+        echo 'Parametr(s): ';
+        
+        foreach ($this-&gt;router-&gt;getArguments() as $arg)
+        {
+            echo $arg . '  ';
+        }
+    }
+}
+?&gt;
+                </pre><p>
+            </p><p>
+                Taki kod spowoduje wy&#347;wietlenie w oknie przegl&#261;darki nast&#281;puj&#261;cych
+                informacji:
+                </p><pre class="programlisting">
+Hello from: Bar
+Action: main
+Parametr(s): 12 54
+                </pre><p>
+            </p><p>
+                Jak widzisz, do pobierania warto&#347;ci parametru s&#322;u&#380;y metoda <tt class="methodname">getArguments()</tt>. 
+                Zwraca ona tablic&#281; parametrów przekazanych wraz z URL'em.
+                
+                </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>
+                    Aby pobra&#263; jeden, konkretny parametr, mo&#380;na skorzysta&#263; z metody getArgument(). 
+                    W parametrze nale&#380;y poda&#263; numer parametru, poczyanaj&#261;c od zera (tzn. pierwszy parametr b&#281;dzie mia&#322; indeks zero, drugi - jeden itd.).
+                </div><p>
+            </p><p>
+                We&#378;my pod uwag&#281; inny przyk&#322;ad. W URL'u chcemy przekaza&#263; nasze imi&#281; oraz wiek.
+                Taki URL mo&#380;e wygl&#261;da&#263; tak: http://127.0.0.1/framework/Foo/Bar/main/Adam/99. 
+                
+                Zamiast korzysta&#263; z metod tablicy <tt class="varname">param</tt> mo&#380;emy przekszta&#322;ci&#263; kontroler w ten
+            sposób:
+                </p><pre class="programlisting">
+&lt;?php
+
+class Bar extends Controller
+{
+    function main($name, $age)
+    {
+        echo "My name is $name, and I'm $age\n";
+    }
+}
+?&gt;
+                </pre><p>
+            </p><p>
+                Jak widzisz, warto&#347;ci parametrów zosta&#322;y przekazane bezpo&#347;rednio do akcji.
+                
+                </p><div class="important" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">WA&#379;NE</h3>
+                    Warto&#347;ci parametrów s&#261; "bezpieczne". Tj. dane wcze&#347;niej s&#261; filtrowane pod wzgl&#281;dem XSS oraz SQL
+                    Injection. 
+                </div><p>
+            </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch03.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch03.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch03s03.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Rozdzia&#322; 3. Wprowadzenie </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Kontrolery</td></tr></table></div></body></html>

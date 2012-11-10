@@ -1,0 +1,26 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Odczyt oryginalnych danych</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch17.html" title="Rozdzia&#322; 17. Klasa GPC"><link rel="prev" href="ch17s03.html" title="Filtrowanie danych"><link rel="next" href="ch17s05.html" title="Implementacja interfejsu Countable"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Odczyt oryginalnych danych</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch17s03.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 17. Klasa GPC</th><td width="20%" align="right"> <a accesskey="n" href="ch17s05.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id494414"></a>Odczyt oryginalnych danych</h2></div></div></div><p>Klasa <tt class="classname">Gpc</tt> posiada metod&#281; <tt class="methodname">value()</tt>
+            dzi&#281;ki której mo&#380;esz odczyta&#263; oryginaln&#261; warto&#347;&#263; przekazan&#261; w tablicy globalnej (dane
+            nie s&#261; w jakikolwiek modyfikowane przez Coyote).
+            Przyk&#322;ad:</p><pre class="programlisting">&lt;?php
+// np. http://127.0.0.1/demo/index.php/Index/Main?id=&lt;b&gt;adam&lt;/b&gt;
+class Index extends Controller
+{
+	function main()
+	{
+		echo $this-&gt;get-&gt;value('id');
+	}
+}
+?&gt;</pre><p>Taki skrypt wy&#347;wietli oryginaln&#261; warto&#347;&#263; przekazan&#261; w parametrze id. </p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Ostrze&#380;enie</h3>Jako &#380;e
+                klasy dziedzicz&#261;ce po Gpc zawieraj&#261; referencj&#281; do tablic globalnych, filtrowanie
+                danych zmienia równie&#380; warto&#347;&#263; tablic globalnych.</div><p>Filtrowanie danych zmienia warto&#347;&#263; tablic globalnych, wi&#281;c kolejne u&#380;ycie metody
+                <tt class="methodname">value()</tt> w danym &#380;&#261;daniu wy&#347;wietli przefiltrowan&#261;
+            warto&#347;&#263;:</p><pre class="programlisting">// np. http://127.0.0.1/demo/index.php/Index/Main?id=&lt;b&gt;adam&lt;/b&gt;
+class Index extends Controller
+{
+	function main()
+	{
+echo $this-&gt;get-&gt;id; // wy&#347;wietli: adam
+		echo $this-&gt;get-&gt;value('id'); // wy&#347;wietli: ada
+	}
+}
+?&gt;</pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch17s03.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch17.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch17s05.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Filtrowanie danych </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Implementacja interfejsu Countable</td></tr></table></div></body></html>

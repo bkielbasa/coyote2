@@ -1,0 +1,795 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+                      "http://www.docbook.org/xml/4.4/docbookx.dtd"[
+                      
+                      <!ENTITY db.xml SYSTEM "db.xml">                    
+ ]>
+<?xml-stylesheet type="text/xsl" href="../../framework/docs/docbook/html/docbook.xsl"?>
+<book>
+    <bookinfo><title>Dokumentacja serwisu 4programmers.net</title><author>
+            <firstname>Adam</firstname>
+            <surname>Boduch</surname>
+        </author>
+        <copyright>
+            <year>2008</year>
+        </copyright>
+    </bookinfo>
+    <preface>
+        <title>Wprowadzenie</title>
+        <para> Niniejsza dokumentacja dotyczy systemu obsługującego serwis 4programmers.net.
+            Dokumentacja dotyczy wersji deweloperskiej - <emphasis>1.0-dev</emphasis>. </para>
+        <note> System serwisu 4programmers.net opiera się o framework Coyote, który dostępny jest
+            pod adresem <ulink>http://boduch.net/coyote</ulink>. Tam również znajduje się
+            dokumentacja frameworka, na którym bazuje system. </note>
+    </preface>
+    <part>
+        <title>Podręcznik użytkownika</title>
+        <chapter>
+            <title>Instalacja systemu</title>
+            <para>W tym rozdziale skupimy się na instalacji i konfiguracji systemu. Co prawda system
+                posiada gotowy instalator, który powinien poprowadzić krok po kroku w procesie
+                instalacji systemu, lecz skupimy się na problemach, które można napotkać w trakcie
+                konfiguracji.</para>
+            <section>
+                <title>Wymagania sprzętowe</title>
+                <para>Jak każda aplikacja PHP, system do działania potrzebuje interpretera PHP, w
+                    wersji 5 (zalecana wersja 5.2). Przydatny może okazać się również serwer ;)
+                    Polecamy popularny serwer Apache 2.0.X. Jeżeli Twoja aplikacja w domyśle ma
+                    korzystać z bazy danych, musisz zainstalować oraz skonfigurować odpowiedni
+                    system bazodanowy.</para>
+                <para>
+                    <important>Obecnie serwis 4programmers.net działa pod bazą danych MySQL 5.0.
+                    </important>
+                </para>
+                <para>Bardzo zalecane jest również, aby serwer HTTP obsługiwał pliki <filename
+                        >.htaccess</filename> oraz moduł mod_rewrite. </para>
+                <para>Dodatkowo do pełnej kompatybilności z systemem, zalecane jest posiadanie
+                    następujących bibliotek PHP:<itemizedlist>
+                        <listitem>JSON</listitem>
+                        <listitem>mbstring</listitem>
+                        <listitem>XSL</listitem>
+                        <listitem>SimpleXML</listitem>
+                    </itemizedlist><note>W wersji MySQL 5.0.2 jedynie użytkownicy z prawami SUPER
+                        PRIVILEGE mogą tworzyć triggery, które są wykorzystywane w projekcie.
+                        </note><note>Jeżeli posiadasz serwer IIS, firmy Microsoft, możesz
+                        wykorzystać moduł ISAPI_Rewrite, który obsługuje mod_rewrite na tego typu
+                        serwerach. </note></para>
+            </section>
+            <section>
+                <title>Najnowsze kody źródłowe</title>
+                <para>Najnowsze kody źródłowe, zarówno frameworka jak i serwisu 4programmers.net,
+                    można znaleźć na serwerze
+                    SVN:<programlisting>svn://4programmers.net/coyote/trunk</programlisting></para>
+                <para>Możliwy jest również dostęp do kodów źródłowych via WWW poprzez adres: <ulink
+                        url="">http://4programmers.net/trac/coyote</ulink>. Wszelkie aktualizacje
+                    dokonywane na serwerze SVN, automatycznie dokonywane są na naszym serwerze
+                    deweloperskim - <ulink url="">http://dev.4programmers.net</ulink>. Tam również
+                    możesz testować najnowszy kod źródłowy. </para>
+            </section>
+            <section>
+                <title>Instalator</title>
+                <para>Po ściągnięciu kodów źródłowych z naszego serwera SVN, należy je rozpakować i
+                    umieścić w katalogu serwera. Na moim lokalnym serwerze, system wskazuje URL
+                    http://127.0.0.1/4programmers.</para>
+                <para>Po wpisaniu tego adresu w przeglądarce, powinien uruchomić się instalator
+                    projektu, który poprowadzi przez wszystkie etapy instalacji. Pierwszym krokiem
+                    będzie sprawdzenie konfiguracji. Zalecane jest, aby wszystkie pola były
+                    zaznaczone na zielono. Zapewnia to możliwie największą kompatybilność z systemem
+                    4programmers.net. </para>
+                <para>W kolejnych krokach instalator poprosi o wprowadzenie informacji dotyczących
+                    bazy danych (login, hasło itp) oraz nazwy admnistratora. Możemy podać dowolne
+                    dane - system utworzy wówczas właściwe konto w bazie danych, które od tej pory
+                    będzie kontem administratora. Posiada on wszelkie możliwe uprawnienia do
+                    zarządzania systemem. <warning>W trakcie działania instalatora, zapisuje on
+                        konfiguracje do plików XML, znajdujących się w katalogu /config. Jeżeli
+                        pracujesz na systemach *nix, upewnij się, iż katalog posiada odpowiednie
+                        prawa do zapisu. </warning></para>
+                <section>
+                    <title>Problemy z importem struktury bazy danych</title>
+                    <para>Możliwe jest wystąpienie błędów związanych z importem struktury tabel baz
+                        danych przez instalator. Takie problemy prosimy zgłaszać na <ulink
+                            url="http://4programmers.net/trac/coyote">naszym tracu</ulink>.
+                        Koniecznie podaj konfiguracje Twojego systemu - tj. wersja bazy danych oraz
+                        PHP. </para>
+                    <para>W ostateczności konieczny będzie ręczny import struktury do bazy danych.
+                        Można to zrobić korzystając z phpMyAdmina' lub bezpośrednio z konsoli:</para>
+                    <programlisting>
+mysql -u UZYTKOWNIK -p BAZA_DANYCH &lt; /sciezka/do/pliku/sql                        
+                    </programlisting>
+                    <note>Struktura tabel bazy danych znajduje się w pliku <filename
+                            >/module/install/schema.sql</filename> natomiast podstawowe dane
+                        znajdują się w pliku <filename>/module/install/data.sql</filename></note>
+                </section>
+            </section>
+            <section>
+                <title>Konfiguracja systemu</title>
+                <para>Wszelkie informacje dotyczące konfiguracji projektu znajdują się w plikach
+                    XML, które możesz znaleźć w katalogu /config. </para>
+                <warning>Upewnij się, iż dostęp do tego katalogu będzie niemożliwy z zewnątrz.
+                    Domyślnie w katalogu znajduje się plik .htaccess, który blokuje dostep z
+                    zewnątrz. </warning>
+                <section>
+                    <title>Plik config.xml</title>
+                    <para>Zawiera podstawowe informacje o projekcie, takie jak host na jakim działa
+                        aplikacja, wersje aplikacji oraz informacje o tym, czy system jest
+                        zainstalowany. </para>
+                    <para>Domyślnie host, nie jest wpisany w konfiguracje projektu, gdyż system
+                        automatycznie rozpoznaje nazwę serwera na którym działa. Jeżeli chcesz
+                        możesz dodać informację o hoscie, modyfikując plik i dodając węzeł
+                        XML:<programlisting>&lt;host>serwer.com&lt;/host></programlisting></para>
+                    <para>Poniższa tabela zawiera informacje o domyślnych elementach pliku
+                        konfiguracyjnego. <table>
+                            <title>Elementy pliku konfiguracyjnego config.xml</title>
+                            <tgroup cols="2">
+                                <tbody>
+                                    <row>
+                                        <entry>install</entry>
+                                        <entry>Wartość true oznacza, że projekt został
+                                            zainstalowany.</entry>
+                                    </row>
+                                    <row>
+                                        <entry>version</entry>
+                                        <entry>Wersja systemu.</entry>
+                                    </row>
+                                    <row>
+                                        <entry>build_date</entry>
+                                        <entry>Wartość informacyjna. Data powstania struktury bazy
+                                            danych.</entry>
+                                    </row>
+                                    <row>
+                                        <entry>autoload</entry>
+                                        <entry>Ścieżka do pliku autoload.php</entry>
+                                    </row>
+                                    <row>
+                                        <entry>index_page</entry>
+                                        <entry>Domyślnie jest to wartość pusta. Określa nazwę pliku,
+                                            do którego będą kierowane żądania. Możesz zmienić na
+                                            index.php, jeżeli Twój serwer nie obsługuje
+                                        mod_rewrite</entry>
+                                    </row>
+                                    <row>
+                                        <entry>admin_email</entry>
+                                        <entry>Adres e-mail administratora systemu</entry>
+                                    </row>
+                                    <row>
+                                        <entry>site_title</entry>
+                                        <entry>Tytuł strony (będzie dodawany w elemencie &lt;title>
+                                            stron XHTML</entry>
+                                    </row>
+                                    <row>
+                                        <entry>cookie_prefix</entry>
+                                        <entry>Prefiks dla nazw ciasteczek, które będa wysyłane
+                                            przez system</entry>
+                                    </row>
+                                    <row>
+                                        <entry>cookie_host</entry>
+                                        <entry>Domyślnie jest to wartość pusta. Określa host, z
+                                            którym będą zapisywane ciasteczka.</entry>
+                                    </row>
+                                    <row>
+                                        <entry>session_length</entry>
+                                        <entry>Długość sesji (w sek.). Jeżel użytkownik nie wykaże
+                                            się żadną aktywnością po upływie tego czasu, uznajemy,
+                                            że wylogował się z serwisu.</entry>
+                                    </row>
+                                    <row>
+                                        <entry>session_gc</entry>
+                                        <entry>Czas (określony w sek.), pomiędzy uruchomieniem
+                                            procesu garbage collection.</entry>
+                                    </row>
+                                </tbody>
+                            </tgroup>
+                        </table><note>Jeżeli chcesz dowiedzieć się więcej o możliwości konfiguracji
+                            projektu, odsyłam do rozdziału Mechanizm konfiguracji, w dokumentacji
+                            projektu Coyote. </note></para>
+                </section>
+                <section>
+                    <title>Plik db.xml</title>
+                    <para>Na serwerze SVN, w katalogu <filename>/config</filename>, znajduje się
+                        plik <filename>db.xml.default</filename>. Zawiera on domyślną konfigurację
+                        związaną z bazą danych. Instalator projektu automatycznie utworzy w tym
+                        katalogu plik db.xml, który powinien zawierać parametry łączenia z bazą
+                        danych. W tym:<itemizedlist>
+                            <listitem>db_server - serwer bazy danych</listitem>
+                            <listitem>db_login - Login użytkownika bazy danych</listitem>
+                            <listitem>db_password - hasło umożliwiające połączenie z bazą</listitem>
+                            <listitem>db_database - nazwa bazy danych</listitem>
+                            <listitem>db_port - (opcjonalnie) port na którym działa baza danych</listitem>
+                            <listitem>auto_db_connect - automatyczne łączenie z bazą danych
+                                (konieczna wartość TRUE)</listitem>
+                        </itemizedlist></para>
+                </section>
+                <section>
+                    <title>Plik trigger.xml</title>
+                    <para>Plik zawiera deklaracje triggerów. Więcej informacji o triggerach,
+                        znajdziesz w dokumentacji projektu Coyote. Domyślnie, plik <filename
+                            >trigger.xml</filename> zawiera instrukcje nakazujące sprawdzenie, czy
+                        system jest zainstalowany. Instalator projektu w procesie instalacji, usunie
+                        tę dyrektywę. Jeżeli instalujesz system ręcznie, należy usunąc plik
+                            <filename>trigger.xml</filename>, natomiast plik <filename
+                            >trigger.xml.copy</filename> przemianować na <filename
+                        >trigger.xml</filename>. </para>
+                </section>
+                <section>
+                    <title>Plik route.xml</title>
+                    <para>Plik route.xml zawiera deklaracje mechanizmu routingu. Więcej informacji
+                        na temat tego mechanizmu, można znaleźć w dokumentacji frameworka Coyote.
+                        Jeżeli instalujesz projekt ręcznie, ten plik nie wymaga zmian. </para>
+                </section>
+                <section>
+                    <title>Plik autoload.php</title>
+                    <para>Domyślnie w katalogu <filename>/config</filename> znajduje się plik
+                            <filename>autoload.php.default</filename>. W ręcznym procesie
+                        instalacji, jego nazwa powinna zostać zmieniona na autoload.php. Plik ten
+                        zawiera informacje o składowych systemu takich jak biblioteki oraz helpery,
+                        które są automatycznie ładowane w momencie startu systemu. Zawartość tego
+                        pliku nie powinna być modyfikowana.</para>
+                </section>
+            </section>
+        </chapter>
+    </part>
+    <part>
+        <title>Podręcznik developera</title>
+        <chapter>
+            <title>Zasady formatowania kodu</title>
+            <para>Dobre standardy kodowania są potrzebne w każdym większym projekcie. Szczególnie
+                jeżeli nad danym kodem pracuje kilku programistów. Jeżeli każdy z nich używałby
+                innych standardów, nazewnictwa - powstałby bałagan w kodzie. Tego chcemy uniknąc
+                ustalając z góry standardy jakimi będziemy się posługiwać. </para>
+            <section>
+                <title>Formatowanie kodu PHP</title>
+                <section>
+                    <title>Pliki PHP</title>
+                    <para>Pliki PHP posiadają rozszerzenie .php. Jeżeli to konieczne zapisywane są w
+                        formacie UTF-8. Kod PHP zawarty jest pomiędzy instrukcje &lt;?php ?> .
+                        Wyjątkiem jest kod widoków, gdzie możliwe jest używanie skróconego zapisu
+                        &lt;?= ?> . Jednakże należy mieć na uwadze, iż taki zapis może być wyłączony
+                        na danej konfiguracji PHP.</para>
+                </section>
+                <section>
+                    <title>Wcięcia i długość linii</title>
+                    <para>W róznych projektach, różnie przyjmuje się zapisywanie wcięć. W niektórych
+                        wcięcie stanowi dwie spacje - w niektórych 4 spacje. W projekcie Coyote jako
+                        wcięcie stanowi znak tabulatora. Istnieją zalety oraz wady takiego
+                        zastosowania. Przeciwnicy używania tabulatorów jako wcięć, argumentują iż na
+                        różnych edytorach tekstu, znak tabulacji jest prezentowany w całkiem inny
+                        sposób. Istnieją jednak edytory (EditPlus), które umożliwiają określenie w
+                        opcjach, jak duże wcięcie ma stanowić tabulator. </para>
+                    <para>Długość pojedyńczej linii nie powinna przekraczać 80 znaków. Nie jest to
+                        jednak rygorystyczny wymóg. Po prostu, dłuższe linie utrudniają analize i
+                        czytanie kodu.</para>
+                </section>
+                <section>
+                    <title>Nazewnictwo</title>
+                    <para>W Coyote stosujemy angielski zapis kodu. Tzn. nie nazywamy zmiennych
+                        $id_uzytkownika tylko $user_id. Tyczy się to również nazw klas, metod czy
+                        funkcji. </para>
+                    <section>
+                        <title>Nazwy plików</title>
+                        <para>Pliki powinny posiadać rozszerzenia .php. Nazwy plików piszemy małymi
+                            znakami - np. <filename>foo.php</filename>, <filename>bar.php</filename>
+                            zamiast <filename>Foo.php</filename>. Dodatkowo biblioteki frameworka
+                            (gromadzone w katalogu <filename>/lib</filename>) powinny posiadać
+                            końcówkę .class - np. <filename>foo.class.php</filename>. </para>
+                        <para>Analogicznie pliki helperów - <filename>bar.helper.php</filename> (z
+                            katalogu <filename>/helper</filename>) oraz pliki językowe (z
+                                katalogu<filename> /i18n</filename>) - <filename
+                            >foo.lang.php</filename> oraz modele (z katalog <filename
+                            >/model</filename>) - <filename>foo.model.php</filename>. </para>
+                    </section>
+                    <section>
+                        <title>Nazwy klas</title>
+                        <para>Dla wyróżnienia, pierwsza litera w nazwie klasy powinna być zapisana
+                            wielką literą - np. <classname>Lang</classname>,
+                            <classname>Config</classname> itp. Jako separator w nazwie, powinno być
+                            użyte podkreślenie - np. <classname>Front_Controller</classname>,
+                            zamiast <classname>FrontController</classname>. Wyjątkami są nazwy klas
+                            wyjątków, które zapisujemy: <classname>SqlErrorException</classname>,
+                                <classname>UserErrorException</classname> (z końcówką
+                                <emphasis>Exception</emphasis>). </para>
+                    </section>
+                    <section>
+                        <title>Nazwy interfejsów</title>
+                        <para>Nazwy interfejsów powinna poprzedzać wielka litera I - np.
+                                <interfacename>IConfig</interfacename>,
+                            <interfacename>IDb</interfacename>. </para>
+                    </section>
+                    <section>
+                        <title>Nazwy metod</title>
+                        <para>Począwszy od wersji 0.9.4-rc2 zmieniono sposób zapisu nazw metod.
+                            Zamiast znaku podkreślenia (_) stosuje się styl wielbłądzi, jednak
+                            pierwszy znak w nazwie musi być pisany mała literą - np.
+                                <methodname>getByName()</methodname>,
+                            <methodname>findUser()</methodname> zamiast
+                            <methodname>get_by_name()</methodname> oraz
+                            <methodname>find_user()</methodname>. Stare nazewnictwo może jeszcze
+                            figurować w niektórych bibliotekach, lecz zostanie poprawione w
+                            kolejnych wersjach.</para>
+                        <para>Dopuszczalne jest poprzedzanie nazw metod znakami __ (np. w
+                            kontrolerach) dla podkreślenia, iż dana metoda mimo, iż jest oznaczona
+                            jako public, jest metodą pomocniczą (wykorzystywaną np. jako metoda
+                            zwrotna lub metoda wykorzystywana przez żądania AJAX). </para>
+                    </section>
+                    <section>
+                        <title>Nazwy funkcji</title>
+                        <para>Cały framework jest praktycznie obiektowy. Oparty o model MVC. Z
+                            funkcjami mamy do czynienia bardzo rzadko - praktycznie jedynie w
+                            helperach. Wówczas dopuszczalne jest użycie znaku podkreślenia (_)
+                            zamiast stylu wielbłądziego - np.
+                                <methodname>html_img()</methodname>,<methodname> information_box().
+                            </methodname></para>
+                    </section>
+                    <section>
+                        <title>Nazewnictwo zmiennych i pól</title>
+                        <para>W nazwach zmiennych oraz pól używamy małych znaków. Dopuszczalne jest
+                            użycie podkreślenia (_) jako separatora. </para>
+                    </section>
+                </section>
+                <section>
+                    <title>Kodowanie</title>
+                    <section>
+                        <title>Łańcuchy</title>
+                        <para>Stosujemy apostrofy tam gdzie to jest możliwe.
+                            <programlisting>$a = 'Hello World';</programlisting></para>
+                        <para>W miare możliwości używamy operatora "." pozostawiając jedną spację
+                            pomiędzy
+                            wyrazami:<programlisting>$a = 'Hello ' . 'World';</programlisting></para>
+                        <para>Tam gdzie jest to konieczne (w celu zwiększania czytelności) możemy
+                            używać
+                            apostrofu:<programlisting>$a = 'Mam na imię ' . $name . ', lat: ' . $age . ', mam ' . $height . ' cm wzrostu';
+$a = "Mam na imię $name, lat: $age, mam $height cm wzrostu"; // czytelniej</programlisting></para>
+                    </section>
+                    <section>
+                        <title>Deklarowanie klas</title>
+                        <para>Klasy muszą być deklarowane zgodnie z nazewnictwem opisanym w
+                            poprzedniej części. Dodatkowo klamra otwierająca musi znajdować się w
+                            kolejnej
+                            linii:<programlisting>/** 
+ * Komentarz
+ */
+class Foo
+{
+// metody
+}
+
+class Foo {
+// Źle
+}</programlisting></para>
+                        <para>Pomiędzy słowem kluczowym class, a nazwą klasy musi się znaleźć jedna
+                            spacja przerwy. Dobrym zwyczajem jest umieszczanie komentarza
+                            opisującego działanie klasy, zgodnie z konwencją akceptowaną przez
+                            oprogramowanie PHPDoc. </para>
+                        <para>Pola klasy muszą być oznaczone jako <emphasis>private</emphasis>,
+                                <emphasis>public</emphasis> lub
+                            <emphasis>protected</emphasis>:<programlisting>// Dobrze
+class Foo
+{
+    private $bar;
+    private $foo;
+}
+
+// Źle
+class Foo
+{
+    private
+        $bar;
+        $foo;
+}</programlisting></para>
+                        <para>To samo tyczy się nazw metod. Należy pamiętać o klamrze otwierającej,
+                            która powinna znajdować się w kolejnej
+                            linii:<programlisting>class Foo
+{
+    public function Bar() // Dobrze
+    {
+    // instrukcje
+    }
+    
+    function FooBar() {  // Źle
+    }
+}</programlisting></para>
+                    </section>
+                    <section>
+                        <title>Instrukcje warunkowe</title>
+                        <para>Należy pamiętać o umieszczaniu klamry w nowej linii oraz o wcięciu w
+                            wielkości jednego tabulatora. Oto
+                            przykład:<programlisting>if ($x == 10)
+{
+    if ($y == 'FOO')
+    {
+        $z = 10; // dobrze!
+    }
+}
+else if ($x > 20)
+{
+
+}
+
+if ($a == 45) { 
+$b = 10;  // Źle
+}</programlisting></para>
+                        <para>Instrukcja
+                            switch:<programlisting>// Dobrze!
+switch ($value)
+{
+    case 10:
+        $x = true;
+    break;
+
+    case 20:
+        $x = false;
+    break;
+}
+
+
+switch ($value)
+{
+case 10:
+$x = true;
+break; // Źle
+}</programlisting></para>
+                    </section>
+                </section>
+            </section>
+        </chapter>
+        <chapter>
+            <title>Pisanie dokumentacji</title>
+            <para>Dokumentacja projektu pisana jest w formacie XML. Konkretnie jest to format
+                DocBook. Dzięki temu możliwa jest łatwa konwersja do innych czytelnych formatów
+                takich jak np. HTML. Wszelkie błędy związane z tą dokumentacją możesz zgłaszać na
+                naszej <ulink url="http://4programmers.net/trac/coyote">bug liście</ulink> lub
+                poprawić bezpośrednio na serwerze SVN.</para>
+        </chapter>
+        <chapter>
+            <title>Serwer SVN</title>
+            <para>Najnowsze kody źródłowe dostępne są na naszym serwerze SVN: <ulink url=""
+                    >svn://4programmers.net/coyote</ulink>. Dostęp do nich ma każdy jednak możliwość
+                dokonywania zmian posiadają jedynie autoryzowani użytkownicy. Jeżeli chcesz pomóc w
+                rozwoju projektu, napisz do nas na <ulink
+                    url="http://forum.4programmers.net/forum.php?f=11">forum dykusyjnym</ulink> lub
+                bezpośrednio na adres <ulink url="">adam@4programmers.net</ulink> w celu uzyskania
+                konta. </para>
+        </chapter>&db.xml;
+        <!-- <chapter>
+            <title>Struktura tabel bazy danych</title>
+            <para>Obecnie serwis 4programmers.net działa na bazie danych MySQL 5.0. Ten rozdział
+                opisuje strukturę tabel bazy danych stosowanej przez system. </para>
+            <note>Parametry konfiguracji bazy danych (host, login oraz hasło) można konfigurować w
+            pliku /config/db.xml.</note>
+            &db.xml; 
+            <section>
+                <title>Tabela <emphasis>coyote_user</emphasis></title>
+                <para>Tabela przechowuje informacje o zarejestrowanych użytkownikach. Podstawowym
+                    użytkownikiem w tej tabeli jest użytkownik Anonim o ID = 0. Rekord ten jest
+                    dodawany w procesie instalacji projektu na komputerze klienta. <table>
+                        <title>Struktura tabeli coyote_user</title>
+                        <tgroup cols="3">
+                            <thead>
+                                <row>
+                                    <entry>Kolumna</entry>
+                                    <entry>Typ</entry>
+                                    <entry>Opis</entry>
+                                </row>
+                            </thead>
+                            <tbody>
+                                <row>
+                                    <entry>user_id</entry>
+                                    <entry>mediumint(8) UNSIGNED</entry>
+                                    <entry>Unikalne ID użytkownika.</entry>
+                                </row>
+                                <row>
+                                    <entry>user_name</entry>
+                                    <entry>varchar(30)</entry>
+                                    <entry>Unikalna nazwa (login) użytkownika</entry>
+                                </row>
+                                <row>
+                                    <entry>user_active</entry>
+                                    <entry>tinyint(1) UNSIGNED</entry>
+                                    <entry>Pole oznacza, czy konto zostało aktywowane (0 - nie; 1 -
+                                        tak)</entry>
+                                </row>
+                                <row>
+                                    <entry>user_permission</entry>
+                                    <entry>mediumtext</entry>
+                                    <entry>Serializowana tablica określająca uprawnienia
+                                        użytkownika. Dane zapisywane w tej komórce można uznać za
+                                        cache</entry>
+                                </row>
+                                <row>
+                                    <entry>user_password</entry>
+                                    <entry>char(13)</entry>
+                                    <entry>Hasło do konta haszowane funkcją crypt(). </entry>
+                                </row>
+                                <row>
+                                    <entry>user_email</entry>
+                                    <entry>varchar(128)</entry>
+                                    <entry>Adres e-mail podany przy rejestracji</entry>
+                                </row>
+                                <row>
+                                    <entry>user_confirm_email</entry>
+                                    <entry>varchar(128)</entry>
+                                    <entry>Pole wykorzystywane w procesie zmiany e-maila (możliwa
+                                        jedynie po aktywacji)</entry>
+                                </row>
+                                <row>
+                                    <entry>user_actkey</entry>
+                                    <entry>varchar(40)</entry>
+                                    <entry>Losowo generowany ciąg znaków, ktory stanowi klucz
+                                        aktywacyjny do konta.</entry>
+                                </row>
+                                <row>
+                                    <entry>user_allowemail</entry>
+                                    <entry>tinyint(1) UNSIGNED</entry>
+                                    <entry>Określa, czy e-mail powinien być ukrywany (0), czy też
+                                        nie (1). Domyślną wartością jest 1.</entry>
+                                </row>
+                                <row>
+                                    <entry>user_posts</entry>
+                                    <entry>mediumint(8) UNSIGNED</entry>
+                                    <entry>Ilośc postów napisana przez użytkownika</entry>
+                                </row>
+                                <row>
+                                    <entry>user_allowpost</entry>
+                                    <entry>tinyint(1) UNSIGNED</entry>
+                                    <entry>Określa, czy na forum pokazywać licznik postów. Domyślna
+                                        wartość: TAK (1)</entry>
+                                </row>
+                                <row>
+                                    <entry>user_regdate</entry>
+                                    <entry>int(11)</entry>
+                                    <entry>Data rejestracji konta (unix timestamp)</entry>
+                                </row>
+                                <row>
+                                    <entry>user_dateformat</entry>
+                                    <entry>varchar(32)</entry>
+                                    <entry>Format daty jaka ma być wyświetlana użytkownikowi</entry>
+                                </row>
+                                <row>
+                                    <entry>user_flood</entry>
+                                    <entry>int(11)</entry>
+                                    <entry>Zabezpieczenie przeciw foodowe. Data i czas dodania
+                                        ostatniego materiału (post, komentarz itp)</entry>
+                                </row>
+                                <row>
+                                    <entry>user_allowsmilies</entry>
+                                    <entry>tinyint(1) UNSIGNED</entry>
+                                    <entry>Określa, czy użytkownik powinien widzieć
+                                    emotikony</entry>
+                                </row>
+                                <row>
+                                    <entry>user_allowsig</entry>
+                                    <entry>tinyint(1) UNSIGNED</entry>
+                                    <entry>Określa, czy użytkownik widzi stopki innych użytkowników,
+                                        w postach na forum</entry>
+                                </row>
+                                <row>
+                                    <entry>user_lastvisit</entry>
+                                    <entry>int(11)</entry>
+                                    <entry>Data ostatniej wizyty w serwisie.</entry>
+                                </row>
+                                <row>
+                                    <entry>user_visits</entry>
+                                    <entry>smallint(6) UNSIGNED</entry>
+                                    <entry>Ilość wizyt w serwisie</entry>
+                                </row>
+                                <row>
+                                    <entry>user_realname</entry>
+                                    <entry>varchar(50)</entry>
+                                    <entry>Imię i nazwisko użytkownika</entry>
+                                </row>
+                                <row>
+                                    <entry>user_resume</entry>
+                                    <entry>text</entry>
+                                    <entry>CV/Resume użytkownika</entry>
+                                </row>
+                                <row>
+                                    <entry>user_resume_file</entry>
+                                    <entry>varchar(40)</entry>
+                                    <entry>Nazwa pliku z CV/Resume użytkownika (zapisana na
+                                        serwerze)</entry>
+                                </row>
+                                <row>
+                                    <entry>user_page</entry>
+                                    <entry>text</entry>
+                                    <entry>Pole przechowuje kod HTML/informacje wyświetlane na
+                                        głównej stronie profilu użytkownika</entry>
+                                </row>
+                                <row>
+                                    <entry>user_skilldesc</entry>
+                                    <entry>text</entry>
+                                    <entry>Opis umiejętności użytkownika (znajomość języków
+                                        programowania itp)</entry>
+                                </row>
+                                <row>
+                                    <entry>user_birthday</entry>
+                                    <entry>varchar(10)</entry>
+                                    <entry>Data urodzin użytkownika</entry>
+                                </row>
+                                <row>
+                                    <entry>user_location</entry>
+                                    <entry>varchar(30)</entry>
+                                    <entry>Miejscowość, w której mieszka użytkownik</entry>
+                                </row>
+                                <row>
+                                    <entry>user_gg</entry>
+                                    <entry>varchar(10)</entry>
+                                    <entry>Numer GG</entry>
+                                </row>
+                                <row>
+                                    <entry>user_tlen</entry>
+                                    <entry>varchar(30)</entry>
+                                    <entry>Identyfikator Tlen</entry>
+                                </row>
+                                <row>
+                                    <entry>user_icq</entry>
+                                    <entry>varchar(10)</entry>
+                                    <entry>Numer ICQ</entry>
+                                </row>
+                                <row>
+                                    <entry>user_skype</entry>
+                                    <entry>varchar(20)</entry>
+                                    <entry>Identyfikator Skype</entry>
+                                </row>
+                                <row>
+                                    <entry>user_website</entry>
+                                    <entry>varchar(200)</entry>
+                                    <entry>Adres WWW strony użytkownika</entry>
+                                </row>
+                                <row>
+                                    <entry>user_sig</entry>
+                                    <entry>tinytext</entry>
+                                    <entry>Sygnatura użytkownika na forum</entry>
+                                </row>
+                                <row>
+                                    <entry>user_avatar</entry>
+                                    <entry>varchar(85)</entry>
+                                    <entry>Nazwa pliku z avatarem</entry>
+                                </row>
+                                <row>
+                                    <entry>user_photo</entry>
+                                    <entry>varchar(85)</entry>
+                                    <entry>Nazwa pliku ze zdjęciem użytkownika</entry>
+                                </row>
+                                <row>
+                                    <entry>user_allowavatar</entry>
+                                    <entry>tinyint(1) UNSIGNED</entry>
+                                    <entry>Określa, czy użytkownik będzie widział avatary
+                                    innych</entry>
+                                </row>
+                                <row>
+                                    <entry>user_sort</entry>
+                                    <entry>tinyint(1) UNSIGNED</entry>
+                                    <entry>Określa sposób sortowania wątków na forum</entry>
+                                </row>
+                                <row>
+                                    <entry>user_template</entry>
+                                    <entry>smallint(2) UNSIGNED</entry>
+                                    <entry>ID szablonu używanego przez użytkownika</entry>
+                                </row>
+                                <row>
+                                    <entry>user_lang</entry>
+                                    <entry>smallint(6) UNSIGNED</entry>
+                                    <entry>ID pliku językowego. Domyślnie 1, dostępny tylko język
+                                        polski. Pole nieużywane</entry>
+                                </row>
+                                <row>
+                                    <entry>user_ip</entry>
+                                    <entry>varchar(255)</entry>
+                                    <entry>Adres IP, host i inne informacje o komputerze, z którego
+                                        ostatnio nastąpiło logowanie</entry>
+                                </row>
+                                <row>
+                                    <entry>user_failed_ip</entry>
+                                    <entry>varchar(255)</entry>
+                                    <entry>Informacje o komputerze, z którego nastąpiło nieudane
+                                        logowanie na to konto</entry>
+                                </row>
+                                <row>
+                                    <entry>user_lastmark</entry>
+                                    <entry>int(11)</entry>
+                                    <entry>Ostatnie oznaczenie forum jako "przeczytanego"</entry>
+                                </row>
+                                <row>
+                                    <entry>user_post_per_paeg</entry>
+                                    <entry>smallint(2) UNSIGNED</entry>
+                                    <entry>Ilość postów wyświetlanych na jedną stronę</entry>
+                                </row>
+                                <row>
+                                    <entry>user_topic_per_page</entry>
+                                    <entry>smallint(2) UNSIGNED</entry>
+                                    <entry>Ilość tematów wyświetlanych na jedną stronę</entry>
+                                </row>
+                                <row>
+                                    <entry>user_notify_pm</entry>
+                                    <entry>tinyint(1) UNSIGNED</entry>
+                                    <entry>Określa, czy informować użytkownika na e-mail o nowej
+                                        wiadomości prywatnej</entry>
+                                </row>
+                                <row>
+                                    <entry>user_pm</entry>
+                                    <entry>smallint(2) UNSIGNED</entry>
+                                    <entry>Ilość wiadomości w skrzynce odbiorczej</entry>
+                                </row>
+                                <row>
+                                    <entry>user_pm_new</entry>
+                                    <entry>smallint(2) UNSIGNED</entry>
+                                    <entry>Ilość nieprzeczytanych wiadomości</entry>
+                                </row>
+                            </tbody>
+                        </tgroup>
+                    </table></para>
+            </section>
+            <section>
+                <title>Tabela <emphasis>coyote_group</emphasis></title>
+                <para>(TODO)</para>
+            </section>
+            <section>
+                <title>Tabela <emphasis>coyote_auth_group</emphasis></title>
+                <para>(TODO)</para>
+            </section>
+            <section>
+                <title>Tabela <emphasis>coyote_auth_option</emphasis></title>
+                <para>(TODO)</para>
+            </section>
+            <section>
+                <title>Tabela <emphasis>coyote_auth_data</emphasis></title>
+                <para>(TODO)</para>
+            </section>
+            <section>
+                <title>Tabela <emphasis>coyote_user_attachment</emphasis></title>
+                <para>(TODO)</para>
+            </section>
+            <section>
+                <title>Tabela <emphasis>coyote_user_portfolio</emphasis></title>
+                <para>(TODO)</para>
+            </section>
+            <section>
+                <title>Tabela <emphasis>coyote_user_position</emphasis></title>
+                <para>(TODO)</para>
+            </section>
+            <section>
+                <title>Tabela <emphasis>coyote_user_skill</emphasis></title>
+                <para>(TODO)</para>
+            </section>
+            <section>
+                <title>Tabela <emphasis>coyote_session</emphasis></title>
+                <para>(TODO)</para>
+            </section>
+            <section>
+                <title>Tabela <emphasis>coyote_ban</emphasis></title>
+                <para>(TODO)</para>
+            </section>
+            <section>
+                <title>Tabela <emphasis>coyote_config</emphasis></title>
+                <para>Prosta tabela umożliwiająca przechowywanie informacji typu klucz => wartość,
+                    takich jak ostatni czas uruchomienia mechanizmu garbage collection itp. W tabeli
+                    znajduje się również informacja o ilości użytkowników online (rekordowo); może
+                    również posłużyć do innych celów.</para>
+                <table>
+                    <title>Struktura tabeli coyote_config</title>
+                    <tgroup cols="2">
+                        <thead>
+                            <row>
+                                <entry>Kolumna</entry>
+                                <entry>Typ</entry>
+                                <entry>Opis</entry>
+                            </row>
+                        </thead>
+                        <tbody>
+                            <row>
+                                <entry>config_name</entry>
+                                <entry>varchar(100)</entry>
+                                <entry>Nazwa klucza</entry>
+                            </row>
+                            <row>
+                                <entry>config_value</entry>
+                                <entry>varchar(255)</entry>
+                                <entry>Wartość klucza</entry>
+                            </row>
+                        </tbody>
+                    </tgroup>
+                </table>
+            </section>
+            </chapter>
+           -->
+    </part>
+</book>

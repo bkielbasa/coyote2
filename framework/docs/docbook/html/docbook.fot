@@ -1,0 +1,1227 @@
+<?xml version="1.0"?>
+<fot>
+<a name="0"/>
+<text>    </text>
+<a name="1"/>
+<text>        </text>
+<a name="2"/>
+<text>Dokumentacja projektu RoadRunner</text>
+<text>
+</text>
+<text>        </text>
+<a name="3"/>
+<text>            </text>
+<a name="4"/>
+<text>                </text>
+<a name="5"/>
+<text>Boduch</text>
+<text>
+</text>
+<text>                </text>
+<a name="6"/>
+<text>Adam</text>
+<text>
+</text>
+<text>            </text>
+<text>
+</text>
+<text>        </text>
+<text>
+</text>
+<text>        </text>
+<a name="7"/>
+<text>            </text>
+<a name="8"/>
+<text>2004</text>
+<text>
+</text>
+<text>            </text>
+<a name="9"/>
+<text>Adam Boduch</text>
+<text>
+</text>
+<text>        </text>
+<text>
+</text>
+<text>    </text>
+<text>
+</text>
+<text>    </text>
+<a name="10"/>
+<text>        </text>
+<a name="11"/>
+<text> Wprowadzenie </text>
+<text>
+</text>
+<text>        </text>
+<a name="12"/>
+<text>Projekt RoadRunner ma na celu powstanie systemu encyklopedii, strukturalnych oraz
+</text>
+<text>            obiektowych j&#281;zyk&#243;w programowania. Inspiracj&#177; do stworzenia systemu jest pomys&#322;
+</text>
+<text>            powstania polskiej encyklopedii j&#281;zyka Delphi. System ma umo&#380;liwia&#263; dodawanie opis&#243;w
+</text>
+<text>            klas, modu&#322;&#243;w oraz metod, a tak&#380;e w&#322;a&#182;ciwo&#182;ci i zdarze&#324;. Encyklopedia w za&#322;o&#380;eniu ma by&#263;
+</text>
+<text>            dost&#281;pna dla wszystkich. Ka&#380;dy mo&#380;e tak&#380;e zmodyfikowa&#263; wpis lub doda&#263; w&#322;asny. </text>
+<text>
+</text>
+<text>    </text>
+<text>
+</text>
+<text>    </text>
+<a name="13"/>
+<text>        </text>
+<a name="14"/>
+<text>Licencja</text>
+<a name="15"/>
+<text>&gt;
+</text>
+<text>        </text>
+<text>
+</text>
+<text>        </text>
+<a name="16"/>
+<text>System RoadRunner rozpowszechniany jest na zasadach licencji </text>
+<a name="17"/>
+<text>GNU
+</text>
+<text>            GPL</text>
+<text>, zgodnej z Open Source. W rzeczywisto&#182;ci z systemem wi&#177;&#380;&#177; si&#281; a&#380; trzy
+</text>
+<text>            r&#243;&#380;ne licencje.</text>
+<text>
+</text>
+<text>        </text>
+<a name="18"/>
+<text>Kody &#317;r&#243;d&#322;owe systemu RoadRunner, napisane w </text>
+<a name="19"/>
+<text>PHP</text>
+<text>
+</text>
+<text>            obj&#281;te s&#177; licencj&#177; typu GNU GPL, kt&#243;ra zak&#322;ada mo&#380;liwo&#182;&#263; edycji oraz wykorzystania kod&#243;w
+</text>
+<text>            w innych projektach obj&#281;tych licencj&#177; GNU GPL. Tre&#182;&#263; licencji GNU GPL mo&#380;esz znale&#317;&#263; na
+</text>
+<text>            stronie </text>
+<a name="20"/>
+<text>www.gnu.org</text>
+<text>.</text>
+<text>
+</text>
+<text>        </text>
+<a name="21"/>
+<text>Tre&#182;&#263; zawarta w encyklopedii obj&#281;ta jest licencj&#177; </text>
+<a name="22"/>
+<text> GNU FDL </text>
+<text> kt&#243;ra
+</text>
+<text>            umo&#380;liwia dowolne wykorzystanie materia&#322;&#243;w prezentowanych w encyklopedii pod warunkiem
+</text>
+<text>            umieszczenia stosownej informacji o pochodzeniu materia&#322;u. Tre&#182;&#263; licencji GNU FDL
+</text>
+<text>            znajduje si&#281; na stronie </text>
+<a name="23"/>
+<text>www.gnu.org</text>
+<text>.</text>
+<text>
+</text>
+<text>        </text>
+<a name="24"/>
+<text>Kody &#317;r&#243;d&#322;owe zamieszczone w encyklopedii, obj&#281;te s&#177; liberaln&#177; licencj&#177; </text>
+<a name="25"/>
+<text>            BSD</text>
+<text>, kt&#243;ra umo&#380;liwia dowoln&#177; modyfikacj&#281; kodu oraz umiezsczanie go w innych
+</text>
+<text>            projektach, r&#243;wnie&#380; z zamkni&#281;tym kodem. Szablon licencji BSD mo&#380;esz znale&#317;&#263; na stronie
+</text>
+<text>                </text>
+<a name="26"/>
+<text>http://www.opensource.org/licenses/bsd-license.php</text>
+<text>.</text>
+<text>
+</text>
+<text>    </text>
+<text>
+</text>
+<text>    </text>
+<a name="27"/>
+<text>        </text>
+<a name="28"/>
+<text>Praca w zespole</text>
+<text>
+</text>
+<text>        </text>
+<a name="29"/>
+<text>Bardzo wa&#380;ne, w pracy w zespole jest ustalenie wsp&#243;lnych cel&#243;w oraz organizacja pracy.
+</text>
+<text>            W tym celu korzystamy z narz&#281;dzi u&#322;atwiaj&#177;cych programowanie w zespole, z kontrol&#177;
+</text>
+<text>            wersji (CVS). CVS jest aplikacj&#177; typu klient - serwer kt&#243;ra umo&#380;liwia wymian&#281; kod&#243;w
+</text>
+<text>            &#317;r&#243;d&#322;owych pomi&#281;dzy wszystkimi zainteresowanymi prac&#177; w projekcie. </text>
+<text>
+</text>
+<text>        </text>
+<a name="30"/>
+<text>            </text>
+<a name="31"/>
+<text>CVS</text>
+<text>
+</text>
+<text>            </text>
+<a name="32"/>
+<text>                </text>
+<a name="33"/>
+<text>Wi&#281;cej informacji na temat CVS mo&#380;esz znale&#317;&#263; na stronie www.cvshome.org.</text>
+<text>
+</text>
+<text>            </text>
+<text>
+</text>
+<text>            </text>
+<a name="34"/>
+<text>Dost&#281;p do CVS mo&#380;liwy jest tak&#380;e dla u&#380;ytkownik&#243;w anonimowych (nie maj&#177;cych konta
+</text>
+<text>                w CVS), jednak nie istnieje w takim wypadku mo&#380;liwo&#182;&#263; wysy&#322;ania na serwer nowych
+</text>
+<text>                plik&#243;w (dost&#281;p read-only, tylko do </text>
+<text>odczytu). Z CVS mo&#380;na korzysta&#263; z linii polece&#324;
+</text>
+<text>                lub przy pomocy interfejs&#243;w graficznych (np. WinCVS). Aby zalogowa&#263; si&#281; na serwer
+</text>
+<text>                nale&#380;y wpisa&#263; nast&#281;puj&#177;ce polecenie:</text>
+<text>
+</text>
+<text>            </text>
+<a name="35"/>
+<text>cvs -d:pserver:anoncvs@cvs.4programmers.net:/usr/cvs login </text>
+<text>
+</text>
+<text>            </text>
+<a name="36"/>
+<text>Gdy CVS poprosi Ci&#281; o has&#322;o, nale&#380;y wpisa&#263; anoncvs. Aby pobra&#263; kody &#317;r&#243;d&#322;owe
+</text>
+<text>                projektu, nale&#380;y wpisa&#263; polecenie: </text>
+<text>
+</text>
+<text>            </text>
+<a name="37"/>
+<text>cvs -d:pserver:anoncvs@cvs.4programmers.net:/usr/cvs checkout -r roadrunner .</text>
+<text>
+</text>
+<text>            </text>
+<a name="38"/>
+<text> Po wykonaniu powy&#380;szego polecenia (wa&#380;ny jest znak kropki na ko&#324;cu!) zostan&#177;
+</text>
+<text>                &#182;ci&#177;gni&#281;te tylko kody &#317;r&#243;d&#322;owe projektu RoadRunner (kody &#317;r&#243;d&#322;owe tego projektu s&#177;
+</text>
+<text>                umieszczone na tym samym repozytorium co projektu Coyote). Deweloperzy projektu maj&#177;
+</text>
+<text>                na serwerze CVS za&#322;o&#380;one konto dzi&#281;ki kt&#243;remu istnieje mo&#380;liwo&#182;&#263; wysy&#322;ania na serwer
+</text>
+<text>                nowych plik&#243;w lub uaktualniania istniej&#177;cych. Logowanie i pobieranie pliku podobne
+</text>
+<text>                jest do pobierania anonimowego, tyle, &#380;e zamiast anoncvs nale&#380;y poda&#263; login. </text>
+<text>
+</text>
+<text>        </text>
+<text>
+</text>
+<text>        </text>
+<a name="39"/>
+<text>            </text>
+<a name="40"/>
+<text>Styl kodowania</text>
+<text>
+</text>
+<text>            </text>
+<a name="41"/>
+<text>Podczas wsp&#243;lnej pracy nad projektem, istotne jest ustalenie wsp&#243;lnego modelu
+</text>
+<text>                zapisywania kodu &#317;r&#243;d&#322;owego. Niniejszy opis stylu kodowania PHP oraz SQL nale&#380;y
+</text>
+<text>                przyswoi&#263; oraz stosowa&#263; w trakcie kodowania. </text>
+<text>
+</text>
+<text>            </text>
+<a name="42"/>
+<text>                </text>
+<a name="43"/>
+<text>Kodowanie PHP</text>
+<text>
+</text>
+<text>                </text>
+<a name="44"/>
+<text> Uwaga! Prosz&#281; trzyma&#263; si&#281; poni&#380;szych zasad kodowania, gdy&#380; ogromnie wp&#322;ywa to
+</text>
+<text>                    na czytelno&#182;&#263; kodu. Mimo, &#380;e pierwsze wersje plik&#243;w projektu mog&#177; by&#263; zapisane w
+</text>
+<text>                    inny spos&#243;b wersja kodowania, kt&#243;r&#177; przedstawiam poni&#380;ej wydaje si&#281; najbardziej
+</text>
+<text>                    optymalna i stosowana przez programist&#243;w na ca&#322;ym &#182;wiecie. </text>
+<text>
+</text>
+<text>                </text>
+<a name="45"/>
+<text>                    </text>
+<a name="46"/>
+<text>Nazewnictwo</text>
+<text>
+</text>
+<text>                    </text>
+<a name="47"/>
+<text>Zar&#243;wno w przypadku nazw funkcji, zmiennych czy sta&#322;ych oraz klas
+</text>
+<text>                        stosujemy nazewnictwo angielskie. Np. </text>
+<a name="48"/>
+<text>Templates()</text>
+<text>, </text>
+<a name="49"/>
+<text>sql_query(),</text>
+<text>
+</text>
+<text>                        </text>
+<a name="50"/>
+<text>$topic_id</text>
+<text>. Nie deklaruj danych w ten spos&#243;b:
+</text>
+<text>                        </text>
+<a name="51"/>
+<text>Szablony()</text>
+<text>, </text>
+<a name="52"/>
+<text>zapytanie_sql()</text>
+<text>, </text>
+<a name="53"/>
+<text>$id_tematu</text>
+<text>.</text>
+<text>
+</text>
+<text>                </text>
+<text>
+</text>
+<text>                </text>
+<a name="54"/>
+<text>                    </text>
+<a name="55"/>
+<text>Wci&#281;cia</text>
+<text>
+</text>
+<text>                    </text>
+<a name="56"/>
+<text>Stosujemy zasad&#281;, &#380;e wci&#281;cia powinny wynosi&#263; 4 (cztery) spacj&#281;;
+</text>
+<text>                        niedozwolone jest u&#380;ywanie tabulator&#243;w.</text>
+<text>
+</text>
+<text>
+</text>
+<text>                    </text>
+<a name="57"/>
+<text>?
+</text>
+<text>    if ( $db-</text>
+<text>sql_query($sql) )
+</text>
+<text>    {
+</text>
+<text>        do_something();
+</text>
+<text>    }
+</text>
+<text>?</text>
+<text> 
+</text>
+<text>                    </text>
+<text>
+</text>
+<text>                    Tak wi&#281;c podstawowe wci&#281;cie o kt&#243;rego zaczynamy pierwszy blok instrukcji ma
+</text>
+<text>                    wci&#281;cie w wielko&#182;ci 4 spacji. </text>
+<text>
+</text>
+<text>                </text>
+<a name="58"/>
+<text>                    </text>
+<a name="59"/>
+<text>Struktury kontrolne</text>
+<text>
+</text>
+<text>                    </text>
+<a name="60"/>
+<text>Do struktur kontrolnych zaliczamy instrukcj&#281; if(), while(), for() itp.
+</text>
+<text>                        Zalecane jest, aby w strukturach kontrolnych znalazla si&#281; jedna spacja po i
+</text>
+<text>                        przed nawiasem. Przyk&#322;ad:</text>
+<text>
+</text>
+<text>    </text>
+<text>                </text>
+<a name="61"/>
+<text>if ( ( empty($cookie) ) </text>
+<text> ( $id != 0 ) )
+</text>
+<text>{
+</text>
+<text>    // jakie&#182; zadanie
+</text>
+<text>}
+</text>
+<text>else
+</text>
+<text>if ( empty($cookie) )
+</text>
+<text>{
+</text>
+<text>    // zr&#243;b co&#182; innego
+</text>
+<text>}
+</text>
+<text>
+</text>
+<text>                    </text>
+<text>
+</text>
+<text>                    </text>
+<a name="62"/>
+<text>Prosimy te&#380; o wpisywanie nawias&#243;w klamrowych nawet w&#243;wczas, gdy nie s&#177; one
+</text>
+<text>                        potrzebne (np. gdy wyst&#281;puje jedynie jedna instrukcja). Zwi&#281;ksza to
+</text>
+<text>                        czytelno&#182;&#263; kodu oraz eliminuje ew. b&#322;&#281;dy. Nie zapominamy oczywi&#182;cie o
+</text>
+<text>                        czterech spacji wci&#281;cia. Niedopuszczalna jest np. taka konstrukcja:</text>
+<text>
+</text>
+<text>                    </text>
+<a name="63"/>
+<text>if ($x </text>
+<text> 0) // co&#182; tam
+</text>
+<text>if ( $y </text>
+<text> 1)
+</text>
+<text>  // co&#182; tam
+</text>
+<text>                   </text>
+<text>
+</text>
+<text>                </text>
+<text>
+</text>
+<text>                </text>
+<a name="64"/>
+<text>                    </text>
+<a name="65"/>
+<text>Deklaracja funkcji</text>
+<text>
+</text>
+<text>                    </text>
+<a name="66"/>
+<text>Nie ma &#380;adnych &#380;elaznych regu&#322; reguluj&#177;cych spos&#243;b definicji funkcji.
+</text>
+<text>                        Zaleca si&#281; jednak, aby funkcje by&#322;y pisane ma&#322;ymi literami bez stosowania
+</text>
+<text>                        'stylu wielb&#322;&#177;dziego'. Dopuszczalne jest u&#380;ycie znaku _ - np.</text>
+<text>
+</text>
+<text>                </text>
+<text>
+</text>
+<text>                </text>
+<a name="67"/>
+<text>function do_something()
+</text>
+<text>{
+</text>
+<text>// dobrze
+</text>
+<text>}
+</text>
+<text>
+</text>
+<text>function DoSomething()
+</text>
+<text>{
+</text>
+<text>// zle
+</text>
+<text>}
+</text>
+<text>                      </text>
+<text>
+</text>
+<text>                </text>
+<a name="68"/>
+<text>                    </text>
+<a name="69"/>
+<text>Komentarze</text>
+<text>
+</text>
+<text>                    </text>
+<a name="70"/>
+<text>Jest jedna zasada: im wi&#281;cej komentarzy tym lepiej. Dodatkowo ka&#380;dy plik
+</text>
+<text>                        PHP powinien mie&#263; na g&#243;rze na g&#322;&#243;wek wygl&#177;daj&#177;cy mniej wi&#281;cej tak: </text>
+<text>
+</text>
+<text>                    </text>
+<a name="71"/>
+<text>/*************************************************************************
+</text>
+<text>** $Id: docbook.fot,v 1.2 2004/11/19 16:22:52 Embraced Exp $
+</text>
+<text>**
+</text>
+<text>** File name : config.php
+</text>
+<text>** Started   : 07.09.2004 r.
+</text>
+<text>** License   : GPL
+</text>
+<text>**************************************************************************
+</text>
+<text>*/
+</text>
+<text>                </text>
+<text>
+</text>
+<text>                    </text>
+<a name="72"/>
+<text> Na samej g&#243;rze zostanie wstawiona informacje na temat wersji, u&#380;ytkownika
+</text>
+<text>                        kt&#243;ry wys&#322;a&#322; plik. Informacja dodawana jest automatycznie przez CVS. Je&#380;eli
+</text>
+<text>                        chodzi o komentowanie kodu to u&#380;ywaj komentarzy w stylu C ( /* */ ) oraz //.
+</text>
+<text>                        Oba s&#177; OK - nie u&#380;ywaj natomiast standardu komentowania Perla (#).
+</text>
+<text>                        Komentarze piszemy w j&#281;zyku polskim. </text>
+<text>
+</text>
+<text>                </text>
+<text>
+</text>
+<text>                </text>
+<a name="73"/>
+<text>                    </text>
+<a name="74"/>
+<text>ChangeLog</text>
+<text>
+</text>
+<text>                    </text>
+<a name="75"/>
+<text>Bardzo istotnym elementem w zbiorowych projektach jest naniesienie
+</text>
+<text>                        informacji o zmianach dokonanych przez danego dewelopera. W tym celu w
+</text>
+<text>                        projekcie obowi&#177;zuje tzw. plik ChangeLog, kt&#243;ry jest umieszczony w g&#322;&#243;wnym
+</text>
+<text>                        katalogu z kodami &#317;r&#243;d&#322;owymi. Ka&#380;da zmiana dokonana przez dewelopera powinna
+</text>
+<text>                        zosta&#263; opisana w tym pliku, tak, aby pozostali wiedzieli co zosta&#322;o
+</text>
+<text>                        zmienione w danym dniu. Plik ChangeLog powinien mie&#263; tak&#177; posta&#263;:</text>
+<text>
+</text>
+<text>                    </text>
+<a name="76"/>
+<text> ---------------------------
+</text>
+<text>RoadRunner ChangeLog
+</text>
+<text>---------------------------
+</text>
+<text>
+</text>
+<text>$Id: docbook.fot,v 1.2 2004/11/19 16:22:52 Embraced Exp $
+</text>
+<text>$Source: /var/cvs/coyote/docs/docbook/html/docbook.fot,v $
+</text>
+<text>
+</text>
+<text>16.08.2004 </text>
+<text>adam@boduch.net</text>
+<text>
+</text>
+<text>
+</text>
+<text>  * poprawilem blad w plik </text>
+<text>db.php (nie zliczal ilosci zapytan kierowanych do bazy)
+</text>
+<text>                </text>
+<text>
+</text>
+<text>                    </text>
+<a name="77"/>
+<text> Zasada jest wi&#281;c prosta. Naj&#182;wie&#380;sze aktualno&#182;ci powinny by&#263; wpisywane na
+</text>
+<text>                        samej g&#243;rze. Nale&#380;y w tym miejscu dopisa&#263; dat&#281; poprawki, oraz w nawiasie -
+</text>
+<text>                        adres e-mail programisty. Nast&#281;pnie w wypunktowaniu nale&#380;y umie&#182;ci&#263; kr&#243;tki
+</text>
+<text>                        opis okre&#182;laj&#177;cy co i gdzie zosta&#322;o zmienione. Miejscem do szerszego opisu
+</text>
+<text>                        poprawionego b&#322;&#281;du jest skrypt (opis w formie komentarza) lub dziennik
+</text>
+<text>                        danego pliku (przy wysy&#322;aniu poprawki pliku CVS prosi o wpisanie informacji
+</text>
+<text>                        dotycz&#177;cej danej wersji pliku). </text>
+<text>
+</text>
+<text>                </text>
+<text>
+</text>
+<text>                </text>
+<a name="78"/>
+<text>                    </text>
+<a name="79"/>
+<text>Sta&#322;e</text>
+<text>
+</text>
+<text>                    </text>
+<a name="80"/>
+<text> W przypadku deklaracji sta&#322;ych, prosimy u&#380;ywa&#263; jedynie wielkich liter -
+</text>
+<text>                        pozwoli to na wyr&#243;&#380;nienie sta&#322;ych od zmiennych. </text>
+<text>
+</text>
+<text>                </text>
+<text>
+</text>
+<text>                </text>
+<a name="81"/>
+<text>                    </text>
+<a name="82"/>
+<text>Zmienne</text>
+<text>
+</text>
+<text>                    </text>
+<a name="83"/>
+<text> Zaleca si&#281; deklarowanie zmiennych, kt&#243;re by&#322;y by najbardziej opisowe -
+</text>
+<text>                        np. </text>
+<a name="84"/>
+<text>$topic_id</text>
+<text> (ID tematu), </text>
+<a name="85"/>
+<text>$post_id</text>
+<text>
+</text>
+<text>                        (ID postu). Nie deklaruj zmiennych jednoznakowych - np.
+</text>
+<text>                        </text>
+<a name="86"/>
+<text>$x</text>
+<text>, </text>
+<a name="87"/>
+<text>$y</text>
+<text>, </text>
+<a name="88"/>
+<text>$z</text>
+<text>. Zmienne
+</text>
+<text>                        jednoznakowe mog&#177; mie&#263; zastosowanie jedynie w przypadku p&#281;tli for() i
+</text>
+<text>                        zmiennej pomocniczej. </text>
+<text>
+</text>
+<text>                </text>
+<text>
+</text>
+<text>            </text>
+<text>
+</text>
+<text>        </text>
+<text>
+</text>
+<text>        </text>
+<a name="89"/>
+<text>            </text>
+<a name="90"/>
+<text>Zapisywanie instrukcji SQL</text>
+<text>
+</text>
+<text>            </text>
+<a name="91"/>
+<text>W sprawie komend SQL kierujemy si&#281; zasad&#177;, &#380;e nie nale&#380;y oszcz&#281;dza&#263; linijek na to,
+</text>
+<text>                aby w d&#322;u&#380;szych zapytaniach by&#322;y one czytelniejsze. Czyli: niech zapytania zajmuj&#177;
+</text>
+<text>                kilka linijek je&#380;eli jest to potrzebne - przyk&#322;ad:</text>
+<text>
+</text>
+<text>            </text>
+<a name="92"/>
+<text>$sql = 'SELECT *
+</text>
+<text>         FROM ' . TOPIC . ' 
+</text>
+<text>         WHERE topic_id = ' . $_GET['id'];            
+</text>
+<text>            </text>
+<text>
+</text>
+<text>            </text>
+<a name="93"/>
+<text> S&#322;owa kluczowe SQL musz&#177; by&#263; napisane wielkimi literami (SELECT, UPDATE, WHERE
+</text>
+<text>                itp) natomiast nazwy kolumn ma&#322;ymi. Przyj&#281;&#322;o si&#281; aby ca&#322;e zapytanie ujmowa&#263; jedynie
+</text>
+<text>                w pojedyncze apostrofy. Jak widzisz w powy&#380;szym przyk&#322;adzie w przypadku wstawienia
+</text>
+<text>                sta&#322;ej lub zmiennej &quot;rozdzielamy&quot; &#322;a&#324;cuch. Je&#380;eli natomiast chodzi o kolumny typu
+</text>
+<text>                char() to nale&#380;y u&#380;ywa&#263; apostrof&#243;w podw&#243;jnych:</text>
+<text>
+</text>
+<text>
+</text>
+<text>            </text>
+<a name="94"/>
+<text>$sql = 'UPDATE ' . TOPIC . ' SET
+</text>
+<text>         topic_subject = &quot;' . $_POST['topic_subject'] . '&quot;';
+</text>
+<text>            </text>
+<text>
+</text>
+<text>            Oto inne przyk&#322;ady:
+</text>
+<text>            </text>
+<a name="95"/>
+<text>$sql = 'SELECT topic_subject, topic_user, user_name 
+</text>
+<text>        FROM ' . TOPIC . ', ' . USERS . ' 
+</text>
+<text>        WHERE topic_id = ' . $_GET['id'] . '
+</text>
+<text>            AND user_id = topic_id
+</text>
+<text>            AND topic_id </text>
+<text> 100';            
+</text>
+<text>            </text>
+<text>
+</text>
+<text>            Zwr&#243;&#263; uwag&#281; na zapis s&#322;&#243;w kluczowych AND oraz OR - zosta&#322;y one zapisane z wci&#281;ciem w
+</text>
+<text>            wielko&#182;ci dw&#243;ch spacji. </text>
+<text>
+</text>
+<text>        </text>
+<a name="96"/>
+<text>            </text>
+<a name="97"/>
+<text>In&#380;ynieria oprogramowania</text>
+<text>
+</text>
+<text>            </text>
+<a name="98"/>
+<text> In&#380;ynieria oprogramowania to dziedzina </text>
+<text>in&#380;ynierii system&#243;w zajmuj&#177;ca si&#281;
+</text>
+<text>                wszelkimi aspektami produkcji oprogramowania W in&#380;ynierii oprogramowania proces
+</text>
+<text>                produkcji oprogramowania dzieli si&#281; na kilka faz. W&#182;r&#243;d nich mo&#380;na wyr&#243;&#380;ni&#263;
+</text>
+<text>                nast&#281;puj&#177;ce: </text>
+<a name="99"/>
+<text>                    </text>
+<a name="100"/>
+<text>Okre&#182;lenie wymaga&#324;</text>
+<text>
+</text>
+<text>                    </text>
+<a name="101"/>
+<text>Specyfikacja</text>
+<text>
+</text>
+<text>                    </text>
+<a name="102"/>
+<text>Implementacja (kodowanie)</text>
+<text>
+</text>
+<text>                    </text>
+<a name="103"/>
+<text>Testowanie</text>
+<text>
+</text>
+<text>                    </text>
+<a name="104"/>
+<text>Ewoluowanie</text>
+<text>
+</text>
+<text>                </text>
+<text> Pokr&#243;tce om&#243;wmy ka&#380;d&#177; faz&#281;. </text>
+<text>
+</text>
+<text>            </text>
+<a name="105"/>
+<text>                </text>
+<a name="106"/>
+<text>Wmagania</text>
+<text>
+</text>
+<text>                </text>
+<a name="107"/>
+<text>Pierwszym etapem w procesie projektowania aplikacji jest okre&#182;lenie
+</text>
+<text>                    podstawowych wymaga&#324; jakie ma spe&#322;ni&#263; aplikacja. Oto podstawowe za&#322;o&#380;enia: </text>
+<text>
+</text>
+<text>                </text>
+<a name="108"/>
+<text>                    </text>
+<a name="109"/>
+<text>System ma by&#263; oparty o licencj&#281; GNU GPL. Zawarto&#182;&#263; encyklopedii ma by&#263;
+</text>
+<text>                        oparta o licencji GNU FDL oraz BSD (w przypadku kod&#243;w &#317;r&#243;d&#322;owych w
+</text>
+<text>                        encyklopedii).; </text>
+<text>
+</text>
+<text>                    </text>
+<a name="110"/>
+<text>System ma by&#263; oparty o system szablon&#243;w umo&#380;liwiaj&#177;cych prost&#177; zmian&#281;
+</text>
+<text>                        interfejsu graficznego. </text>
+<text>
+</text>
+<text>                    </text>
+<a name="111"/>
+<text>Kodowanie plik&#243;w ma by&#263; oparte o UTF-8. </text>
+<text>
+</text>
+<text>                    </text>
+<a name="112"/>
+<text>System musi umo&#380;liwia&#263; dodawanie wpis&#243;w r&#243;wnie&#380; przez anonimowych
+</text>
+<text>                        (niezarejestrowanych) u&#380;ytkownik&#243;w. </text>
+<text>
+</text>
+<text>                    </text>
+<a name="113"/>
+<text>System musi obs&#322;ugiwa&#263; kilka interfejs&#243;w system&#243;w baz danych (np.
+</text>
+<text>                        MySQL, PostgreSQL). </text>
+<text>
+</text>
+<text>                    </text>
+<a name="114"/>
+<text>Baza danych musi przechowywa&#263; wszystkie wersje danego artyku&#322;u. </text>
+<text>
+</text>
+<text>                    </text>
+<a name="115"/>
+<text>System ma umo&#380;liwia&#263; korzystanie z XHTML w trakcie dodawania artyku&#322;u. </text>
+<text>
+</text>
+<text>                    </text>
+<a name="116"/>
+<text>Szablony maj&#177; by&#263; oparte o XHTML. </text>
+<text>
+</text>
+<text>                    </text>
+<a name="117"/>
+<text>System musi obs&#322;ugiwa&#263; eksport wpis&#243;w w formacie XML (najlepiej w
+</text>
+<text>                        formacie DocBook). </text>
+<text>
+</text>
+<text>                    </text>
+<a name="118"/>
+<text>System musi umo&#380;liwia&#263; dodawanie opisu klas, metod, modu&#322;&#243;w, procedur,
+</text>
+<text>                        w&#322;a&#182;ciwo&#182;ci i zdarze&#324;. </text>
+<text>
+</text>
+<text>                    </text>
+<a name="119"/>
+<text>System musi obs&#322;ugiwa&#263; dziedziczenie. </text>
+<text>
+</text>
+<text>                    </text>
+<a name="120"/>
+<text>System musi umo&#380;liwia&#263; dodawanie opisu do modu&#322;&#243;w, lecz opr&#243;cz tego
+</text>
+<text>                        powinien wy&#182;wietla&#263; w spos&#243;b dynamiczny, list&#281; procedur oraz klas zawartych
+</text>
+<text>                        w module. </text>
+<text>
+</text>
+<text>                    </text>
+<a name="121"/>
+<text>System musi posiada&#263; przyjazne linki (np. /metod/TStringList.Add,
+</text>
+<text>                        /function/ShellExecute, /class/TMemo). </text>
+<text>
+</text>
+<text>                </text>
+<text>
+</text>
+<text>            </text>
+<text>
+</text>
+<text>            </text>
+<a name="122"/>
+<text>                </text>
+<a name="123"/>
+<text>Specyfikacja</text>
+<text>
+</text>
+<text>                </text>
+<a name="124"/>
+<text> Specyfikacja to dok&#322;adny opis struktur katalog&#243;w, plik&#243;w, opis klas, procedur
+</text>
+<text>                    oraz modu&#322;&#243;w itp. W trakcie tworzenia specyfikacji powstanie dok&#322;adna
+</text>
+<text>                    dokumentacja projektu, zapewniaj&#177;ca opis wszelkich procedur i zasad dzia&#322;ania.
+</text>
+<text>                    Jest to bardzo pomocne dla innych programist&#243;w oraz u&#380;ytkownik&#243;w systemu.
+</text>
+<text>                    Specyfikacja stanowi ponad 50% czasu cyklu projektowania aplikacji, dlatego
+</text>
+<text>                    wa&#380;ne jest odpowiednie, uwa&#380;ne opracowanie szczeg&#243;&#322;owych </text>
+<text>za&#322;o&#380;e&#324;. Po ustaleniu
+</text>
+<text>                    specyfikacji, zadania zostan&#177; podzielone pomi&#281;dzy r&#243;&#380;nych deweloper&#243;w i w tym
+</text>
+<text>                    momencie zacznie si&#281; kodowanie. </text>
+<text>
+</text>
+<text>            </text>
+<text>
+</text>
+<text>            </text>
+<a name="125"/>
+<text>                </text>
+<a name="126"/>
+<text>Kodowanie</text>
+<text>
+</text>
+<text>                </text>
+<a name="127"/>
+<text> Kodowanie jest procesem tworzenia plik&#243;w &#317;r&#243;d&#322;owych przez og&#243;&#322; grupy bior&#177;cej
+</text>
+<text>                    udzia&#322; w projekcie. W przypadku projektu RoadRunner wykorzystujemy j&#281;zyk PHP
+</text>
+<text>                    oraz SQL. W specyficznych przypadkach mo&#380;liwe jest tak&#380;e u&#380;ycie skrypt&#243;w Perla
+</text>
+<text>                    lub program&#243;w napisanych w j&#281;zyku C. Programista w trakcie kodowania powinien na
+</text>
+<text>                    bie&#380;&#177;co wysy&#322;a&#263; poprawione pliki na serwer CVS oraz trzyma&#263; si&#281; wytyczonych w
+</text>
+<text>                    tym dokumencie, regu&#322; kodowania. Dodatkowo powinien na bie&#380;&#177;co uaktualnia&#263; plik
+</text>
+<text>                    ChangeLog informuj&#177;cy o zmianach w kodzie.</text>
+<text>
+</text>
+<text>            </text>
+<text>
+</text>
+<text>            </text>
+<a name="128"/>
+<text>                </text>
+<a name="129"/>
+<text>Testowanie</text>
+<text>
+</text>
+<text>                </text>
+<a name="130"/>
+<text> Nieod&#322;&#177;cznym elementem kodowania jest pojawianie si&#281; b&#322;&#281;d&#243;w w programie.
+</text>
+<text>                    B&#322;&#281;dy staramy si&#281; likwidowa&#263; na bie&#380;&#177;co aczkolwiek nie jest mo&#380;liwe
+</text>
+<text>                    wyeliminowanie wi&#281;kszo&#182;ci (nie m&#243;wimy tutaj o wszystkich b&#322;&#281;dach) b&#322;&#281;d&#243;w w
+</text>
+<text>                    trakcie procesu kodowania. Proces testowania mo&#380;e rozpocz&#177;&#263; si&#281; w momencie
+</text>
+<text>                    spe&#322;niania wi&#281;kszo&#182;ci warunk&#243;w okre&#182;lonych w specyfikacji. Proces testowania
+</text>
+<text>                    b&#281;dzie realizowany przez u&#380;ytkownik&#243;w rozwijaj&#177;cych encyklopedie (kody &#317;r&#243;d&#322;owe
+</text>
+<text>                    zostan&#177; umieszczone na serwerze w wersji 0.1.).</text>
+<text>
+</text>
+<text>            </text>
+<text>
+</text>
+<text>            </text>
+<a name="131"/>
+<text>                </text>
+<a name="132"/>
+<text>Model kaskadowy z prototypowaniem</text>
+<text>
+</text>
+<text>                </text>
+<a name="133"/>
+<text>W typowym modelu kaskadowym kolejna faza projektowania nie mo&#380;e zosta&#263;
+</text>
+<text>                    rozpocz&#281;ta przed zako&#324;czeniem poprzedniej. Bardzo spowodlnia to proces
+</text>
+<text>                    powstawania oprogramowania, gdy&#380; najwi&#281;cej czasu nale&#380;y po&#182;wi&#281;ci&#263; na dok&#322;adn&#177;
+</text>
+<text>                    specyfikacj&#281; projektu. </text>
+<text>
+</text>
+<text>                </text>
+<a name="134"/>
+<text> W przypadku projektu RoadRunner stosujemy model kaskadowy z prototypowaniem.
+</text>
+<text>                    Zak&#322;ada on mo&#380;liwo&#182;&#263; tworzenia prototyp&#243;w, czyli komponent&#243;w, podzespo&#322;&#243;w na
+</text>
+<text>                    podstawie wst&#281;pnej specyfikacji. Tak utworzone prototypy testujemy i ewentualnie
+</text>
+<text>                    poprawiamy. Na podstawie prototypu tworzymy dok&#322;adniejsz&#177; specyfikacj&#281;, a na jej
+</text>
+<text>                    podstawie - gotowy modu&#322;. </text>
+<text>
+</text>
+<text>            </text>
+<text>
+</text>
+<text>        </text>
+<text>
+</text>
+<text>    </text>
+<text>
+</text>
+<text>    </text>
+<a name="135"/>
+<text>        </text>
+<a name="136"/>
+<text>Specyfikacja</text>
+<a name="137"/>
+<text>&gt;
+</text>
+<text>        </text>
+<text>
+</text>
+<text>        </text>
+<a name="138"/>
+<text>Niniejszy podpunkt stanowi dok&#322;adny opis struktury katalog&#243;w, plik&#243;w, klas oraz
+</text>
+<text>            funkcji zawartych w projekcie. </text>
+<text>
+</text>
+<text>        </text>
+<a name="139"/>
+<text>            </text>
+<a name="140"/>
+<text>Struktura katalog&#243;w</text>
+<a name="141"/>
+<text>&gt;
+</text>
+<text>            </text>
+<text>
+</text>
+<text>            </text>
+<a name="142"/>
+<text>                </text>
+<a name="143"/>
+<text>Aktualnie w budowie</text>
+<text>
+</text>
+<text>            </text>
+<text>
+</text>
+<text>        </text>
+<text>
+</text>
+<text>        </text>
+<a name="144"/>
+<text>            </text>
+<a name="145"/>
+<text>Pliki projektu</text>
+<a name="146"/>
+<text>&gt;
+</text>
+<text>            </text>
+<text>
+</text>
+<text>            </text>
+<a name="147"/>
+<text>Niniejsza sekcja zawiera opis wszystkich plik&#243;w wchodz&#177;cych w sk&#322;ad projektu. Opis
+</text>
+<text>                zawiera informacje o przeznaczeniu danego pliku oraz skr&#243;towy opis klas, funkcji
+</text>
+<text>                zawartych w danym pliku. </text>
+<text>
+</text>
+<text>            </text>
+<a name="148"/>
+<text>                </text>
+<a name="149"/>
+<text>root/ChangeLog</text>
+<a name="150"/>
+<text>&gt;
+</text>
+<text>                </text>
+<text>
+</text>
+<text>                </text>
+<a name="151"/>
+<text>Ka&#380;dy programista, kt&#243;ry uaktualnia co&#182; na serwerze CVS, powinien zanotowa&#263;
+</text>
+<text>                    zmian&#281; w pliku ChangeLog. Innymi s&#322;owy plik ChangeLog jest list&#177; zmian
+</text>
+<text>                    dokonanych w danym dniu. Notka powinna zawiera&#263; dat&#281; oraz adres e-mail
+</text>
+<text>                    programisty, kt&#243;ry dokona&#322; poprawek. </text>
+<text>
+</text>
+<text>            </text>
+<text>
+</text>
+<text>            </text>
+<a name="152"/>
+<text>                </text>
+<a name="153"/>
+<text>root/TODO</text>
+<a name="154"/>
+<text>&gt;
+</text>
+<text>                </text>
+<text>
+</text>
+<text>                </text>
+<a name="155"/>
+<text>Plik TODO jest list&#177; funkcji, kt&#243;r&#177; planujemy wdro&#380;y&#263; w kolejnych wersjach
+</text>
+<text>                    systemu. </text>
+<text>
+</text>
+<text>            </text>
+<text>
+</text>
+<text>            </text>
+<a name="156"/>
+<text>                </text>
+<a name="157"/>
+<text>root/extension.inc</text>
+<a name="158"/>
+<text>&gt;
+</text>
+<text>                </text>
+<text>
+</text>
+<text>                </text>
+<a name="159"/>
+<text>Standardowo pliki PHP posiadaj&#177; rozszerzenie .php. Serwer Apache umo&#380;liwia
+</text>
+<text>                    zmian&#281; tego ustawienia, dzi&#281;ki czemu pliki z rozszerzeniem - np. .html, b&#281;d&#177;
+</text>
+<text>                    traktowane jako skrypty PHP. Zmienna $phpEx znajduj&#177;ca si&#281; w tym pliku zawiera
+</text>
+<text>                    informacje na temat rozszerzenia plik&#243;w PHP. Oczywi&#182;cie domy&#182;ln&#177; warto&#182;ci&#177; tej
+</text>
+<text>                    zmiennej jest php. Ten plik jest w&#322;&#177;czany w ka&#380;dym skrypcie celem odczytania
+</text>
+<text>                    rozszerzenia oraz w&#322;&#177;czenia do skryptu g&#322;&#243;wnej cz&#281;&#182;ci systemu (pliku </text>
+<a name="160"/>
+<text>common.php</text>
+<text>). </text>
+<text>
+</text>
+<text>            </text>
+<text>
+</text>
+<text>            </text>
+<a name="161"/>
+<text>                </text>
+<a name="162"/>
+<text>root/config.php</text>
+<a name="163"/>
+<text>&gt;
+</text>
+<text>                </text>
+<text>
+</text>
+<text>                </text>
+<a name="164"/>
+<text>Najwa&#380;niejszym plikiem ca&#322;ego systemu jest plik config.php. Zawiera on sta&#322;e
+</text>
+<text>                    okre&#182;laj&#177;ce has&#322;o, login oraz host do bazy danych. Plik ten powinien by&#263; &#182;ci&#182;le
+</text>
+<text>                    chroniony, polecamy nadanie mu prawa 0400, dzi&#281;ki czemu nie b&#281;dzie mo&#380;liwy
+</text>
+<text>                    podgl&#177;d zawarto&#182;ci tego pliku. Poni&#380;sza tabela zawiera opis sta&#322;ych zawartych w
+</text>
+<text>                    tym pliku. </text>
+<text>
+</text>
+<text>                </text>
+<a name="165"/>
+<text>                    </text>
+<a name="166"/>
+<text>Sta&#322;e zawarte w pliku </text>
+<a name="167"/>
+<text>config.php</text>
+<text>
+</text>
+<text>                    </text>
+<text>
+</text>
+<text>                    </text>
+<a name="168"/>
+<text>                        </text>
+<a name="169"/>
+<text>                            </text>
+<a name="170"/>
+<text>                                </text>
+<a name="171"/>
+<text>                                    </text>
+<a name="172"/>
+<text>Nazwa sta&#322;ej</text>
+<text>
+</text>
+<text>                                </text>
+<text>
+</text>
+<text>                                </text>
+<a name="173"/>
+<text>                                    </text>
+<a name="174"/>
+<text>Przeznaczenie</text>
+<text>
+</text>
+<text>                                </text>
+<text>
+</text>
+<text>                            </text>
+<text>
+</text>
+<text>                            </text>
+<a name="175"/>
+<text>                                </text>
+<a name="176"/>
+<text>SQL_LAYER</text>
+<text>
+</text>
+<text>                                </text>
+<a name="177"/>
+<text>Warstwa u&#380;ywana do &#322;&#177;czenia si&#281; z baz&#177; danych. Domy&#182;ln&#177;
+</text>
+<text>                                    warto&#182;ci&#177; jest mysql. Dzi&#281;ki tej sta&#322;ej, do systemu w&#322;&#177;czony
+</text>
+<text>                                    zostanie plik </text>
+<a name="178"/>
+<text>mysql.php</text>
+<text> (z katalogu
+</text>
+<text>                                    include/db) kt&#243;ry zawiera klas&#281; </text>
+<a name="179"/>
+<text>DB</text>
+<text>
+</text>
+<text>                                    u&#380;ywan&#177; do &#322;&#177;czenia si&#281; z baz&#177; danych. </text>
+<text>
+</text>
+<text>                            </text>
+<text>
+</text>
+<text>                            </text>
+</fot>

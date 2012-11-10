@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<installation type="module">
+	<name>atom</name>
+	<text>Moduł generowania nagłówków Atom</text>
+	<version>1.0-rc2</version>
+	<system>1.0-rc2</system>
+    <author>Adam Boduch</author>
+
+	<option type="select">
+		<name>feedsLimit</name>
+		<text>Liczba generowanych nagłówków</text>
+		<title>Okreś, ile nagłówków ma być generowanych w danym kanale atom</title>
+		<values default="10">
+			<value id="5">5</value>
+			<value id="10">10</value>
+			<value id="15">15</value>
+			<value id="20">20</value>
+			<value id="25">25</value>
+			<value id="30">30</value>
+			<value id="35">35</value>
+			<value id="40">40</value>
+			<value id="50">50</value>
+		</values>
+		<auth>a_</auth>
+	</option>
+	<option type="select">
+		<name>order</name>
+		<text>Sortowanie</text>
+		<title>Określ według jakich kryteriów strony mają być sortowane</title>
+		<values default="edit_time">
+			<value id="edit_time">Według ostatniej modyfikacji strony</value>
+			<value id="time">Według daty utworzenia strony</value>
+		</values>
+	</option>
+	<option type="select">
+		<name>cache</name>
+		<text>Odświeżaj cache</text>
+		<title>Jeżeli nie chcesz, aby dane były zapisywane w cache, wybierz wartość Nigdy</title>
+		<values default="0">
+			<value id="0">Nigdy</value>
+			<value id="300">co 5 min.</value>
+			<value id="600">co 10 min.</value>
+			<value id="1200">co 20 min.</value>
+			<value id="3600">co 60 min.</value>
+		</values>
+	</option>
+
+	<setup>
+	
+		<connector>
+			<name>atom</name>
+			<class>atom</class>
+			<text>Kanał Atom</text>
+			<controller>atom</controller>
+			<action>main</action>
+			<folder></folder>
+		</connector>
+	</setup>
+</installation>

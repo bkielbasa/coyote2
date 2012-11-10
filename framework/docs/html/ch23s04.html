@@ -1,0 +1,109 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Klasa Filter_Input</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch23.html" title="Rozdzia&#322; 23. Filtrowanie danych"><link rel="prev" href="ch23s03.html" title="Statyczna metoda call()"><link rel="next" href="ch24.html" title="Rozdzia&#322; 24. Wysy&#322;anie plików na serwer"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Klasa Filter_Input</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch23s03.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 23. Filtrowanie danych</th><td width="20%" align="right"> <a accesskey="n" href="ch24.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id500776"></a>Klasa Filter_Input</h2></div></div></div><p>Klasa <tt class="classname">Filter_Input</tt> znajduje si&#281; w pliku
+                <tt class="filename">input.class.php</tt>, w katalogu <tt class="filename">filter</tt>.
+            Umo&#380;liwia ona walidacj&#281; oraz filtrowanie wi&#281;kszej ilo&#347;ci danych (np. tablicy)
+            jednocze&#347;nie. Mo&#380;na j&#261; wykorzysta&#263; do sprawdzenia poprawno&#347;ci - np. formularza. Klasa
+                <tt class="classname">Filter_Input</tt> posiada metody
+            <tt class="methodname">addValidator()</tt>, <tt class="methodname">setValidators()</tt>,
+                <tt class="methodname">addFilter()</tt>, <tt class="methodname">setFilters()</tt>,
+            podobnie jak klasy <tt class="classname">Filter</tt>, czy <tt class="classname">Validate</tt>.
+            Jedyna ró&#380;nica jest taka, i&#380; podczas deklarowania regu&#322; walidatorów, czy filtrów -
+            musimy sprecyzowa&#263; jakich pól tablicy (czy np. formularza) one dotycz&#261;. Oto przyk&#322;adowy
+            skrypt, który sprawdza poprawno&#347;&#263; tablicy <tt class="varname">$foo</tt>:</p><pre class="programlisting">
+&lt;?php
+
+class Test extends Controller
+{
+	function main()
+	{
+		$foo = array(
+			'name'		=&gt; '&lt;a onclick="alert(\'Hello\');"&gt;User name&lt;/a&gt;',
+			'email'		=&gt; 'invalid(at)email.com'
+		);
+
+		$filter = new Filter_Input;
+
+		$filter-&gt;setFilters(array(
+
+			'name'		=&gt; array(
+					'string',
+					array('xss')
+			),
+			'email'		=&gt; array(
+					'string',
+					'htmlspecialchars'
+			)
+		));
+		$filter-&gt;setValidators(array(
+
+			'name'		=&gt; array(
+					'string'
+			),
+			'email'		=&gt; array(
+					array('string', false, 1, 30),
+					'email'
+			)
+		));
+
+		if ($filter-&gt;isValid($foo))
+		{
+			echo 'OK&lt;br /&gt;';
+			Core::debug($filter-&gt;getValues());
+		}
+		else
+		{
+			echo 'Bledy:&lt;/br &gt;';
+			Core::debug($filter-&gt;getMessages());
+		}
+	}
+}
+?&gt;        
+    </pre><p>Dzi&#281;ki metodom <tt class="methodname">setFilters()</tt> oraz
+            <tt class="methodname">setValidators()</tt> przekazali&#347;my regu&#322;y walidatorów i filtrów.
+            Zasada dzia&#322;ania tych metod jest taka sama jak w klasach <tt class="classname">Validate</tt>
+            oraz <tt class="classname">Filter</tt>.</p><p>Metoda <tt class="methodname">isValid()</tt> zwraca TRUE w przypadku, gdy proces
+            walidacji przebieg&#322; poprawnie, a FALSE - je&#380;eli zako&#324;czy&#322;o si&#281; to pora&#380;k&#261;. </p><p>Metoda <tt class="methodname">getMessages()</tt> zwraca b&#322;&#281;dy w formie tablicy, gdzie
+            kluczem jest nazwa walidowanego pola - np.:</p><pre class="programlisting">
+Array
+(
+    [email] =&gt; Array
+    (
+        [0] =&gt; Adres "invalid(at)email.com" nie jest prawid&#322;owym adresem e-mail
+    )
+
+)        
+    </pre><p>Metoda <tt class="methodname">getValues()</tt> zwraca warto&#347;ci pól walidowanej tablicy po
+        procesie filtrowania oraz walidacji. </p><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id500938"></a>Metoda setRules()</h3></div></div></div><p>W poprzednim przyk&#322;adzie rozdziela&#322;em regu&#322;y na regu&#322;y walidatora oraz filtra. U&#380;y&#322;em do tego
+            dwóch metod - <tt class="methodname">setValidators()</tt> oraz <tt class="methodname">setFilters()</tt>.
+            Mo&#380;liwe jest po&#322;&#261;czenie dwóch tablic - regu&#322; filtrów oraz walidatorów, a nast&#281;pnie przekazanie tych regu&#322; w metodzie
+            <tt class="methodname">setRules()</tt>:
+            </p><pre class="programlisting">
+$filter = new Filter_Input;
+
+$data['filter'] = array(
+
+	'name'		=&gt; array(
+			'string',
+			array('xss')
+	),
+	'email'		=&gt; array(
+			'string',
+			'htmlspecialchars'
+	)
+);
+$data['validator'] = array(
+
+	'name'		=&gt; array(
+			'string'
+	),
+	'email'		=&gt; array(
+			array('string', false, 1, 30),
+			'email'
+	)
+);
+$filter-&gt;setRules($data);                
+            </pre><p>
+                Regu&#322;y walidatorów oraz filtrów mo&#380;na przekaza&#263; równie&#380; w konstruktorze klasy:
+              </p><pre class="programlisting">
+$filter = new Filter_Input($data);                  
+              </pre><p>
+            </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch23s03.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch23.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch24.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Statyczna metoda call() </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Rozdzia&#322; 24. Wysy&#322;anie plików na serwer</td></tr></table></div></body></html>

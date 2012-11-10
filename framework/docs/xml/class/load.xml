@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter>
+    <title>Loader</title>
+    
+    <para>
+        Jest to pierwsza biblioteka ładowana przez klasę <classname>Core</classname>. Jest to
+        bardzo ważna klasa, która odpowiada za ładowanie podzespołów aplikacji. Klasa posiada
+        zarówno metody statyczne jak i zwykłe, co umożliwia użycie loadera na wiele sposobów w
+        każdym momencie działania aplikacji. 
+    </para>
+    
+    <para>
+        Klasa <classname>Core</classname> rejestruje metodę <methodname>autoload()</methodname> z
+        klasy <classname>Load</classname> jako metodę typu autoload PHP. Dzięki temu możliwe jest użycie
+        podzespołów aplikacji (bibliotek, helperów) bez jawnego ładowania danego pliku przy pomocy - np.
+        instrukcji <function>include()</function>. Wystarczy użyć danego elementu (np. helpera), aby system
+        sam zidentyfikował dane wywołanie, jako próbę wywołania - np. helpera i załadował do projektu odpowiedni plik.
+    </para>
+    
+    <section>
+        <title>Metoda autoload()</title>
+        
+        <para>
+            Pierwszą metodą, którą warto omówić jest metoda <methodname>autoload()</methodname>. W
+            przypadku gdy PHP nie może odnaleźć danej klasy, do której chcemy się odwołać,
+            wywoływana jest ta metoda, która próbuje załadować do projektu żądaną bibliotekę, model,
+            helper lub kontroler. W tym celu metoda odczytuje przyrostek klasy. Jeżeli przyrostek to
+            <emphasis>model</emphasis> - oznacza, iż żądana klasa jest modelem. Jeżeli jest to
+                <emphasis>controller</emphasis> - klasa jest kontrolerem. W innym przypadku, loader
+            próbuje odszukać klasy w podkatalogach folderu <filename>lib</filename> a jeżeli i to
+            nie pomoże - sprawdza, czy dana klasa jest nazwą helpera lub biblioteki. 
+        </para>
+        
+        <para>
+            W przypadku korzystania z metody <methodname>autoload()</methodname>, klasa nie
+            zostanie zainicjalizowana. Oznacza to, że nie zostanie utworzona instancja danej klasy.
+            Przykładowo:
+            <programlisting>
+User::foo(); // próba odwołania się do nieistniejącej klasy User i statycznej metody foo()
+            </programlisting>
+        </para>
+        
+        <para>
+            W takim przypadku, przed wyświetleniem komunikatu z błędem, system przeszukuje
+            katalogi <filename>helper</filename> i <filename>lib</filename> projektu (zarówno w
+            katalogu z frameworkiem jak i z aplikacją) i szuka pliku <filename
+            >user.helper.php</filename> lub <filename>user.class.php</filename>. Plik jest ładowany
+            do projektu, lecz sama klasa nie jest inicjalizowana.
+        </para>
+        
+    </section>
+    
+    <section>
+        <title>Metoda loadFile()</title>
+        
+        <para>
+            Działanie metody <methodname>loadFile()</methodname> jest proste. Wczytuje ona do aplikacji dany
+            plik PHP. Wywołuje ona instrukcję <function>include_once()</function>. Statyczna metoda
+            <methodname>loadFile()</methodname> umożliwia załadowanie do projektu całej grupy plików korzystając
+            z maski:
+            
+            <programlisting>
+<![CDATA[
+Load::loadFile('lib/foo/*.php', true); 
+]]>                
+            </programlisting>
+            
+            Taka instrukcja załaduje wszystkie pliki z rozszerzeniem .php, z katalogu <filename>/lib/foo.</filename>
+        </para>
+        
+        <note>
+            Zwróć uwage, że drugim parametrem metody <methodname>loadFile()</methodname> jest typ bool. Wartość
+            TRUE oznacza, że uwzględniana będzie maska w pierwszym parametrze tej metody.
+        </note>
+        
+        <note>
+            Metoda <methodname>loadFile()</methodname> umożliwia załadowanie także pliku znajdującego się w module.
+        </note>
+    </section>
+    
+    <section>
+        <title>Metoda setIncludePath()</title>
+        
+        <para>
+            Metoda wywołuje funkcję PHP: <function>set_include_path()</function> dodając daną
+            ścieżkę do zmiennej PHP: <emphasis>include_path</emphasis>. W związku z tym, szukając
+            jakiegoś pliku, system będzie przeszukiwał wszystkie foldery określone w tej zmiennej.
+        </para>
+        
+        <para>
+            Ta metoda ma duże znaczenie przy ładowaniu nowego modułu do aplikacji. Po załadowaniu nowego modułu
+            (przy pomocy metody <methodname>loadModule()</methodname>) wywoływana zostaje metoda 
+            <methodname>setIncludePath()</methodname> dodając odpowiednią ścieżkę do danego modułu.
+        </para>
+    </section>
+        
+    <section>
+        <title>Metoda loadClass()</title>
+        
+        <para>
+            Metoda używana jest do ładowania bibliotek projektu. Jej nagłówek prezentuje się
+            następująco:
+            <programlisting>
+public static function &amp;loadClass($class_name, $init = true, $params = '')
+            </programlisting>
+        </para>
+        
+        <para>
+            Pierwszym parametrem jest oczywiście nazwa klasy. Drugi parametr określa, czy metoda
+            ma być inicjalizowana czy też nie. Ostatni parametr określa dodatkowe parametry
+            przekazywane do konstruktora klasy.
+        </para>
+        
+        <para>
+            Metoda <methodname>loadClass()</methodname> ładuje daną bibliotekę tylko raz! Oznacza
+            to, że raz załadowana przechowywana w pamięci komputera, jest możliwa do obsłużenia w
+            różnych miejscach programu.
+            
+            Przykładowo:
+            <programlisting>
+$foo = &amp;load::loadClass('foo'); 
+$foo->bar(); 
+// w innym pliku możemy uzyskać dostęp do tej biblioteki ponownie:
+$foo = &amp;Load::loadClass('foo');
+            </programlisting>
+        </para>
+    </section>
+    
+    <section>
+        <title>Metoda loadModule()</title>
+        
+        <para>
+            O modułach będzie mowa w dalszej części dokumentacji. Statyczna metoda
+                <classname>loadModule() </classname>służy do ładowania do projektu modułów, które
+            zlokalizowane są w katalogu <filename>/module</filename>:
+            <programlisting>
+Load::loadModule('user'); // załadowanie modułu user
+            </programlisting>
+        </para>
+        
+    </section>
+    
+    <section>
+        <title>Metoda fileExists()</title>
+        
+        <para>
+            Zwraca true jeżeli plik podany w parametrze istnieje pod podaną ścieżką. W praktyce
+            niczym nie różni się od funkcji PHP: <function>file_exists()</function>. Jest jednak
+            mała subtelna różnica, a mianowicie <methodname>fileExists()</methodname> przeszukuje w
+            różnych lokalizacjach określonych w zmiennej PHP: <emphasis>include_path</emphasis>.
+            Jest to nadzwyczaj ważne w przypadku modułów. 
+        </para>
+    </section>
+   
+    <section>
+        <title>Konstruktor klasy</title>
+        
+        <para>
+            Konstruktor klasy <classname>Load</classname>, wywoływany jest w klasie
+            <classname>Core</classname> (metoda <methodname>dispatch()</methodname>). W tym
+            momencie załadowane zostają wszystkie biblioteki określone parametrze konfiguracji
+            <emphasis>autoload</emphasis>, tzn. moduły, biblioteki, helpery, pliki językowe. W
+            tym momencie zainicjowane zostanie ewentualne połączenie z bazą danych (jeżeli aplikacja
+            tego wymaga). Tak więc od tego momentu możliwe będzie korzystanie z bazy danych (czyli
+            de facto, w momencie wywołania metody <methodname>dispatch()</methodname>). 
+            
+            <note>
+                W metodzie dispatch() następuje utworzenie instancji klasy Load. W parametrze
+                konstruktora tej klasy przekazywane są nazwy podstawowych klas, które są
+                inicjalizowane przez framework (m.in. <classname>Context</classname>,
+                    <classname>Input</classname>, <classname>Output</classname>). Oznacza to, że
+                klasy te, niezależnie od ustawien aplikacji są automatycznie ładowane do zasobów
+                aplikacji i są dostępne w ów programie. 
+            </note>
+        </para>
+    </section>
+    
+    <section>
+        <title>Metoda directory()</title>
+        
+        <para>
+            Jeżeli masz katalog, w którym znajduje się wiele bibliotek, czy helperów, możesz
+            skorzystać z metody <methodname>directory()</methodname> podając jako parametr ścieżkę
+            do ów katalogu. W takim momencie system załaduje wszystkie biblioteki czy helpery z
+            tegoż folderu:
+            <programlisting>
+$this->load->library('lib/');
+            </programlisting>
+            
+            <note>
+                Metoda <methodname>directory()</methodname> nie jest metodą statyczną!
+            </note>
+            
+            <note>
+                Ostatnim znakiem łańcucha musi być znak / jeżeli framework ma załadować cały katalog.
+            </note>
+        </para>
+    </section>
+    
+    <section>
+        <title>Metoda library()</title>
+        
+        <para>
+            Tą metodę już znasz. Wywołuje ona <methodname>loadClass()</methodname>, a następnie po
+            załadowaniu klasy, tworzy referencję do jej obiektu w <classname>Core</classname>.
+            Metoda ta posiada drugi, opcjonalny parametr, który może zawierać parametry przekazywane
+            do konstruktora klasy.
+        </para>
+        
+        <para>
+            Metoda oprócz tego, że tworzy referencję w klasie Core, zwraca ją, dzięki temu możemy
+            używać takiego, skrótowego zapisu:
+        </para>
+        
+        <para>
+            <programlisting>
+$foo = &amp;$this->load->library('foo');
+$foo->bar();
+// to samo, co:
+$this->load->library('foo');
+$this->foo->bar();
+            </programlisting>
+        </para>
+        
+        <note> 
+            Metoda <methodname>loadClass</methodname> jedynie ładuje (lub/i inicjalizuje) daną
+            klasę lecz nie tworzy referencji do niej w obiekcie klasy Core! Przykładowo: 
+            <command>Load::loadClass('foo'); $this->foo->bar(); // błąd! Brak referencji!</command>
+        </note>
+    </section>
+    
+    <section>
+        <title>Metoda lang()</title>
+        
+        <para>
+            System umożliwia pisanie aplikacji wielojęzykowych. Przy pomocy tej metody możemy
+            załadować plik z komunikatami językowymi. Więcej informacji o tej funkcji w dalszej
+            części dokumentacji. 
+        </para>
+    </section>
+    
+    <section>
+        <title>Metoda helper()</title>
+        
+        <para>
+            Prosta w użyciu metoda umożliwia załadowanie helperów. Metoda ładuje dany plik do
+            projektu, jedynie jeden raz! Tzn. nawet jezeli użyjemy metody helper() kilkakrotnie, z
+            tym samym parametrem - dany plik zostanie załadowany do aplikacji tylko raz.
+        </para>
+        
+        <para>
+            Helpery mogą być grupowane w podkatalogach. Tzn. w folderze 
+            <filename>helper</filename>, możesz utworzyć katalog <filename>foo</filename>, a w nim -
+                <filename>bar.helper.php</filename>. Załadowanie helpera do projektu wymaga podania
+            nazwy podkatalogu:
+            
+            <programlisting>
+$this->load->helper('foo/bar'); // &lt;-- bez sufiksu helper.php
+            </programlisting>
+        </para>
+    </section>
+    
+    <section>
+        <title>Metoda database()</title>
+        
+        <para>
+            Metoda służy do zainicjowania połączenia z bazą danych. W Coyote istnieje kilka
+            sposobów na połączenie z bazą danych. Można użyć klasy <classname>DB</classname> lub
+            metody <methodname>database()</methodname> z klasy <classname>Load</classname>. Metoda
+            ta automatycznie załaduje bibliotekę <classname>DB</classname> (jeżeil ta nie została
+            jeszcze załadowana) oraz połączenie z bazą danych. Nagłówek tej metody wygląda
+            następująco:
+            
+            <programlisting>
+public function database($adapter, $host, $user, $password, $dbname, $port = false)
+            </programlisting>
+        </para>
+                
+        <para>
+            Pierwszym parametrem musi być nazwa adaptera bazy danych (np. mysql, postgresql).
+            Przykład:
+            
+            <programlisting>
+$this->load->database('mysql', 'localhost', 'root', 'root', 'coyote_dev');
+$this->db->query('SELECT * .... '); 
+            </programlisting>
+        </para>
+    </section>
+    
+    <section>
+        <title>Metoda model()</title>
+        
+        <para>
+            Metoda ładuje do projektu model na podstawie parametru określającego jego nazwę.
+            Dodatkowo zwracana jest referencja do klasy
+            modelu:
+            <programlisting>
+$foo = &amp;$this->load->model('foo');
+echo $foo->version();
+// to samo, co:
+$this->laod->model('foo');
+echo $this->model->foo->version();
+            </programlisting>
+        </para>
+        
+        <para>
+            Plik z klasą modelu również ładowany jest tylko raz. Dzięki temu jak tylko potrzbujesz
+            uzyskać dostęp do metod danego modelu, po prostu go wywołujesz. Metoda
+                <methodname>model()</methodname> zwróci odpowiednią referencję do klasy.
+            
+            <note>
+                Ze względu na to, że plik z modelem ładowany jest tylko raz, również klasa modelu
+                inicjalizowana jest jednokrotnie bez względu na ilość użycia metody model().
+            </note>
+        </para>
+        
+    </section>
+    
+    <section>
+        <title>Metoda module()</title>
+        
+        <para>
+            Metoda realizuje tę samą czynność co metoda statyczna
+            <methodname>loadModule()</methodname>. Tak więc oba wywołania są sobie
+            równe:
+            
+            <programlisting>
+Load::loadModule('foo');
+$this->load->module('foo');
+            </programlisting>
+        </para>
+    </section>
+    
+    <section>
+        <title>Metoda view()</title>
+        
+        <para>
+            Metoda tworzy instancję klasy <classname>View</classname> i zwraca obiekt tej klasy.
+            Tak więc chcąc wyświetlić dany widok, możemy użyć następujących
+            instrukcji:
+            <programlisting>
+$view = new View('foo');
+echo $view;
+// albo:
+$view = $this->load->view('foo');
+echo $view;</programlisting>
+        </para>
+    </section>
+    
+    <section>
+        <title>Własna klasa loadera</title>
+        
+        <para> 
+            Jeżeli nie odpowiada Ci obecny kształt klasy Load, albo chciałbyś po prostu -
+            rozbudować ją o swoje metody bez zmiany jej oryginalnego wygladu (dziedziczenie),
+            powinieneś określić ścieżkę do klasy loadera. Loader ładowany jest do projektu w
+            metodzie <methodname>bootstrap()</methodname> klasy <classname>Core</classname>.
+            Domyślnie framework poszukuje loadera pod ścieżką <filename>lib/load.class.php</filename>. 
+            Jeżeli chcesz ustawić nową ścieżkę do loadera, musisz skorzystać z metody 
+            <methodname>setLoaderPath() </methodname>i wywołać ją przed metodą
+            <methodname>bootstrap()</methodname>. W tym celu otwórz plik <filename>index.php</filename> 
+            swojego projektu i dopisz jedną linię
+            kodu:
+            <programlisting>
+Core::setLoaderPath('lib/myloader.class.php');
+/**
+ * Ustawienie pliku konfiguracji projektu
+ */
+Core::setConfigPath('config.xml');
+/**
+ *	Metoda bootstrap() sluzy do inicjalizacji podstawowych zmiennych projektu
+ */
+Core::bootstrap($root_dir)->dispatch();
+            </programlisting>
+        </para>
+    </section>
+</chapter>

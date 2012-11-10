@@ -1,0 +1,46 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Sortowanie regu&#322;</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch15.html" title="Rozdzia&#322; 15. Mechanizm routingu"><link rel="prev" href="ch15s05.html" title="Przechwytywanie wszystkich adresów"><link rel="next" href="ch15s07.html" title="Grupowanie kontrolerów w podkatalogach"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Sortowanie regu&#322;</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch15s05.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 15. Mechanizm routingu</th><td width="20%" align="right"> <a accesskey="n" href="ch15s07.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id490681"></a>Sortowanie regu&#322;</h2></div></div></div><p>Klasa Router odczytuje regu&#322;y w kolejno&#347;ci w jakiej zosta&#322;y one zapisane w pliku
+            konfiguracji. Je&#380;eli dany URL pasuje wzorcowi danej regu&#322;y, system pominie dalsze
+            sprawdzanie i zwróci nazw&#281; kontrolera i akcji. Istnieje mo&#380;liwo&#347;&#263; posortowania regu&#322;,
+            niezale&#380;nie od tego w jakiej kolejno&#347;ci zosta&#322;y one zapisane w pliku konfiguracyjnym.
+            Mo&#380;na wyobrazi&#263; sobie nast&#281;puj&#261;c&#261; sytuacj&#281;: w g&#322;ównym pliku konfiguracji aplikacji
+            zadeklarowane s&#261; dane regu&#322;y. Ostatnia regu&#322;a (*) s&#322;u&#380;y do przechwycenia adresów, które
+            nie zosta&#322;y dopasowane do &#380;adnej z regu&#322;. Chcemy np. przekaza&#263; sterowanie do kontrolera,
+            który wy&#347;wietli b&#322;&#261;d typu 404, ale dodatkowo - zapisze w bazie danych niedzia&#322;aj&#261;cy
+            adres. Chcemy, aby regu&#322;a * by&#322;a sprawdzana na samym ko&#324;cu. Proste - mo&#380;emy po prostu
+            zadeklarowa&#263; j&#261; na samym ko&#324;cu pliku konfiguracyjnego. Jednak wyobra&#378; sobie sytuacj&#281; w
+            której do aplikacji przy&#322;&#261;czane s&#261; dodatkowe modu&#322;y, które równie&#380; zawieraj&#261; regu&#322;y
+            routingu. Wówczas nasza regu&#322;a * nie b&#281;dzie ju&#380; ostatnia. Spowoduje to, i&#380; regu&#322;y
+            zadeklarowane w module nigdy nie b&#281;d&#261; brane pod uwag&#281; - system zako&#324;czy prac&#281; na regule
+            * i pominie dalsze sprawdzanie. </p><p>Aby Coyote sortowa&#322; regu&#322;y, musz&#261; one dodatkowo zawiera&#263; parametr order, który b&#281;dzie
+            oznacza&#322; ich kolejno&#347;&#263;.
+            Przyk&#322;adowo:</p><pre class="programlisting">	
+&lt;route&gt;
+	&lt;name&gt;user&lt;/name&gt;
+	&lt;url&gt;/User/:id/:controller/:action/*&lt;/url&gt;
+	&lt;default&gt;
+		&lt;controller&gt;user&lt;/controller&gt;
+		&lt;action&gt;main&lt;/action&gt;
+	&lt;/default&gt;
+	&lt;requirements&gt;
+		&lt;id&gt;(\d+)&lt;/id&gt;
+	&lt;/requirements&gt;
+	&lt;order&gt;1&lt;/order&gt;
+&lt;/route&gt;
+&lt;route&gt;
+	&lt;name&gt;homepage&lt;/name&gt;
+	&lt;url&gt;/&lt;/url&gt;
+	&lt;controller&gt;index&lt;/controller&gt;
+	&lt;action&gt;main&lt;/action&gt;
+	&lt;order&gt;2&lt;/order&gt;
+&lt;/route&gt;
+&lt;route&gt;
+	&lt;name&gt;all&lt;/name&gt;
+	&lt;url&gt;*&lt;/url&gt;
+	&lt;controller&gt;404&lt;/controller&gt;
+	&lt;order&gt;5465464&lt;/order&gt;
+&lt;/route&gt;</pre><p>Oprócz tego, w konfiguracji nale&#380;y utworzy&#263; pole <span class="emphasis"><em>core.sortRoutes</em></span>,
+            aby system wiedzia&#322;, czy ma marnowa&#263; czas na sortowanie
+            regu&#322;:</p><pre class="programlisting">	
+&lt;core&gt;
+	&lt;sortRoutes&gt;true&lt;/sortRoutes&gt;
+&lt;/core&gt;</pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch15s05.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch15.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch15s07.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Przechwytywanie wszystkich adresów </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Grupowanie kontrolerów w podkatalogach</td></tr></table></div></body></html>

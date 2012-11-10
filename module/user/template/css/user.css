@@ -1,0 +1,423 @@
+.box-pm table
+{
+		width:				100%;
+		border:				none;
+		border-spacing:		0;
+}
+
+.box-pm table tr.unread td
+{
+		background-color:   #fff3cd !important;
+}
+
+.box-pm td a.anchor
+{
+		color:				#000;
+}
+
+.box-pm td a.anchor:hover
+{
+		text-decoration: 	none;
+}
+
+.box-pm td span.date
+{
+		color:				#999999;
+		font-size:			12px;
+		display:			block;
+}
+
+.box-pm td span.snippet
+{
+		display:			block;
+		color:				#292929;
+}
+
+.box-pm a.trash
+{
+		background:			url('../img/deleteIcon.png') no-repeat;
+		display:			block;
+		width:				16px;
+		height:				16px;
+}
+
+.box-pm li.pm-message
+{
+		background:			#f8f8f8;
+		padding:			10px 5px 10px 5px;
+}
+
+#message-container .message-content blockquote
+{
+		border-left:		3px solid #e0e0e0;
+		font-style:			italic;
+		color:				#303030;
+		padding-left:		5px;
+}
+
+.box-pm table tr.message-header td
+{
+		cursor:				pointer;
+}
+
+.box-pm table td.message-content
+{
+		padding:            10px 0 20px 5px;
+}
+
+.box-pm table td.message-date
+{
+		text-align:         right;
+		vertical-align:		top;
+}
+
+.box-pm table td.message-user-name
+{
+		vertical-align:     top;
+}
+
+.box-pm table tr.message-disable td
+{
+		border-bottom: 		1px solid #DADFE0;
+}
+
+.box-pm table tr.message-disable td
+{
+		color:              #8C8C8C;
+}
+
+.box-pm table tr.message-disable td img
+{
+		opacity:            0.5;
+}
+
+.box-img table tr.message-disable td a
+{
+		color:              #B2C949;
+}
+
+.box-pm table .delete-icon
+{
+		background: 		url('../img/deleteIcon.png') no-repeat;
+		width:				16px;
+		height:				16px;
+		display:			inline-block;
+}
+
+#message-container
+{
+		overflow-y:			scroll;
+}
+
+#message-container table
+{
+		width:				98%;
+}
+
+#message-container table tr.even td
+{
+		background-color:   #fff;
+}
+
+#message-form
+{
+		width:				100%;
+		margin-top:			20px;
+		padding-top:		10px;
+		border-top:			2px solid #ddd;
+}
+
+#message-form img
+{
+		float:				left;
+		margin-left:		10px;
+		margin-right: 		15px;
+}
+
+#message-form textarea
+{
+		height:				30px;
+}
+
+.photo
+{
+		float:				right;
+		padding:			1px;
+		border:				1px solid #ddd;
+		width:				120px;
+
+}
+
+#box-notify .feed
+{
+		background:			url('../../../../template/img/icons.png') no-repeat 0 -111px;
+		padding:			0 0 0 25px;
+		height:				17px;
+		color:				#090909;
+		display:			block;
+		margin:				0 0 10px 0;
+}
+
+#box-notify .feed:hover
+{
+		background-position:	0 -128px;
+}
+
+#box-notify h3
+{
+		font-size:			15px;
+		padding:			5px 0 5px 0;
+}
+
+#box-notify p, #box-watch p
+{
+		text-align:			center;
+		margin:				10px 0 10px 0;
+}
+
+ul.notify
+{
+		list-style-type:	none;
+		margin:				0;
+}
+
+ul.notify li
+{
+		border-bottom:		1px solid #ccc;
+		padding:			8px 0 8px 0;
+		clear:				both;
+}
+
+ul.notify li.unread
+{
+		background-color:	#ffdfdf;
+}
+
+ul.notify li a
+{
+		color:				#000;
+}
+
+ul.notify li a:hover
+{
+		text-decoration:	none;
+}
+
+ul.notify li a small
+{
+		display:			block;
+		color:				#999;
+}
+
+ul.notify li a img
+{
+		float:				left;
+		margin-right:		5px;
+}
+
+ul.notify li:last-child
+{
+		border:				none;
+}
+
+.auto-complete
+{
+	list-style-type:	none;
+	position:			absolute;
+	border:				1px solid #595959;
+	background:			#fff;
+	z-index:			10000;
+	border-top:			none;
+	margin:				0;
+	box-shadow:			0 1px 2px rgba(0,0,0,0.3);
+	-moz-box-shadow:	0 1px 2px rgba(0,0,0,0.3);
+	-webkit-box-shadow:	0 1px 2px rgba(0,0,0,0.3);
+	border-radius:		4px;
+	-moz-border-radius:	4px;
+	-webkit-border-radius: 4px;
+}
+
+.auto-complete li
+{
+	padding:			5px 0 5px 5px;
+	cursor:				pointer;
+	color:				gray;
+}
+
+.auto-complete li b
+{
+	color:				#000;
+}
+
+.auto-complete li.hover
+{
+	background:			#ddd;
+}
+
+#notifications
+{
+		width:				100%;
+		border:				0;
+		border-collapse: 	collapse;
+}
+
+#notifications th
+{
+		background:			none;
+		text-align:			center;
+}
+
+#notifications td
+{
+		background:			none;
+		border-bottom:		1px solid #ccc;
+}
+
+#box-user-menu
+{
+		width:				219px;
+		height:				200px;
+		float:				left;
+		margin:				20px 0 0 0;
+		position:			relative;
+}
+
+#box-user-menu ul
+{
+		list-style-type:	none;
+		z-index:			1000;
+		width:				209px;
+		position:			absolute;
+}
+
+#box-user, #box-watch, #box-infobox
+{
+		overflow:			hidden;
+		min-height:			317px;
+}
+
+#box-user-menu ul li a
+{
+		padding:			6px 5px 6px 24px;
+		display:			block;
+		background-position:	4px 50%;
+		background-repeat:	no-repeat;
+		color:				#807e7e;
+		border-bottom:		1px dotted #ccc;
+}
+
+#box-user-menu ul li a.user-icon
+{
+		background-image:			url('../img/userIcon.png');
+}
+
+#box-user-menu ul li a.security-icon
+{
+		background-image:			url('../img/securityIcon.png');
+}
+
+#box-user-menu ul li a.visit-icon
+{
+		background-image:			url('../img/visitIcon.png');
+}
+
+#box-user-menu ul li a.pm-icon
+{
+		background-image:			url('../img/emailIcon.png');
+}
+
+#box-user-menu ul li a.notify-icon
+{
+		background-image:			url('../img/notifyIcon.png');
+}
+
+#box-user-menu ul li a.psw-icon
+{
+		background-image:			url('../img/passwordIcon.png');
+}
+
+#box-user-menu ul li a.info-icon
+{
+		background-image:			url('../img/profileIcon.png');
+}
+
+#box-user-menu ul li a.watch-icon
+{
+		background-image:			url('../img/watchIcon.png');
+}
+
+#box-user-menu ul li a.vote-icon
+{
+		background-image:           url('../img/balanceIcon.png');
+}
+
+#box-user-menu ul li a.stat-icon
+{
+		background-image:           url('../img/reportsIcon.png');
+}
+
+#box-user-menu ul li a.infobox-icon
+{
+		background-image:           url('../img/balloonsIcon.png');
+}
+
+#box-user-menu ul li a.accept-icon
+{
+	background-image:           url('../img/tickIcon.png');
+}
+
+
+#box-user-menu ul li a:hover
+{
+		text-decoration:	none;
+}
+
+#box-user-menu ul li a.focus
+{
+		border-left:		2px solid #ddd;
+		border-top:			2px solid #ddd;
+		border-bottom:		2px solid #ddd;
+		border-top-left-radius:	5px;
+		border-bottom-left-radius: 5px;
+		-moz-border-radius-topleft: 5px;
+		-webkit-border-top-left-radius: 5px;
+		-moz-border-radius-bottomleft: 5px;
+		-webkit-border-bottom-left-radius: 5px;
+		background-color:	#fff;
+		color:				#000;
+}
+
+.table-visit
+{
+		border:				none;
+		width:				100%;
+}
+
+.table-visit tr:nth-child(even) td
+{
+		background-color:	#fff;
+}
+
+#user-send-message-button
+{
+		background:			url('../img/emailIcon.png') no-repeat 0 50%;
+		padding-left:		20px;
+}
+
+#user-find-post-button
+{
+		background:			url('../img/watchIcon.png') no-repeat 0 50%;
+		padding-left:		20px;
+}
+
+#user-edit-profile-button
+{
+		background:			url('../img/userIcon.png') no-repeat 0 50%;
+		padding-left:		20px;
+}
+
+#user-ban-button
+{
+		background:			url('../img/userDelete.png') no-repeat 0 50%;
+		padding-left:		20px;
+}

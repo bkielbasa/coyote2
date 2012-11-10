@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../../docbook/html/docbook.xsl"?>
+<chapter>
+    <title>Budowa modułowa</title>
+    
+    <para>
+        Do aplikacji mogą być dołączane niezależne podzespoły zwane <emphasis>modułami</emphasis>.
+        Budowa modułowa umożliwia rozbudowywanie aplikacji o dodatkowe elementy. 
+    </para>
+    
+    <para>
+        Przykładowo: do Twojej aplikacji - bloga, możemy dołączyć moduł umożliwiający komentowanie wpisów.
+        Taki moduł komentarzy może być przenoszony pomiędzy różnymi aplikacjami korzystającymi z frameworka Coyote.
+    </para>
+    
+    <section>
+        <title>Lokalizacja modułów</title>
+        
+        <para>
+            Moduły powinny znajdować się w katalogu <filename>/module</filename> danej aplikacji.
+            Nazwa katalogu z modułem stanowi nazwę modułu. 
+            
+            Struktura katalogów modułu nie różni się praktycznie niczym od struktury aplikacji głównej.           
+        </para>
+        
+        <programlisting>
+- config
+- controller
+- lib
+- log
+- model
+- module
+    - foo
+        - config
+        - controller
+        - lib
+        - model
+        - template
+    - bar
+        - config
+        - controller
+            - foobar
+        - model
+        - template
+- template
+- trigger
+        </programlisting>
+    </section>
+    
+    <section>
+        <title>Ładowanie modułów do aplikacji</title>
+        
+        <para>
+            Moduły zgrupowane w podkatalogu <filename>/module</filename> nie są automatycznie ładowane 
+            do projektu. Można to zrobić jawnie lub określić w pliku konfiguracji, jakie moduły 
+            mają być dołączane na starcie programu.
+        </para>
+        
+        <section>
+            <title>Jawne załadowanie modułu</title>
+            
+            <para>
+                Aby załadować moduł do projektu w trakcie działania aplikacji, możemy skorzystać 
+                ze statycznej metody <methodname>loadModule()</methodname> klasy <classname>Load</classname>.                                
+            </para>
+            
+            <programlisting>
+Load::loadModule('foo');                
+            </programlisting>
+            
+            <para>
+                Można też skorzystać z metody <methodname>module()</methodname>, również z klasy <classname>Load</classname>:
+            </para>
+            
+            <programlisting>
+$this->load->module('foo');                 
+            </programlisting>
+        </section>
+        
+        <section>
+            <title>Automatyczne ładowanie modułu</title>
+            
+            <para>
+                Aby załadować moduł w sposób automatyczny, zaraz przy starcie aplikacji, należy w pliku
+                konfiguracji określić jego nazwę. Możemy to zrobić w dowolnym pliku konfiguracyjnym; możemy
+                również utworzyć nowy plik - np. <filename>module.xml</filename>, w którym będą znajdować
+                się nazwy modułów, które będą ładowane automatycznie:
+            </para>
+            
+            <programlisting>
+<![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<module>foo</module>
+	<module>bar</module>
+</config>
+]]>                
+            </programlisting>
+            
+            <para>
+                Oczywiście, to nie wystarczy jeżeli plik <filename>module.xml</filename> nie będzie 
+                wczytywany do konfiguracji projektu. Otwórz plik front controllera - <filename>index.php</filename>
+                i dopisz w nim instrukcję, która wczyta nasz plik <filename>module.xml</filename>:
+            </para>
+            
+            <programlisting>
+Core::setConfigPath('config/module.xml');                
+            </programlisting>
+            
+            <para>
+                Ładowanie modułów do aplikacji odbywa się podczas inicjalizacji programu, w metodzie
+                <filename>bootstrap()</filename> w klasie <classname>Core</classname>. Po wczytaniu 
+                konfiguracji programu, sprawdzane jest, czy w konfiguracji nie znajdują się nazwy
+                modułów, które powinny zostać załadowane. Po załadowaniu modułu, jest on traktowany
+                jako integralna część aplikacji.
+            </para>
+        </section>
+    </section>
+    
+    <section>
+        <title>Konfiguracja modułów</title>
+        
+        <para>
+            Nierozłącznym elementem aplikacji jest jej konfiguracja. Moduły również mogą posiadać 
+            pliki konfiguracyjne, które będą włączane do aplikacji. Przy ładowaniu modułu,
+            przy pomocy metody <methodname>loadModule()</methodname> lub <methodname>module()</methodname>,
+            system odszukuje plików konfiguracyjnych, których nazwy odpowiadają plikom konfiguracyjnym
+            samej aplikacji. Ponieważ łatwiej wytłumaczyć to na przykładzie, spójrz na poniższą
+            strukturę plików:
+        </para>
+        
+        <programlisting>
+- config
+    - config.xml
+    - route.xml
+- controller
+- module
+    - foo
+        - config
+            - config.xml
+            - route.xml
+        - controller
+        - ...
+- ...
+
+        </programlisting>
+        
+        <para>
+            Jeżeli pliki <filename>config.xml</filename> oraz <filename>route.xml</filename> są plikami
+            konfiguracyjnymi aplikacji, to przy ładowaniu modułu <emphasis>foo</emphasis>, system
+            odszukuje w tym module, również - plików <filename>config.xml</filename> oraz 
+            <filename>route.xml</filename>.
+        </para>
+            
+    </section>
+    
+    <section>
+        <title>Zasoby modułów</title>
+        
+        <para>
+            Po załadowaniu modułu do aplikacji, ów moduł staje się integralną częścią aplikacji.
+            Tak więc w momencie żądania załadowania - np. biblioteki - Foo, system poszukuje tej biblioteki
+            zarówno w katalogu głównym - <filename>/lib</filename>, jak i również w katalogach 
+            <filename>/lib</filename>, w modułach aplikacji.
+        </para>
+        
+        <para>
+            Wszystko dzięki temu, iż wywołanie metody <methodname>loadModule()</methodname> powoduje
+            także wywołanie metody <methodname>setIncludePath()</methodname> z klasy <classname>Load</classname>. 
+            Metoda ta dopisuje do zmiennej <emphasis>include.path</emphasis> ścieżkę z modułem. 
+            Dzięki temu, loader w poszukiwaniu żądanego pliku przeszukuje katalogi z aplikacją oraz z modułami.
+        </para>
+        
+        <para>
+            Należy zwrócić uwagę, że <emphasis>auto loader</emphasis>, przeszukuje dany folder 
+            (np. <filename>/lib</filename>), najpierw w katalogu z frameworkiem, następnie w katalogu
+            z aplikacją, a w dalszej kolejności - podfoldery z modułami. 
+        </para>
+        
+        <para>
+            Przykładowy kod:
+        </para>
+        
+        <programlisting>
+$email = new Email;            
+        </programlisting>
+        
+        <para>
+            Mamy tutaj proste utworzenie instancji klasy <classname>Email</classname>. Zakładając, że plik
+            zawierający klasę <classname>Email</classname> nie został wcześniej załadowany do projektu,
+            <emphasis>auto loader</emphasis> postara się odszukać odpowiedniej biblioteki. W pierwszej
+            kolejności sprawdzi, czy istnieje plik <filename>email.class.php</filename>, w katalogu
+            <filename>/lib</filename>, w katalogu aplikacji. Jeżeli zostanie odnaleziony, następuje wczytanie
+            go do programu. Jeżeli nie - system sprawdzi, czy taki plik nie znajduje się w katalogu
+            <filename>/lib</filename> frameworka. Jeżeli i to nie odniesie skutku, system
+            przeszuka katalogi <filename>/lib</filename> w modułach aplikacji. 
+        </para>
+        
+        <para>
+            W takiej sytuacji może się zdarzyć, iż wczytany zostanie nie ten plik, który chcemy, w przypadku, 
+            gdy zarówno framework jak i aplikacja, zawierają plik <filename>email.class.php</filename>,
+            w katalogu <filename>/lib</filename>. W takim przypadku konieczne jest jawne załadowanie danego
+            pliku, podając pełną ścieżkę:
+        </para>
+        
+        <programlisting>
+Load::loadFile(Config::getBasePath() . 'lib/email.class.php'); // załadowanie pliku email.class.php z katalogu aplikacji
+//Load::loadFile(Config::getRootPath() . 'lib/email.class.php'); // załadowanie pliku email.class.php z katalogu frameworka
+
+$email = new Email;
+        </programlisting>
+    </section>
+</chapter>
+

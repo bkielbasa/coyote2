@@ -1,0 +1,32 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Rozdzia&#322; 22. Walidacja danych</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="pt01.html" title="Cz&#281;&#347;&#263; I. Dokumentacja techniczna"><link rel="prev" href="ch21.html" title="Rozdzia&#322; 21. ACL"><link rel="next" href="ch22s02.html" title="Odczyt b&#322;&#281;dów"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Rozdzia&#322; 22. Walidacja danych</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch21.html">Poprzedni</a> </td><th width="60%" align="center">Cz&#281;&#347;&#263; I. Dokumentacja techniczna</th><td width="20%" align="right"> <a accesskey="n" href="ch22s02.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="chapter" lang="pl"><div class="titlepage"><div><div><h2 class="title"><a name="id498465"></a>Rozdzia&#322; 22. Walidacja danych</h2></div></div></div><div class="toc"><p><b>Spis tre&#347;ci</b></p><dl><dt><span class="section"><a href="ch22.html#id498480">Inicjalizacja klasy</a></span></dt><dt><span class="section"><a href="ch22s02.html">Odczyt b&#322;&#281;dów</a></span></dt><dt><span class="section"><a href="ch22s03.html">Walidatory</a></span></dt><dd><dl><dt><span class="section"><a href="ch22s03.html#id498974">Walidatory wykonywane samodzielnie</a></span></dt><dt><span class="section"><a href="ch22s03.html#id499021">Klasa Validate_String</a></span></dt><dt><span class="section"><a href="ch22s03.html#id499073">Klasa Validate_Int</a></span></dt><dt><span class="section"><a href="ch22s03.html#id499095">Klasa Validate_Email</a></span></dt><dt><span class="section"><a href="ch22s03.html#id499139">Klasa Validate_Url</a></span></dt><dt><span class="section"><a href="ch22s03.html#id499165">Klasa Validate_Match</a></span></dt><dt><span class="section"><a href="ch22s03.html#id499205">Klasa Validate_Equal</a></span></dt></dl></dd><dt><span class="section"><a href="ch22s04.html">Ustawienie komunikatów b&#322;&#281;dów</a></span></dt><dt><span class="section"><a href="ch22s05.html">Metoda setOptions()</a></span></dt><dt><span class="section"><a href="ch22s06.html">Metoda setValidators()</a></span></dt><dt><span class="section"><a href="ch22s07.html">Metoda reset()</a></span></dt><dt><span class="section"><a href="ch22s08.html">Statyczna metoda call()</a></span></dt></dl></div><p>Walidacja jest procesem sprawdzania poprawno&#347;ci danych. Zapewne b&#281;dzie wykorzystywana
+        dosy&#263; cz&#281;sto w Twoich aplikacjach, np. - przy sprawdzaniu poprawno&#347;ci danych wprowadzaonych
+        w formularzu. Coyote udost&#281;pnia klas&#281; <tt class="classname">Validate</tt>, która mo&#380;e by&#263;
+        wykorzystana przez Ciebie do sprawdzania poprawno&#347;ci danych.</p><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id498480"></a>Inicjalizacja klasy</h2></div></div></div><p>Klas&#281; mo&#380;na zainicjalizowa&#263; tak jak ka&#380;d&#261; inn&#261; bibliotek&#281; frameworka. Oto prosty
+            przyk&#322;ad u&#380;ycia mechanizmu walidacji
+            danych:</p><pre class="programlisting">&lt;?php
+
+class Bar extends Controller
+{
+	function main()
+	{
+		$value = 'foobarfoobarfoobar';
+
+		$validate = &amp;$this-&gt;getLibrary('validate');
+		$validate-&gt;addValidator(new Validate_String(false, 1, 5));
+
+		if (!$validate-&gt;isValid($value))
+		{
+			echo '&#321;a&#324;cuch jest nieprawid&#322;owy';
+		}
+		else
+		{
+			echo '&#321;a&#324;cuch jest poprawny';
+		}
+	}
+}
+?&gt;</pre><p>Klasa <tt class="classname">Validate</tt> sama w sobie jest bezu&#380;yteczna bez walidatorów,
+            które s&#261; dodawane przy pomocy metody <tt class="methodname">addValidator()</tt>. W tym
+            przyk&#322;adzie sprawdzamy poprawo&#347;&#263; &#322;a&#324;cucha danych. Musi on mie&#263; d&#322;ugo&#347;&#263; od jednego do
+            pi&#281;ciu znaków. Nast&#281;pnie metoda <tt class="methodname">isValid()</tt> wywo&#322;uje w kolejce
+            kolejne walidatory i je&#380;eli którykolwiek zwróci&#322; false - metoda
+            <tt class="methodname">isValid()</tt> - równie&#380; zwróci warto&#347;&#263; false. </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch21.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="pt01.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch22s02.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Rozdzia&#322; 21. ACL </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Odczyt b&#322;&#281;dów</td></tr></table></div></body></html>

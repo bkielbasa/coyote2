@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<installation type="plugin">
+	<name>poll</name>
+	<text>Tworzenie ankiet</text>
+	<version>1.0-rc2</version>
+	<system>1.0-rc2</system>
+	<author>Adam Boduch</author>
+
+	<menu parent="plugin">
+		<name>Ankiety</name>
+		<controller>poll</controller>
+		<action>main</action>
+		<auth>a_</auth>
+	</menu>
+
+	<setup>
+		<schema>install/schema.sql</schema>
+		<table>poll_vote</table>
+		<table>poll_item</table>
+		<table>poll</table>
+
+		<snippet>
+			<name>Poll</name>
+			<class>poll</class>
+			<text>Umożliwia wyświetlanie losowej ankiety w danym miejscu w dokumencie</text>
+		</snippet>
+	</setup>
+</installation>

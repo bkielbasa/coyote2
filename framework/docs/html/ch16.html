@@ -1,0 +1,48 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Rozdzia&#322; 16. Klasa Input</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="pt01.html" title="Cz&#281;&#347;&#263; I. Dokumentacja techniczna"><link rel="prev" href="ch15s07.html" title="Grupowanie kontrolerów w podkatalogach"><link rel="next" href="ch16s02.html" title="Metoda getMethod()"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Rozdzia&#322; 16. Klasa Input</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch15s07.html">Poprzedni</a> </td><th width="60%" align="center">Cz&#281;&#347;&#263; I. Dokumentacja techniczna</th><td width="20%" align="right"> <a accesskey="n" href="ch16s02.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="chapter" lang="pl"><div class="titlepage"><div><div><h2 class="title"><a name="id491255"></a>Rozdzia&#322; 16. Klasa Input</h2></div></div></div><div class="toc"><p><b>Spis tre&#347;ci</b></p><dl><dt><span class="section"><a href="ch16.html#id491321">Odbieranie formularza metod&#261; HTTP POST</a></span></dt><dt><span class="section"><a href="ch16s02.html">Metoda getMethod()</a></span></dt><dt><span class="section"><a href="ch16s03.html">Metoda getHost()</a></span></dt><dt><span class="section"><a href="ch16s04.html">Metoda getPage()</a></span></dt><dt><span class="section"><a href="ch16s05.html">Metoda getScriptPath()</a></span></dt><dt><span class="section"><a href="ch16s06.html">Metoda getBaseUrl()</a></span></dt><dt><span class="section"><a href="ch16s07.html">Metoda getCurrentUrl()</a></span></dt><dt><span class="section"><a href="ch16s08.html">Metoda getPath()</a></span></dt><dt><span class="section"><a href="ch16s09.html">Metoda getIp()</a></span></dt><dt><span class="section"><a href="ch16s10.html">Metoda getUserAgent()</a></span></dt><dt><span class="section"><a href="ch16s11.html">Metoda getReferer()</a></span></dt><dt><span class="section"><a href="ch16s12.html">Metoda post()</a></span></dt><dt><span class="section"><a href="ch16s13.html">Metoda get()</a></span></dt><dt><span class="section"><a href="ch16s14.html">Metoda cookie()</a></span></dt><dt><span class="section"><a href="ch16s15.html">Metoda server()</a></span></dt></dl></div><p>Obecne strony WWW bardzo cz&#281;sto zawieraj&#261; ca&#322;&#261; mas&#281; rozmaitych formularzy umo&#380;liwiaj&#261;cych
+        interakcje z u&#380;ytkownikiem oraz rozbudowywania tre&#347;ci strony (Web 2.0). Przyk&#322;adem mo&#380;e by&#263;
+        mo&#380;liwo&#347;&#263; dodawania komentarzy na stronie. Strony generowane s&#261; dynamicznie cz&#281;sto na
+        podstawie czynników zewn&#281;trznych (danych odczytywanych przez u&#380;ytkownika). Przyk&#322;adem mo&#380;e
+        by&#263; sortowanie listy u&#380;ytkowników oraz stronnicowanie. Wówczas kolejno&#347;&#263; odczytanych danych
+        oraz ilo&#347;&#263; wy&#347;wietlanych rekordów odczytywana jest najcz&#281;&#347;ciej dzi&#281;ki parametrom HTTP GET
+        przekazanym w adresie URL. </p><p>Klasa <tt class="classname">Input</tt> inicjowana jest automatycznie przez framework, w
+        metodzie <tt class="methodname">dispatch()</tt> klasy <tt class="classname">Core</tt>. Umo&#380;liwia
+        ona odczytanie informacji zewn&#281;trznych. W konstruktorze klasy &#322;adowana jest klasa
+            <tt class="classname">Filter</tt> oraz inicjalizowane klasy <tt class="classname">Post</tt>,
+            <tt class="classname">Get</tt>, <tt class="classname">Cookie</tt> oraz
+        <tt class="classname">Server</tt> daj&#261;ce dost&#281;p do tablic globalnych <tt class="varname">$_POST</tt>, <tt class="varname">$_GET</tt>, <tt class="varname">$_COOKIE</tt>,
+        <tt class="varname">$_SERVER</tt>. </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>Konstruktor klasy sprawdza równie&#380; ustawienia magic_qutoes_runtime oraz
+            magic_quotes_gpc. Zalecane jest, aby te opcje by&#322;y wy&#322;&#261;czone. </div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id491321"></a>Odbieranie formularza metod&#261; HTTP POST</h2></div></div></div><p>Utwórzmy prosty kontroler, którego celem b&#281;dzie wy&#347;wietlanie formularza. Po klikni&#281;ciu
+            przycisku <span class="emphasis"><em>Wy&#347;lij</em></span>, zawarto&#347;&#263; formularza b&#281;dzie przesy&#322;ana do odpowiedniej akcji
+            kontrolera. Klasa mo&#380;e wygl&#261;da&#263;
+            tak:</p><pre class="programlisting">&lt;?php
+
+class Index extends Controller
+{
+	function main()
+	{
+		$this-&gt;load-&gt;helper('form');
+		$this-&gt;load-&gt;helper('url');
+
+		echo Form::open('Index/Submit', array('method' =&gt; 'post'));
+		echo Form::input('name') . '&lt;br /&gt;';
+		echo Form::submit('', 'Wy&#347;lij');
+		echo Form::close();
+	}
+
+	public function submit()
+	{
+	}
+}
+?&gt;</pre><p>Formularz zostanie przes&#322;any metod&#261; HTTP POST. Takie dane mo&#380;emy odczyta&#263; przy pomocy
+            tablicy globalnej <tt class="varname">$_POST</tt> lub - korzystaj&#261;c z metody <tt class="methodname">post()</tt>
+            klasy
+            <tt class="classname">Input</tt>:</p><pre class="programlisting">
+public function submit()
+{
+    if ($this-&gt;input-&gt;getMethod() == Input::POST)
+    {
+    	echo $this-&gt;input-&gt;post('name');
+    }
+}</pre><p>Pierwsza instrukcja sprawdza metod&#281; HTTP; sprawdzamy czy dane wys&#322;ane zosta&#322;y przy
+            pomocy metody HTTP POST. Je&#380;eli tak - odczytujemy zawarto&#347;&#263; pola
+            <span class="emphasis"><em>name</em></span>. </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch15s07.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="pt01.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch16s02.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Grupowanie kontrolerów w podkatalogach </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Metoda getMethod()</td></tr></table></div></body></html>

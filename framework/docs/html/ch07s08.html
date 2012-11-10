@@ -1,0 +1,36 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Cache konfiguracji</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1"><link rel="up" href="ch07.html" title="Rozdzia&#322; 7. Konfiguracja projektu"><link rel="prev" href="ch07s07.html" title="Adaptery"><link rel="next" href="ch07s09.html" title="Automatyczne &#322;adowanie zasobów"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Cache konfiguracji</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch07s07.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 7. Konfiguracja projektu</th><td width="20%" align="right"> <a accesskey="n" href="ch07s09.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id385720"></a>Cache konfiguracji</h2></div></div></div><p>Wyobra&#378; sobie, &#380;e konfiguracja Twojego projektu podzielona jest na 10 pliów XML oraz
+            kilka plików INI. Wszystko w ca&#322;o&#347;&#263; &#322;&#261;czy plik PHP. Mo&#380;emy przyspieszy&#263; dzia&#322;anie
+            aplikacji cachuj&#261;c konfiguracje projektu. Spowoduje to zapisanie ca&#322;ej konfiguracji w
+            jednym pliku PHP, w postaci tablicy PHP. W przypadku, gdy konfiguracja Twojego projektu
+            zawiera wiele instrukcji (np. XML), które musz&#261; by&#263; parsowane, taki zabieg mo&#380;e
+            przyspieszy&#263; dzia&#322;anie programu. </p><p>Cachowanie polega na zapisaniu ca&#322;ej zawarto&#347;ci tablicy <tt class="varname">$config</tt> z
+            klasy <tt class="classname">Config</tt>, do jednego pliku PHP. Konfiguracja zapisywana jest
+            w katalogu cache, wi&#281;c musisz takowy najpierw utworzy&#263;. Cachowanie konfiguracji mo&#380;liwe
+            jest po ustawieniu opcji config.compile. Oto przyk&#322;ad kodu:
+            </p><pre class="programlisting">&lt;?php
+
+class Index extends Controller
+{
+	function main()
+	{
+		// nie potrzeba ladowania tego pliku - zostal on cachowany
+		if (!Config::isCached())
+		{
+			Config::load('config/config.ini');
+		}
+		echo Config::getItem('developer.site.name');
+
+		if (!Config::isCached())
+		{
+			Config::setAdapter(new Config_Db);
+			Config::load('config/config.db');
+		}
+
+		Core::debug(Config::getItem());
+
+		Config::setItem('config.compile', true);
+	}
+}
+?&gt;</pre><p>Metoda<tt class="methodname"> isCached()</tt> zwraca TRUE je&#380;eli dane zosta&#322;y odczytane z
+            cache. Zwróc uwag&#281;, &#380;e wówczas nie jest konieczne wczytanie pliku INI czy konfiguracji z
+            bazy danych - znajduje si&#281; ona ju&#380; w cache!</p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch07s07.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch07.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch07s09.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Adaptery </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Automatyczne &#322;adowanie zasobów</td></tr></table></div></body></html>

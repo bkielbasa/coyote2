@@ -1,0 +1,41 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Korzystanie ze sk&#322;adowych aplikacji</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1"><link rel="up" href="ch08.html" title="Rozdzia&#322; 8. Klasa Core"><link rel="prev" href="ch08.html" title="Rozdzia&#322; 8. Klasa Core"><link rel="next" href="ch08s03.html" title="Elementy j&#261;dra"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Korzystanie ze sk&#322;adowych aplikacji</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch08.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 8. Klasa Core</th><td width="20%" align="right"> <a accesskey="n" href="ch08s03.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id387107"></a>Korzystanie ze sk&#322;adowych aplikacji</h2></div></div></div><p>Najwa&#380;niejsze klasy dla
+            dzia&#322;ania aplikacji &#322;adowane s&#261; w metodzie <tt class="methodname">dispatch()</tt>. Tutaj
+            nast&#281;puje inicjalizacja klasy <tt class="classname">Load</tt>, <tt class="classname">Input</tt>,
+                <tt class="classname">Context</tt> oraz <tt class="classname">Output</tt>.
+            </p><p>Ka&#380;da biblioteka za&#322;adowana do projektu, z u&#380;yciem metody
+                <tt class="methodname">library()</tt> klasy <tt class="classname">Load</tt>, jest dost&#281;pna
+            poprzez pole klasy Core. Metoda library() &#322;aduje klas&#281; do projektu (przy pomocy
+            statycznej metody loadClass()), a nast&#281;pnie tworzy referencj&#281; do tej klasy, jako pole
+            klasy
+            Core:</p><pre class="programlisting">Core::getInstance()-&gt;$lib_name = &amp;Load::loadClass($lib_name, true, $params);</pre><p>Aby
+            odwo&#322;a&#263; si&#281; do elementu j&#261;dra systemu, nale&#380;y u&#380;y&#263; metody getInstance(), która zwraca
+            instancj&#281; klasy Core. Utwórz w swoim projekcie przyk&#322;adowy kontroler, a nast&#281;pnie dla
+            testów - spróbuj uruchomi&#263; taki
+            kod:</p><pre class="programlisting">$this-&gt;load-&gt;library('image');
+Core::getInstance()-&gt;image-&gt;open('...'); // prawid&#322;owo
+$this-&gt;image-&gt;open('...'); // prawid&#322;owo</pre><p>Nasza
+            klasa kontrolera dziedziczy po klasie Controller. Ów klasa zapewnia nam skrótowy dost&#281;p
+            do elementów j&#261;dra st&#261;d mo&#380;emy pomin&#261;c odwo&#322;ywanie si&#281; poprzez metod&#281; getInstance().
+            </p><p>Niezale&#380;nie od ustawie&#324; konfiguracji, z poziomu kontrolera
+            (<tt class="varname">$this</tt>), dost&#281;pne s&#261; biblioteki <tt class="classname">Router</tt>,
+                <tt class="classname">Load</tt>, <tt class="classname">Input</tt>,
+            <tt class="classname">Output</tt>. Pozosta&#322;e klasy s&#261; klasami statycznymi, z których mo&#380;na
+            korzysta&#263; w ka&#380;dym miejscu aplikacji (w widokach, modelach czy innych kontrolerach). Np
+            klasa <tt class="classname">Benchmark</tt>:
+        </p><pre class="programlisting">		
+Benchmark::start('foo');
+// jakies operacje
+Benchmark::stop('foo');
+
+echo 'Czas wykonania operacji foo: ' . Benchmark::elapsed('foo') . ' sek.';
+        </pre>Jak
+        zosta&#322;o pokazane w poprzednich przyk&#322;adach, metoda <tt class="methodname">library()</tt> z
+        klasy <tt class="classname">Load</tt> &#322;aduje bibliotek&#281;, a oprócz tego, daje do niej dost&#281;p z
+        poziomu operatora
+            <tt class="varname">$this</tt>:<pre class="programlisting">$this-&gt;load-&gt;library('input');
+echo $this-&gt;input-&gt;getIp();</pre><p>Inne
+            metody &#322;adowania bibliotek, nie dodaj&#261; odpowiedniego pola do klasy
+            <tt class="classname">Core</tt>, czyli nie s&#261; dost&#281;pne z poziomu operatora
+            <tt class="varname">$this</tt>. Zatrzymajmy si&#281; tutaj na chwil&#281;. Klasa
+            <tt class="classname">Input</tt> jest &#322;adowana w projekcie niezale&#380;nie od tego, czy tego
+            chcemy, czy nie.</p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch08.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch08.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch08s03.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Rozdzia&#322; 8. Klasa Core </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Elementy j&#261;dra</td></tr></table></div></body></html>

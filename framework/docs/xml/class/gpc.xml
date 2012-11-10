@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter>
+    <title>Klasa GPC</title>
+    <para>Abstrakcyjna klasa <classname>Gpc</classname> jest ściśle powiązana z klasą
+            <classname>Input</classname>. Stanowi ona klasę bazową dla klas
+        <classname>Post</classname>, <classname>Get</classname>, <classname>Cookie</classname> oraz
+            <classname>Server</classname>. Zapewnia ona dostęp do globalnych tablic PHP. Z tą
+        różnicą iż udostępnia ona dodatkowe mechanizmy bezpieczeństwa zapewniające filtrację danych
+        dzięki czemu możemy zmniejszyć podatność aplikacji na ataki typu XSS czy SQL Injection. </para>
+    <section>
+        <title>Dostęp do tablic globalnych</title>
+        <para>W konstruktorze klasy <classname>Input</classname> następuje utworzenie instancji klas
+                <classname>Post</classname>, <classname>Get</classname>,
+            <classname>Cookie</classname> oraz <classname>Server</classname>, które to dziedziczą po
+            klasie <classname>Gpc</classname>. Tak więc dostęp do tych klas możliwy jest poprzez
+            pola <varname>$post</varname>, <varname>$get</varname>, <varname>$cookie</varname> oraz
+                <varname>$server</varname> klasy
+            <classname>Input</classname>:<programlisting>echo $this->input->get('foo'); // skrócona wersja
+echo $this->input->get->foo; // inna wersja</programlisting></para>
+        <para>Jak widzisz, możemy wykorzystać metodę <methodname>get()</methodname> z klasy
+                <classname>Input</classname> lub - bezpośrednio odwołać się do klasy
+            <classname>Get</classname> poprzez pole <varname>$get</varname>, klasy
+            <classname>Input</classname>. </para>
+        <para>Ponad to, w konstruktorze klasy <classname>Controller</classname> tworzone są
+            referencję do klas <classname>Post</classname>, <classname>Get</classname>,
+                <classname>Cookie</classname> oraz <classname>Server</classname> dzięki czemu w
+            kontrolerach możliwy jest prostszy dostęp do tablic
+            globalnych:<programlisting>
+function __construct() 
+{
+	$this->router = &amp;Load::loadClass('router');	
+	
+	$this->get = &amp;$this->input->get;
+	$this->post = &amp;$this->input->post;
+	$this->cookie = &amp;$this->input->cookie;
+	$this->server = &amp;$this->input->server;
+}</programlisting></para>
+        <para>Czyli w konstruktorze, w prosty sposób możemy się odwołać do tablicy
+            <varname>$_GET</varname> w ten
+            sposób:<programlisting>echo $this->get->id; </programlisting></para>
+        <para>Powyższy przykład wyświetli zawartość parametru ID, przekazanego metodą GET. Dzięki
+            mechanizmowi przeciążania możemy się odwołać do parametru ID również w ten sposób:</para>
+        <programlisting>echo $this->get->id();
+echo $this->get->id('Foo'); </programlisting>
+        <para>W parametrze metody można podać wartość domyślną w przypadku, gdy nie będzie można
+            odnaleźć klucza <emphasis>id</emphasis> w tablicy <varname>$_GET</varname>. </para>
+    </section>
+    <section>
+        <title>Referencja do tablicy</title>
+        <para>W konstruktorze klasy <classname>Gpc</classname>, która to jest klasą macierzystą dla
+            klas <classname>Post</classname>, <classname>Get</classname>,
+            <classname>Cookie</classname>, <classname>Server</classname> - tworzona jest referencja
+            do tablicy globalnej. Klasa ta nie tworzy więc kopii tablicy. Oznacza to, że modyfikacje
+            tablic globalnych będą miały wpływ na zawartość danych
+            <classname>Gpc</classname>:<programlisting>echo $this->get->id; 
+$_GET['id'] = 'foo';
+echo $this->get->id; // foo</programlisting></para>
+    </section>
+    <section>
+        <title>Filtrowanie danych</title>
+        <para>W konstruktorze klasy <classname>Gpc</classname> tworzony jest obiekt klasy
+                <classname>Filter</classname>. Dzięki temu dane pochodzące z różnych źródeł mogą być
+            filtrowane na różne sposoby. Np. domyślnym filtrem dla klasy <classname>Post</classname>
+            jest filter XSS. Usuwa on wszelkie potencjalnie, niebezpieczne znaczniki HTML z tekstu.
+            Dodatkowo usuwa on ewentualne niebezpieczne atrybuty znaczników HTML, mogące mieć
+            związek z JavaScript. Filtr w klasie <classname>Get</classname> jest bardziej
+            rygorystyczny - usuwa on bowiem każdy kod HTML, cudzysłowia oraz inne nieportzebne,
+            potencjalnie niebezpieczne znaki. </para>
+        <para>Możemy samodzielnie ustalać filtr w danej klasie, w zależności od potrzeb.
+            Przykładowo: w danym kontrolerze chcemy, aby filtr dla klasy <classname>Get</classname>,
+            był mniej rygorystyczny. Chcemy bowiem, aby zamieniał jedynie wszelkie znaki &lt; oraz >
+            na &amp;lt; i &amp;gt; Możemy to łatwo zmienić. Przede wszystkim, uzyskujemy dostęp do
+            obiektu filtra dzięki metodzie
+            <methodname>getFilter()</methodname>:<programlisting>&lt;?php
+
+class Index extends Controller
+{
+	function main()
+	{
+		// resetowanie ustawien filtra
+		$this->get->getFilter()->reset();
+		$this->get->getFilter()->addFilter('htmlspecialchars');
+
+		echo $this->get->id;
+	}
+}
+?></programlisting></para>
+        <para>W metodzie <methodname>main()</methodname> pierwszą czynnoścą jest czyszczenie
+            obecnych ustawień filtra dla tej klasy. Następnie dodajemy filtr
+                <emphasis>htmlspecialchars</emphasis>, który w momencie żądania odczytu zawartości
+            pola <emphasis>id</emphasis> - wywoła odpowiedni filtr. <note>Więcej informacji na temat
+                filtrowania danych znajdziesz w rozdziale poświęconym klasie
+                Filter.</note><note>Zalecane jest korzystanie z klas Get, Post, Cookie oraz Server
+                do odczytywania zawartości tablic globalnych. Minimalizuje to ryzyko ataku typu SQL
+                Injection lub XSS. </note></para>
+        <section>
+            <title>Metoda setFilters()</title>
+            <para>Metoda umożliwia skrótowe ustawienie filtrów dla danych. Metoda wywołuje w
+                rzeczywistości metodę <methodname>setFilters()</methodname> z klasy
+                    <classname>Filter</classname>, czyli usuwa z kolejki już ustawione filtry i
+                dodaje nowe:
+                <programlisting>$this->get->setFilters('htmlspecialchars'); // dodanie jednego filtru - htmlspecialchars</programlisting></para>
+        </section>
+        <section>
+            <title>Metoda addFilter()</title>
+            <para>Metoda umożliwia skrótowe dodanie nowego filtra bez konieczności odwołania się do
+                obiektu klasy <classname>Filter</classname>. Innymi słowy wywołuje metodę
+                    <methodname>addFilter()</methodname> z klasy <classname>Filter</classname>,
+                powodującym tym samym dodanie nowego filrta na koniec kolejki. </para>
+        </section>
+        <section>
+            <title>Dezaktywacja filtrów</title>
+            <para>Jeżeli nie chcemy, aby dane były filtrowane w danym żądaniu, możemy dezaktywować
+                wszystkie filtry, korzystając z metody <methodname>disableFilter()</methodname>,
+                klasy
+                <classname>Gpc</classname>:<programlisting>$this->get->disableFilter();</programlisting></para>
+            <para>Aby przywrócić filtrowanie danych, należy wywołać metodę
+                    <methodname>enableFilter()</methodname>.</para>
+        </section>
+    </section>
+    <section>
+        <title>Odczyt oryginalnych danych</title>
+        <para>Klasa <classname>Gpc</classname> posiada metodę <methodname>value()</methodname>
+            dzięki której możesz odczytać oryginalną wartość przekazaną w tablicy globalnej (dane
+            nie są w jakikolwiek modyfikowane przez Coyote).
+            Przykład:<programlisting>&lt;?php
+// np. http://127.0.0.1/demo/index.php/Index/Main?id=&lt;b>adam&lt;/b>
+class Index extends Controller
+{
+	function main()
+	{
+		echo $this->get->value('id');
+	}
+}
+?></programlisting></para>
+        <para>Taki skrypt wyświetli oryginalną wartość przekazaną w parametrze id. <warning>Jako że
+                klasy dziedziczące po Gpc zawierają referencję do tablic globalnych, filtrowanie
+                danych zmienia również wartość tablic globalnych.</warning></para>
+        <para>Filtrowanie danych zmienia wartość tablic globalnych, więc kolejne użycie metody
+                <methodname>value()</methodname> w danym żądaniu wyświetli przefiltrowaną
+            wartość:<programlisting>// np. http://127.0.0.1/demo/index.php/Index/Main?id=&lt;b>adam&lt;/b>
+class Index extends Controller
+{
+	function main()
+	{
+echo $this->get->id; // wyświetli: adam
+		echo $this->get->value('id'); // wyświetli: ada
+	}
+}
+?></programlisting></para>
+    </section>
+    <section>
+        <title>Implementacja interfejsu Countable</title>
+        <para>Klasa <classname>Gpc</classname> implementuje interfejs
+            <interfacename>Countable</interfacename>. Oznacza to, że w prosty sposób możliwe jest
+            odczytanie ilości elementów z tablicy globalnej (przy pomocy funkcji <function
+            >count()</function>):<programlisting>&lt;?php
+
+class Index extends Controller
+{
+	function main()
+	{
+		echo count($this->get);
+	}
+}
+?></programlisting></para>
+    </section>
+    <section>
+        <title>Implementacja interfejsu ArrayAccess</title>
+        <para>Ponieważ klasa <classname>Gpc</classname> implementuje interfejs
+                <interfacename>ArrayAccess</interfacename>, w klasach dziedziczących po
+                <classname>Gpc</classname>, możliwy jest dostep do elementów jak do zwykłych
+            tablic:<programlisting>echo $_GET['id'];
+echo $this->get['id'];
+$this->get['id'] = 2;
+echo $this->get['id'];
+echo $_GET['id'];</programlisting></para>
+        <para>Takie zastosowanie jest praktyczne jeżeli parametr $_GET jest tablica i chcemy w prosty sposób uzyskać dostęp do jej elementu:
+            <programlisting>
+ // np. http://127.0.0.1/demo/index.php/Index/Main?id[]=2&amp;id[]=3
+ echo $this->get['id'][1]; 
+ 
+ Core::debug($this->get->id);
+            </programlisting>
+            <warning>Jeżeli parametrem jest tablica (jak parametr id w poprzednim przykładzie), klasa Gpc przefiltruje również elementy tej tablicy.</warning>
+            
+        </para>
+    </section>
+</chapter>

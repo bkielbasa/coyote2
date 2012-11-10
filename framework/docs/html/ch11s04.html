@@ -1,0 +1,23 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Metoda loadClass()</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch11.html" title="Rozdzia&#322; 11. Loader"><link rel="prev" href="ch11s03.html" title="Metoda setIncludePath()"><link rel="next" href="ch11s05.html" title="Metoda loadModule()"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Metoda loadClass()</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch11s03.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 11. Loader</th><td width="20%" align="right"> <a accesskey="n" href="ch11s05.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id481625"></a>Metoda loadClass()</h2></div></div></div><p>
+            Metoda u&#380;ywana jest do &#322;adowania bibliotek projektu. Jej nag&#322;ówek prezentuje si&#281;
+            nast&#281;puj&#261;co:
+            </p><pre class="programlisting">
+public static function &amp;loadClass($class_name, $init = true, $params = '')
+            </pre><p>
+        </p><p>
+            Pierwszym parametrem jest oczywi&#347;cie nazwa klasy. Drugi parametr okre&#347;la, czy metoda
+            ma by&#263; inicjalizowana czy te&#380; nie. Ostatni parametr okre&#347;la dodatkowe parametry
+            przekazywane do konstruktora klasy.
+        </p><p>
+            Metoda <tt class="methodname">loadClass()</tt> &#322;aduje dan&#261; bibliotek&#281; tylko raz! Oznacza
+            to, &#380;e raz za&#322;adowana przechowywana w pami&#281;ci komputera, jest mo&#380;liwa do obs&#322;u&#380;enia w
+            ró&#380;nych miejscach programu.
+            
+            Przyk&#322;adowo:
+            </p><pre class="programlisting">
+$foo = &amp;load::loadClass('foo'); 
+$foo-&gt;bar(); 
+// w innym pliku mo&#380;emy uzyska&#263; dost&#281;p do tej biblioteki ponownie:
+$foo = &amp;Load::loadClass('foo');
+            </pre><p>
+        </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch11s03.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch11.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch11s05.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Metoda setIncludePath() </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Metoda loadModule()</td></tr></table></div></body></html>

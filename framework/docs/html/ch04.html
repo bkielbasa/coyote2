@@ -1,0 +1,47 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Rozdzia&#322; 4. Plik front controllera</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="pt01.html" title="Cz&#281;&#347;&#263; I. Dokumentacja techniczna"><link rel="prev" href="ch03s06.html" title="Kolejno&#347;&#263; odczytywanych plików"><link rel="next" href="ch04s02.html" title="Zawarto&#347;&#263; pliku front controllera"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Rozdzia&#322; 4. Plik front controllera</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch03s06.html">Poprzedni</a> </td><th width="60%" align="center">Cz&#281;&#347;&#263; I. Dokumentacja techniczna</th><td width="20%" align="right"> <a accesskey="n" href="ch04s02.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="chapter" lang="pl"><div class="titlepage"><div><div><h2 class="title"><a name="id473691"></a>Rozdzia&#322; 4. Plik front controllera</h2></div></div></div><div class="toc"><p><b>Spis tre&#347;ci</b></p><dl><dt><span class="section"><a href="ch04.html#id473718">Utworzenie pliku .htaccess</a></span></dt><dt><span class="section"><a href="ch04s02.html">Zawarto&#347;&#263; pliku front controllera</a></span></dt></dl></div><p>
+        </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>
+            Front Controller &#8211; jeden ze wzorców projektowych stosowany w projektowaniu aplikacji internetowych. We wzorcu tym istnieje jeden, centralny obiekt (np. serwlet), który zarz&#261;dza wszystkimi &#380;adaniami przychodz&#261;cymi od klienta. Wzorzec ten jest cz&#281;sto stosowany ze wzorcem MVC.
+        </div><p>
+        
+        <span class="emphasis"><em>&#379;ród&#322;o: Wikipedia</em></span>
+    </p><p>
+        Wspomnieli&#347;my ju&#380; &#380;e najelpszym sposobem korzystania z frameworka, jest oddzielenie plików samego frameworka, 
+        od plików aplikacji. Nale&#380;y traktowa&#263; pliki frameworka jak j&#261;dro, którego nie powinno si&#281; modyfikowa&#263; je&#380;eli
+        nie ma takiej wyra&#378;nej potrzeby. Na swoim lokalnym serwerze mo&#380;esz utworzy&#263; katalog aplikacji, w której 
+        b&#281;dziesz umieszcza&#322; kontrolery, modele i inne potrzebne pliki. Sposobem na osi&#261;gni&#281;cie tego jest skorzystanie
+        ze wzorca <span class="emphasis"><em>front controllera</em></span>.
+    </p><p>
+        Pierwszym krokiem jest utworzenie w katalogu z aplikacj&#261; (nazwijmy go <tt class="filename">demo</tt>) pliku 
+        <tt class="filename">index.php</tt>. Do tego pliku b&#281;d&#261; kierowane wszystkie &#380;&#261;dania u&#380;ytkownika.
+    </p><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id473718"></a>Utworzenie pliku .htaccess</h2></div></div></div><p>
+            W katalogu z projektem, umie&#347;&#263; plik <tt class="filename">.htaccess</tt>, który b&#281;dzie odpowiedzialny za
+            kierowanie &#380;&#261;dania do pliku front controllera (czyli <tt class="filename">index.php</tt>):
+            
+            </p><pre class="programlisting">
+
+php_flag short_open_tag on
+
+Options +FollowSymlinks
+RewriteEngine on
+
+RewriteCond %{REQUEST_URI} \..+$
+RewriteCond %{REQUEST_URI} !\.html$
+RewriteCond %{REQUEST_URI} !\.php$
+RewriteRule .* - [L]
+
+RewriteCond %{REQUEST_FILENAME} !-s [NC]
+RewriteCond %{REQUEST_FILENAME} !-d [NC]
+RewriteRule ^(.+) index.php/$1 [L]
+
+ErrorDocument 500 "&lt;h2&gt;Application error&lt;/h2&gt;Coyote application failed to start properly"
+                
+            </pre><p>
+            
+            W pliku <tt class="filename">.htaccess</tt> umie&#347;cili&#347;my regu&#322;y modu&#322;u Apache - mod_rewrite.
+            Nie b&#281;dziemy rozpisywa&#263; si&#281; tutaj o samym mod_rewrite, gdy&#380; to nie jest przedmiotem
+            tej dokumentacji.
+        </p><p>
+            Dzi&#281;ki takiemu zapisowi, &#380;&#261;dania kierowane przez u&#380;ytkownika (np. http://localhost/demo/Foo) b&#281;d&#261;
+            kierowane wprost do pliku front controllera, który natomiast zainicjuje biblioteki frameworka
+            i przeka&#380;e &#380;&#261;danie do odpowiedniego kontrolera.
+        </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch03s06.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="pt01.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch04s02.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Kolejno&#347;&#263; odczytywanych plików </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Zawarto&#347;&#263; pliku front controllera</td></tr></table></div></body></html>

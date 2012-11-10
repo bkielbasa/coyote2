@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter>
+    <title>ACL</title>
+    <para>ACL to akronim od słów <emphasis>Access Control List</emphasis>, czyli <emphasis>lista
+            kontroli dostępu</emphasis>. Popularna w systemach Unixowych pozwala na dokładną
+        kontrolę w dostępie do plików danym użytkownikom. Coyote posiada prostą klasę
+        <classname>acl</classname> umożliwiającą tworzenie prostych systemów z wykorzystaniem ACL.
+        Biblioteka nie jest rozbudowana toteż wykorzystanie jej opcji nie powinno stanowić problemu.</para>
+    <para>Dzięki klasie ACL możemy tworzyć użytkowników i przydzielać im prawa do danych opcji
+            (<emphasis>allow</emphasis>, <emphasis>deny</emphasis>). Klasa acl umożliwia tworzenia
+        hierarchii użytkowników. Oznacza to, iż możemy utworzyć grupę - np.
+        <emphasis>Admin</emphasis>, a następnie przypisać użytkowników do tej grupy. Odpowiada za to
+        metoda
+        <methodname>create()</methodname>:<programlisting>		$acl->create('Admin');
+$acl->create('Adam', 'Admin');
+$acl->create('Marta', 'Admin');</programlisting></para>
+    <para>W tym przykładzie utworzyliśmy grupę <emphasis>Admin</emphasis> i przypisaliśmy do niej
+        dwóch użytkowników (<emphasis>Adam</emphasis>, <emphasis>Marta</emphasis>). Możemy ustalać
+        prawa zarówno dla całej grupy jak i pojedyńczych użytkowników, co prezentuje poniższy
+        przykład:<programlisting>
+&lt;?php
+            
+class Bar extends Controller
+{
+    function main()
+    {
+        $acl = &amp;$this->load->library('acl');
+        
+        $acl->create('Admin');
+        $acl->create('Adam', 'Admin');
+        $acl->create('Marta', 'Admin');
+        
+        $acl->allow('Admin', 'Delete');
+        // zabraniamy uzytkownikowi Marta
+        $acl->deny('Marta', 'Delete');
+        
+        var_dump($acl->get('Admin', 'Delete')); // true
+        var_dump($acl->get('Adam', 'Delete')); // true
+        var_dump($acl->get('Marta', 'Delete')); // false
+        
+        $acl->create('Anonymous'); // uzytkownik anonimowy
+        $acl->deny('Anonymous', 'Delete'); 
+        
+        var_dump($acl->get('Anonymous', 'Delete')); // false    
+    }
+}
+?></programlisting></para>
+    <para>Metoda <methodname>allow()</methodname> zezwala danej grupie/użytkownikowi na wykonanie
+        określonej akcji. W tym przypadku nadaliśmy całej grupie <emphasis>Admin</emphasis> prawa do
+        wykonania operacji <emphasis>Delete</emphasis>. Następnie zabroniliśmy użytkownikowi z tej
+        grupy (<emphasis>Marta</emphasis>) na wykonanie tej operacji (metoda
+        <methodname>deny()</methodname>). Metodą <methodname>get()</methodname> możemy sprawdzić,
+        czy dany użytkownik posiada prawa (true lub false) do wykonania danej akcji.</para>
+</chapter>

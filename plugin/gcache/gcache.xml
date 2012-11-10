@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<installation type="module">
+	<name>gcache</name>
+	<text>Moduł cachowania stron</text>
+	<version>1.0-pre1</version>
+	<system>1.0-pre1</system>
+	<author>Adam Boduch</author>
+
+	<option type="select">
+		<name>lifetime</name>
+		<text>Czas wygaśnięcia cache</text>
+		<title>Określ czas po którym cache ma zostać usunięty (niezależnie od tych ustawień cache zostanie usunięty jeżeli strona zostanie zmodyfikowana)</title>
+		<values default="0">
+			<value id="0">Nigdy</value>
+			<value id="300">5 min.</value>
+			<value id="600">10 min.</value>
+			<value id="3600">1 godz.</value>
+			<value id="7200">2 godz.</value>
+			<value id="10800">3 godz.</value>
+			<value id="86400">24 godz.</value>
+			<value id="172800">48 godz.</value>
+			<value id="259200">3 dni</value>			
+		</values>
+	</option>
+	<option type="select">
+		<name>mode</name>
+		<text>Cachowanie</text>
+		<title>Tryb cachowania</title>
+		<values default="0">
+			<value id="0">Wyłaczone</value>
+			<value id="1">Tylko dla niezalogowanych</value>
+			<value id="2">Dla wszystkich</value>
+		</values>
+	</option>
+</installation>

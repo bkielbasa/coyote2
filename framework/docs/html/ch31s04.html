@@ -1,0 +1,38 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Zasoby modu&#322;ów</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch31.html" title="Rozdzia&#322; 31. Budowa modu&#322;owa"><link rel="prev" href="ch31s03.html" title="Konfiguracja modu&#322;ów"><link rel="next" href="apa.html" title="Dodatek A. Standard kodowania"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Zasoby modu&#322;ów</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch31s03.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 31. Budowa modu&#322;owa</th><td width="20%" align="right"> <a accesskey="n" href="apa.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id503382"></a>Zasoby modu&#322;ów</h2></div></div></div><p>
+            Po za&#322;adowaniu modu&#322;u do aplikacji, ów modu&#322; staje si&#281; integraln&#261; cz&#281;&#347;ci&#261; aplikacji.
+            Tak wi&#281;c w momencie &#380;&#261;dania za&#322;adowania - np. biblioteki - Foo, system poszukuje tej biblioteki
+            zarówno w katalogu g&#322;ównym - <tt class="filename">/lib</tt>, jak i równie&#380; w katalogach 
+            <tt class="filename">/lib</tt>, w modu&#322;ach aplikacji.
+        </p><p>
+            Wszystko dzi&#281;ki temu, i&#380; wywo&#322;anie metody <tt class="methodname">loadModule()</tt> powoduje
+            tak&#380;e wywo&#322;anie metody <tt class="methodname">setIncludePath()</tt> z klasy <tt class="classname">Load</tt>. 
+            Metoda ta dopisuje do zmiennej <span class="emphasis"><em>include.path</em></span> &#347;cie&#380;k&#281; z modu&#322;em. 
+            Dzi&#281;ki temu, loader w poszukiwaniu &#380;&#261;danego pliku przeszukuje katalogi z aplikacj&#261; oraz z modu&#322;ami.
+        </p><p>
+            Nale&#380;y zwróci&#263; uwag&#281;, &#380;e <span class="emphasis"><em>auto loader</em></span>, przeszukuje dany folder 
+            (np. <tt class="filename">/lib</tt>), najpierw w katalogu z frameworkiem, nast&#281;pnie w katalogu
+            z aplikacj&#261;, a w dalszej kolejno&#347;ci - podfoldery z modu&#322;ami. 
+        </p><p>
+            Przyk&#322;adowy kod:
+        </p><pre class="programlisting">
+$email = new Email;            
+        </pre><p>
+            Mamy tutaj proste utworzenie instancji klasy <tt class="classname">Email</tt>. Zak&#322;adaj&#261;c, &#380;e plik
+            zawieraj&#261;cy klas&#281; <tt class="classname">Email</tt> nie zosta&#322; wcze&#347;niej za&#322;adowany do projektu,
+            <span class="emphasis"><em>auto loader</em></span> postara si&#281; odszuka&#263; odpowiedniej biblioteki. W pierwszej
+            kolejno&#347;ci sprawdzi, czy istnieje plik <tt class="filename">email.class.php</tt>, w katalogu
+            <tt class="filename">/lib</tt>, w katalogu aplikacji. Je&#380;eli zostanie odnaleziony, nast&#281;puje wczytanie
+            go do programu. Je&#380;eli nie - system sprawdzi, czy taki plik nie znajduje si&#281; w katalogu
+            <tt class="filename">/lib</tt> frameworka. Je&#380;eli i to nie odniesie skutku, system
+            przeszuka katalogi <tt class="filename">/lib</tt> w modu&#322;ach aplikacji. 
+        </p><p>
+            W takiej sytuacji mo&#380;e si&#281; zdarzy&#263;, i&#380; wczytany zostanie nie ten plik, który chcemy, w przypadku, 
+            gdy zarówno framework jak i aplikacja, zawieraj&#261; plik <tt class="filename">email.class.php</tt>,
+            w katalogu <tt class="filename">/lib</tt>. W takim przypadku konieczne jest jawne za&#322;adowanie danego
+            pliku, podaj&#261;c pe&#322;n&#261; &#347;cie&#380;k&#281;:
+        </p><pre class="programlisting">
+Load::loadFile(Config::getBasePath() . 'lib/email.class.php'); // za&#322;adowanie pliku email.class.php z katalogu aplikacji
+//Load::loadFile(Config::getRootPath() . 'lib/email.class.php'); // za&#322;adowanie pliku email.class.php z katalogu frameworka
+
+$email = new Email;
+        </pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch31s03.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch31.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="apa.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Konfiguracja modu&#322;ów </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Dodatek A. Standard kodowania</td></tr></table></div></body></html>

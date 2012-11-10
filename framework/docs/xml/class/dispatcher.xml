@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter>
+    <title>Dispatcher</title>
+    <para>W klasie <classname>Core</classname>, po odczytaniu nazwy kontrolera oraz akcji (z klasy
+            <classname>Router</classname>), te dane przekazywane są do klasy
+        <classname>Dispatcher</classname>. Ona bowiem tworzy obiekt klasy kontrolera i wywołuje
+        odpowiednią akcję. Dzieje się to jedna bez Twojego udziału więc nie jest zbyt istotne z
+        punktu widzenia programisty. </para>
+    <para>System umożliwia również na przeskok z jednego kontrolera do drugiego. Na pewno nie będzie
+        to zbyt często używana funkcja, ale warto wiedzieć, iż coś takiego jest możliwe. </para>
+    <para>Klasa <classname>Dispatcher</classname> posiada jedną statyczną metodę -
+            <methodname>dispatch()</methodname>:<programlisting>public static function dispatch($controller, $action, $folder = '', array $args = array())</programlisting></para>
+    <para>Pierwszym parametrem jest nazwa kontrolera, który ma zostać wywołany. Kolejnym jest nazwa
+        akcji, a trzecim - nazwa ewentualnego podkatalogu, w którym znajduje się kontroler. Ostatni
+        parametr to tablica parametrów, ktore zostaną przekazane do akcji. Dla przykładu utwórzmy
+        kontroler
+        bar:<programlisting>
+ class Bar extends Controller
+ {
+    function __construct()
+    {
+    }
+    
+    function FooBar($name)
+    {
+        echo $name;
+    }
+}</programlisting></para>
+    <para>Chcemy przekierować działanie aplikacji do kontrolera <classname>Bar</classname>, z
+        kontrolera <classname>Foo</classname>. Możliwe jest to dzięki takiemu użyciu metody
+            <methodname>dispatch()</methodname>:<programlisting>Dispatcher::dispatch('bar', 'foobar', '', array('Adam'));</programlisting></para>
+    <para>Metoda <methodname>dispatch()</methodname> przed wywołaniem danego kontrolera, sprawdza,
+        czy odpowiedni plik i akcja - istnieją. Jeżeli nie - wykonywany jest wyątek
+            <classname>FileNotFoundException</classname>, co spowoduje wyświetlenie błędu. Jeżeli w
+        kontrolerze nie istnieje dana akcja - system poszukuje metody
+        <methodname>__call()</methodname>. Jeżeli i ona nie zostanie odnaleziona - system
+        sygnalizuje brak odpowiedniej metody. <note>Pamiętaj, iż po utworzeniu instancji klasy
+            kontrolera (czyli de facto - wywołaniu jego konstruktora), a przed wykonaniem akcji,
+            metoda <methodname>dispatch()</methodname> spróbuje odnaleźć, a następnie wykonać metodę
+                <methodname>_start()</methodname>. Możesz w niej umieścić dodatkowy kod, który
+            zostanie wykonany pomiędzy kodem konstroktora a akcji. </note></para>
+</chapter>

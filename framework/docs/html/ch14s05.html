@@ -1,0 +1,124 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Klasa View</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch14.html" title="Rozdzia&#322; 14. Widoki"><link rel="prev" href="ch14s04.html" title="U&#380;ywanie kodu PHP w szablonach"><link rel="next" href="ch14s06.html" title="Klasa widoku"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Klasa View</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch14s04.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 14. Widoki</th><td width="20%" align="right"> <a accesskey="n" href="ch14s06.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id487265"></a>Klasa View</h2></div></div></div><p>W pokazanych do tej pory, fragmentach kodu, wygenerowaniem widoku zajmuje si&#281; klasa
+                <tt class="classname">Dispatcher</tt>. W rzeczywisto&#347;ci tworzy ona now&#261; instancj&#281; klasy
+                <tt class="classname">View</tt> i przekazuje do niej zawarto&#347;ci pól klasy kontrolera. </p><p>Nic nie stoi na przeszkodzie, aby&#347;my sami utworzyli instancj&#281; tej klasy i przekazali
+            widokowi warto&#347;ci, które maj&#261; by&#263; dalej wy&#347;wietlone - czy to w formie kodu XHTML, czy
+            XML itp. W tym celu nale&#380;y utworzy&#263; instancj&#281; klasy <tt class="classname">View</tt>, podaj&#261;c
+            nazw&#281; widoku jako parametr
+            konstruktora:</p><pre class="programlisting">
+function main()
+{
+	$view = new View('foo');
+
+	$view-&gt;username = 'Adam Boduch';
+	$view-&gt;names = array(
+		'Adam',
+		'Marta',
+		'Karolina'
+	);
+
+	echo $view;
+
+	return false; // nie wykonuj dalszego kodu
+}</pre><p>Przypisanie danych do widoku wi&#261;&#380;e si&#281; z przypisaniem warto&#347;ci odpowiednich pól.
+            Warto&#347;ci pól mog&#261; by&#263; dowolne. Mog&#261; to by&#263; dane skalarne, tablice czy obiekty.
+            Wy&#347;wietlenie widoku wi&#261;&#380;e si&#281; z wywo&#322;aniem metody <tt class="methodname">display()</tt> lub
+            u&#380;yciem skrótowego
+            zapisu:</p><pre class="programlisting">$view-&gt;display(); // lub:
+echo $view;</pre><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id487342"></a>Wy&#347;wietlanie zawarto&#347;ci widoku</h3></div></div></div><p>Jak pokaza&#322; powy&#380;szy przyk&#322;ad, wy&#347;wietlenie zawarto&#347;ci widoku nast&#281;puje po u&#380;yciu
+                metody <tt class="methodname">display()</tt>. Prostsze b&#281;dzie u&#380;ycie instrukcji echo na
+                obiekcie klasy, co równie&#380; spowoduje wy&#347;wietlenie zawarto&#347;ci widoku. Metoda
+                    <tt class="methodname">display()</tt> posiada opcjonalny parametr, który okre&#347;la,
+                czy zawarto&#347;&#263; widoku ma by&#263; wy&#347;wietlana na ekranie (domy&#347;lnie - true), czy zawarto&#347;&#263;
+                widoku ma by&#263; zwracana w metodzie
+                <tt class="methodname">display()</tt>:</p><pre class="programlisting">
+$content = $view-&gt;display(false);
+// dodatkowe operacje na $content
+echo $content;</pre></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id487386"></a>Przekazywanie danych do widoku</h3></div></div></div><p>W poprzednich przyk&#322;adach pokazano w jaki sposób przekazywa&#263; dane do widoku.
+                Warto&#347;ci mo&#380;na przypisywa&#263; bezpo&#347;rednio do elementów obiektu typu
+                <tt class="classname">View</tt> lub skorzysta&#263; z metody
+                <tt class="methodname">assign()</tt> lub <tt class="methodname">append()</tt>. Metoda
+                    <tt class="methodname">assign()</tt> umo&#380;liwia przypisywanie pojedy&#324;czych elementów
+                lub tablicy asocjacyjnej. Oto
+                przyk&#322;ad:</p><pre class="programlisting">
+$view = new View('foo');
+
+$view-&gt;assign('username', 'Adam Boduch');
+$view-&gt;assign(array(
+		'password'		=&gt; '123',
+		'email'			=&gt; 'user@user.com',
+	)
+);
+
+echo $view;</pre><p>Teraz, szablon <tt class="filename">foo.php</tt> mo&#380;e wygl&#261;da&#263;
+                tak:</p><pre class="programlisting">
+&lt;h1&gt;Witaj &lt;?= $username; ?&gt;&lt;/h1&gt;
+&lt;hr /&gt;
+&lt;p&gt;Twoje has&#322;o to &lt;?= $password; ?&gt;, a e-mail: &lt;b&gt;&lt;?= $email; ?&gt;&lt;/b&gt;&lt;/p&gt;</pre><p>Kolejny
+                przyk&#322;ad:</p><pre class="programlisting">
+$view-&gt;assign('user', array(
+				'Adam Boduch', 'Marta', 'Karolina'
+			)
+		);
+// w sablonie:
+&lt;?= implode(', ', $user); ?&gt;</pre><p>Metoda <tt class="methodname">assign()</tt> nadpisuje warto&#347;ci przypisane ju&#380;
+                wcze&#347;niej.
+                Przyk&#322;adowo:</p><pre class="programlisting">
+$view-&gt;assign('user', array(
+				'Adam Boduch', 'Marta', 'Karolina'
+			)
+);
+$view-&gt;assign('user', array(
+				'Marek', 'Darek'
+			)
+);</pre><p>W widoku, <tt class="varname">$user</tt> b&#281;dzie posiada&#322;o warto&#347;&#263; array('Marek',
+                'Darek'). </p><p>Metoda <tt class="methodname">append()</tt> umo&#380;liwia dodawanie elementów do ju&#380;
+                istniej&#261;cej tablicy w widoku. Oto prosty
+                przyk&#322;ad:</p><pre class="programlisting">
+$arr = array(
+		'Adam Boduch', 'Marta', 'Karolina', 'Marek', 'Darek'
+);
+
+foreach ($arr as $element)
+{
+	$view-&gt;append('user', $element);
+}
+        </pre><p>W widoku <tt class="varname">$user</tt> b&#281;dzie tablic&#261; imion. Je&#380;eli u&#380;yliby&#347;my metody
+                    <tt class="methodname">assign()</tt>, zamiast <tt class="methodname">append()</tt>,
+                warto&#347;ci&#261; <tt class="varname">$user</tt> by&#322;by ci&#261;g Darek. Metody
+                <tt class="methodname">append()</tt> mo&#380;emy u&#380;y&#263; je&#380;eli musimy dokona&#263; w kontrolerze
+                jaki&#347; operacji na tablicy. Gdy&#380; w innym przypadku, mo&#380;emy po prostu przekaza&#263;
+                tablic&#281; do
+                widoku:</p><pre class="programlisting">
+$arr = array(
+		'Adam Boduch', 'Marta', 'Karolina', 'Marek', 'Darek'
+);
+$view-&gt;user = $arr;</pre><div class="section" lang="pl"><div class="titlepage"><div><div><h4 class="title"><a name="id487545"></a>Przekazywanie parametrów w konstruktorze</h4></div></div></div><p>Konstruktor klasy <tt class="classname">View</tt> posiada opcjonalny parametr
+                        <i class="parameter"><tt>$data</tt></i>, który mo&#380;e by&#263; tablic&#261; elementów, które maj&#261;
+                    by&#263; przekazane do widoku. Przyk&#322;adowo, wy&#347;wietlenie widoku wraz z przekazaniem
+                    do niego elementów, mo&#380;emy zrealizowa&#263; przy pomocy jednej
+                    instrukcji:</p><pre class="programlisting">
+echo $view = new View('foo', array(
+        'username'	=&gt; 'Adam Boduch',
+        'user'		=&gt; array('Adam Boduch', 'Marta', 'Karolina', 'Marek', 'Darek')
+        )
+);</pre></div></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id487588"></a>Statyczna metoda getView()</h3></div></div></div><p>Klasa <tt class="classname">View</tt> posiada statyczn&#261; metode
+                <tt class="methodname">getView()</tt>, która prezentuje si&#281;
+                nast&#281;puj&#261;co:</p><pre class="programlisting">public static function getView($name, $data = array(), IView $instance = null)
+	{
+		return new View($name, $data, $instance);
+	}</pre><p>Metoda zwraca instancj&#281; klasy <tt class="classname">View</tt>. Obiekt tej klasy mo&#380;e
+                by&#263; zwrócony w akcji
+                kontrolera:</p><pre class="programlisting">function main()
+	{
+		return View::getView('foo', array(
+			'username'	=&gt; 'Adam Boduch',
+			'user'		=&gt; array('Adam Boduch', 'Marta', 'Karolina', 'Marek', 'Darek')
+			)
+		);
+	}</pre><p>lub:</p><pre class="programlisting">	function main()
+	{
+		$this-&gt;username	= 'Adam Boduch';
+		$this-&gt;user		= array('Adam Boduch', 'Marta', 'Karolina', 'Marek', 'Darek');
+
+		return View::getView('foo', array('foo' =&gt; 'bar'));
+	}</pre></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch14s04.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch14.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch14s06.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">U&#380;ywanie kodu PHP w szablonach </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Klasa widoku</td></tr></table></div></body></html>

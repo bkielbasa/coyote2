@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<installation type="module">
+	<name>profiler</name>
+	<text>Moduł profiler</text>
+	<version>1.0-rc1</version>
+	<system>1.0-rc2</system>
+	<author>Adam Boduch</author>
+	<description>
+<![CDATA[
+Moduł może posłużyć do profilowania systemu. Dzięki temu wiadomo, które
+elementy strony WWW działają najwolniej. Moduł oferuje podział na kod PHP oraz 
+czas wykonywania instrukcji SQL.
+]]>
+	</description>
+
+
+	<menu parent="module">
+		<name>Profiler</name>
+		<controller>profiler</controller>
+		<action>main</action>
+		<auth>a_</auth>
+	</menu>
+
+	<option type="select">
+		<name>enable</name>
+		<text>Włączony</text>
+		<values default="0">
+			<value id="0">Nie</value>
+			<value id="1">Tak</value>
+		</values>
+	</option>
+	<option type="select">
+		<name>enableSql</name>
+		<text>Włącz logowanie zapytań SQL</text>
+		<values default="0">
+			<value id="0">Nie</value>
+			<value id="1">Tak</value>
+		</values>
+	</option>
+
+	<setup>
+		<table>profiler_sql</table>
+		<table>profiler</table>
+		<schema>install/schema.sql</schema>		
+
+		<event trigger="system.onShutdown">
+			<name>setProfiler</name>
+			<class>profiler</class>
+			<function>set</function>
+		</event>
+	</setup>
+</installation>

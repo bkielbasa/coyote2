@@ -1,0 +1,341 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Konfiguracja widoku</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote"><link rel="up" href="ch18.html" title="Rozdzia&#322; 18. Widoki"><link rel="prev" href="ch18s07.html" title="&#321;adowanie klasy View przy pomocy loadera"><link rel="next" href="ch19.html" title="Rozdzia&#322; 19. Mechanizm routingu"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Konfiguracja widoku</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch18s07.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 18. Widoki</th><td width="20%" align="right"> <a accesskey="n" href="ch19.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id392810"></a>Konfiguracja widoku</h3></div></div></div><p>Pisz&#261;c aplikacje w PHP pod Coyote w wi&#281;kszo&#347;ci przypadków b&#281;d&#261; one wy&#347;wietla&#322;y kod
+            (X)HTML interpretowany przez przegl&#261;darki. Jak wiadomo, najcz&#281;&#347;ciej wraz z kodem XHTML,
+            do pary idzie kod CSS oraz ewentualne skrypty JavaScript. Coyote pomaga zarz&#261;dza&#263; ca&#322;em
+            mechanizmem poprzez pliki konfiguracji szablonów. </p><div class="section" lang="pl"><div class="titlepage"><div><div><h4 class="title"><a name="id392829"></a>Layouty</h4></div></div></div><p>Obecne strony w wi&#281;kszo&#347;ci przypadków generowane s&#261; dynamicznie, przy pomocy
+                takich j&#281;zyków jakim jest np. PHP. Posiadaj&#261; one wiele podstron, z których w
+                wi&#281;kszo&#347;ci niektóre elementy s&#261; takie same. We&#378;my np. logo strony (nag&#322;ówek) oraz
+                stopk&#281;. W wi&#281;kszo&#347;ci stron te elementy s&#261; sta&#322;e na ka&#380;dej podstronie. Mechanizm
+                layoutów pozwala na utworzenie jednego layoutu, który zawiera&#322;by elementy jednakowe
+                dla ka&#380;dej podstrony. </p><p>Utwórz w katalogu <tt class="filename">template</tt>, plik <tt class="filename">layout.php</tt>, który b&#281;dzie naszym layoutem i mo&#380;e zawiera&#263; taki kod
+                XHTML:</p><pre class="programlisting">&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Moja pierwsza strona WWW&lt;/title&gt;
+&lt;head&gt;
+
+&lt;style&gt;
+body
+{
+		margin:			10px auto 10px auto;
+		border:			1px solid #ccc;
+		width:			80%;
+		background-color:		#f8f8f8;
+		padding:		10px;
+		font-family:	Arial;
+}
+&lt;/style&gt;
+
+&lt;body&gt;
+&lt;h1&gt;Moja pierwsza strona WWW&lt;/h1&gt;
+
+&lt;?= $this-&gt;content; ?&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre><p>W miejsce $this-&gt;content b&#281;dzie wstawiana zawarto&#347;&#263; szablonów, które nie musz&#261;
+                zawiera&#263; ju&#380; kodu umieszczonego w layoucie. Ma to wiele zalet, a jedna z nich jest
+                taka, &#380;e przy zmianie - np. tytu&#322;u strony - wystarczy zmieni&#263; tylko jeden plik
+                (layout). </p><p>Utwórzmy teraz szablon dla strony g&#322;ównej naszego serwisu - np. <tt class="filename">index.php</tt>. Zawarto&#347;&#263; tego szablonu mo&#380;e by&#263;
+                banalna:</p><pre class="programlisting">&lt;p&gt;To jest strona g&#322;ówna&lt;/p&gt;</pre><p>Teraz widok po&#322;&#261;czy te dwa pliki w jedn&#261; ca&#322;o&#347;&#263; i wy&#347;le do klienta (przegl&#261;darka
+                WWW). Utwórz kontroler index.php, który mo&#380;e wygl&#261;da&#263;
+                tak:</p><pre class="programlisting">&lt;?php
+
+class Index extends Controller
+{
+	function main()
+	{
+		$view = new View('index');
+		$view-&gt;setConfig('layout', 'layout');
+
+		echo $view;
+	}
+}
+?&gt;</pre><p>Klasa <tt class="classname">View</tt> posiada metod&#281; <tt class="methodname">setConfig()</tt> która s&#322;u&#380;y do
+                ustawiania warto&#347;ci konfiguracyjnych dla widoku. W tym przypadku ustawili&#347;my warto&#347;&#263;
+                pola <span class="emphasis"><em>layout</em></span>, które wskazuje na nazw&#281; pliku z layoutem (pomijane jest rozszerzenie
+                pliku). Taki kod wygeneruje i po&#322;&#261;czy dwa pliki - layoutu oraz plik szablonu. </p><p>Wygodniejsze jest, gdy informacje o layoucie zapisane s&#261; w konfiguracji. Nie
+                musimy si&#281; wówczas martwi&#263; o ustawienie odpowiednich warto&#347;ci konfiguracji widoku, w
+                kontrolerze. </p></div><div class="section" lang="pl"><div class="titlepage"><div><div><h4 class="title"><a name="id392966"></a>Okre&#347;lanie nazwy pliku konfiguracji widoków</h4></div></div></div><p>Otwórz plik konfiguracji aplikacji (u mnie znajduje si&#281; w katalogu <tt class="filename">config/config.xml</tt> mojej aplikacji). Ustawimy w nim warto&#347;&#263; pola
+                    <span class="emphasis"><em>core.templateConfig</em></span>:</p><pre class="programlisting">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;config&gt;
+	&lt;core&gt;
+		&lt;templateConfig&gt;config.php&lt;/templateConfig&gt;
+	&lt;/core&gt;
+&lt;/config&gt;</pre><p>Ustawienie takiego pola spowoduje, i&#380; widok b&#281;dzie poszukiwa&#322; opisu konfiguracji w
+                pliku <tt class="filename">config.php</tt>, w folderze z szablonami (czyli np. w katalogu
+                    <tt class="filename">template</tt>). </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>Konfiguracja widoków odczytywana jest
+                    przez klas&#281; Config, wi&#281;c format plików konfiguracji widoków mo&#380;e by&#263; dowolny,
+                    bylby by&#322; obslugiwany przez klas&#281; Config. </div><p>Nast&#281;pnie w katalogu <tt class="filename">template</tt>, utwórz plik <tt class="filename">config.php</tt>:</p><pre class="programlisting">&lt;?php
+
+$config['*'] = array(
+	'layout'			=&gt; 'layout'
+);
+
+?&gt;</pre><p>Taki zapis oznacza, &#380;e ka&#380;dy szablon w projekcie b&#281;dzie korzysta&#322; z layoutu o
+                nazwie <span class="emphasis"><em>layout</em></span>. Teraz, w akcji wystarczy wywo&#322;a&#263; odpowiedni
+                widok:</p><pre class="programlisting">	function main()
+	{
+		return View::MAIN;
+	}</pre><p>Widok automatycznie odczyta zapis konfiguracji i wygeneruje stron&#281; zgodnie z
+                zapisem. </p><p>Mo&#380;esz okre&#347;li&#263; kilka nazw plików zawieraj&#261;cych konfiguracje.
+                Np.:</p><pre class="programlisting">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;config&gt;
+	&lt;core&gt;
+		&lt;templateConfig&gt;config.php&lt;/templateConfig&gt;
+&lt;templateConfig&gt;config.ini&lt;/templateConfig&gt;
+	&lt;/core&gt;
+&lt;/config&gt;</pre><p>W takim przypadku system b&#281;dzie poszukiwa&#322; konfiguracji zarówno w pliku <tt class="filename">config.php</tt> jak i <tt class="filename">config.ini</tt>. </p></div><div class="section" lang="pl"><div class="titlepage"><div><div><h4 class="title"><a name="id393105"></a>Budowa plików konfiguracji</h4></div></div></div><p>Domy&#347;lnie formatem plików konfiguracji widoków jest XML. Jednak w poprzednim
+                akapicie pokaza&#322;em jak to zmieni&#263;, tak, aby formatem by&#322; PHP. Konfiguracja widoków
+                jest taka sama jak pozosta&#322;a konfiguracja w aplikacji. Plik PHP musi posiada&#263;
+                tablic&#281; o nazwie <tt class="varname">$config</tt>, w której klucz b&#281;dzie odpowiada&#322; nazwie
+                szablonu. Znak * odpowiada za ka&#380;d&#261; warto&#347;&#263;, tak wi&#281;c klucz
+                <span class="emphasis"><em>box*</em></span> odpowiada zarówno szablonowi
+                <span class="emphasis"><em>boxInformation</em></span> jak i <span class="emphasis"><em>boxConfirm</em></span>. </p><p>Mechanizm odczytu konfiguracji jest nast&#281;puj&#261;cy: </p><div class="itemizedlist"><ul type="disc"><li>Wczytanie pliku konfiguracji</li><li>Przeszukanie tablicy konfiguracji i porównanie klucza tablicy z nazw&#261;
+                        szablonu</li><li>Je&#380;eli klucz odpowiada nazwie - dodanie informacji z tablicy do
+                        konfiguracji widoku.</li></ul></div><p>Dla przyk&#322;adu - zmie&#324; zawarto&#347;&#263; pliku <tt class="filename">config.php</tt>:</p><pre class="programlisting">&lt;?php
+
+$config['*'] = array(
+	'layout'			=&gt; 'layout'
+);
+
+$config['index'] = array(
+	'layout'			=&gt; false
+);
+
+?&gt;</pre><p>Po wczytaniu zwarto&#347;ci tego pliku do klasy, system zacznie przeszukiwa&#263; tablic&#281;
+                    <tt class="varname">$config</tt>. Pierwszy element (*) pasuje do ka&#380;dego widoku -
+                zostanie wi&#281;c wczytany do widoku. Kolejny element równie&#380; odpowiada naszemu
+                szablonowi i równie&#380; zostanie wczytany. Jednak&#380;e zast&#281;puje on wcze&#347;niej
+                zadeklarowan&#261; warto&#347;&#263; layout, która zostanie nadpisana. W wyniku tego nasz szablon
+                b&#281;dzie wy&#347;wietlany samotnie, bez layoutu. </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>
+                Klucz <span class="emphasis"><em>all</em></span> odpowiada ka&#380;demu widokowi, podobnie jak symbol *
+            </div></div><div class="section" lang="pl"><div class="titlepage"><div><div><h4 class="title"><a name="id393218"></a>Ustawianie tytu&#322;u dla strony</h4></div></div></div><p>Klasa widoku <tt class="classname">View_Xhtml</tt> &#347;ci&#347;le wspó&#322;pracuje z klas&#261;
+                    <tt class="classname">Output</tt>. W konfiguracji mo&#380;emy ustawi&#263; tytu&#322; dla
+                poszczególnych stron naszego serwisu. Warto&#347;&#263; ta przekzywana jest do metody
+                    <tt class="methodname">setTitle()</tt> klasy <tt class="classname">Output</tt>. Oto
+                przyk&#322;ad ustawienia tytu&#322;u strony dla szablonu <tt class="filename">index.php</tt>:</p><pre class="programlisting">&lt;?php
+
+$config['*'] = array(
+	'layout'			=&gt; 'layout'
+);
+
+$config['index'] = array(
+	'title'				=&gt; 'Strona g&#322;ówna'
+);
+
+?&gt;</pre><p>W rzeczywisto&#347;ci widok przeka&#380;e warto&#347;&#263; pola title do metody
+                    <tt class="methodname">setTitle()</tt> klasy <tt class="classname">Output</tt>. To nie
+                wszystko - musimy bowiem okre&#347;li&#263;, w którym miejscu - w layoucie - ma zosta&#263;
+                wstawiony znacznik &lt;title&gt;. Otwórz wi&#281;c plik <tt class="filename">layout.php</tt> i
+                zmie&#324; nag&#322;ówek
+                strony:</p><pre class="programlisting">&lt;html&gt;
+&lt;head&gt;
+&lt;?= $output-&gt;getTitle(); ?&gt;
+&lt;head&gt;</pre><p>Metoda <tt class="methodname">getTitle()</tt> zwróci tytu&#322; dla danej strony w formie
+                znacznika XHTML - &lt;title&gt;. Dzi&#281;ki takiemu zabiegowi mo&#380;na ustala&#263; tytu&#322; dla
+                poszczególnych stron, nie ingeruj&#261;c w kod kontrolera. </p></div><div class="section" lang="pl"><div class="titlepage"><div><div><h4 class="title"><a name="id393316"></a>Ustawianie szablonów CSS</h4></div></div></div><p>Ustawianie szablonów jest podone do ustawiania tytu&#322;ów dla stron. Przed tem jednak
+                warto zmodyfikowa&#263; plik layoutu, tak, aby pomi&#281;dzy znacznikami &lt;head&gt; wstawiane
+                by&#322;by znaczniki pobierane z klasy
+                <tt class="classname">Output</tt>:</p><pre class="programlisting">&lt;html&gt;
+&lt;head&gt;
+&lt;?= $output-&gt;getTitle(); ?&gt;
+&lt;?= $output-&gt;getHttpMeta(); ?&gt;
+&lt;?= $output-&gt;getMeta(); ?&gt;
+&lt;?= $output-&gt;getStylesheet(); ?&gt;
+&lt;?= $output-&gt;getJavaScript(); ?&gt;
+&lt;head&gt;
+
+&lt;body&gt;
+&lt;h1&gt;Moja pierwsza strona WWW&lt;/h1&gt;
+
+&lt;?= $this-&gt;content; ?&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre><p>Metoda <tt class="classname">getStylesheet()</tt> zwraca znaczniki &lt;style&gt; je&#380;eli
+                do klasy <tt class="classname">Output</tt> przekazane zosta&#322;y szablony CSS. Metoda
+                    <tt class="methodname">getJavaScript()</tt> zwraca znaczniik &lt;script&gt;. Chc&#261;c
+                przypisa&#263; plik stylów CSS do danego szablonu, mo&#380;emy u&#380;y&#263; metody
+                    <tt class="methodname">setStylesheet()</tt> z klasy <tt class="classname">Output</tt>:
+                    </p><pre class="programlisting">function main()
+	{
+		$this-&gt;output-&gt;setStylesheet('main');
+
+		return View::MAIN;
+	}</pre><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>Nie
+                    ma konieczno&#347;ci podawania pe&#322;nej nazwy pliku. System sam doda rozszerzenie .css
+                    do nazy pliku. </div><p>Pliki stylów CSS powinny by&#263; umieszczone w katalogu z szablonami, tak wi&#281;c u&#380;ycie
+                metody <tt class="methodname">setStylesheet()</tt> tak jak to pokazano w przyk&#322;adzie -
+                spowoduje umieszczenie w layoucie
+                znacznika:</p><pre class="programlisting">&lt;link rel="stylesheet" type="text/css" href="http://127.0.0.1/demo/template/main.css" /&gt;</pre><p>Zamiast integrowa&#263; w kod kontrolera (akcji), mo&#380;na ustali&#263; style CSS dla danego
+                szablonu, z poziomu pliku konfiguracji:
+                </p><pre class="programlisting">&lt;?php
+
+$config['*'] = array(
+	'layout'			=&gt; 'layout',
+	'stylesheet'		=&gt; 'main'
+);
+
+$config['index'] = array(
+	'title'				=&gt; 'Strona g&#322;ówna',
+);
+
+?&gt;</pre><p>Przyjmujemy, i&#380; dla ka&#380;dej podstrony b&#281;dzie obowi&#261;zywa&#322; ten sam plik stylów -
+                    <tt class="filename">main.css</tt>. Je&#380;eli chcesz, to zmieni&#263;, wystarczy nadpisa&#263;
+                warto&#347;&#263;, jednocze&#347;nie ustawiaj&#261;c znak minusa przed nazw&#261; szablonu, który ma zosta&#263; usuni&#281;ty:
+                <span class="emphasis"><em>stylesheet</em></span>:</p><pre class="programlisting">$config['index'] = array(
+	'title'				=&gt; 'Strona g&#322;ówna',
+	'stylesheet'		=&gt; array('-main', 'indexStyle')
+	);</pre><p>
+                Domy&#347;lnie bowiem ustawienia arkuszy stylów nie s&#261; nadpisywane. Tzn. w pliku konfiguracji mo&#380;emy
+                okre&#347;la&#263; wiele arkuszy, tak jak to pokazano w dalszych przyk&#322;adach.
+            </p><div class="section" lang="pl"><div class="titlepage"><div><div><h5 class="title"><a name="id393469"></a>Ustawianie kilku arkuszy</h5></div></div></div><p>Nieraz arkusze styli podzielone s&#261; na kilka plików i na pewno nie raz przyda&#380;y
+                    Ci si&#281; konieczno&#347;&#263; ustawienia kilku arkuszy na jednej stronie (lub podstronie).
+                    W Coyote mo&#380;esz ustali&#263; kilka arkuszy w jednym szablonie, oddzielaj&#261;c je
+                    przecinkiem:</p><pre class="programlisting">$config['*'] = array(
+	'layout'			=&gt; 'layout',
+	'stylesheet'		=&gt; 'main,print'
+);
+
+$config['index'] = array(
+	'title'				=&gt; 'Strona g&#322;ówna',
+	'stylesheet'		=&gt; 'foo'
+	);</pre><p>
+                    W takim przypadku, widok <span class="emphasis"><em>index</em></span> b&#281;dzie zawiera&#322; arkusze main.css, print.css oraz foo.css.
+                </p><p>
+                    Parametr <span class="emphasis"><em>stylesheet</em></span> mo&#380;e by&#263; tablic&#261; arkuszy styli:
+                    </p><pre class="programlisting">
+'stylesheet'  =&gt; array('foo', 'bar');                         
+                    </pre><p>
+                </p></div><div class="section" lang="pl"><div class="titlepage"><div><div><h5 class="title"><a name="id393527"></a>Okre&#347;lanie podkatalogów arkuszy</h5></div></div></div><p>Arkusze styli musz&#261; by&#263; umieszczone w katalogu z szablonami aplikacji. Nie ma
+                    jednak przeciwskaza&#324; do umieszczenia ich w podkatalogach. Mo&#380;esz np. utworzy&#263;, w
+                    katalogu <tt class="filename">template</tt>, foler <tt class="filename">css</tt> i tam
+                    przechowywa&#263; swoje arkusze. Nie zapomnij jednak ustawi&#263; prawid&#322;owych &#347;cie&#380;ek w
+                    konfiguracji. Mo&#380;na to zrobi&#263; w dwojaki sposób.
+                    Pierwszy:</p><pre class="programlisting">$config['*'] = array(
+	'layout'			=&gt; 'layout',
+	'stylesheet'		=&gt; 'css/main,css/print'
+);</pre><p>Drugi sposób pozwala na przypisanie dodatkowych artybutów dla znacznika
+                    &lt;link&gt;. Poniewa&#380; ustawienie pola konfiguracyjnego stylesheet owocuje w
+                    rzeczywisto&#347;ci przekazaniem parametrów do metody
+                    <tt class="methodname">setStylesheet()</tt>, mo&#380;emy wykorzysta&#263; jej pe&#322;ne
+                    mo&#380;liwo&#347;ci. A nag&#322;owek tej metody jest
+                    nast&#281;puj&#261;cy:</p><pre class="programlisting">public function setStylesheet($filename, $directiry = '', $options = array())</pre><p>Drugim parametrem metody jest katalog, w którym b&#281;d&#261; znajdowa&#263; si&#281; arkusze
+                    CSS. Ostatnim, opcjonalnym parametrem s&#261; dodatkowe atrybuty dla znacznika XHTML.
+                    Tak wi&#281;c taki zapis
+                    konfiguracji:</p><pre class="programlisting">$config['*'] = array(
+	'layout'			=&gt; 'layout',
+	'stylesheet'		=&gt; array('main,print', 'css', array('media' =&gt; 'print'))
+);</pre><p>Spowoduje umieszczeniem w layoucie takich odwo&#322;a&#324; do
+                    arkuszy:</p><pre class="programlisting">&lt;link rel="stylesheet" type="text/css" href="http://127.0.0.1/demo/template/css/main.css"  media="print"/&gt;
+&lt;link rel="stylesheet" type="text/css" href="http://127.0.0.1/demo/template/css/print.css"  media="print"/&gt;</pre></div></div><div class="section" lang="pl"><div class="titlepage"><div><div><h4 class="title"><a name="id393642"></a>Przypisanie skryptów JavaScript</h4></div></div></div><p>Skrypty JavaScript cz&#281;sto umo&#380;liwiaj&#261; wzbogacenie strony o elementy dynamiczne
+                niewymagaj&#261;ce u&#380;ycia j&#281;zyka server-side. Przypisanie pliku JavaScript do szablonu
+                jest równie proste, co przypisanie arkusza
+                stylów:</p><pre class="programlisting">$config['*'] = array(
+	'layout'			=&gt; 'layout',
+	'stylesheet'		=&gt; array(
+										array('main'),
+										array('print', 'css', array('media' =&gt; 'print'))
+						),
+	'javascript'		=&gt; 'main'
+);</pre><p>Taki zapis konfiguracji oznacza przypisanie do ka&#380;dego szablonu pliku
+                    main.js:</p><pre class="programlisting">&lt;script src="http://127.0.0.1/demo/template/js/main.js" type="text/javascript"&gt;&lt;/script&gt;</pre><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>Coyote
+                    automatycznie zak&#322;ada, &#380;e skrypty JavaScript s&#261; umieszczone w podkatalogu js
+                    folderu z szablonami. Mo&#380;esz zmieni&#263; lokalizacj&#281; skryptów JavaScript ustawiaj&#261;c
+                    pole konfiguracji: core.javascript. </div><div class="section" lang="pl"><div class="titlepage"><div><div><h5 class="title"><a name="id393696"></a>Kilka skryptów JavaScript na jednej stronie</h5></div></div></div><p> Podobnie jak to si&#281; ma w arkuszach stylów, istnieje mo&#380;liwo&#347;&#263; do&#322;&#261;czania
+                    wielu skryptów JavaScript na jednej stronie. W takim przypadku, mo&#380;na rozdzieil&#263;
+                    nazwy znaiem przecinka lub u&#380;y&#263; opcji konfiguracji:
+                    <span class="emphasis"><em>javascript</em></span>:</p><pre class="programlisting">'javascript'		=&gt; 'main,foo'</pre><p>lub:</p><pre class="programlisting">'javascript'		=&gt; array('main', 'foo')</pre></div></div><div class="section" lang="pl"><div class="titlepage"><div><div><h4 class="title"><a name="id393733"></a>Ustawianie znaczników META</h4></div></div></div><p>Znaczniki &lt;meta&gt; umieszczane s&#261; w nag&#322;ówku strony i s&#322;u&#380;&#261; do opisu strony -
+                np.: s&#322;ów kluczowych, opisu czy kodowania znaków. Do ustawienia znaczników &lt;meta&gt;
+                na stronie, mo&#380;na u&#380;y&#263; metody <tt class="methodname">setMeta()</tt> lub
+                    <tt class="methodname">setHttpMeta()</tt> klasy <tt class="classname">Output</tt>.
+                Równie dobrze mo&#380;emy ustawi&#263; odpowiedni&#261;
+                konfiguracj&#281;:</p><pre class="programlisting">$config['index'] = array(
+	'title'				=&gt; 'Strona g&#322;ówna',
+	'meta'				=&gt; array(
+				'keywords'			=&gt; 'strona, g&#322;ówna',
+				'description'		=&gt; 'To jest strona g&#322;ówna'
+	),
+	'httpmeta'		=&gt; array(
+				'Content-type'		=&gt; 'text/html; charset=utf-8'
+	)
+);</pre><p>Dzi&#281;ki takiej konfiguracji, strona b&#281;dzie posiada&#322;a znaczniki description,
+                keywords oraz - ustawione kodowanie na utf-8. </p></div><div class="section" lang="pl"><div class="titlepage"><div><div><h4 class="title"><a name="id393788"></a>Ustawianie atrybutów</h4></div></div></div><p>Klasa Output posiada równie&#380; przydatn&#261; metod&#281;
+                <tt class="methodname">setAttribute()</tt> dzi&#281;ki której mo&#380;emy ustawi&#263; (przekaza&#263;)
+                dowolny atrybut do szablonu, który nast&#281;pnie mo&#380;emy by&#263; dowolnie interpetowany w
+                szablonie. Atrybuty mog&#261; by&#263; równie&#380; ustawiane w konfiguracji, w formie tablicy
+                asocjacyjnej:</p><pre class="programlisting">$config['index'] = array(
+	'title'				=&gt; 'Strona g&#322;ówna',
+	'meta'				=&gt; array(
+				'keywords'			=&gt; 'strona, g&#322;ówna',
+				'description'		=&gt; 'To jest strona g&#322;ówna'
+	),
+	'httpmeta'		=&gt; array(
+				'Content-type'		=&gt; 'text/html; charset=utf-8'
+	),
+	'attribute'		=&gt; array(
+				'advertisement'		=&gt; true
+	)
+);</pre><p>W powy&#380;szym przyk&#322;adzie, przekazany zosta&#322; atrybut
+                <span class="emphasis"><em>advertisement</em></span>. W szablonie mo&#380;esz oprogramowa&#263; warunek
+                wykrywaj&#261;cy obecno&#347;&#263; tego atrybutu i - odpowiednio zareagowa&#263;. W tym przyk&#322;adzie
+                ustalamy, &#380;e kod HTML odpowiadaj&#261;cy za reklamy ma si&#281; wy&#347;wietla&#263; jedynie w
+                po&#322;&#261;czeniu z szablonem <tt class="filename">index.php</tt>. Mo&#380;emy doda&#263; odpowiedni
+                warunek w
+                    layoucie:</p><pre class="programlisting">&lt;body&gt;
+&lt;h1&gt;Moja pierwsza strona WWW&lt;/h1&gt;
+&lt;?php if ($output-&gt;getAttribute('advertisement')) : ?&gt;
+&lt;p class="advertisement"&gt;REKLAMA&lt;/p&gt;
+&lt;?php endif; ?&gt;
+
+&lt;?= $this-&gt;content; ?&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>Wi&#281;cej
+                    informacji o mo&#380;liwo&#347;ci ustawienia parametrów dla strony, znajdziesz w opisie
+                    klasy Output.</div></div><div class="section" lang="pl"><div class="titlepage"><div><div><h4 class="title"><a name="id393872"></a>U&#380;ywanie warto&#347;ci konfiguracyjnych klasy Config</h4></div></div></div><p>Ka&#380;da strona internetowa ma jaki&#347; tytu&#322;. Mo&#380;esz go zadeklarowa&#263; w pliku
+                konfiguracyjnym swojej
+                aplikacji:</p><pre class="programlisting">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;config&gt;
+	&lt;core&gt;
+		&lt;templateConfig&gt;config.php&lt;/templateConfig&gt;
+	&lt;/core&gt;
+
+	&lt;site&gt;
+		&lt;title&gt;Coyote Demo&lt;/title&gt;
+		&lt;description&gt;To jest przyk&#322;adowa strona&lt;/description&gt;
+	&lt;/site&gt;
+&lt;/config&gt;</pre><p>Najlepszym rozwi&#261;zaniem by&#322;oby, gdyby ów tytu&#322; umieszczany by&#322; w znaczniku
+                &lt;title&gt; naszej strony. W warto&#347;ciach konfiguracji istnieje mo&#380;liwo&#347;&#263; u&#380;ywania
+                wzorców, które zostan&#261; zast&#261;pione warto&#347;ciami z konfiguracji aplikacji. Oto przyk&#322;ad
+                takiej konfiguracji
+                szablonu:</p><pre class="programlisting">$config['index'] = array(
+	'title'				=&gt; '%site.title% - Strona g&#322;ówna',
+	'meta'				=&gt; array(
+				'keywords'			=&gt; 'strona, g&#322;ówna',
+				'description'		=&gt; '%site.description%'
+	),
+	'httpmeta'		=&gt; array(
+				'Content-type'		=&gt; 'text/html; charset=utf-8'
+	),
+	'attribute'		=&gt; array(
+				'advertisement'		=&gt; true
+	)
+);</pre><p>Warto&#347;ci zaczynaj&#261;ce si&#281; od znaku % oraz ko&#324;cz&#261;ce si&#281; tym znakiem, zostan&#261;
+                zast&#261;pione przed warto&#347;ci z konfiguracji projektu. Oznacza to, &#380;e w miejsce
+                    <span class="emphasis"><em>%site.title%</em></span> zostanie wstawiony tytu&#322; strony z pliku
+                    <tt class="filename">config.xml </tt>- czyli w tym przypadku - <span class="emphasis"><em>Coyote
+                Demo</em></span>. </p></div><div class="section" lang="pl"><div class="titlepage"><div><div><h4 class="title"><a name="id393959"></a>Formaty konfiguracji</h4></div></div></div><p>Jak wspomniano na pocz&#261;tku tego rozdzia&#322;u, Coyote obs&#322;uguje ró&#380;ne formaty
+                konfiguracji widków. Domy&#347;lnym formatem jest XML, lecz zalecane jest u&#380;ywanie
+                formatu PHP, ze wzgl&#281;du na wi&#281;ksze mo&#380;liwo&#347;ci oraz brak konieczno&#347;ci parsowania
+                danych. Nic nie stoi jednak na przeszkodzie, aby u&#380;y&#263; inne formatu - np.
+                INI:</p><pre class="programlisting">[all]
+
+layout = layout
+stylesheet = main
+javascript = main,foo
+
+[index]
+
+title = %site.title% - Strona g&#322;ówna
+meta.keywords = strona, g&#322;ówna
+meta.description = %site.description%
+httpmeta.Content-type = text/html; charset=utf-8
+attribute.advertisement = true</pre></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch18s07.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch18.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch19.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">&#321;adowanie klasy View przy pomocy loadera </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Rozdzia&#322; 19. Mechanizm routingu</td></tr></table></div></body></html>

@@ -1,0 +1,71 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Rozdzia&#322; 9. Modele</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="pt01.html" title="Cz&#281;&#347;&#263; I. Dokumentacja techniczna"><link rel="prev" href="ch08.html" title="Rozdzia&#322; 8. Helpery"><link rel="next" href="ch10.html" title="Rozdzia&#322; 10. Konfiguracja projektu"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Rozdzia&#322; 9. Modele</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch08.html">Poprzedni</a> </td><th width="60%" align="center">Cz&#281;&#347;&#263; I. Dokumentacja techniczna</th><td width="20%" align="right"> <a accesskey="n" href="ch10.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="chapter" lang="pl"><div class="titlepage"><div><div><h2 class="title"><a name="id478123"></a>Rozdzia&#322; 9. Modele</h2></div></div></div><div class="toc"><p><b>Spis tre&#347;ci</b></p><dl><dt><span class="section"><a href="ch09.html#id478926">Pobieranie danych z modelu, w widoku</a></span></dt></dl></div><p>
+        Modele s&#322;u&#380;&#261; do operowania na danych. W Coyote maj&#261; posta&#263; normalnych klas,
+        umieszczonych w katalogu <tt class="filename">/model</tt>. Klasy modelu musz&#261; spe&#322;nia&#263; pewne
+        wymogi:
+    </p><div class="itemizedlist"><ul type="disc"><li>Nazwa klasy musi posiada&#263; ko&#324;cówk&#281; _Model.</li><li>Plik modelu musi posiada&#263; konówk&#281; .model.php.</li><li>Model musi dziedziczy&#263; po klasie Model. </li></ul></div><p>
+        W swoim projekcie utwórz katalog <tt class="filename">/model</tt>, a w nim plik
+        <tt class="filename">foo.model.php</tt>. Niech nasza przyk&#322;adowa klasa modelu posiada tak&#261;
+        posta&#263;:
+        </p><pre class="programlisting">
+&lt;?php
+
+class Foo_Model extends Model
+{
+    const VERSION = '1.0';
+    
+    public function getVersion()
+    {
+        return self::VERSION;
+    }
+}
+
+?&gt;
+        </pre><p>
+    </p><p>
+        Model mo&#380;e zosta&#263; za&#322;adowany dzi&#281;ki metodzie <tt class="methodname">model()</tt> z klasy
+        loadera (<tt class="classname">Load</tt>). W naszym przyk&#322;adowy kontrolerze mo&#380;emy wi&#281;c utworzy&#263;
+        taki kod:
+        </p><pre class="programlisting">
+&lt;?php
+
+class Index_Controller extends Controller 
+{
+    function main()
+    {
+        $foo = &amp;$this-&gt;load-&gt;model('foo');
+        // wyswietlenei wersji (pobranie danych z modelu)
+        echo $foo-&gt;getVersion();
+    }
+}
+?&gt;
+        </pre><p>
+    </p><p>
+        Jak widzisz, w parametrze metody <tt class="methodname">model()</tt> podajemy jedynie nazw&#281;
+        modelu (bez ko&#324;cówki <span class="emphasis"><em>_Model</em></span>). Metoda <tt class="methodname">model()</tt>
+        zwraca referencj&#281; do obiektu klasy. Od tej pory mo&#380;emy wykorzysta&#263; obecne w nim metody. Oto
+        równowa&#380;ne u&#380;ycie
+        modelu:
+        </p><pre class="programlisting">
+$this-&gt;load-&gt;model('foo');
+// wyswietlenei wersji (pobranie danych z modelu)
+echo $this-&gt;model-&gt;foo-&gt;getVersion();
+        </pre><p>
+    </p><p>
+        Teraz model <tt class="classname">foo</tt> mo&#380;e by&#263; wykorzystywany w wielu miejscach w
+        projekcie. Kontrolera nie interesuje sk&#261;d pochodz&#261; dane. Model mo&#380;e je odczytywa&#263; z bazy
+        danych, pliku XML itp. Model mo&#380;e dostarcza&#263; np. informacje o u&#380;ytkowniku pobierane z bazy
+        danych. W odpowiednim miejscu (czy to strona g&#322;ówna naszej strony WWW, czy panel
+        administracyjny dost&#281;pny tylko dla administratorów) &#322;adujemy odpowiedni model, a nast&#281;pnie -
+        wywo&#322;ujemy odpowiedni&#261; metod&#281;, która dostarcza nam informacje o u&#380;ytkowniku. 
+        </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>
+            Aby wczyta&#263; model do projektu, mo&#380;na wykorzysta&#263; metod&#281; getModel(), która zadeklarowana jest w
+            klasie Controller. Jest równie&#380; dostepna w kontrolerach, ktore dziedzicz&#261; po tej klasie.
+        </div><p>
+    </p><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id478926"></a>Pobieranie danych z modelu, w widoku</h2></div></div></div><p>
+            Dane dostarczane przez model mog&#261; by&#263; wykorzystywane bezpo&#347;rednio w widoku - z
+            pomini&#281;ciem warstwy kontrolera:
+            </p><pre class="programlisting">
+&lt;!-- w widoku (kod HTML): --&gt;
+Wersja: &lt;b&gt;&lt;?= $model-&gt;foo-&gt;getVersion(); ?&gt;&lt;/b&gt;
+            </pre><p>
+        </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch08.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="pt01.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch10.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Rozdzia&#322; 8. Helpery </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Rozdzia&#322; 10. Konfiguracja projektu</td></tr></table></div></body></html>

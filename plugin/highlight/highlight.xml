@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<installation type="plugin">
+	<name>highlight</name>
+	<text>Podświetla szukane słowa jeżeli żądanie pochodzi z Google</text>
+	<version>1.0-pre1</version>
+	<system>1.0-pre1</system>
+	<author>Adam Boduch</author>
+</installation>
+

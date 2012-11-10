@@ -1,0 +1,180 @@
+.bookmark
+{
+		margin:				5px 0 20px 0;
+		overflow:			hidden;
+		clear:				both;
+}
+
+.bookmark h2
+{
+		font-size:			22px;
+		padding-bottom:		15px;
+
+}
+
+.bookmark span
+{
+		float:				left;
+		color:				#999999;
+}
+
+.bookmark .comment
+{
+		float:				right;
+		color:				#999999;
+		background:			url('../img/commentsIcon.png') no-repeat 0 50%;
+		padding-left:		20px;
+}
+
+.bookmark div
+{
+		margin-top:			25px;
+		padding-top:		10px;
+		border-top:			1px solid #ddd;
+		text-align:			justify;
+}
+
+.bookmark div div
+{
+		float:				left;
+		margin:				0 20px 0 0;
+		padding:			0;
+		border:				none;
+}
+
+.bookmark p a
+{
+		color:				#000;
+}
+
+.bookmark p a:hover
+{
+		text-decoration:	none;
+}
+
+.bookmark .digg, .bookmark .bury
+{
+		background:			url('../img/bookmarkDigg.png') no-repeat;
+		width:				25px;
+		height:				25px;
+		display:			block;
+		margin:				auto;
+		cursor:				pointer;
+}
+
+.bookmark .bury
+{
+		background:			url('../img/bookmarkBury.png') no-repeat;
+}
+
+.bookmark .digg:hover, .bookmark .bury:hover
+{
+		opacity:			0.7;
+}
+
+.bookmark div div span
+{
+		display:			block;
+		text-align:			center;
+		font-size:			25px;
+		padding:			5px 0 5px 0;
+		margin:				3px 0 3px 0;
+		float:				none;
+}
+
+.bookmark div.bottom
+{
+		display:			block;
+		width:				100%;
+		margin-top:			10px;
+		float:				none;
+		border: 1px solid red;
+		overflow:			hidden;
+}
+
+.bookmark div small
+{
+		display:			block;
+		font-size:			12px;
+		margin-top:			7px;
+		float:				left;
+}
+
+.bookmark .add
+{
+		float:				right;
+		font-size:			12px;
+		background:			url('../img/bulletAddIcon.png') no-repeat;
+		padding-left:		15px;
+		margin-top:			7px;
+}
+
+#page-sort
+{
+		float:				left;
+}
+
+#page-sort ul
+{
+		list-style:			none;
+		margin-left:		0;
+}
+
+#page-sort li
+{
+		float:				left;
+		margin-right:		10px;
+		background:			none !important;
+		padding:			0 !important;
+}
+
+#page-sort li a
+{
+		display:			block;
+		padding:			4px 5px 2px 5px;
+		text-align:			center;
+}
+
+#page-sort li.active a
+{
+		background-color:	#f6f3f0;
+		border:				2px solid #e5e2de;
+		padding:			2px 5px 2px 5px;		
+}
+
+.box .bookmark
+{
+		border-bottom:		1px solid #ddd;
+}
+
+.box .bookmark div
+{
+		border-top:			none;
+}
+
+.box .bookmark h2
+{
+		font-size:			14px;
+		padding-bottom:		0;
+}
+
+.box .bookmark div
+{
+		margin-top:			0;
+		padding-top:		5px;
+		padding-bottom:		10px;
+}
+
+.box .bookmark h2
+{
+		float:				left;
+}
+
+.box a.delete
+{
+		background:			url('../img/deleteIcon.png') no-repeat;
+		display:			block;
+		width:				16px;
+		height:				16px;
+		float:				right;
+}

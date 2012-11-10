@@ -1,0 +1,1021 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter>
+	<title>Obsługa baz danych</title>
+
+	<para>
+		W każdym większym projekcie zachodzi potrzeba wykorzystania baz
+		danych. Możemy oczywiście korzystać ze świetnego formatu jakim jest XML, lecz nie odda nam on możliwości
+		jakie oferują mechanizmy relacyjnych baz danych.
+	</para>
+	
+	<para>
+		Obecnie Coyote obsługuje dostęp do baz danych MySQL oraz PostgreSQL (dostępne rozszerzenia:
+		mysql, mysqli, pgsql). Obsluga kolejnego
+		systemu bazodanowego wiąze się z napisaniem odpowiedniego adaptera (szczegóły
+		w dalszej części).
+	</para>
+	
+	<para>
+		Generalnie, Coyote zapewnia abstrakcyjny dostęp do baz danych.
+		Oznacza to, że niezależnie, czy korzystamy z MySQL, czy PostgreSQL - do obsługi wykorzystujemy te
+		same metody. 
+	</para>
+	
+	<section>
+		<title>Łączenie z bazą danych</title>
+		
+		<para>
+			W Coyote, do obslugi baz danych, wykorzystujemy klasę <classname>Db</classname>. 
+			Ta więc przed połączeniem należy ów klasę załadować oraz określić adapter. W
+			naszym przykładzie posłużymy się bazą MySQL. Za połączenie do bazy odpowiada poniższy
+			kod:
+			
+			<programlisting>
+// zaladowanie biblioteki db
+$this->load->library('db', 'mysql');
+// laczenie...
+$this->db->connect('localhost', 'root', 'root', 'coyote_dev');
+			</programlisting>
+		</para>
+		
+		<para>
+			W drugim parametrze metody <methodname>library()</methodname>
+			możemy przekazać wartości, które zostaną przekazane do konstruktora klasy - w tym wypadku - adaptera
+			mysql. Gdy biblioteka została załadowana, przy pomocy metody <methodname>connect() </methodname>
+			- realizujemy połączenie z bazą. Metoda posiada kilka parametrów, w kolejności:
+			host bazy, login, hasło, nazwa bazy, port (opcjonalnie).
+		</para>
+		
+		<para>
+			Alternatywnym sposobem jest zwykłe utworzenie instancji:
+			<programlisting>
+$db = new db('mysql');
+$db->connect('localhost', 'root', 'root', 'coyote_dev');
+			</programlisting>
+		</para>
+		
+		<para>
+			Jeszcze innym sposobem jest użycie metody database() z klasy Load.
+			Metoda zainicjalizuje klasę DB oraz połączy się z bazą danych:
+			
+			<programlisting>
+$this->load->database('mysql', 'localhost', 'root', ;root', 'coyote_dev');
+			</programlisting>
+		</para>
+		
+		<section>
+			<title>Automatyczne łączenie z bazą danych</title>
+			
+			<para>
+				Wygodnym rozwiązaniem jest, aby framework inicjował połączenie z
+				bazą danych za nas, abyśmy nie musieli tego robić w każdym kontrolerze, co jest raczej
+				niewygodne. Dlatego loader wykrywa, czy w pliku konfiguracyjnym określiliśmy ustawień bazy
+				danych. Jeżeli tak - postara się on zainicjować połączenie. Przede wszystkim - ustalmy
+				konfiguracje bazy danych w pliku konfiguracyjnym:
+				
+				<programlisting>
+&lt;databases>
+
+	&lt;default>
+		&lt;adapter>mysql&lt;/adapter>
+		&lt;host>localhost&lt;/host>
+		&lt;user>root&lt;/user>
+		&lt;password>root&lt;/password>
+		&lt;dbname>coyote_dev&lt;/dbname>
+	&lt;/default>
+
+&lt;/databases>
+				</programlisting>
+			</para>
+			
+			<para>
+				Ustawiliśmy podstawowe wartości konfiguracyjne dla bazy danych. Ale
+				to nie wszystko, gdyż w konfiguracji możemy mieć kilka ustawień baz danych. System musi
+				wiedzieć, z którą łączyć się automatycznie. Ustaw argument <emphasis>autoload</emphasis> dla znacznika default w
+				ten sposób:
+				
+				<programlisting>
+&lt;databases autoload="default">
+
+	&lt;default>
+		&lt;adapter>mysql&lt;/adapter>
+		&lt;host>localhost&lt;/host>
+		&lt;user>root&lt;/user>
+		&lt;password>root&lt;/password>
+		&lt;dbname>coyote_dev&lt;/dbname>
+	&lt;/default>
+
+&lt;/databases>
+				</programlisting>
+			</para>
+			<para>
+				Od tego momentu system będzie automatycznie związywał
+				połączenie z bazą danych określoną jako default w konfiguracji aplikacji. 
+			</para>
+		</section>
+		
+	</section>
+	
+	<section>
+		<title>Zamykanie połączenia z bazą</title>
+		
+		<para>
+			Zamknięcie połączenia z bazą realizuje metoda <methodname>close()</methodname>. 
+			Nie ma jednak konieczności, jawnego jej użycia, gdyż jest wywoływana z poziomu destruktora klasy
+			<classname>Db</classname>.
+		</para>
+	</section>
+	
+	<section>
+		<title>Wysyłanie zapytań SQL</title>
+		
+		<para>
+			Na potrzeby tego rozdziału utworzyłem, prostą, przykładową tabelę w
+			mojej bazie danych:
+			
+			<programlisting>
+CREATE TABLE `coyote_dev`.`coyote_dev` (
+	`id` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+	`value` VARCHAR( 100 ) NOT NULL
+	) ENGINE = MYISAM
+			</programlisting>
+		</para>
+		
+		<para>
+			W Coyote, a dokładnie w bibliotece <classname>Db</classname>, za wysyłanie zapytań SQL do
+			systemu bazodanowego, odpowiada metoda <methodname>query()</methodname>. Wysłanie prostego
+			zapytania <command>INSERT</command>, może wyglądać 	następująco:
+			
+			<programlisting>
+// zaladowanie biblioteki db
+$this->load->library('db', 'mysql');
+// laczenie...
+$this->db->connect('localhost', 'root', 'root', 'coyote_dev');
+
+$sql = 'INSERT INTO `coyote_dev` (value) VALUES("adam");';
+$this->db->query($sql);
+			</programlisting>
+		</para>
+		
+		<para>
+			Taki kod wstawi nowy rekord do naszej przykładowej tabeli <emphasis>coyote_dev</emphasis>.
+		</para>
+		
+	</section>
+	
+	<section>
+		<title>Dodawanie rekordów w tabeli</title>
+		
+		<para>
+			System Coyote upraszcza realizowanie prostych operacji na bazie
+			danych. Do nich należy również wstawianie rekordów w tabeli (innymi słowy realizowanie zapytania
+			INSERT). W tym celu możemy użyć metody <methodname>insert()</methodname>  klasy
+			<classname>Db</classname>:
+			
+			<programlisting>$this->db->insert('coyote_dev', array('value' => 'adam'));</programlisting>
+		</para>
+		
+		<para>
+			Pierwszym parametrem metody musi być nazwa tabeli do której wstawiamy
+			dane. Kolejny parametr to tabela określająca nazwy kolumn oraz ich wartości w nowym
+			rekordzie. Innymi słowy, użycie metody <methodname>insert()</methodname>
+			jest równoważne z kodem prezentowanym wcześniej:
+			
+			<programlisting>
+$sql = 'INSERT INTO `coyote_dev` (value) VALUES("adam");';
+$this->db->query($sql);
+			</programlisting>
+		</para>
+		
+		<para>
+			Zaletą takiego rozwiązania jest to, iż nie musimy martwić się o
+			pisanie dokładnej składni SQL. Wstawianie rekordów realizowane jest szybciej. 
+		</para>
+		
+		<section>
+			<title>Metoda multiInsert()</title>
+			
+			<para>
+				MySQL umożliwia wstawienie wielu rekordów do tabeli, przy pomocy
+				jednego zapytania SQL. Umożliwia to metoda <methodname>multiInsert()</methodname>. 
+				Parametrem tej metody jest tablica zawierająca wartości rekordów do wstawienia. Oto przykład
+				wykorzystania tej metody:
+				
+				<programlisting>
+$arr = array('adam', 'marta', 'ewelina');
+foreach ($arr as $value)
+{
+	$sql_arr[] = array(
+		'value' => $value
+	);
+}
+$this->db->multiInsert('coyote_dev', $sql_arr);
+				</programlisting>
+			</para>
+			
+		</section>		
+	</section>
+	
+	<section>
+		<title>Uaktualnianie rekordów</title>
+		
+		<para>
+			Uaktualnienie rekordu jest równie proste, jak jego wstawienie.
+			Odpowiada za to metoda <methodname>update()</methodname>.
+			Pierwszy parametr metody musi oznaczać nazwę tabeli, a
+			drugi - dane, które zostaną uaktualnione:
+			
+			<programlisting>
+$this->db->update('coyote_dev', array('value' => 'adam'));
+			</programlisting>
+		</para>
+		
+		<para>
+			W takim wypadku uaktualnione zostaną wszystkie rekordy, ponieważ nie
+			dodaliśmy opcjonalnego, trzeciego warunku <emphasis>where</emphasis>:
+			
+			<programlisting>
+$this->db->update('coyote_dev', array('value' => 'boduch'), 'id = 1');
+			</programlisting>
+		</para>
+		
+		<para>
+			Uaktualnione zostaną wszystkie rekordy, których kolumna id równa się
+			1. Można oczywiście łączyć warunki ze sobą:
+			
+			<programlisting>
+$this->db->update('coyote_dev', array('value' => 'boduch'), 'id = 1 AND value = "adam"');
+			</programlisting>
+		</para>
+	</section>
+	
+	<section>
+		<title>Usuwanie rekordów</title>
+		
+		<para>
+			Jak łatwo się domyślić, za usuwanie rekordów odpowiada metoda
+			<methodname>delete()</methodname>. Pierwszym jej parametrem jest oczywiście nazwa tabeli, a
+			drugim - warunek <emphasis>where</emphasis> (opcjonalnie):
+			
+			<programlisting>
+$this->db->delete('coyote_dev', 'id = 1 AND value = "adam"');
+			</programlisting>
+		</para>
+		
+		<para>
+			Usunięte zostana rekordy, których kolumna <emphasis>id</emphasis>
+			ma wartość 1, a <emphasis>value</emphasis> - adam.
+			
+			<warning>
+				Drugi parametr where jest parametrem opcjonalnym.
+				Pominięcie go grozi usunięciem wszystkich rekordów w tabeli. 
+			</warning>
+		</para>
+	</section>
+	
+	<section>
+		<title>Pobieranie danych</title>
+		
+		<para>
+			Jakkolwiek możliwe jest pisanie zapytań SQL i wysyłanie ich do
+			serwera przy pomocy metody <methodname>query()</methodname>, 
+			tak w przypadku prostych zapytań może to być zbyteczne.
+			
+			Klasa <classname>Db</classname> wykona to za nas. Oto prosty przykład pobrania wszystkich
+			rekordów w bazie, a następnie wyświetlenie ich:
+			
+			<programlisting>
+$db = &amp;$this->db;
+
+// SELECT * FROM coyote_dev
+$q = $db->select()->from('coyote_dev')->get();
+
+Core::debug($q->fetchAll());
+			</programlisting>
+			
+			<note>
+				Metoda debug() z klasy Core, umożliwia przyjazne wyświetlenie zawartości tablic,
+				czy obiektów.
+      		</note>
+		</para>
+		
+		<para>
+			Metoda <methodname>select()</methodname> pobiera wszystkie kolumny z danej tabeli,
+			określanej w parametrze metody <methodname>from()</methodname>. Obydwie metody zwracają
+			instancję klasy <classname>Db</classname>.
+		</para>
+		
+		<para>
+			Metoda <methodname>get()</methodname> generuje zapytanie i wysyła je do serwera
+			bazodanowego. Zwraca obiekt klasy <classname>Db_Result</classname>. 
+			Wyświetlenie zawartości pobranych rekordów, w formie tablicy, realizuje metoda
+			<methodname>fetchAll()</methodname> (o tym będzie mowa w kolejnym podpunkcie).
+		</para>
+		
+		<para>
+			Istnieje możliwość wykonania krótszego zapisu, z pominięciem metody <methodname>get()</methodname>:
+			
+			<programlisting>
+// SELECT * FROM coyote_dev
+$result = $db->select()->from('coyote_dev')->fetchAll();
+
+Core::debug($result)			
+			</programlisting>
+			
+			<note>
+				W powyższym kodzie, metoda <methodname>fetchAll()</methodname>
+				spowoduje wykonanie metody <methodname>get()</methodname>, która de facto
+				wyśle dane zapytanie SQL do serwera bazodanowego. 
+			</note>
+		</para>
+		
+		<section>
+			<title>Metoda select()</title>
+			
+			<para>
+				Metoda <methodname>select()</methodname>
+				służy do określenia jakie kolumny danych tabel zostaną pobrane. 
+				Domyślnie są to wszystkie kolumny. Można sprecyzować jakie
+				kolumny mają zostać pobrane, oddzielając je przecinkami:
+				
+				<programlisting>
+$q = $db->select('id, value')->from('coyote_dev')->get();
+				</programlisting>
+			</para>
+			
+			<para>
+				Metoda <methodname>select()</methodname> przyjmuje również parametry w formie
+				tablicowej: <programlisting>
+$db = &amp;$this->db;
+
+$col = array('id', 'value');
+$q = $db->select($col)->from('coyote_dev')->get();
+				</programlisting>
+			</para>
+	
+			<para>
+				Inny przykład:
+				
+				<programlisting>
+$db = &amp;$this->db;
+
+$query = $db->select('foo')->from('coyote_dev');
+// jakies operacje...
+
+$query->select('bar');
+Core::debug($query->fetchAll()); // SELECT foo, bar FROM coyote_dev		
+				</programlisting>
+			</para>
+		</section>
+		
+		<section>
+			<title>Metoda from()</title>
+			
+			<para>
+				W zapytaniu SELECT możemy łączyć wiele tabel. Parametrem metody
+				<methodname>from()</methodname> może być albo łańcuch albo tablica.
+				
+				<programlisting>
+$col = array('id', 'value');
+$q = $db->select($col)->from('coyote_dev, coyote_user')->get();
+				</programlisting>
+			</para>
+			
+			<para>
+				Pomineliśmy w tym zapytaniu warunek WHERE, co spowoduje wykonanie
+				zapytania z iloczynem kartezjańskim. Jednak nie to jest w tym momencie najważniejsze. W parametrze
+				metody możemy określać również aliasy tabel:
+				
+				<programlisting>
+$col = array('id', 'value');
+// SELECT id, value FROM coyote_dev d, coyote_user u
+$q = $db->select($col)->from(array('d' => 'coyote_dev', 'u' =>
+'coyote_user'))->get();
+				</programlisting>
+			</para>
+		</section>
+		
+		<section>
+			<title>Metoda where()</title>
+			
+			<para>
+				W zapytaniach SQL często musimy określać dodatkowe warunki. W tym
+				celu musimy skorzystać z metody	<methodname>where()</methodname>, 
+				która podobnie jak metody przedstawione wcześniej - również zwraca instancję klasy
+				<classname>Db</classname>. Poniższe zapytanie pobierze
+				wszystkich użytkowników z tabeli, pod warunkiem, że ID będzie mniejsze od 100:
+				
+				<programlisting>
+$db = &amp;$this->db;
+$q = $db->select('user_id, user_name')->from('coyote_user')->where('user_id &lt; 100')->get();
+				</programlisting>
+			</para>
+			
+			<para>
+				Warunki WHERE mogą być łączone (domyślnie operatorem AND):
+				
+				<programlisting>
+$db = &amp;$this->db;
+
+$q = $db->select('user_id, user_name')->from('coyote_user')->
+										where('user_id &lt; 100')->
+										where('LENGTH(user_name) &lt; 5')->get();
+				</programlisting>
+			</para>
+			
+			<para>
+				Powyższe instrukcje są adekwatne do wykonania zapytania:
+				
+				<command>SELECT user_id, user_name FROM coyote_user WHERE user_id &lt; 100 AND LENGTH(user_name) &lt; 5</command>.
+			</para>
+			
+			<para>
+				Jeżeli chcemy połączyć obydwa warunki operatorem OR, możemy zawrzeć
+				warunek w parametrze metody <methodname>where()</methodname>:				
+				
+				<programlisting>
+$db = &amp;$this->db;
+$q = $db->select('user_id, user_name')->from('coyote_user')->
+										where('user_id &lt; 100 OR LENGTH(user_name) &lt; 5')->
+										get();
+				</programlisting>
+			</para>
+		</section>
+		
+		<section>
+			<title>Metody order() oraz limit()</title>
+			
+			<para>
+				Metody <methodname>order()</methodname> oraz <methodname>limit()</methodname>
+				odpowiadają instrukcją SQL - ORDER BY oraz 	LIMIT:
+				
+				<programlisting>
+$db = &amp;$this->db;
+$q = $db->select('user_id, user_name')->
+			from('coyote_user')->
+			where('user_id &lt; 100 OR LENGTH(user_name) &lt; 5')->
+			order('user_id DESC')->
+			limit(0, 10)->
+			get();
+				</programlisting>
+			</para>
+						
+			<para>
+				Metoda <methodname>limit()</methodname> może przyjmować jeden lub dwa parametry:
+				
+				<programlisting>
+limit(19); // LIMIT 0, 19
+limit(20, 40); // LIMIT 20, 40				
+				</programlisting>
+			</para>
+		</section>
+		
+		<section>
+			<title>Instrukcje JOIN</title>
+			
+			<para>
+				W klasie Db znajdują się trzy metody odpowiadające za zapytanie
+				JOIN: 
+				
+				<methodname>leftJoin()</methodname>,
+				<methodname>rightJoin()</methodname>
+				oraz
+				<methodname>innerJoin()</methodname>
+				
+				odpowiadające kolejno za zapytania LEFT JOIN, RIGHT
+				JOIN oraz INNER JOIN.
+				
+				Przykład:
+				
+				<programlisting>
+$q = $this->db->select()->where('user_id &lt; 10')
+						->leftJoin('coyote_template', 'template_id = user_template')
+						->get('coyote_user');
+debug($q->fetch());
+				</programlisting>
+			</para>
+			
+			<para>
+				Pierwszym parametrem metody musi być nazwa łączonej tabeli - a
+				drugim - warunek łączenia.
+				
+				<note>
+					Opcjonalnym parametrem metody get() jest nazwa tabeli bazy
+					danych. Dzięki temu możemy skrócić kod, pomijając wywołanie metody
+					<methodname>from()</methodname>, pisząc po prostu
+					<command>$query->select()->get('coyote_dev');</command>
+				</note>
+			</para>
+		</section>
+		
+		<section>
+			<title>Instrukcja GROUP BY</title>
+			
+			<para>
+				Do wstawienia instrukcji GROUP BY, w ciało zapytania, służy metoda
+				<methodname>group()</methodname>:
+				
+				<programlisting>
+$this->db->select()->from('coyote_user')->group('user_id');
+// SELECT * FROM coyote_user GROUP BY user_id
+				</programlisting>
+			</para>
+		</section>
+		
+		<section>
+			<title>Instrukcja HAVING</title>
+			
+			<para>
+				Aby użyć instrukcji HAVING, możesz użyć metody <methodname>having()</methodname>:
+				
+				<programlisting>
+$this->db->select('AVG(foo) AS foo')->having('foo > 10')->get('coyote_dev');				
+				</programlisting>
+			</para>
+		</section>
+		
+		<section>
+			<title>Instrukcja IN</title>
+			
+			<para>
+				Metoda <methodname>in()</methodname>
+				umożliwia wstawienie w zapytaniu instrukcji SQL - IN. 
+				Użycie metody jest proste. Pierwszym jej parametrm musi być nazwa
+				pola, a drugim - tablica wartości:
+				
+				<programlisting>
+$this->db->select()->from('coyote_user')->in('user_id', array(1,2,3))->get();
+// rownoznaczne z :
+$this->db->select()->from('coyote_user')->where('user_id IN(' . implode(',', array(1,2,3)) . ')')->get();
+				</programlisting>
+			</para>
+			
+			<para>
+				Jak więc widzisz, metoda <methodname>in()</methodname> potrafi skrócić czas pisania
+				instrukcji.
+			</para>
+		</section>
+		
+		<section>
+			<title>Metoda like()</title>
+			
+			<para>
+				Metoda <methodname>like()</methodname> dodaje do zapytania warunek LIKE:
+				
+				<programlisting>
+$this->db->select()->like('user_name', '%adam%')->get('coyote_user');
+// SELECT * FROM coyote_user WHERE user_name LIKE "%adam%"
+				</programlisting>
+			</para>
+		</section>
+		
+	</section>
+	
+	<section>
+		<title>Klasa Db_Result</title>
+		
+		<para>
+			Rezultat wykonania zapytania zwracany jest w postaci instancji klasy
+			dziedziczonej po klasie Db_Result. Przykładowo: adapter mysql posiada klasę
+			<classname>Mysql_Result</classname>, która dziedziczy po abstrakcyjnej klasie
+			<classname>Db_Result</classname>. Abstrakcyjna kalsa <classname>Db_Result</classname>
+			implementuje interfejsy:
+			
+			<interfacename>ArrayAccess</interfacename>, <interfacename>Iterator</interfacename>,
+			<interfacename>Countable</interfacename>.
+		</para>
+		
+		<para>
+			Wysłanie zapytania SELECT oraz odczytanie zwróconych rekordów jest
+			bardzo proste:
+			
+			<programlisting>
+&lt;?php
+
+class Db_Controller extends Controller
+{
+	function main()
+	{
+		$this->load->database('mysql', 'localhost', 'root', 'root', 'coyote_dev');
+		
+		// SELECT * FROM coyote_dev
+		$q = $this->db->select()->from('coyote_user')->get();
+
+		foreach ($q as $row)
+		{
+			echo $row['user_name'] . '&lt;br />';
+		}
+	}
+}
+?>
+			</programlisting>
+		</para>
+		
+		<para>
+			Klasa implementuje interfejs <interfacename>Iterator</interfacename>
+			stąd możliwe jest swobodne manewrowanie po wynikach zapytania.
+		</para>
+		
+		<para>
+			Alternatywnym rozwiązaniem będzie użycie metody <methodname>fetchAll()</methodname>, która
+			pobiera wszystkie rekordy uzyskane w wyniku zapytania oraz zwraca tablicę
+			wyników:
+			
+			<programlisting>
+$q = $this->db->select()->from('coyote_user')->get();
+
+foreach ($q->fetchAll() as $row)
+{
+	echo $row['user_name'] . '&lt;br />';
+}		
+			</programlisting>
+		</para>
+		
+		<section>
+			<title>Pobieranie danych</title>
+			
+			<para>
+				Metoda 	<methodname>fetchAll()</methodname> posiada jeden, opcjonalny parametr, który
+				określa w jakiej formie mają być zwrócone dane. Domyślnie jest to tablica
+				asocjacyjna, lecz w prosty sposób możemy zwrócić tablicę obiektów:
+				
+				<programlisting>
+foreach ($q->fetchAll(Db::FETCH_OBJ) as $row)
+{
+	echo $row->user_name . '&lt;br />';
+}
+				</programlisting>
+			</para>
+			
+			<para>
+				Parametrem metody mogą być następujące wartości:
+				
+				<itemizedlist>
+					<listitem>Db::FETCH_ASSOC - tablica asocjacyjna</listitem>
+					<listitem>Db::FETCH_ARRAY - tablica asocjacyjna oraz tablica numerowana</listitem>
+					<listitem>Db::FETCH_ROW - tablica numerowana</listitem>
+					<listitem>Db::FETCH_OBJ - obiekty</listitem>
+				</itemizedlist>
+				
+			</para>
+			
+			<para>
+				Metoda <methodname>fetch()</methodname> pobiera w pętli wszystkie rekordy, zapisuje do
+				tablicy i dopiero zwraca. Jeżeli więc wyświetlamy rekordy w pętli (tak jak
+				w poprzednim przykładzie), dokonujemy dwóch iteracji. Możemy wykorzystać również metody
+				<methodname>fetchAssoc()</methodname>, <methodname>fetchArray()</methodname>,
+				<methodname>fetchObject()</methodname>, <methodname>fetchRow()</methodname>:
+				
+				<programlisting> 
+while ($row = $query->fetchObject())
+{
+	echo $row->user_name . '&lt;br />';
+}
+				</programlisting>
+			</para>
+			
+			<section>
+				<title>Interfejs Iterator</title>
+				
+				<para>
+					Klasa <classname>Db_Result</classname> implementuje interfejs
+					<interfacename>Iterator</interfacename>, co wymusza, aby klasa posiadała istotne metody
+					umożliwiające iterację danych.
+				</para>
+				
+				<para>
+					Zanim przejdziemy do tego, warto wspomnieć o metodzie
+					<methodname>setFetchMethod()</methodname> oraz <methodname>getFetchMethod()</methodname>.
+					
+					Ta pierwsze umożliwia ustawienie domyślnego typu zwracanych danych.
+					Domyślni jest to tablica asocjacyjna, lecz łatwo można to zmienić, dzięki czemu zwracane
+					dane będą - np. w formie obiektów:
+					
+					<programlisting>
+// SELECT * FROM coyote_dev
+$q = $this->db->select()->from('coyote_user')->get();
+$q->setFetchMethod(Db::FETCH_OBJ);
+
+foreach ($q as $row)
+{
+	echo $row->user_name . '&lt;br />';
+}		
+					</programlisting>
+				</para>
+				
+				<para>
+					Jak powiedzieliśmy, klasa implementuje interfejs
+					<interfacename>Iterator</interfacename>, więc posiada takie metody jak:
+					<methodname>current()</methodname>, <methodname>next()</methodname>,
+					<methodname>prev()</methodname>, <methodname>key()</methodname>,
+					<methodname>valid()</methodname>, <methodname>rewind()</methodname>.
+				</para>
+				
+				<para>
+					Pobranie aktualnego elementu w tablicy wyników zapewnia metoda
+					<methodname>current()</methodname>. Oto przykład pobrania informacji o pierwszym zwróconym
+					rekodzie:
+					
+					<programlisting>
+// SELECT * FROM coyote_dev
+$q = $this->db->select()->from('coyote_user')->get();
+$q->setFetchMethod(Db::FETCH_OBJ);
+
+$current = $q->current();
+echo $current->user_name;
+					</programlisting>
+				</para>
+				
+				<para>
+					Taki kod spowoduje pobranie pierwszego rekordu. Możemy pobrać
+					kolejny używając metody <methodname>next()</methodname>:
+					
+					<programlisting> 
+$current = $q->current();
+echo $current->user_name;
+
+$q->next();
+$current = $q->current();
+echo $current->user_name;
+					</programlisting>
+				</para>
+				
+				<para>
+					Należy wiedzieć, że metody <methodname>next()</methodname>,
+					<methodname>rewind()</methodname> oraz <methodname>prev()</methodname>
+					zwracają instancję obiektu <classname>Db_Result</classname>
+					więc możliwy jest skrócony zapis powyższego kodu:
+					
+					<programlisting>
+echo $q->current()->user_name;
+echo $q->next()->current()->user_name;
+					</programlisting>
+				</para>
+				
+				<para>
+					Jak łatwo się domyśleć, metoda <methodname>prev()</methodname>
+					służy do cofania kursora w tablicy wyników, a <methodname>rewind() </methodname>
+					ustawia kursor na 0. Jest jeszcze metoda <methodname>key()</methodname>
+					która zwraca aktualną pozycję kursora w	tablicy wyników.
+				</para>
+				
+			</section>
+			
+			<section>			
+				<title>Interfejs ArrayAccess</title>
+				
+				<para>
+					Ponieważ klasa <classname>Db_Result</classname>
+					implementuje również interfejs <interfacename>ArrayAccess</interfacename>
+					, możliwy jest dostęp do wyników tabeli tak, jakby była to zwykła tablica. 
+					Jeżeli chcemy więc odczytać zawartość drugiego rekordu, możemy zastosować taki
+					kod:
+					
+					<programlisting>
+echo $q[1]->user_name;
+// lub odczyt w pętli:
+
+// SELECT * FROM coyote_dev
+$q = $this->db->select()->from('coyote_user')->get();
+$q->setFetchMethod(Db::FETCH_OBJ);
+
+for ($i = 0, $limit = count($q); $i &lt; $limit; $i++)
+{
+	echo $q[$i]->user_name . '&lt;br />';
+}
+					</programlisting>
+				</para>
+				
+				<para>
+					<note>
+						Klasa Db_Result implementuje również interfejs Countable, tak
+						więc metoda count()
+						wywołana na obiekcie, zwraca ilość rekordów zwróconych przez zapytanie.
+					</note>
+				</para>
+			</section>
+			
+		</section>
+		<section>
+			<title>Pobieranie pola z tablicy wyników</title>
+			
+			<para>
+				Klasa <classname>Mysql_Result</classname> posiada metodę <methodname>fetchField()</methodname>, 
+				dzięki której możemy pobrać pojedyńcz pole z rekordu:
+				
+				<programlisting>
+$sql = 'SELECT COUNT(*) AS total_page
+FROM coyote_user';
+echo $this->db->query($sql)->fetchField('total_page');
+				</programlisting>
+				
+				<note>
+					Identyczny rezultat da użycie metody <methodname>count()</methodname>
+					z klasy Db: <command>echo $this->db->count('coyote_user');</command>
+				</note>
+				
+				<warning>
+					Metoda fetchField() zadeklarowana jest w klasie Mysql_Result - nie jest zadeklarowana w klasie
+					bazowej Db_Result. 
+				</warning>
+			</para>
+			
+			<para>
+				Inny sposób na pobranie wartości pola w pętli:
+				
+				<programlisting>
+$q = $this->db->select()->from('coyote_user')->get();
+$q->setFetchMethod(Db::FETCH_ASSOC);
+
+for ($i = 0, $limit = count($q); $i &lt; $limit; $i++)
+{
+	$q->next();
+	
+	echo $q->fetchField('user_name') . '&lt;br />';
+}
+				</programlisting>
+			</para>
+		</section>
+		
+		<section>
+			<title>Informacja o ilości zwróconych rekordów i pól</title>
+			
+			<para>
+				Jeżeli chcemy pobrać ilość rekordów zwróconych w wyniku ostatniej
+				operacji SELECT, możemy wykorzystać metodę <methodname>getTotalRows()</methodname>:
+				
+				<programlisting>
+$sql = 'SELECT * FROM coyote_user LIMIT 100';
+$q = $this->db->query($sql);
+
+echo $q->getTotalRows();
+				</programlisting>
+			</para>
+			
+			<para>
+				Natomiast jeżeil chcemy pobrać ilość uaktualnionych (dodanych)
+				rekordów, musimy wykorzystać metodę <methodname>getAffected()</methodname>.
+			</para>
+			
+			<para>
+				Prostszym rozwiązaniem będzie użycie funkcji <function>count()</function>, która zwróci
+				liczba zwróconych rekordów (w przypadku zapytania SELECT) albo ilości
+				uaktualnionych, usuniętych rekordów:
+				
+				<programlisting>
+$q = $this->db->select()->from('coyote_user')->get();
+echo count($q);
+				</programlisting>
+			</para>
+		</section>
+	</section>
+	
+	<section>
+		<title>Bezpieczeństwo</title>
+		
+		<para>
+			W procesie wysyłania zapytań SQL, szczególną uwagę należy przywiązać
+			do bezpieczeństwan	wysyłanych danych. Przykładowo, spójrz na poniższy kod:
+			
+			<programlisting>
+$username = $_GET['username'];
+
+$query = "SELECT * FROM coyote_user WHERE user_name = '$username'";
+debug($this->db->query($query)->fetch());
+			</programlisting>
+		</para>
+		
+		<para>
+			Pobieramy tutaj parametr bezpośrednio z tablicy $_GET, bez żadnego
+			filtrowania danych. Po podstawieniu w miejsce parametru username wartości x' OR 1='1 otrzymujemy
+			zapytanie SQL:
+			
+			<programlisting>
+SELECT * FROM coyote_user WHERE user_name = 'x' OR 1='1'
+			</programlisting>
+		</para>
+		
+		<para>
+			które pobiera wszystkie rekordy z tabeli. Możesz się przed tym
+			zabezpieczyć używając metody <methodname>quote()</methodname>
+			z klasy <classname>Db</classname>:
+			
+			<programlisting>$username = $this->db->quote($_GET['username']);</programlisting>
+		</para>
+		
+		<para>
+			Jej zadaniem jest rzutowanie na określony typ danych. Tzn. jeżeli
+			parametr metody <methodname>quote()</methodname>
+			okaże się łańcuchem, przed znakami specjalnymi dodany
+			zostanie znak \.
+		</para>
+		
+		<para>
+			Innym rozwiązaniem będzie zastosowanie tzw. mechanizmu zaślepek.
+			Klasa <classname>Db</classname> zadba wówczas o prawidłowy format
+			danych:
+			
+			<programlisting>
+$sql = "SELECT * FROM coyote_user WHERE user_name = '?'";
+$q = $this->db->query($sql, $_GET['username']);
+
+debug($q->fetch());
+			</programlisting>
+		</para>
+		
+		<para>
+			W zapytaniu znaki ? zostaną zastąpione wartością przekazaną w
+			parametrze metody <methodname>query()</methodname>. 
+			Dodatkowo dane te zostaną zwalidowane przez klasę <classname>Db</classname>.
+			
+			<note>
+				Więcej informacji o mechaniźmie SQL Injection można znaleźć
+				w internecie - tutaj nie będziemy dokładnie omawiać techniki
+				działania tego mechanizmu.
+      		</note>
+		</para>
+		
+		<para>
+			Tak więc podsumowując: jeżeli chcesz pobierać dane wprost z tablicy
+			$_GET/$_POST, najlepiej przepuść je wcześniej przez metodę
+			<methodname>quote()</methodname> lub użyj mechanizmu zaślepek. Najlepszym jednak sposobem na 
+			zabezpieczenie się przed atakami XSS oraz SQL Injection, jest niepbieranie danych z tablicy $_POST/$_GET a
+			wykorzystując wewnętrzny mechanizm frameworka, który zajmuje się filtrowaniem zewnętrznych
+			danych:
+			
+			<programlisting>
+$username = $this->get->username;
+
+$query = "SELECT * FROM coyote_user WHERE user_name = '$username'";
+debug($this->db->query($query)->fetch());
+			</programlisting>
+		</para>
+	</section>
+	
+	<section>
+		<title>Mechanizm transakcji</title>
+		
+		<para>
+			W nowoczesnych systemach bazodanych obsługiwane są mechanizmy
+			transakcji. Tym powinny zając się adaptery baz danych. Klasa
+			<classname>Db</classname> posiada trzy metody odpowiadające za obsługę transakcji:
+			<methodname>begin()</methodname>, <methodname>commit()</methodname>
+			oraz <methodname>rollback()</methodname>:
+			
+			<programlisting>
+try
+{
+	$this->db->begin();
+	$this->db->query('...');
+	$this->db->commit();
+}
+catch (Exception $e)
+{
+	$this->db->rollback();
+	echo $e->getMessage();
+}        
+			</programlisting>
+		</para>
+	</section>
+	
+	<section>
+		<title>Blokowanie tabel</title>
+		
+		<para>
+			Czasem może zaistnieć konieczność zablokowania tabeli lub tabel na
+			czas wykonywania operacji. Służą do tego metody	<methodname>lock()</methodname>
+			oraz <methodname>unlock()</methodname>. W parametrze pierwszej metody należy określić nazwy tabel
+			oraz tryb blokady:
+			
+			<programlisting>
+$this->db->lock('coyote_user WRITE', 'coyote_log READ');
+$this->db->unlock();
+			</programlisting>
+		</para>
+	</section>
+	
+	<section>
+		<title>Metoda nextId()</title>
+		
+		<para>
+			Metoda zwraca ostatnie ID jakie zostało utworzone w wyniku
+			zapytania INSERT.
+		</para>
+	</section>
+	
+	<section>
+		<title>Pobranie wersji systemu bazodanowego</title>
+		
+		<para>
+			Każdy adapter powinien posiadać metodę <methodname>version()</methodname>
+			która zwraca wersję systemu bazodanowego:
+			
+			<programlisting>
+echo $this->db->version();      
+   			 </programlisting>
+		</para>
+		
+		<title>Tworzenie adaptera</title>
+		<para>(PUSTO)</para>
+	</section>
+</chapter>

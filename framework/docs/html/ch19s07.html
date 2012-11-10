@@ -1,0 +1,22 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Grupowanie kontrolerów w podkatalogach</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote"><link rel="up" href="ch19.html" title="Rozdzia&#322; 19. Mechanizm routingu"><link rel="prev" href="ch19s06.html" title="Sortowanie regu&#322;"><link rel="next" href="ch20.html" title="Rozdzia&#322; 20. Klasa Input"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Grupowanie kontrolerów w podkatalogach</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch19s06.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 19. Mechanizm routingu</th><td width="20%" align="right"> <a accesskey="n" href="ch20.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id396025"></a>Grupowanie kontrolerów w podkatalogach</h3></div></div></div><p>Coyote umo&#380;liwia grupowanie kontrolerów w podkatalogach. Ustalaj&#261;c regu&#322;y routingu
+            musimy zaznaczy&#263; nazw&#281; katalogu je&#380;eli kontroler jest umieszczony w podkatalogu. Okre&#347;la
+            to znacznik <span class="emphasis"><em>folder</em></span>, konfiguracji:
+            </p><pre class="programlisting">&lt;route&gt;
+		&lt;name&gt;homepage&lt;/name&gt;
+		&lt;url&gt;/&lt;/url&gt;
+		&lt;controller&gt;index&lt;/controller&gt;
+		&lt;action&gt;main&lt;/action&gt;
+		&lt;folder&gt;adm&lt;/folder&gt;
+	&lt;/route&gt;</pre><p>W takim przypadku po u&#380;ytkowik - &#380;&#261;daj&#261;c dost&#281;pu do strony g&#322;ównej naszego serwisu, w
+            rzeczywisto&#347;ci wczyta kontroler <tt class="filename">index.php</tt>, z katalogu <tt class="filename">/controller/adm</tt>.</p><p>W regule, w parametrze url, mo&#380;na zawiera&#263; zmienn&#261; <span class="emphasis"><em>:folder</em></span>, tak
+            samo jak robimy to ze zmienn&#261; <span class="emphasis"><em>:controller</em></span>, czy
+            <span class="emphasis"><em>:action</em></span>:</p><pre class="programlisting">&lt;route&gt;
+		&lt;name&gt;Foo&lt;/name&gt;
+		&lt;url&gt;/User/:folder&lt;/url&gt;
+		&lt;controller&gt;404&lt;/controller&gt;
+		&lt;default&gt;
+			&lt;folder&gt;main&lt;/folder&gt;
+		&lt;/default&gt;
+	&lt;/route&gt;</pre><p>W tym przyk&#322;adzie, lokalizacja kontrolera zale&#380;y od warto&#347;ci parametru
+                <span class="emphasis"><em>folder</em></span>. Je&#380;eli warto&#347;&#263; tego nie zostanie znaleziona w adresie
+            URL, przyj&#281;ty zostanie domy&#347;lny folder - <tt class="filename">main</tt>. </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch19s06.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch19.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch20.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Sortowanie regu&#322; </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Rozdzia&#322; 20. Klasa Input</td></tr></table></div></body></html>

@@ -1,0 +1,980 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter>
+    <title>Widoki</title>
+    <para>Widoki to warstwa aplikacji odpowiadająca za prezentację danych. W Coyote typowym
+        adapterem dla widoków jest klasa XHTML. Widoki, przeważnie wyświetlają dane w formie XHTML +
+        CSS, lecz nic nie stoi na przeszkodzie, aby widoki zwracały dane w innej formie (XML, PDF,
+        JSON). </para>
+    <section>
+        <title>Tworzenie szablonu</title>
+        <para>Nim przejdziemy dalej - utwórzmy w folderze naszej aplikacji, katalog <filename
+                >template</filename>. W katalogu będą znajdować się sablony zawierające kod XHTML.
+            Utwórz w tym katalogu plik foo.php. Dla naszej aplikacji, przykładowy szablon może być
+            banalny:<programlisting>&lt;h1>Witaj &lt;?= $username; ?>&lt;/h1>
+&lt;hr /></programlisting></para>
+        <para>W procesie wyświetlania szablonu, w kodzie <varname>$username</varname> zostanie
+            zastąpiona przez wartość znajdującą się w tej zmiennej. Utwórz teraz kontroler o nazwie
+            Foo. Niech jego przykładowy kod będzie
+            taki:<programlisting>&lt;?php
+
+class Foo extends Controller
+{
+	function main()
+	{
+		$this->username = 'Adam Boduch';
+
+		return true;
+	}
+}
+?></programlisting></para>
+        <para>Mamy tutaj klasę <classname>Foo</classname> (kontroler Foo) oraz główną metodę
+                <methodname>main()</methodname>. Jak widzisz przypisujemy tutaj wartość pola
+                <varname>username</varname>, a następnie zwracamy wartość true. Spowoduje to
+            wyświetlenie widoku, który załaduje szablon <filename>foo.php</filename> i przekaże do
+            niego wartości pola z klasy kontrolera (czyli w tym przypadku -
+            <varname>username</varname>). </para>
+        <section>
+            <title>Konfiguracja katalogu z szablonami</title>
+            <para>Wartość <emphasis>core.template</emphasis> zawiera nazwę katalogu, w którym system
+                domyślnie będzie poszukiwał szablonów. Wartość tego pola jest nadawana automatycznie
+                w klasie <classname>Core</classname> tylko jeżeli nie została ona wcześniej
+                zadeklarowana w pliku konfiguracji. Domyślnie wartością tego pola konfiguracji jest
+                    <emphasis>template</emphasis>.</para>
+            <para>Możesz ustawić wartość tego pola w pliku
+                konfiguracyjnym:<programlisting>&lt;core>
+    &lt;template>view&lt;/template>
+&lt;/core></programlisting></para>
+            <para>Możesz również ustawić (nadpisać) wartość tego pola w trakcie działania
+                aplikacji:<programlisting>Config::setItem('core.template', 'view');</programlisting></para>
+        </section>
+    </section>
+    <section>
+        <title>Zwracanie wyniku w akcji</title>
+        <para>Domyślnie widok nie jest wywoływany, gdy akcja nic nie zwraca (wartość
+            null):<programlisting>
+public function submit()
+{
+	echo 'Brak wywołania widoku!';
+}</programlisting></para>
+        <para>Ten sam rezultat można osiągnąć zwracając w akcji wartość false lub używając stałej
+            klasy
+            <classname>View</classname>:<programlisting>
+public function submit()
+{
+	echo 'Brak wywołania widoku!';
+
+	return false;
+}
+// lub:
+public function submit()
+{
+	echo 'Brak wywołania widoku!';
+
+	return View::NONE;
+}</programlisting></para>
+        <para>Klasa kontrolera jest inicjalizowana w klasie <classname>Dispatcher</classname>, a
+            konkretnie w jej metodzie <methodname>dispatch()</methodname>. W tej metodzie odbywa się
+            sprawdzenie jaką wartość zwróciła akcja i w zależności od wyniku - wygenerowanie lub nie
+            - widoku. </para>
+        <para>Jeżeli akcja zwraca wartość true wywolany zostanie widok o nazwie odpowiadającej
+            nazwie kontrolera oraz
+            akcji:<programlisting>&lt;?php
+
+class Foo extends Controller
+{
+	function main()
+	{
+		$this->username = 'Adam Boduch';
+
+		return true;
+	}
+
+	public function submit()
+	{
+		return true;
+	}
+}</programlisting></para>
+        <para>Metoda (akcja) <methodname>submit()</methodname> zwraca wartość true, co zaowocuje
+            próbą wywołania widoku z szablonem o nazwie <filename>fooSubmit.php</filename>. Jeżeli
+            taki plik nie zostanie odnaleziony - Coyote wyświetli błąd. Ta reguła ma jeden wyjątek.
+            Jeżeli wartość true zwróci metoda <methodname>main()</methodname>, system będzie
+            probował odnaleźć plik o nazwie odpowiadającej nazwie kontrolera, czyli w tym przypadku
+            - plik <filename>foo.php</filename>. </para>
+        <section>
+            <title>Stałe klasy View</title>
+            <para>W klasie <classname>View</classname> znajduje się kilka stałych, które możemy
+                wykorzystać w naszym kontrolerze, takich jak:<itemizedlist>
+                    <listitem>NONE = false,</listitem>
+                    <listitem>MAIN = ''</listitem>
+                    <listitem>SUCCESS = 'Success',</listitem>
+                    <listitem>SUBMIT = 'Submit',</listitem>
+                    <listitem>ERROR = 'Error',</listitem>
+                    <listitem>DELETE = 'Delete',</listitem>
+                    <listitem>EDIT = 'Edit'</listitem>
+                </itemizedlist></para>
+            <para>Użycie stałej <constant>MAIN</constant> spowoduje próbę wyświetlenia głównego
+                widoku
+                kontrolera:<programlisting>
+public function submit()
+{
+	// zaladowanie widoku foo.php
+	return VIEW::MAIN;
+}</programlisting></para>
+            <para>Identyczny rezultat przyniesie zwrócenie pustego ciągu
+                znaków:<programlisting>
+public function submit()
+{
+	// zaladowanie widoku foo.php
+	return '';
+}</programlisting></para>
+            <para>Stałych możesz z powodzeniem używać, aby wymusić załadowanie danego
+                widoku:<programlisting>
+public function submit()
+{
+    // zaladowanie widoku fooSubmit.php
+    return View::SUBMIT;
+}</programlisting></para>
+            <para>Przy użyciu stałych, nazwa widoku, nazwa szablonu kształtowana jest następująco:
+                    <emphasis>&lt;katalog w którym umieszczony jest kontroler>&lt;nazwa
+                    kontrolera>&lt;wartość stałej>&lt;rozszerzenie dla sablonu></emphasis></para>
+        </section>
+        <section>
+            <title>Użycie łańcucha</title>
+            <para>Wartość zwrotna w akcji może być łańcuchem danych. Łańcuch (string) może być
+                substytutem stałej. Jeżeli zwrócony zostanie łańcuch, system będzie próbował
+                odnaleźć szablon odpowiadający następującemu wzorcowi: <emphasis>&lt;katalog w
+                    którym umieszczony jest kontroler>&lt;nazwa kontrolera>&lt;zwrócony
+                    łańcuch>&lt;rozszerzenie dla szablonu></emphasis>. Czyli
+                przykładowo:<programlisting>&lt;?php
+
+class Foo_Controller extends Controller
+{
+	function main()
+	{
+		echo 'Zarzadznie Foo';
+		
+		return 'foo';
+	}
+}
+?></programlisting></para>
+            <para>W takim przypadku system będzie próbował odnaleźć szablon <filename
+                >foofoo.php</filename>. </para>
+        </section>
+    </section>
+    <section>
+        <title>Przekazywanie danych do widoku</title>
+        <para>Przekazanie danych do widoku wiąże się po prostu z przypisaniem danego pola w klasie
+            kontrolera:<programlisting>
+function main()
+{
+	$this->username = 'Adam Boduch';
+	$this->names = array(
+		'Adam',
+		'Marta',
+		'Karolina'
+	);
+
+	return View::MAIN;
+}</programlisting></para>
+        <para>W metodzie <methodname>main()</methodname> przypisujemy dwa pola w klasie -
+                <varname>username</varname> oraz tablicę <varname>user</varname>. Wartości tych pól
+            dostępne są w widoku, który z kolei przypisuje te dane do szablonu, który odpowiada za
+            wyświetlenie danych w formie akceptowalnej przez użytkownika (np. kod
+            HTML):<programlisting>&lt;h1>Witaj &lt;?= $username; ?>&lt;/h1>
+&lt;hr />
+&lt;?php foreach ($names as $key => $name) : ?>
+&lt;b>&lt;?= $key; ?>&lt;/b> &lt;?= $name; ?>&lt;/br >
+&lt;?php endforeach; ?></programlisting></para>
+    </section>
+    <section>
+        <title>Używanie kodu PHP w szablonach</title>
+        <para>Generalnie warstwa widoku odpowiada za warstwę prezentacji, a szablony - konkretnie -
+            za wyświetlenie danych otrzymanych od kontrolera w akceptowalnej formie. Teoretycznie
+            możliwe jest używanie w szablonach systemu metaznaczników oraz dodatkowej klasy (np.
+            Smarty), lecz ze względów wydajnościowych oraz praktycznych - zalecane jest używanie
+            kodu PHP do wstawiania w określone miejsce pewnych danych. Można do tego użyć skrótowego
+            znacznika dostepnego w
+                PHP:<programlisting>&lt;?= $foo; ?>
+&lt;?php echo $foo; // to samo do wyżej ?></programlisting><note>Aby
+                skrótowy zapis zadziałał, w pliku PHP musi być włączona opcja short_open_tags.
+            </note></para>
+        <para>Powracając do tematu: jakkolwiek logika aplikacji powinna być umiejscowiona w
+            kontrolerze, nie wyklucza to używania kodu PHP w
+            widokach:<programlisting>&lt;h1>Witaj &lt;?= $username; ?>&lt;/h1>
+&lt;hr />
+&lt;?php foreach ($names as $key => $name) : ?>
+&lt;b>&lt;?= $key; ?>&lt;/b> &lt;?= $name; ?>&lt;/br >
+&lt;?php endforeach; ?>
+
+&lt;hr />
+&lt;?= Benchmark::elapsed(); ?></programlisting></para>
+        <para>W tym przypadku w szablonie zostanie wstawiony czas generowania strony (metoda
+                <methodname>elapsed()</methodname>). Należy jednak unikać wstawiania w szablonach
+            rozbudowanego kodu PHP, gdyż takowy powinien zostać wykonany w kontrolerze (wzorzec MVC
+            zakłada rozdzielenie warstwy logiki oraz warstwy prezentacji, aby nie mieszać kodu PHP z
+            kodem XHTML). </para>
+        <para>W widokach oraz w szablonach możliwe jest odwoływanie się do obiektów jądra. Coyote
+            umożliwia skrócony zapis, z pominięciem odwołania do samego obiektu jądra. Poniższe
+            instrukcje są sobie
+            równoważne:<programlisting>&lt;hr />
+IP: &lt;?= $input->getIp(); ?>&lt;br />
+IP: &lt;?= $core->input->getIp(); ?></programlisting></para>
+        <para>UWAGA! Odwoływanie się do elementów obiektu poprzez operator <varname>$this</varname>
+            umożliwia odwoływanie się do klasy widoku (domyślnie <classname>View_XHTML</classname>),
+            a nie do elementów jądra. Spójrz na poniższe dwie
+            instrukcje:<programlisting>Błąd: &lt;?= $this->input->getIp(); ?>
+Nazwa szablonu: &lt;?= $this->context->getName(); ?></programlisting></para>
+        <para>Pierwsza instrukcja umieszczona w szablonie próbuje odwołać się do nieistniejącego
+            elementu <varname>input</varname>, klasy <classname>View_XHTML</classname>. Druga
+            instrukcja wyświetla nazwę widoku (metoda <methodname>getName()</methodname> z klasy
+                <classname>View</classname>). </para>
+    </section>
+    <section>
+        <title>Klasa View</title>
+        <para>W pokazanych do tej pory, fragmentach kodu, wygenerowaniem widoku zajmuje się klasa
+                <classname>Dispatcher</classname>. W rzeczywistości tworzy ona nową instancję klasy
+                <classname>View</classname> i przekazuje do niej zawartości pól klasy kontrolera. </para>
+        <para>Nic nie stoi na przeszkodzie, abyśmy sami utworzyli instancję tej klasy i przekazali
+            widokowi wartości, które mają być dalej wyświetlone - czy to w formie kodu XHTML, czy
+            XML itp. W tym celu należy utworzyć instancję klasy <classname>View</classname>, podając
+            nazwę widoku jako parametr
+            konstruktora:<programlisting>
+function main()
+{
+	$view = new View('foo');
+
+	$view->username = 'Adam Boduch';
+	$view->names = array(
+		'Adam',
+		'Marta',
+		'Karolina'
+	);
+
+	echo $view;
+
+	return false; // nie wykonuj dalszego kodu
+}</programlisting></para>
+        <para>Przypisanie danych do widoku wiąże się z przypisaniem wartości odpowiednich pól.
+            Wartości pól mogą być dowolne. Mogą to być dane skalarne, tablice czy obiekty.
+            Wyświetlenie widoku wiąże się z wywołaniem metody <methodname>display()</methodname> lub
+            użyciem skrótowego
+            zapisu:<programlisting>$view->display(); // lub:
+echo $view;</programlisting></para>
+        <section>
+            <title>Wyświetlanie zawartości widoku</title>
+            <para>Jak pokazał powyższy przykład, wyświetlenie zawartości widoku następuje po użyciu
+                metody <methodname>display()</methodname>. Prostsze będzie użycie instrukcji echo na
+                obiekcie klasy, co również spowoduje wyświetlenie zawartości widoku. Metoda
+                    <methodname>display()</methodname> posiada opcjonalny parametr, który określa,
+                czy zawartość widoku ma być wyświetlana na ekranie (domyślnie - true), czy zawartość
+                widoku ma być zwracana w metodzie
+                <methodname>display()</methodname>:<programlisting>
+$content = $view->display(false);
+// dodatkowe operacje na $content
+echo $content;</programlisting></para>
+        </section>
+        <section>
+            <title>Przekazywanie danych do widoku</title>
+            <para>W poprzednich przykładach pokazano w jaki sposób przekazywać dane do widoku.
+                Wartości można przypisywać bezpośrednio do elementów obiektu typu
+                <classname>View</classname> lub skorzystać z metody
+                <methodname>assign()</methodname> lub <methodname>append()</methodname>. Metoda
+                    <methodname>assign()</methodname> umożliwia przypisywanie pojedyńczych elementów
+                lub tablicy asocjacyjnej. Oto
+                przykład:<programlisting>
+$view = new View('foo');
+
+$view->assign('username', 'Adam Boduch');
+$view->assign(array(
+		'password'		=> '123',
+		'email'			=> 'user@user.com',
+	)
+);
+
+echo $view;</programlisting></para>
+            <para>Teraz, szablon <filename>foo.php</filename> może wyglądać
+                tak:<programlisting>
+&lt;h1>Witaj &lt;?= $username; ?>&lt;/h1>
+&lt;hr />
+&lt;p>Twoje hasło to &lt;?= $password; ?>, a e-mail: &lt;b>&lt;?= $email; ?>&lt;/b>&lt;/p></programlisting></para>
+            <para>Kolejny
+                przykład:<programlisting>
+$view->assign('user', array(
+				'Adam Boduch', 'Marta', 'Karolina'
+			)
+		);
+// w sablonie:
+&lt;?= implode(', ', $user); ?></programlisting></para>
+            <para>Metoda <methodname>assign()</methodname> nadpisuje wartości przypisane już
+                wcześniej.
+                Przykładowo:<programlisting>
+$view->assign('user', array(
+				'Adam Boduch', 'Marta', 'Karolina'
+			)
+);
+$view->assign('user', array(
+				'Marek', 'Darek'
+			)
+);</programlisting></para>
+            <para>W widoku, <varname>$user</varname> będzie posiadało wartość array('Marek',
+                'Darek'). </para>
+            <para>Metoda <methodname>append()</methodname> umożliwia dodawanie elementów do już
+                istniejącej tablicy w widoku. Oto prosty
+                przykład:<programlisting>
+$arr = array(
+		'Adam Boduch', 'Marta', 'Karolina', 'Marek', 'Darek'
+);
+
+foreach ($arr as $element)
+{
+	$view->append('user', $element);
+}
+        </programlisting></para>
+            <para>W widoku <varname>$user</varname> będzie tablicą imion. Jeżeli użylibyśmy metody
+                    <methodname>assign()</methodname>, zamiast <methodname>append()</methodname>,
+                wartością <varname>$user</varname> byłby ciąg Darek. Metody
+                <methodname>append()</methodname> możemy użyć jeżeli musimy dokonać w kontrolerze
+                jakiś operacji na tablicy. Gdyż w innym przypadku, możemy po prostu przekazać
+                tablicę do
+                widoku:<programlisting>
+$arr = array(
+		'Adam Boduch', 'Marta', 'Karolina', 'Marek', 'Darek'
+);
+$view->user = $arr;</programlisting></para>
+            <section>
+                <title>Przekazywanie parametrów w konstruktorze</title>
+                <para>Konstruktor klasy <classname>View</classname> posiada opcjonalny parametr
+                        <parameter>$data</parameter>, który może być tablicą elementów, które mają
+                    być przekazane do widoku. Przykładowo, wyświetlenie widoku wraz z przekazaniem
+                    do niego elementów, możemy zrealizować przy pomocy jednej
+                    instrukcji:<programlisting>
+echo $view = new View('foo', array(
+        'username'	=> 'Adam Boduch',
+        'user'		=> array('Adam Boduch', 'Marta', 'Karolina', 'Marek', 'Darek')
+        )
+);</programlisting></para>
+            </section>
+        </section>
+        <section>
+            <title>Statyczna metoda getView()</title>
+            <para>Klasa <classname>View</classname> posiada statyczną metode
+                <methodname>getView()</methodname>, która prezentuje się
+                następująco:<programlisting>public static function getView($name, $data = array(), IView $instance = null)
+	{
+		return new View($name, $data, $instance);
+	}</programlisting></para>
+            <para>Metoda zwraca instancję klasy <classname>View</classname>. Obiekt tej klasy może
+                być zwrócony w akcji
+                kontrolera:<programlisting>function main()
+	{
+		return View::getView('foo', array(
+			'username'	=> 'Adam Boduch',
+			'user'		=> array('Adam Boduch', 'Marta', 'Karolina', 'Marek', 'Darek')
+			)
+		);
+	}</programlisting></para>
+            <para>lub:<programlisting>	function main()
+	{
+		$this->username	= 'Adam Boduch';
+		$this->user		= array('Adam Boduch', 'Marta', 'Karolina', 'Marek', 'Darek');
+
+		return View::getView('foo', array('foo' => 'bar'));
+	}</programlisting></para>
+        </section>
+    </section>
+    <section>
+        <title>Klasa widoku</title>
+        <para>Domyślnie klasa <classname>View</classname> używa adaptera
+            <classname>View_XHTML</classname>. Oznacza to, że domyślnym typem danych zwracanych
+            przez widok jest typ XHTML. Napiszemy nowy widok, który zwróci dane w formacie XML.
+            Można powiedzieć, że kontroler nie ma wpływu na sposób prezentowanych danych i nie
+            powinien w to ingerować. W naszym przykładowym kontrolerze, w zależności od wybranej
+            opcji - dane zostaną zwrócone w formacie XHTML lub XML. </para>
+        <section>
+            <title>Własna klasa widoku</title>
+            <para>Utwórz w katalogu z aplikacja, w folderze <filename>lib</filename>, katalog
+                    <filename>view</filename>. Umieść w nim plik <filename>xml.class.php</filename>.
+                Klasa widoku musi implementować interfejs <interfacename>IView</interfacename>,
+                który zadeklarowany jest w pliku
+                view.class.php:<programlisting>interface IView
+{
+	public function initialize(&amp;$context);
+	public function display($display = true);
+}</programlisting></para>
+            <para>Nasza klasa musi więc posiadać dwie metody - <methodname>initialize()</methodname>
+                oraz <methodname>display()</methodname>. W parametrze metody
+                    <methodname>initialize()</methodname> zostanie przekazana referencja do obiektu
+                klasy View. Dzięki temu, w naszej klasie możemy pobierać dane przekazane do klasy
+                    <classname>View</classname>. </para>
+            <para>Ok, nasza klasa widoku powinna generować dane w postaci XML. Na nasze potrzeby
+                napiszemy bardzo prostą
+                klasę:<programlisting>&lt;?php
+
+class View_Xml implements IView
+{
+	/**
+	 * Instancja klasy View
+	 */
+	private $context;
+	
+	/**
+	 * Inicjalizacja klasy. Przekazanie do metody instancji do klasy View
+	 * @param mixed &amp;$context Referencja do obiektu klasy View
+	 */
+	public function initialize(&amp;$context)
+	{
+		$this->context = $context;
+	}
+
+	public function display($display = true)
+	{
+		$xml = '&lt;?xml version="1.0" encoding="UTF-8" ?>';
+		$xml .= '&lt;page>';
+
+		foreach ($this->context->getData() as $element => $value)
+		{
+			$value = htmlspecialchars($value);
+			$xml .= "&lt;$element>$value&lt;/$element>";
+		}
+		$xml .= '&lt;/page>';
+
+		if ($display)
+		{
+			echo $xml;
+		}
+		else
+		{
+			return $xml;
+		}
+	}
+}
+?></programlisting></para>
+            <para>Metoda <methodname>display()</methodname> jest wywoływana w momencie, gdy
+                użytkownik zażąda wyświetlenia widoku. Pobieramy tutaj wszystkie dane przekazane do
+                widoku, a następnie wyświetlamy je w postaci znaczników XML. <note>Metoda getData()
+                    z klasy View zwraca wszystkie elementy przypisane do widoku. </note></para>
+            <para>Widać, że ta klasa nie operuje na szablonach - nie jest to w tej chwili konieczne.
+                Nieważne więc jaką nazwę szablonu poda użytkownik - klasa
+                <classname>View_XML</classname> i tak ją ignoruje. </para>
+        </section>
+        <section>
+            <title>Wywoływanie widoku</title>
+            <para>Dobrze, czas napisać kontroler. Jest on banalnie prosty. Przypisuje wartości do
+                dwóch pól, a następnie - w zależności od żądania - wywołuje odpowiedni
+                widok:<programlisting>&lt;?php
+
+class Foo extends Controller
+{
+	function main()
+	{
+		$this->version = Core::version;
+		$this->foo = "Lorem ipsum ... ";
+
+		if ($this->get->type == 'xml')
+		{
+			return View::getView('xmlData', array(), new View_XML);
+		}		
+		return View::getView('foo');
+	}
+}
+?></programlisting></para>
+            <para>Czyli domyślnie, dane zostaną wyświetone w formie strony WWW. Jeżeli natomiast do
+                adresu URL dołączony zostanie parametr <emphasis>type</emphasis> - np.
+                    <emphasis>http://127.0.0.1/demo/index.php/Foo?type=xml </emphasis>- dane zostaną
+                wyświetlone w formacie XML. Teraz, jeszcze szablon HTML, który może wyglądać
+                tak:<programlisting>&lt;html>
+&lt;head>
+&lt;title>Test&lt;/title>
+&lt;head>
+
+&lt;style>
+body
+{
+		margin:			10px auto 10px auto;
+		border:			1px solid #ccc;
+		width:			80%;
+		background-color:		#f8f8f8;
+		padding:		10px;
+		font-family:	Arial;
+}
+&lt;/style>
+
+&lt;body>
+&lt;p>&lt;?= $version; ?>&lt;/p>
+&lt;b>&lt;?= $foo; ?>&lt;/b>
+&lt;/body>
+&lt;/html></programlisting></para>
+            <para>Bardzo ważne w tym kodzie jest nazewnictwo widoku. Klasy widoków muszą być
+                umieszczane w katalogu <filename>/lib/view</filename>, czy to projektu, czy
+                frameworka. Klasa natomiast musi nosić przedrostek <emphasis>View</emphasis>. Jest
+                to istotne dla loadera Coyote. Ten, próbuje odnaleźć klasę
+                <classname>View_XML</classname> (np.) i w momencie, gdy nie może jej odnaleźć
+                próbuje przeszukać podkatalogi folderu <filename>lib</filename>. Na podstawie
+                przedrostka <emphasis>view</emphasis>, lokalizuje folder <filename>view</filename>,
+                a w nim plik <filename>xml.class.php</filename> który odpowiada wzorcowi. W ten
+                sposób ładuje ten plik do projektu. </para>
+            <para>Konstruktor klasy <classname>View</classname>, również posiada trzeci, opcjonalny
+                parametr <parameter>$instance</parameter>, który umożliwia przekazanie klasy widoku
+                w
+                konstruktorze:<programlisting>$view = new View('xmlData', array(), new View_XML);
+		$view->version = Core::version;
+		$view->foo = "Lorem ipsum ... ";
+
+		echo $view;</programlisting></para>
+        </section>
+    </section>
+    <section>
+        <title>Ładowanie klasy View przy pomocy loadera</title>
+        <para>Kolejnym sposobem załadowania widoku jest użycie loadera, a konkretnie metody
+                <methodname>view()</methodname>:<programlisting>$view = $this->load->view('foo');
+		$view->version = Core::version;
+		$view->foo = "Lorem ipsum ... ";
+
+		echo $view;</programlisting></para>
+        <para>Nagłówek metody <methodname>view()</methodname> jest identyczny z nagłówkiem
+            konstruktora klasy <classname>View</classname>, więc możemy przekazywać parametry tak
+            samo, jakbyśmy inicjalizowali klasę bezpośrednio. </para>
+    </section>
+    <section>
+        <title>Konfiguracja widoku</title>
+        <para>Pisząc aplikacje w PHP pod Coyote w większości przypadków będą one wyświetlały kod
+            (X)HTML interpretowany przez przeglądarki. Jak wiadomo, najczęściej wraz z kodem XHTML,
+            do pary idzie kod CSS oraz ewentualne skrypty JavaScript. Coyote pomaga zarządzać całem
+            mechanizmem poprzez pliki konfiguracji szablonów. </para>
+        <section>
+            <title>Layouty</title>
+            <para>Obecne strony w większości przypadków generowane są dynamicznie, przy pomocy
+                takich języków jakim jest np. PHP. Posiadają one wiele podstron, z których w
+                większości niektóre elementy są takie same. Weźmy np. logo strony (nagłówek) oraz
+                stopkę. W większości stron te elementy są stałe na każdej podstronie. Mechanizm
+                layoutów pozwala na utworzenie jednego layoutu, który zawierałby elementy jednakowe
+                dla każdej podstrony. </para>
+            <para>Utwórz w katalogu <filename>template</filename>, plik <filename
+                >layout.php</filename>, który będzie naszym layoutem i może zawierać taki kod
+                XHTML:<programlisting>&lt;html>
+&lt;head>
+&lt;title>Moja pierwsza strona WWW&lt;/title>
+&lt;head>
+
+&lt;style>
+body
+{
+		margin:			10px auto 10px auto;
+		border:			1px solid #ccc;
+		width:			80%;
+		background-color:		#f8f8f8;
+		padding:		10px;
+		font-family:	Arial;
+}
+&lt;/style>
+
+&lt;body>
+&lt;h1>Moja pierwsza strona WWW&lt;/h1>
+
+&lt;?= $this->content; ?>
+
+&lt;/body>
+&lt;/html></programlisting></para>
+            <para>W miejsce $this->content będzie wstawiana zawartość szablonów, które nie muszą
+                zawierać już kodu umieszczonego w layoucie. Ma to wiele zalet, a jedna z nich jest
+                taka, że przy zmianie - np. tytułu strony - wystarczy zmienić tylko jeden plik
+                (layout). </para>
+            <para>Utwórzmy teraz szablon dla strony głównej naszego serwisu - np. <filename
+                    >index.php</filename>. Zawartość tego szablonu może być
+                banalna:<programlisting>&lt;p>To jest strona główna&lt;/p></programlisting></para>
+            <para>Teraz widok połączy te dwa pliki w jedną całość i wyśle do klienta (przeglądarka
+                WWW). Utwórz kontroler index.php, który może wyglądać
+                tak:<programlisting>&lt;?php
+
+class Index extends Controller
+{
+	function main()
+	{
+		$view = new View('index');
+		$view->setConfig('layout', 'layout');
+
+		echo $view;
+	}
+}
+?></programlisting></para>
+            <para>Klasa <classname>View</classname> posiada metodę <methodname>setConfig()</methodname> która służy do
+                ustawiania wartości konfiguracyjnych dla widoku. W tym przypadku ustawiliśmy wartość
+                pola <emphasis>layout</emphasis>, które wskazuje na nazwę pliku z layoutem (pomijane jest rozszerzenie
+                pliku). Taki kod wygeneruje i połączy dwa pliki - layoutu oraz plik szablonu. </para>
+            <para>Wygodniejsze jest, gdy informacje o layoucie zapisane są w konfiguracji. Nie
+                musimy się wówczas martwić o ustawienie odpowiednich wartości konfiguracji widoku, w
+                kontrolerze. </para>
+        </section>
+        <section>
+            <title>Określanie nazwy pliku konfiguracji widoków</title>
+            <para>Otwórz plik konfiguracji aplikacji (u mnie znajduje się w katalogu <filename
+                    >config/config.xml</filename> mojej aplikacji). Ustawimy w nim wartość pola
+                    <emphasis>core.templateConfig</emphasis>:<programlisting>&lt;?xml version="1.0" encoding="utf-8"?>
+&lt;config>
+	&lt;core>
+		&lt;templateConfig>config.php&lt;/templateConfig>
+	&lt;/core>
+&lt;/config></programlisting></para>
+            <para>Ustawienie takiego pola spowoduje, iż widok będzie poszukiwał opisu konfiguracji w
+                pliku <filename>config.php</filename>, w folderze z szablonami (czyli np. w katalogu
+                    <filename>template</filename>). <note>Konfiguracja widoków odczytywana jest
+                    przez klasę Config, więc format plików konfiguracji widoków może być dowolny,
+                    bylby był obslugiwany przez klasę Config. </note></para>
+            <para>Następnie w katalogu <filename>template</filename>, utwórz plik <filename
+                    >config.php</filename>:<programlisting>&lt;?php
+
+$config['*'] = array(
+	'layout'			=> 'layout'
+);
+
+?></programlisting></para>
+            <para>Taki zapis oznacza, że każdy szablon w projekcie będzie korzystał z layoutu o
+                nazwie <emphasis>layout</emphasis>. Teraz, w akcji wystarczy wywołać odpowiedni
+                widok:<programlisting>	function main()
+	{
+		return View::MAIN;
+	}</programlisting></para>
+            <para>Widok automatycznie odczyta zapis konfiguracji i wygeneruje stronę zgodnie z
+                zapisem. </para>
+            <para>Możesz określić kilka nazw plików zawierających konfiguracje.
+                Np.:<programlisting>&lt;?xml version="1.0" encoding="utf-8"?>
+&lt;config>
+	&lt;core>
+		&lt;templateConfig>config.php&lt;/templateConfig>
+&lt;templateConfig>config.ini&lt;/templateConfig>
+	&lt;/core>
+&lt;/config></programlisting></para>
+            <para>W takim przypadku system będzie poszukiwał konfiguracji zarówno w pliku <filename
+                    >config.php</filename> jak i <filename>config.ini</filename>. </para>
+        </section>
+        <section>
+            <title>Budowa plików konfiguracji</title>
+            <para>Domyślnie formatem plików konfiguracji widoków jest XML. Jednak w poprzednim
+                akapicie pokazałem jak to zmienić, tak, aby formatem był PHP. Konfiguracja widoków
+                jest taka sama jak pozostała konfiguracja w aplikacji. Plik PHP musi posiadać
+                tablicę o nazwie <varname>$config</varname>, w której klucz będzie odpowiadał nazwie
+                szablonu. Znak * odpowiada za każdą wartość, tak więc klucz
+                <emphasis>box*</emphasis> odpowiada zarówno szablonowi
+                <emphasis>boxInformation</emphasis> jak i <emphasis>boxConfirm</emphasis>. </para>
+            <para>Mechanizm odczytu konfiguracji jest następujący: <itemizedlist>
+                    <listitem>Wczytanie pliku konfiguracji</listitem>
+                    <listitem>Przeszukanie tablicy konfiguracji i porównanie klucza tablicy z nazwą
+                        szablonu</listitem>
+                    <listitem>Jeżeli klucz odpowiada nazwie - dodanie informacji z tablicy do
+                        konfiguracji widoku.</listitem>
+                </itemizedlist></para>
+            <para>Dla przykładu - zmień zawartość pliku <filename
+                >config.php</filename>:<programlisting>&lt;?php
+
+$config['*'] = array(
+	'layout'			=> 'layout'
+);
+
+$config['index'] = array(
+	'layout'			=> false
+);
+
+?></programlisting></para>
+            <para>Po wczytaniu zwartości tego pliku do klasy, system zacznie przeszukiwać tablicę
+                    <varname>$config</varname>. Pierwszy element (*) pasuje do każdego widoku -
+                zostanie więc wczytany do widoku. Kolejny element również odpowiada naszemu
+                szablonowi i również zostanie wczytany. Jednakże zastępuje on wcześniej
+                zadeklarowaną wartość layout, która zostanie nadpisana. W wyniku tego nasz szablon
+                będzie wyświetlany samotnie, bez layoutu. </para>
+            <note>
+                Klucz <emphasis>all</emphasis> odpowiada każdemu widokowi, podobnie jak symbol *
+            </note>
+        </section>
+        <section>
+            <title>Ustawianie tytułu dla strony</title>
+            <para>Klasa widoku <classname>View_Xhtml</classname> ściśle współpracuje z klasą
+                    <classname>Output</classname>. W konfiguracji możemy ustawić tytuł dla
+                poszczególnych stron naszego serwisu. Wartość ta przekzywana jest do metody
+                    <methodname>setTitle()</methodname> klasy <classname>Output</classname>. Oto
+                przykład ustawienia tytułu strony dla szablonu <filename
+                >index.php</filename>:<programlisting>&lt;?php
+
+$config['*'] = array(
+	'layout'			=> 'layout'
+);
+
+$config['index'] = array(
+	'title'				=> 'Strona główna'
+);
+
+?></programlisting></para>
+            <para>W rzeczywistości widok przekaże wartość pola title do metody
+                    <methodname>setTitle()</methodname> klasy <classname>Output</classname>. To nie
+                wszystko - musimy bowiem określić, w którym miejscu - w layoucie - ma zostać
+                wstawiony znacznik &lt;title>. Otwórz więc plik <filename>layout.php</filename> i
+                zmień nagłówek
+                strony:<programlisting>&lt;html>
+&lt;head>
+&lt;?= $output->getTitle(); ?>
+&lt;head></programlisting></para>
+            <para>Metoda <methodname>getTitle()</methodname> zwróci tytuł dla danej strony w formie
+                znacznika XHTML - &lt;title>. Dzięki takiemu zabiegowi można ustalać tytuł dla
+                poszczególnych stron, nie ingerując w kod kontrolera. </para>
+        </section>
+        <section>
+            <title>Ustawianie szablonów CSS</title>
+            <para>Ustawianie szablonów jest podone do ustawiania tytułów dla stron. Przed tem jednak
+                warto zmodyfikować plik layoutu, tak, aby pomiędzy znacznikami &lt;head> wstawiane
+                byłby znaczniki pobierane z klasy
+                <classname>Output</classname>:<programlisting>&lt;html>
+&lt;head>
+&lt;?= $output->getTitle(); ?>
+&lt;?= $output->getHttpMeta(); ?>
+&lt;?= $output->getMeta(); ?>
+&lt;?= $output->getStylesheet(); ?>
+&lt;?= $output->getJavaScript(); ?>
+&lt;head>
+
+&lt;body>
+&lt;h1>Moja pierwsza strona WWW&lt;/h1>
+
+&lt;?= $this->content; ?>
+
+&lt;/body>
+&lt;/html></programlisting></para>
+            <para>Metoda <classname>getStylesheet()</classname> zwraca znaczniki &lt;style> jeżeli
+                do klasy <classname>Output</classname> przekazane zostały szablony CSS. Metoda
+                    <methodname>getJavaScript()</methodname> zwraca znaczniik &lt;script>. Chcąc
+                przypisać plik stylów CSS do danego szablonu, możemy użyć metody
+                    <methodname>setStylesheet()</methodname> z klasy <classname>Output</classname>:
+                    <programlisting>function main()
+	{
+		$this->output->setStylesheet('main');
+
+		return View::MAIN;
+	}</programlisting><note>Nie
+                    ma konieczności podawania pełnej nazwy pliku. System sam doda rozszerzenie .css
+                    do nazy pliku. </note></para>
+            <para>Pliki stylów CSS powinny być umieszczone w katalogu z szablonami, tak więc użycie
+                metody <methodname>setStylesheet()</methodname> tak jak to pokazano w przykładzie -
+                spowoduje umieszczenie w layoucie
+                znacznika:<programlisting>&lt;link rel="stylesheet" type="text/css" href="http://127.0.0.1/demo/template/main.css" /></programlisting></para>
+            <para>Zamiast integrować w kod kontrolera (akcji), można ustalić style CSS dla danego
+                szablonu, z poziomu pliku konfiguracji:
+                <programlisting>&lt;?php
+
+$config['*'] = array(
+	'layout'			=> 'layout',
+	'stylesheet'		=> 'main'
+);
+
+$config['index'] = array(
+	'title'				=> 'Strona główna',
+);
+
+?></programlisting></para>
+            <para>Przyjmujemy, iż dla każdej podstrony będzie obowiązywał ten sam plik stylów -
+                    <filename>main.css</filename>. Jeżeli chcesz, to zmienić, wystarczy nadpisać
+                wartość, jednocześnie ustawiając znak minusa przed nazwą szablonu, który ma zostać usunięty:
+                <emphasis>stylesheet</emphasis>:<programlisting>$config['index'] = array(
+	'title'				=> 'Strona główna',
+	'stylesheet'		=> array('-main', 'indexStyle')
+	);</programlisting></para>
+            <para>
+                Domyślnie bowiem ustawienia arkuszy stylów nie są nadpisywane. Tzn. w pliku konfiguracji możemy
+                określać wiele arkuszy, tak jak to pokazano w dalszych przykładach.
+            </para>
+            <section>
+                <title>Ustawianie kilku arkuszy</title>
+                <para>Nieraz arkusze styli podzielone są na kilka plików i na pewno nie raz przydaży
+                    Ci się konieczność ustawienia kilku arkuszy na jednej stronie (lub podstronie).
+                    W Coyote możesz ustalić kilka arkuszy w jednym szablonie, oddzielając je
+                    przecinkiem:<programlisting>$config['*'] = array(
+	'layout'			=> 'layout',
+	'stylesheet'		=> 'main,print'
+);
+
+$config['index'] = array(
+	'title'				=> 'Strona główna',
+	'stylesheet'		=> 'foo'
+	);</programlisting></para>
+                <para>
+                    W takim przypadku, widok <emphasis>index</emphasis> będzie zawierał arkusze main.css, print.css oraz foo.css.
+                </para>
+                <para>
+                    Parametr <emphasis>stylesheet</emphasis> może być tablicą arkuszy styli:
+                    <programlisting>
+'stylesheet'  => array('foo', 'bar');                         
+                    </programlisting>
+                </para>
+            </section>
+            <section>
+                <title>Określanie podkatalogów arkuszy</title>
+                <para>Arkusze styli muszą być umieszczone w katalogu z szablonami aplikacji. Nie ma
+                    jednak przeciwskazań do umieszczenia ich w podkatalogach. Możesz np. utworzyć, w
+                    katalogu <filename>template</filename>, foler <filename>css</filename> i tam
+                    przechowywać swoje arkusze. Nie zapomnij jednak ustawić prawidłowych ścieżek w
+                    konfiguracji. Można to zrobić w dwojaki sposób.
+                    Pierwszy:<programlisting>$config['*'] = array(
+	'layout'			=> 'layout',
+	'stylesheet'		=> 'css/main,css/print'
+);</programlisting></para>
+                <para>Drugi sposób pozwala na przypisanie dodatkowych artybutów dla znacznika
+                    &lt;link>. Ponieważ ustawienie pola konfiguracyjnego stylesheet owocuje w
+                    rzeczywistości przekazaniem parametrów do metody
+                    <methodname>setStylesheet()</methodname>, możemy wykorzystać jej pełne
+                    możliwości. A nagłowek tej metody jest
+                    następujący:<programlisting>public function setStylesheet($filename, $directiry = '', $options = array())</programlisting></para>
+                <para>Drugim parametrem metody jest katalog, w którym będą znajdować się arkusze
+                    CSS. Ostatnim, opcjonalnym parametrem są dodatkowe atrybuty dla znacznika XHTML.
+                    Tak więc taki zapis
+                    konfiguracji:<programlisting>$config['*'] = array(
+	'layout'			=> 'layout',
+	'stylesheet'		=> array('main,print', 'css', array('media' => 'print'))
+);</programlisting></para>
+                <para>Spowoduje umieszczeniem w layoucie takich odwołań do
+                    arkuszy:<programlisting>&lt;link rel="stylesheet" type="text/css" href="http://127.0.0.1/demo/template/css/main.css"  media="print"/>
+&lt;link rel="stylesheet" type="text/css" href="http://127.0.0.1/demo/template/css/print.css"  media="print"/></programlisting></para>
+                
+            </section>
+        </section>
+        <section>
+            <title>Przypisanie skryptów JavaScript</title>
+            <para>Skrypty JavaScript często umożliwiają wzbogacenie strony o elementy dynamiczne
+                niewymagające użycia języka server-side. Przypisanie pliku JavaScript do szablonu
+                jest równie proste, co przypisanie arkusza
+                stylów:<programlisting>$config['*'] = array(
+	'layout'			=> 'layout',
+	'stylesheet'		=> array(
+										array('main'),
+										array('print', 'css', array('media' => 'print'))
+						),
+	'javascript'		=> 'main'
+);</programlisting></para>
+            <para>Taki zapis konfiguracji oznacza przypisanie do każdego szablonu pliku
+                    main.js:<programlisting>&lt;script src="http://127.0.0.1/demo/template/js/main.js" type="text/javascript">&lt;/script></programlisting><note>Coyote
+                    automatycznie zakłada, że skrypty JavaScript są umieszczone w podkatalogu js
+                    folderu z szablonami. Możesz zmienić lokalizację skryptów JavaScript ustawiając
+                    pole konfiguracji: core.javascript. </note></para>
+            <section>
+                <title>Kilka skryptów JavaScript na jednej stronie</title>
+                <para> Podobnie jak to się ma w arkuszach stylów, istnieje możliwość dołączania
+                    wielu skryptów JavaScript na jednej stronie. W takim przypadku, można rozdzieilć
+                    nazwy znaiem przecinka lub użyć opcji konfiguracji:
+                    <emphasis>javascript</emphasis>:<programlisting>'javascript'		=> 'main,foo'</programlisting></para>
+                <para>lub:<programlisting>'javascript'		=> array('main', 'foo')</programlisting></para>
+            </section>
+        </section>
+        <section>
+            <title>Ustawianie znaczników META</title>
+            <para>Znaczniki &lt;meta> umieszczane są w nagłówku strony i służą do opisu strony -
+                np.: słów kluczowych, opisu czy kodowania znaków. Do ustawienia znaczników &lt;meta>
+                na stronie, można użyć metody <methodname>setMeta()</methodname> lub
+                    <methodname>setHttpMeta()</methodname> klasy <classname>Output</classname>.
+                Równie dobrze możemy ustawić odpowiednią
+                konfigurację:<programlisting>$config['index'] = array(
+	'title'				=> 'Strona główna',
+	'meta'				=> array(
+				'keywords'			=> 'strona, główna',
+				'description'		=> 'To jest strona główna'
+	),
+	'httpmeta'		=> array(
+				'Content-type'		=> 'text/html; charset=utf-8'
+	)
+);</programlisting></para>
+            <para>Dzięki takiej konfiguracji, strona będzie posiadała znaczniki description,
+                keywords oraz - ustawione kodowanie na utf-8. </para>
+        </section>
+        <section>
+            <title>Ustawianie atrybutów</title>
+            <para>Klasa Output posiada również przydatną metodę
+                <methodname>setAttribute()</methodname> dzięki której możemy ustawić (przekazać)
+                dowolny atrybut do szablonu, który następnie możemy być dowolnie interpetowany w
+                szablonie. Atrybuty mogą być również ustawiane w konfiguracji, w formie tablicy
+                asocjacyjnej:<programlisting>$config['index'] = array(
+	'title'				=> 'Strona główna',
+	'meta'				=> array(
+				'keywords'			=> 'strona, główna',
+				'description'		=> 'To jest strona główna'
+	),
+	'httpmeta'		=> array(
+				'Content-type'		=> 'text/html; charset=utf-8'
+	),
+	'attribute'		=> array(
+				'advertisement'		=> true
+	)
+);</programlisting></para>
+            <para>W powyższym przykładzie, przekazany został atrybut
+                <emphasis>advertisement</emphasis>. W szablonie możesz oprogramować warunek
+                wykrywający obecność tego atrybutu i - odpowiednio zareagować. W tym przykładzie
+                ustalamy, że kod HTML odpowiadający za reklamy ma się wyświetlać jedynie w
+                połączeniu z szablonem <filename>index.php</filename>. Możemy dodać odpowiedni
+                warunek w
+                    layoucie:<programlisting>&lt;body>
+&lt;h1>Moja pierwsza strona WWW&lt;/h1>
+&lt;?php if ($output->getAttribute('advertisement')) : ?>
+&lt;p class="advertisement">REKLAMA&lt;/p>
+&lt;?php endif; ?>
+
+&lt;?= $this->content; ?>
+
+&lt;/body>
+&lt;/html></programlisting><note>Więcej
+                    informacji o możliwości ustawienia parametrów dla strony, znajdziesz w opisie
+                    klasy Output.</note></para>
+        </section>
+        <section>
+            <title>Używanie wartości konfiguracyjnych klasy Config</title>
+            <para>Każda strona internetowa ma jakiś tytuł. Możesz go zadeklarować w pliku
+                konfiguracyjnym swojej
+                aplikacji:<programlisting>&lt;?xml version="1.0" encoding="utf-8"?>
+&lt;config>
+	&lt;core>
+		&lt;templateConfig>config.php&lt;/templateConfig>
+	&lt;/core>
+
+	&lt;site>
+		&lt;title>Coyote Demo&lt;/title>
+		&lt;description>To jest przykładowa strona&lt;/description>
+	&lt;/site>
+&lt;/config></programlisting></para>
+            <para>Najlepszym rozwiązaniem byłoby, gdyby ów tytuł umieszczany był w znaczniku
+                &lt;title> naszej strony. W wartościach konfiguracji istnieje możliwość używania
+                wzorców, które zostaną zastąpione wartościami z konfiguracji aplikacji. Oto przykład
+                takiej konfiguracji
+                szablonu:<programlisting>$config['index'] = array(
+	'title'				=> '%site.title% - Strona główna',
+	'meta'				=> array(
+				'keywords'			=> 'strona, główna',
+				'description'		=> '%site.description%'
+	),
+	'httpmeta'		=> array(
+				'Content-type'		=> 'text/html; charset=utf-8'
+	),
+	'attribute'		=> array(
+				'advertisement'		=> true
+	)
+);</programlisting></para>
+            <para>Wartości zaczynające się od znaku % oraz kończące się tym znakiem, zostaną
+                zastąpione przed wartości z konfiguracji projektu. Oznacza to, że w miejsce
+                    <emphasis>%site.title%</emphasis> zostanie wstawiony tytuł strony z pliku
+                    <filename>config.xml </filename>- czyli w tym przypadku - <emphasis>Coyote
+                Demo</emphasis>. </para>
+        </section>
+        <section>
+            <title>Formaty konfiguracji</title>
+            <para>Jak wspomniano na początku tego rozdziału, Coyote obsługuje różne formaty
+                konfiguracji widków. Domyślnym formatem jest XML, lecz zalecane jest używanie
+                formatu PHP, ze względu na większe możliwości oraz brak konieczności parsowania
+                danych. Nic nie stoi jednak na przeszkodzie, aby użyć inne formatu - np.
+                INI:<programlisting>[all]
+
+layout = layout
+stylesheet = main
+javascript = main,foo
+
+[index]
+
+title = %site.title% - Strona główna
+meta.keywords = strona, główna
+meta.description = %site.description%
+httpmeta.Content-type = text/html; charset=utf-8
+attribute.advertisement = true</programlisting></para>
+        </section>
+    </section>
+</chapter>

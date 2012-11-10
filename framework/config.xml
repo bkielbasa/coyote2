@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<core>
+		<debug>true</debug>
+		<frontController>index.php</frontController>
+		<trigger>true</trigger>
+	</core>
+
+	<site>
+		<name>Coyote Framework 1.1.2</name>
+	</site>
+
+	<autoload>
+		<helper>system</helper>
+		<helper>url</helper>
+		<helper>html</helper>
+	</autoload>
+
+	<databases>
+
+		<default>
+			<adapter>mysql</adapter>
+			<host>localhost</host>
+			<user>root</user>
+			<password>root</password>
+			<dbname>coyote_dev</dbname>
+		</default>
+		
+	</databases>
+
+	<trigger>		
+		<system.onShutdown>
+			<class>debug</class>
+			<function>explain</function>
+		</system.onShutdown>
+	</trigger>
+</config>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+	<databases autoload="default">
+
+		<default>
+			<adapter>mysql</adapter>
+			<host>localhost</host>
+			<user></user>
+			<password></password>
+			<dbname></dbname>
+			<charset></charset>
+			<event-scheduler>0</event-scheduler>
+		</default>
+		
+	</databases>
+</config>

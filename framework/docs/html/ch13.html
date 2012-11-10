@@ -1,0 +1,87 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Rozdzia&#322; 13. Obs&#322;uga baz danych</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="pt01.html" title="Cz&#281;&#347;&#263; I. Dokumentacja techniczna"><link rel="prev" href="ch12.html" title="Rozdzia&#322; 12. Dispatcher"><link rel="next" href="ch13s02.html" title="Zamykanie po&#322;&#261;czenia z baz&#261;"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Rozdzia&#322; 13. Obs&#322;uga baz danych</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch12.html">Poprzedni</a> </td><th width="60%" align="center">Cz&#281;&#347;&#263; I. Dokumentacja techniczna</th><td width="20%" align="right"> <a accesskey="n" href="ch13s02.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="chapter" lang="pl"><div class="titlepage"><div><div><h2 class="title"><a name="id482967"></a>Rozdzia&#322; 13. Obs&#322;uga baz danych</h2></div></div></div><div class="toc"><p><b>Spis tre&#347;ci</b></p><dl><dt><span class="section"><a href="ch13.html#id482984">&#321;&#261;czenie z baz&#261; danych</a></span></dt><dd><dl><dt><span class="section"><a href="ch13.html#id483042">Automatyczne &#322;&#261;czenie z baz&#261; danych</a></span></dt></dl></dd><dt><span class="section"><a href="ch13s02.html">Zamykanie po&#322;&#261;czenia z baz&#261;</a></span></dt><dt><span class="section"><a href="ch13s03.html">Wysy&#322;anie zapyta&#324; SQL</a></span></dt><dt><span class="section"><a href="ch13s04.html">Dodawanie rekordów w tabeli</a></span></dt><dd><dl><dt><span class="section"><a href="ch13s04.html#id483647">Metoda multiInsert()</a></span></dt></dl></dd><dt><span class="section"><a href="ch13s05.html">Uaktualnianie rekordów</a></span></dt><dt><span class="section"><a href="ch13s06.html">Usuwanie rekordów</a></span></dt><dt><span class="section"><a href="ch13s07.html">Pobieranie danych</a></span></dt><dd><dl><dt><span class="section"><a href="ch13s07.html#id483908">Metoda select()</a></span></dt><dt><span class="section"><a href="ch13s07.html#id483972">Metoda from()</a></span></dt><dt><span class="section"><a href="ch13s07.html#id484020">Metoda where()</a></span></dt><dt><span class="section"><a href="ch13s07.html#id484107">Metody order() oraz limit()</a></span></dt><dt><span class="section"><a href="ch13s07.html#id484153">Instrukcje JOIN</a></span></dt><dt><span class="section"><a href="ch13s07.html#id484214">Instrukcja GROUP BY</a></span></dt><dt><span class="section"><a href="ch13s07.html#id484239">Instrukcja HAVING</a></span></dt><dt><span class="section"><a href="ch13s07.html#id484262">Instrukcja IN</a></span></dt><dt><span class="section"><a href="ch13s07.html#id484306">Metoda like()</a></span></dt></dl></dd><dt><span class="section"><a href="ch13s08.html">Klasa Db_Result</a></span></dt><dd><dl><dt><span class="section"><a href="ch13s08.html#id484419">Pobieranie danych</a></span></dt><dt><span class="section"><a href="ch13s08.html#id484733">Pobieranie pola z tablicy wyników</a></span></dt><dt><span class="section"><a href="ch13s08.html#id484803">Informacja o ilo&#347;ci zwróconych rekordów i pól</a></span></dt></dl></dd><dt><span class="section"><a href="ch13s09.html">Bezpiecze&#324;stwo</a></span></dt><dt><span class="section"><a href="ch13s10.html">Mechanizm transakcji</a></span></dt><dt><span class="section"><a href="ch13s11.html">Blokowanie tabel</a></span></dt><dt><span class="section"><a href="ch13s12.html">Metoda nextId()</a></span></dt><dt><span class="section"><a href="ch13s13.html">Pobranie wersji systemu bazodanowego</a></span></dt></dl></div><p>
+		W ka&#380;dym wi&#281;kszym projekcie zachodzi potrzeba wykorzystania baz
+		danych. Mo&#380;emy oczywi&#347;cie korzysta&#263; ze &#347;wietnego formatu jakim jest XML, lecz nie odda nam on mo&#380;liwo&#347;ci
+		jakie oferuj&#261; mechanizmy relacyjnych baz danych.
+	</p><p>
+		Obecnie Coyote obs&#322;uguje dost&#281;p do baz danych MySQL oraz PostgreSQL (dost&#281;pne rozszerzenia:
+		mysql, mysqli, pgsql). Obsluga kolejnego
+		systemu bazodanowego wi&#261;ze si&#281; z napisaniem odpowiedniego adaptera (szczegó&#322;y
+		w dalszej cz&#281;&#347;ci).
+	</p><p>
+		Generalnie, Coyote zapewnia abstrakcyjny dost&#281;p do baz danych.
+		Oznacza to, &#380;e niezale&#380;nie, czy korzystamy z MySQL, czy PostgreSQL - do obs&#322;ugi wykorzystujemy te
+		same metody. 
+	</p><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id482984"></a>&#321;&#261;czenie z baz&#261; danych</h2></div></div></div><p>
+			W Coyote, do obslugi baz danych, wykorzystujemy klas&#281; <tt class="classname">Db</tt>. 
+			Ta wi&#281;c przed po&#322;&#261;czeniem nale&#380;y ów klas&#281; za&#322;adowa&#263; oraz okre&#347;li&#263; adapter. W
+			naszym przyk&#322;adzie pos&#322;u&#380;ymy si&#281; baz&#261; MySQL. Za po&#322;&#261;czenie do bazy odpowiada poni&#380;szy
+			kod:
+			
+			</p><pre class="programlisting">
+// zaladowanie biblioteki db
+$this-&gt;load-&gt;library('db', 'mysql');
+// laczenie...
+$this-&gt;db-&gt;connect('localhost', 'root', 'root', 'coyote_dev');
+			</pre><p>
+		</p><p>
+			W drugim parametrze metody <tt class="methodname">library()</tt>
+			mo&#380;emy przekaza&#263; warto&#347;ci, które zostan&#261; przekazane do konstruktora klasy - w tym wypadku - adaptera
+			mysql. Gdy biblioteka zosta&#322;a za&#322;adowana, przy pomocy metody <tt class="methodname">connect() </tt>
+			- realizujemy po&#322;&#261;czenie z baz&#261;. Metoda posiada kilka parametrów, w kolejno&#347;ci:
+			host bazy, login, has&#322;o, nazwa bazy, port (opcjonalnie).
+		</p><p>
+			Alternatywnym sposobem jest zwyk&#322;e utworzenie instancji:
+			</p><pre class="programlisting">
+$db = new db('mysql');
+$db-&gt;connect('localhost', 'root', 'root', 'coyote_dev');
+			</pre><p>
+		</p><p>
+			Jeszcze innym sposobem jest u&#380;ycie metody database() z klasy Load.
+			Metoda zainicjalizuje klas&#281; DB oraz po&#322;&#261;czy si&#281; z baz&#261; danych:
+			
+			</p><pre class="programlisting">
+$this-&gt;load-&gt;database('mysql', 'localhost', 'root', ;root', 'coyote_dev');
+			</pre><p>
+		</p><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id483042"></a>Automatyczne &#322;&#261;czenie z baz&#261; danych</h3></div></div></div><p>
+				Wygodnym rozwi&#261;zaniem jest, aby framework inicjowa&#322; po&#322;&#261;czenie z
+				baz&#261; danych za nas, aby&#347;my nie musieli tego robi&#263; w ka&#380;dym kontrolerze, co jest raczej
+				niewygodne. Dlatego loader wykrywa, czy w pliku konfiguracyjnym okre&#347;lili&#347;my ustawie&#324; bazy
+				danych. Je&#380;eli tak - postara si&#281; on zainicjowa&#263; po&#322;&#261;czenie. Przede wszystkim - ustalmy
+				konfiguracje bazy danych w pliku konfiguracyjnym:
+				
+				</p><pre class="programlisting">
+&lt;databases&gt;
+
+	&lt;default&gt;
+		&lt;adapter&gt;mysql&lt;/adapter&gt;
+		&lt;host&gt;localhost&lt;/host&gt;
+		&lt;user&gt;root&lt;/user&gt;
+		&lt;password&gt;root&lt;/password&gt;
+		&lt;dbname&gt;coyote_dev&lt;/dbname&gt;
+	&lt;/default&gt;
+
+&lt;/databases&gt;
+				</pre><p>
+			</p><p>
+				Ustawili&#347;my podstawowe warto&#347;ci konfiguracyjne dla bazy danych. Ale
+				to nie wszystko, gdy&#380; w konfiguracji mo&#380;emy mie&#263; kilka ustawie&#324; baz danych. System musi
+				wiedzie&#263;, z któr&#261; &#322;&#261;czy&#263; si&#281; automatycznie. Ustaw argument <span class="emphasis"><em>autoload</em></span> dla znacznika default w
+				ten sposób:
+				
+				</p><pre class="programlisting">
+&lt;databases autoload="default"&gt;
+
+	&lt;default&gt;
+		&lt;adapter&gt;mysql&lt;/adapter&gt;
+		&lt;host&gt;localhost&lt;/host&gt;
+		&lt;user&gt;root&lt;/user&gt;
+		&lt;password&gt;root&lt;/password&gt;
+		&lt;dbname&gt;coyote_dev&lt;/dbname&gt;
+	&lt;/default&gt;
+
+&lt;/databases&gt;
+				</pre><p>
+			</p><p>
+				Od tego momentu system b&#281;dzie automatycznie zwi&#261;zywa&#322;
+				po&#322;&#261;czenie z baz&#261; danych okre&#347;lon&#261; jako default w konfiguracji aplikacji. 
+			</p></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch12.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="pt01.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch13s02.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Rozdzia&#322; 12. Dispatcher </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Zamykanie po&#322;&#261;czenia z baz&#261;</td></tr></table></div></body></html>

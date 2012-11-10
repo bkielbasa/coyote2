@@ -1,0 +1,31 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Pisanie zdarze&#324;</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch19.html" title="Rozdzia&#322; 19. Triggery"><link rel="prev" href="ch19.html" title="Rozdzia&#322; 19. Triggery"><link rel="next" href="ch19s03.html" title="Przypisywanie zdarze&#324; w pliku konfiguracyjnym"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Pisanie zdarze&#324;</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch19.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 19. Triggery</th><td width="20%" align="right"> <a accesskey="n" href="ch19s03.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id495002"></a>Pisanie zdarze&#324;</h2></div></div></div><p>Utwórz nowy kontroler w swoim projekcie. Dla przyk&#322;adu, dodamy zdarzenie dla triggera
+                <span class="emphasis"><em>system.onShutdown</em></span>. Jest to trigger, który wywo&#322;ywany jest w
+            momencie, gdy kod kontrolerów zostanie wywo&#322;any. Jest to zako&#324;czenie dzia&#322;ania
+            aplikacji, w tym momencie najcz&#281;&#347;ciej kod HTML zosta&#322; wys&#322;any do przegl&#261;darki. Mo&#380;emy
+            oprogramowa&#263; dodatkowe zdarzenie, bez modyfikacji kodu kontrolerów. </p><p>Niech nasz przyk&#322;adowy kontroler przybie&#380;e tak&#261;
+            posta&#263;:</p><pre class="programlisting">
+&lt;?php
+
+class Foo extends Controller
+{
+    public function Bar()
+    {
+        echo 'System zako&#324;czy&#322; dzia&#322;anie&lt;br /&gt;';
+        echo 'Czas generowania strony: ' . Benchmark::elapsed();
+    }
+    
+    function main()
+    {
+        Trigger::add('system.onShutdown', array('class' =&gt; 'Foo', 'function' =&gt; 'Bar'));
+    }
+}
+?&gt;</pre><p>W tym momencie po zako&#324;czeniu generowania wszystkich instrukcji, zostanie wykonany kod
+            z metody <tt class="methodname">Bar()</tt>. W tym momencie (w metodzie
+            <tt class="methodname">main()</tt>) dodali&#347;my nowe zdarzenie dla triggera
+                <span class="emphasis"><em>system.onShutdown</em></span>. </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>Wywo&#322;anie tego triggera znajduje si&#281; w
+                pliku core.class.php frameworka. </div><p>Pierwszym parametrem musi by&#263; nazwa triggea, a drugim - tablica zawieraj&#261;ca informacje
+            o lokalizacji kodu, który zamierzamy wykona&#263;. Tablica mo&#380;e mie&#263; nast&#281;puj&#261;ce klucze:</p><div class="table"><a name="id496244"></a><p class="title"><b>Tabela 19.1. Opcje konfiguracji dla zdarzenia</b></p><table summary="Opcje konfiguracji dla zdarzenia" border="1"><colgroup><col><col></colgroup><thead><tr><th>Klucz</th><th>Opis</th></tr></thead><tbody><tr><td>function</td><td>Nazwa funkcji, która zostanie wykonana. Mo&#380;e to by&#263; równie&#380; nazwa
+                            metody.</td></tr><tr><td>class</td><td>Nazwa klasy. Mo&#380;e zawiera&#263; &#322;a&#324;cuch okre&#347;laj&#261;cy nazw&#281; klasy lub
+                            referencj&#281; do obiektu.</td></tr><tr><td>path</td><td>Nasz kod mo&#380;e by&#263; zawarty w zewn&#281;trznym pliku. Wówczas klasa Trigger
+                            za&#322;aduje ten plik przy pomocy instrukcji include_once()</td></tr><tr><td>params</td><td>Dodatkowe parametry jakie zostan&#261; przekazane do zdarzenia.</td></tr><tr><td>eval</td><td>Dodatkowy kod PHP, który zostanie wykonany (parametr funkcji
+                        eval())</td></tr></tbody></table></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch19.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch19.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch19s03.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Rozdzia&#322; 19. Triggery </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Przypisywanie zdarze&#324; w pliku konfiguracyjnym</td></tr></table></div></body></html>

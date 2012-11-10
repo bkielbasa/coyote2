@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../../docbook/html/docbook.xsl"?>
+<chapter>
+    <title>Klasa Controller</title>
+    
+    <para>
+        Wszystkie kontrolery w Coyote muszą... no - może nie muszą (bo nie ma takiego wymogu),
+        ale powinny dziedziczyć po klasie <classname>Controller</classname>. Klasa ta jest klasą
+        abstrakcyjną i zapewnia kilka ciekawych metod, które na pewno pomogą w pisaniu własnych
+        kontrolerów. Konstruktor tej klasy wygląda następująco:
+        <programlisting>
+function __construct() 
+{
+    $this->router = &amp;Load::loadClass('router');	
+    
+    $this->get = &amp;$this->input->get;
+    $this->post = &amp;$this->input->post;
+    $this->cookie = &amp;$this->input->cookie;
+    $this->server = &amp;$this->input->server;
+}       
+        </programlisting>
+        
+        Konstruktor
+        tej klasy inicjalizuje kilka pól dzięki czemu daje nam łatwy dostęp to paru składowych
+        systemu. Przede wszystkim do elementów klasy <classname>Get</classname>,
+        <classname>Post</classname>, <classname>Cookie</classname> czy
+        <classname>Server</classname>. Jak widzisz, tworzona jest referencja do tych obiektów wiec
+        możliwe jest użycie podwójnego zapisu w naszmy
+        kontrolerze:
+        
+        <programlisting>
+echo $this->input->get->id; // odczyt $_GET['id']
+echo $this->get->id; // j/w
+        </programlisting>
+        
+        <note>
+            Kontrolery to dobre miejsca na umieszczenie całej "logiki" aplikacji. W akcjach (metodach) kontrolerów
+            możesz umieszczać kod, który będzie w stanie generować stronę WWW (lub inne dane), przy pomocy
+            modeli, bibliotek, helperów.
+        </note>
+    </para>
+    
+    <section>
+        <title>Tworzenie własnych kontrolerów</title>
+        
+        <para>
+            Kontrolery to pliki, które mają postać klas PHP. Pliki te powinny być umieszczone w katalogu
+            <filename>/controller</filename>, twojego projektu. Nazwa klasy kontrolera powinna odpowiadać
+            nazwie pliku. Oznacza to, że jeżeli tworzymy kontroler o nazwie <emphasis>Foo</emphasis>,
+            to klasa <classname>Foo</classname> (ewentualnie <classname>Foo_Controller</classname> - taki zapis
+            też jest możliwy), powinna znajdować się w pliku <filename>foo.php</filename>, w katalogu
+            <filename>/controller</filename>. Dodatkowo klasa <classname>Foo</classname> lub 
+            <classname>Foo_Controller</classname> powinna dziedziczyć po klasie <classname>Controller</classname>.
+        </para>
+        
+        <para>
+            Kontrolery mogą posiadać metody, które jednocześnie są <emphasis>akcjami</emphasis>. 
+            Domyślnie, pierwszy człon adresu URL oznacza nazwę kontrolera, a drugi - akcję.
+        </para>
+        
+        <para>
+            Innymi słowy, adres URL http://localhost/demo/Foo/Bar spowoduje wywołanie akcji <emphasis>Bar</emphasis>
+            z kontrolera <emphasis>Foo</emphasis>. 
+            
+            <note>
+                Zaawansowane przypisywanie masek adresów do poszczególnych kontrolerów możliwe jest przy użyciu
+                klasy <classname>Router</classname>.
+            </note>
+        </para>
+    </section>
+    
+    <section>
+        <title>Metoda getContext()</title>
+        
+        <para>
+            Metoda <methodname>getContext()</methodname> zapewnia dam dostęp do elementów
+            składowych z poziomu kontrolera. Jest to instrukcja równoważna do
+            <methodname>Core::getInstance()</methodname>:
+            
+            <programlisting>
+echo $this->getContext()->input->getIp();
+echo Core::getInstance()->input->getIp(); 
+            </programlisting>
+        </para>
+        
+        <para>
+            Jednak, aby jeszcze łatwiej ułatwić programiście pracę z frameworkiem, jedną z metod
+            klasy <classname>Controller</classname>
+            jest:
+            <programlisting>
+public function __get($name)
+{
+        return $this->getContext()->$name;
+}
+            </programlisting>
+        </para>
+        
+        <para>
+            Dzięki tej magicznej metodzie, z poziomu każdego kontrolera (każdego dziedziczącego po klasie 
+            <classname>Controller</classname>) możliwy jest dostęp do elementów składowych jądra, czyli
+            bibliotek:
+            
+            <programlisting>
+<![CDATA[
+<?php
+
+class Bar extends Controller
+{
+	public function foo()
+	{
+		/**
+		 * Dostęp do metody getIp() klasy Input
+		 */
+		echo $this->input->getIp(); 
+
+		/**
+		 * Równoważny zapis
+		 */
+		echo $this->getContext()->input->getIp(); 
+
+		/**
+		 * Równoważny zapis
+		 */
+		echo Core::getInstance()->input->getIp();
+	}
+}
+?>
+]]>                
+            </programlisting>
+            
+            W tym przykładzie uzyskujemy prosty dostęp do metody <methodname>getIp()</methodname>
+            z klasy <classname>Input</classname>.            
+        </para>
+        
+        <para>
+            Równie dobrze, moglibyśmy utworzyć instancję klasy <classname>Input</classname> i wywołać
+            metodę <methodname>getIp()</methodname>, ale po co, skoro odpowiednia instancja tej
+            klasy istnieje już w systemie:
+            
+            <programlisting>
+/**
+* Niepotrzebne utworzenie kolejnej instancji klasy...
+*/
+$input = new Input;
+echo $input->getIp();                
+            </programlisting>
+        </para>
+    </section>
+    
+    <section>
+        <title>Metoda getLibrary()</title>
+        
+        <para>
+            Na starcie aplikacji, tylko niektóre, najpotrzebniejsze biblioteki są ładowane do jądra
+            systemu. Oczywistym jest, że nie wszystkie biblioteki muszą być załadowane do aplikacji, 
+            jeżeli nie są wykorzystywane. Ma to związek z wydajnością aplikacji (niepotrzebne marnowanie zasobów).
+        </para>
+        
+        <para>
+            W każdej chwili możesz jednak z dowolnego miejsca w aplikacji (kontroler, widok, model) załadować
+            potrzebną w danej chwili bibliotekę. Jest na to kilka sposobów. W kontrolerze, masz dostęp do
+            metody <methodname>getLibrary()</methodname>, pierwotnie zadeklarowanej w klasie <classname>Controller</classname>.
+        </para>
+        
+        <para>
+            Metoda realizuje załadowanie biblioteki do projektu, a następnie - zwrócenie jej
+            referencji. Identyczny efekt da użycie metody <methodname>library()</methodname> z
+            loadera: 
+            
+            <programlisting>
+$foo = &amp;$this->load->library('foo');
+$foo = &amp;$this->getLibrary('foo');
+            </programlisting>
+            
+            <note>
+                Pamiętaj, że metoda <methodname>getLibrary()</methodname> dostępna jest jedynie w klasach kontrolerów
+                dziedziczących po klasie <classname>Controller</classname>.
+            </note>
+        </para>
+        
+    </section>
+    
+    <section>
+        <title>Metoda getModel()</title>
+        
+        <para>
+            Metoda realizuje załadowanie modelu, a następnie - zwrócenie jego referencji.
+            Identyczny efekt da użycie metody <methodname>model()</methodname> z klasy
+            loadera:
+            
+            <programlisting>
+ $foo = &amp;$this->load->model('foo');
+$foo = &amp;$this->getModel('foo');
+            </programlisting>
+        </para>
+        
+    </section>
+    
+    <section>
+        <title>Metoda getModule()</title>
+        
+        <para>
+            Metoda zwraca nazwę ewentualnego modułu. Ponieważ Coyote obsługuje moduły, które
+            również mogą zawierać kontrolery. Dzięki tej metodzie z poziomu kontrolera możemy
+            sprawdzić, z jakiego modułu pochodzi uruchomiony kontroler. 
+        </para>
+    </section>
+    
+    <section>
+        <title>Metoda getFolder()</title>
+        
+        <para>
+            Metoda zwraca nazwę ewentualnego podkatalogu, w którym znajduje się kontroler, gdyż
+            Coyote umożliwia gromadzenie kontrolerów w podkatalogach. 
+        </para>
+    </section>
+    
+    <section>
+        <title>Metoda getController()</title>
+        
+        <para> 
+            Metoda zwraca nazwę aktualnego kontrolera. Nie jest zwracana nazwa klasy, a jedynie
+            nazwa kontrolera:
+            
+            <programlisting>
+<![CDATA[
+class Foo_Controller extends Controller
+{
+    public function main()
+    {
+        echo $this->getController(); // wyświetli: foo
+    }
+}
+]]>
+            </programlisting>
+            
+            Możemy użyć skrótowego zapisu:<programlisting>echo $this;</programlisting>
+        </para>
+    </section>
+    
+    <section>
+        <title>Metoda getAction()</title>
+        
+        <para>
+            Metoda zwraca nazwę akcji. Ta nazwa pobierana jest z klasy
+            <classname>Router</classname>. Tak więc nieważne z której metody kontrolera jest
+            wywoływana ta metoda - zawsze zwróci nazwę akcji pobraną z klasy
+            <classname>Router</classname>:
+            
+            <programlisting>
+&lt;?php
+
+class Page_Controller extends Controller
+{
+	function main()
+	{
+		$this->foo();		
+	}
+
+	private function foo()
+	{
+		echo $this->getAction(); // zwróci main
+	}
+}
+?>
+            </programlisting>
+        </para>
+    </section>
+    
+    <section>
+        <title>Metoda getFolder()</title>
+        
+        <para>
+            Pliki kontrolerów mogą być grupowane w podkatalogach, w folderze <filename>/controller</filename>.
+            Metoda <methodname>getFolder()</methodname> zwraca w rzeczywistości rezultat wykonania metody
+            <methodname>getFolder()</methodname> z klasy <classname>Router</classname>, czyli nazwę ewentualnego
+            podkatalogu danego kontrolera.
+        </para>
+    </section>
+    
+    <section>
+        <title>Metoda redirect()</title>
+        
+        <para> 
+            Umożliwia przekierowanie na wybrany adres WWW. Należy mieć na uwadze, iz po wywołaniu
+            tej metody, dalszy kod akcji nie będzie
+            wykonywany:
+            <programlisting>&lt;?php
+
+class Page_Controller extends Controller
+{
+	function main()
+	{
+		$this->redirect('http://4programmers.net');
+		$this->foo(); // ta instrukcja nie zostanie wykonana		
+	}
+
+	private function foo()
+	{
+		///
+	}
+}
+?>
+            </programlisting>
+            
+            Parametrem metody <methodname>redirect()</methodname> może być adres URL, nazwa reguły routingu lub
+            ścieżka do  kontrolera:
+            
+            <programlisting>
+$this->redirect('User/View'); // przekierowuje do http://serwer.com/User/View
+$this->redirect('@user'); // przekieruje na adres okreslony regułą @user
+            </programlisting>
+            
+            Metoda posiada jeszcze jeden, opcjonalny parametr, który określać będzie kod przekierowania
+            (dodawany w nagłówku wysyłanym do
+            przeglądarki):
+            <programlisting>
+$this->redirect('User/View', 301); // kod 301 - Moved Permanently
+            </programlisting>
+        </para>
+        
+    </section>
+    
+    <section>
+        <title>Metoda forward()</title>
+        
+        <para>
+            Czasem (zapewne nieczęsto) może okazać się przydatne "przeskoczenie" do innego
+            kontrolera oraz akcji. Metoda <methodname>forward()</methodname> wywołuje jedynie metodę
+            <methodname>dispatch()</methodname> z klasy <classname>Dispatcher</classname> więc od
+            Ciebie zależy, jakiego sposobu użyjesz. Nagłówek metody jest
+            następujący:
+            <programlisting>
+public function forward($controller, $action, $folder = '')
+            </programlisting>
+        </para>
+        
+        <para>
+            Pierwszym parametrem jest nazwa kontrolera - drugim - nazwa akcji, a ostatnim - jak
+            nietrudno się domyśleć - nazwa ewentualnego podkatalogu, w którym znajduje się
+            kontroler. Przykładowy
+            kod:
+            
+            <programlisting>
+$this->forward('foo', 'main', 'test');	
+            </programlisting>
+        </para>
+        
+        <para>
+            Spowoduje wywołanie kontrolera akcji <methodname>main</methodname>, z kontrolera
+            <classname>foo</classname> (<filename>controller/test/foo.php</filename>).
+        </para>
+    </section>
+    
+    <section>
+        <title>Metoda getArguments()</title>
+        
+        <para>
+            Metoda zwraca tablicę parametrów przekazanych w adreie URL. Załóżmy, że użytkownik
+            żąda wczytania kontrolera, który kryje się pod adresem http://127.0.0.1/Foo/Main/1/2.
+            Klasa <classname>Router</classname> intepretuje taki URL i może stwierdzić, iz
+                <classname>Foo</classname> to nazwa kontrolera, <methodname>Main</methodname> -
+            nazwa akcji, a pozostałe wartości to parametry. Te wartości zostaną zwrócone przez
+            metodę <methodname>getArguments()</methodname>. 
+            
+            <note>
+                Metoda zwraca tablicę danych, indeksowaną od zera.
+            </note>
+        </para>
+        
+    </section>
+    
+    <section>
+        <title>Metoda getArgument()</title>
+        
+        <para>
+            Metoda <methodname>getArgument()</methodname> umożliwia odczytanie wartości danego argumentu.                        
+        </para>
+        
+        <para>
+            Działanie jest bardzo podobne do metody <methodname>getArguments()</methodname>, z tym, że 
+            ta druga zwraca tablicę elementów:
+            
+            <programlisting>
+<![CDATA[
+$args = $this->getArguments();
+echo $args[0];
+// to samo co:
+echo $this->getArgument(0);
+]]>                
+            </programlisting>
+        </para>
+        
+  
+    </section>
+    
+</chapter>

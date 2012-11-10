@@ -1,0 +1,89 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Rozdzia&#322; 5. Klasa Core</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="pt01.html" title="Cz&#281;&#347;&#263; I. Dokumentacja techniczna"><link rel="prev" href="ch04s02.html" title="Zawarto&#347;&#263; pliku front controllera"><link rel="next" href="ch05s02.html" title="Korzystanie ze sk&#322;adowych aplikacji"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Rozdzia&#322; 5. Klasa Core</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04s02.html">Poprzedni</a> </td><th width="60%" align="center">Cz&#281;&#347;&#263; I. Dokumentacja techniczna</th><td width="20%" align="right"> <a accesskey="n" href="ch05s02.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="chapter" lang="pl"><div class="titlepage"><div><div><h2 class="title"><a name="id473603"></a>Rozdzia&#322; 5. Klasa Core</h2></div></div></div><div class="toc"><p><b>Spis tre&#347;ci</b></p><dl><dt><span class="section"><a href="ch05.html#id473638">Przep&#322;yw danych</a></span></dt><dd><dl><dt><span class="section"><a href="ch05.html#id474579">Metoda getInstance()</a></span></dt></dl></dd><dt><span class="section"><a href="ch05s02.html">Korzystanie ze sk&#322;adowych aplikacji</a></span></dt><dt><span class="section"><a href="ch05s03.html">Elementy j&#261;dra</a></span></dt><dt><span class="section"><a href="ch05s04.html">Metoda dispatch()</a></span></dt></dl></div><p>
+        Klasa <tt class="classname">Core</tt> (umieszczona w pliku <tt class="filename">core.class.php</tt>
+        w katalogu <tt class="filename">/lib</tt>) stanowi g&#322;ówn&#261; klas&#281; dla ca&#322;ego projektu. Jest to
+        pierwsza klasa jaka zostaje za&#322;adowana do projektu. Klasa <tt class="classname">Core</tt> nie mo&#380;e by&#263; klas&#261; bazow&#261; dla
+        innych klas, nie mo&#380;na po niej dziedziczy&#263;. 
+    </p><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id473638"></a>Przep&#322;yw danych</h2></div></div></div><p>
+            Prze&#347;led&#378;my przez chwil&#281; proces inicjalizacji wymaganych bibliotek, klas oraz ich
+            kolejno&#347;&#263;. Pozwoli to u&#380;ytkownikowi na lepsze zrozumienie dzia&#322;ania frameworka.
+        </p><p>
+            Jak ju&#380; wspomnieli&#347;my, framework implementuje wzorzec front controllera. Czyli ka&#380;de
+            &#380;&#261;danie w aplikacji kierowane jest do pliku <tt class="filename">index.php</tt>. Ten z kolei uruchamia klas&#281;
+                <tt class="classname">Core</tt>, która - dalej - rozdziela otrzymane &#380;&#261;dania. Podstawow&#261;
+            metod&#261; tej klasy jest metoda <tt class="methodname">bootstrap()</tt>, które mo&#380;e przyjmowa&#263;
+            opcjonanly parametr - &#347;cie&#380;k&#281; do aplikacji z frameworkiem. 
+        </p><p>
+            W metodzie <tt class="methodname">bootstrap()</tt> framework przeprowadza nast&#281;puj&#261;ce czynno&#347;ci:
+        </p><div class="itemizedlist"><ul type="disc"><li>
+                Wywo&#322;anie metody statycznej <tt class="methodname">setRootPath()</tt> ustawiaj&#261;c&#261; &#347;cie&#380;k&#281; do
+                katalogu z frameworkiem.
+            </li><li>
+                Wywo&#322;anie metody statycznej <tt class="methodname">setBasePath()</tt>, która ustawia &#347;cie&#380;k&#281; do 
+                katalogu z aplikacj&#261; (w klasie <tt class="classname">Core</tt>)
+            </li><li>
+                Wywo&#322;anie metody <tt class="methodname">setIncludePath()</tt>, która ustawia warto&#347;&#263; 
+                <span class="emphasis"><em>include_path</em></span> na katalogi z frameworkiem oraz z aplikacj&#261;.
+            </li><li>
+                Za&#322;adowanie klasy loadera (klasa <tt class="classname">Load</tt>)
+            </li><li>
+                Za&#322;adowanie klasy <tt class="classname">Log</tt></li><li>
+                Za&#322;adowanie klasy <tt class="classname">Benchmark</tt></li><li>
+                Inicjalizacja konfiguracji oraz za&#322;adowanie plików konfiguracyjnych (klasa <tt class="classname">Config</tt>)
+            </li><li>
+                Ustawienie domy&#347;lnych warto&#347;ci konfiguracyjnych takich jak np. rozszerzenie dla plików szablonów
+            </li><li>
+                Wywo&#322;anie triggera <span class="emphasis"><em>Trigger.OnReady</em></span></li><li>
+                Za&#322;adowanie klasy <tt class="classname">TriggerException</tt> odpowiedzialnej za obs&#322;ug&#281; wyj&#261;tków
+            </li><li>
+                Za&#322;adowanie ewentualnych modu&#322;ów do projektu aplikacji
+            </li><li>
+                Zwrócenie rezultatu wywo&#322;ania metody <tt class="methodname">getInstance()</tt></li></ul></div><p>
+            Pierwszymi instrukcjami jest inicjalizacja pól okre&#347;laj&#261;cych &#347;cie&#380;ki do projektu,
+            frameworka oraz pliku konfiguracji (je&#380;eli istnieje). Nast&#281;pnie wywo&#322;ywana jest
+            statyczna, prywatna metoda <tt class="methodname">setIncludePath()</tt>, która ustala
+            warto&#347;&#263; zmiennej PHP: <tt class="varname">include_path</tt>. 
+        </p><p>
+            Pierwsz&#261; klas&#261; &#322;adowan&#261; w projekcie (niezale&#380;nie od ustale&#324; projektu) jest loader
+            (klasa <tt class="filename">load.class.php</tt>). Loader s&#322;u&#380;y do &#322;adowania poszczególnych
+            komponentów aplikacji/frameworka. 
+        </p><p>
+            Nast&#281;pnie do zasobów &#322;adowana jest klasa <tt class="classname">Log</tt> (<tt class="filename">log.class.php</tt>), 
+            statyczna klasa <tt class="classname">Benchmark</tt> (<tt class="filename">benchmark.class.php</tt>), klasa 
+            <tt class="classname">Trigger</tt> (<tt class="filename">trigger.class.php</tt>) obs&#322;uguj&#261;ca wyzwalacze (hooki, triggery). 
+        </p><p>
+            W dalszej cz&#281;&#347;ci &#322;adowana jest statyczna klasa <tt class="classname">Config</tt>,
+                <tt class="classname">TriggerException</tt> (do ob&#322;ugi b&#322;&#281;dów i wyj&#261;tków). Nast&#281;pnie
+            nast&#281;puje bardzo wa&#380;ny proces w&#322;&#261;czania ewentualnych modu&#322;ów do projektu. Póki co
+            powiedzmy sobie, &#380;e modu&#322;y stanowi&#261; roz&#322;&#261;czalny element aplikacji. Mo&#380;emy sobie
+            wyobrazi&#263;, &#380;e modu&#322;y s&#261; &#322;adowane do projektu i stanowi&#261; jego integraln&#261; cz&#281;&#347;&#263; na czas
+            dzia&#322;ania skryptu. 
+            
+            </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>
+                O modu&#322;ach b&#281;dzie mowa w dalszej cz&#281;&#347;ci podr&#281;cznika. 
+            </div><p>
+        </p><p>
+            Zauwaz, &#380;e metoda <tt class="methodname">bootstrap()</tt> jest metod&#261; statyczn&#261;. 
+            Ostatni&#261; instrukcj&#261; tej metody, jest zwrócenie rezultatu wywo&#322;ania:
+            </p><pre class="programlisting">
+Core::getInstance();                            
+            </pre><p>            
+        </p><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id474579"></a>Metoda getInstance()</h3></div></div></div><p>
+                Klasa <tt class="classname">Core</tt> implementuje wzorzec projektowy - <span class="emphasis"><em>singleton</em></span>.
+            </p><p>
+                Metoda <tt class="methodname">getInstance()</tt> inicjalizuje klas&#281; <tt class="classname">Core</tt> 
+                je&#380;eli jeszcze nie zosta&#322;a utworzona jej instancja. 
+                
+                </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>
+                    W systemie mo&#380;e istnie&#263; tylko jedna instancja klasy <tt class="classname">Core</tt>.                     
+                </div><p>
+            </p><p>
+                Dzi&#281;ki metodzie <tt class="methodname">getInstance()</tt>, w ka&#380;dej chwili, z dowolnego punktu aplikacji
+                masz mo&#380;liwo&#347;&#263; uzyskania dost&#281;pu do klasy j&#261;dra i do jej obiektów:
+                
+                </p><pre class="programlisting">
+
+$core = &amp;Core::getInstance();
+echo $core-&gt;input-&gt;getIp(); // wy&#347;wietla IP
+                    
+                </pre><p>
+            </p></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch04s02.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="pt01.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch05s02.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Zawarto&#347;&#263; pliku front controllera </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Korzystanie ze sk&#322;adowych aplikacji</td></tr></table></div></body></html>

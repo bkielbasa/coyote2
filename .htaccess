@@ -1,0 +1,20 @@
+php_flag short_open_tag on
+
+<Files "cron.php">
+  Order deny,allow
+  Allow from localhost
+  Deny from all
+</Files>
+
+Options +FollowSymlinks
+RewriteEngine on
+
+#Jesli masz zainstalowany system Coyote w podkatalogu (np. www.example.pl/coyote/)
+#to usun komentarz z ponizszej linii i ustaw prawidlowo nazwe podkatalogu
+#RewriteBase /coyote/
+
+RewriteCond %{REQUEST_FILENAME} !-s [NC]
+RewriteCond %{REQUEST_FILENAME} !-d [NC]
+RewriteRule ^(.+) index.php/$1 [L]
+
+ErrorDocument 500 "<h2>Application error</h2>Coyote application failed to start properly"

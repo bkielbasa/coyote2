@@ -1,0 +1,25 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Ustalanie szablonów CSS</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote"><link rel="up" href="ch29.html" title="Rozdzia&#322; 29. Klasa Output"><link rel="prev" href="ch29s02.html" title="Metoda setMeta()"><link rel="next" href="ch30.html" title="Rozdzia&#322; 30. Klasa FTP"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Ustalanie szablonów CSS</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch29s02.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 29. Klasa Output</th><td width="20%" align="right"> <a accesskey="n" href="ch30.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id406906"></a>Ustalanie szablonów CSS</h3></div></div></div><p>Klasa <tt class="classname">Output</tt> zapewnia kilka metod umo&#380;liwiaj&#261;cych przekazanie
+            nazw szablonów CSS. Przede wszystkim metoda <tt class="methodname">addStylesheet()
+            </tt>umo&#380;liwia dodanie do listy, kolejnego szablonu
+            CSS:</p><pre class="programlisting">$this-&gt;output-&gt;addStylesheet('main'); // dodanie szablonu main.css</pre><p>Pierwszym parametrem metody jest nazwa szablonu (bez rozszerzenia
+            <span class="emphasis"><em>.css</em></span>!). Parametr mo&#380;e zawiera&#263; wiele nazw szablonów, które musz&#261;
+            by&#263; oddzielone znakiem
+            przecinka:</p><pre class="programlisting">$this-&gt;output-&gt;addStylesheet('main,foo'); // dodanie szablonu main.css oraz foo.css</pre><p>Metoda addStylesheet() posiada dodatkowy, opcjonalny parametr okre&#347;laj&#261;ce atrybuty dla znacznika
+            &lt;link&gt;:</p><pre class="programlisting">$this-&gt;addStylesheet('main,foo',  array('media' =&gt; 'print')); </pre><p>Teraz, w szablonie nale&#380;y umie&#347;ci&#263; odwo&#322;anie do metody
+            <tt class="methodname">getStylesheet()</tt>, która zwraca kod HTML w postaci znaczników
+            &lt;link&gt; zawieraj&#261;cych odwo&#322;ania do szablonów
+            CSS:</p><pre class="programlisting">&lt;head&gt;
+&lt;?= $output-&gt;getStylesheet(); ?&gt;
+&lt;/head&gt;</pre><p>Taki kod spowoduje wygenerowanie
+            kodu:</p><pre class="programlisting">&lt;head&gt;
+&lt;link rel="stylesheet" type="text/css" href="http://127.0.0.1/template/main.css" media="print" /&gt;
+&lt;link rel="stylesheet" type="text/css" href="http://127.0.0.1/template/foo.css" media="print" /&gt;
+&lt;/head&gt;</pre><p>Aby usun&#261;&#263; przekazany ju&#380; szablon, nale&#380;y u&#380;y&#263; metody
+            <tt class="methodname">removeStylesheet()</tt>. </p><p>Klasa Output udost&#281;pnia równie&#380; metod&#281; <tt class="methodname">setStylesheet()</tt> która
+            dzia&#322;a tak samo jak <tt class="methodname">addStylesheet()</tt>, z t&#261; ró&#380;nic&#261;, i&#380; ta druga
+            jako parametr mo&#380;e przyj&#261;&#263; zarówno &#322;a&#324;cuch (okre&#347;laj&#261;cy nazw&#281; pliku) jak i tablic&#281; z nazwami szablonów:</p><pre class="programlisting">
+$this-&gt;output-&gt;setStylesheet(array(
+		array('main'),
+		array('foo'), 'array('media' =&gt; 'print')
+	)
+);</pre><p>Tak wywo&#322;ana metoda spowoduje ustawienie kolejnych styli CSS.</p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch29s02.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch29.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch30.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Metoda setMeta() </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Rozdzia&#322; 30. Klasa FTP</td></tr></table></div></body></html>

@@ -1,0 +1,17 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Metoda setOptions()</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote"><link rel="up" href="ch26.html" title="Rozdzia&#322; 26. Walidacja danych"><link rel="prev" href="ch26s04.html" title="Ustawienie komunikatów b&#322;&#281;dów"><link rel="next" href="ch26s06.html" title="Metoda setValidators()"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Metoda setOptions()</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch26s04.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 26. Walidacja danych</th><td width="20%" align="right"> <a accesskey="n" href="ch26s06.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id403797"></a>Metoda setOptions()</h3></div></div></div><p>Ka&#380;dy walidator posiada metod&#281; <tt class="methodname">setOptions()</tt>. Umo&#380;liwia ona
+            przekazanie opcji walidatora w formie tablicy. Dochodzimy do tego, &#380;e s&#261; trzy sposoby
+            przekazywania opcji walidatora:</p><div class="itemizedlist"><ul type="disc"><li>W konstruktorze klasy</li><li>Przy pomocy metod walidatora</li><li>Przy pomocy metody setOptions()</li></ul></div><p>Spójrz na poni&#380;szy
+            przyk&#322;ad:</p><pre class="programlisting">
+$stringValidator = new Validate_String;
+$stringValidator-&gt;setTemplate(Validate_String::TOO_SHORT, 'Oj nie... %value% nie mo&#380;e by&#263; krótsze ni&#380; %min% znaków!');
+$stringValidator-&gt;setTemplate(Validate_String::TOO_LONG, 'Khem... %value% jest zbyt d&#322;ugie. Maksymalna d&#322;ugo&#347;&#263; znaków to %max%');
+
+$stringValidator-&gt;setOptions(array(
+		'optional'		=&gt; false,
+		'min'			=&gt; 1,
+		'max'			=&gt; 5
+	)
+);
+$validate-&gt;addValidator($stringValidator);</pre><p>Dzia&#322;anie metody <tt class="methodname">setOptions()</tt> jest bardzo proste. Odczytuje
+            ona klucze w tablicy i poszukuje w klasie walidatora metod o nazwie
+            <span class="emphasis"><em>setXXX</em></span>, gdzie <span class="emphasis"><em>XXX</em></span> to nazwa klucza. </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch26s04.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch26.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch26s06.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Ustawienie komunikatów b&#322;&#281;dów </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Metoda setValidators()</td></tr></table></div></body></html>

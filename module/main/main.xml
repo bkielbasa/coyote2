@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+	<name>main</name>
+	<text>Moduł systemowy</text>
+	<version>1.0-rc2</version>
+	<author>Adam Boduch</author>
+	
+	<option type="checkbox">
+		<name>enableMenu</name>
+		<text>Włącz wyświetlanie menu</text>
+		<title>Włącza wyświetlanie menu w przypadku, gdy na danej stronie istnieją kategorie potomne</title>
+		<values default="1" />
+		<auth>a_</auth>
+	</option>
+</config>

@@ -1,0 +1,37 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Dodawanie rekordów w tabeli</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch13.html" title="Rozdzia&#322; 13. Obs&#322;uga baz danych"><link rel="prev" href="ch13s03.html" title="Wysy&#322;anie zapyta&#324; SQL"><link rel="next" href="ch13s05.html" title="Uaktualnianie rekordów"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Dodawanie rekordów w tabeli</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch13s03.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 13. Obs&#322;uga baz danych</th><td width="20%" align="right"> <a accesskey="n" href="ch13s05.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id483582"></a>Dodawanie rekordów w tabeli</h2></div></div></div><p>
+			System Coyote upraszcza realizowanie prostych operacji na bazie
+			danych. Do nich nale&#380;y równie&#380; wstawianie rekordów w tabeli (innymi s&#322;owy realizowanie zapytania
+			INSERT). W tym celu mo&#380;emy u&#380;y&#263; metody <tt class="methodname">insert()</tt>  klasy
+			<tt class="classname">Db</tt>:
+			
+			</p><pre class="programlisting">$this-&gt;db-&gt;insert('coyote_dev', array('value' =&gt; 'adam'));</pre><p>
+		</p><p>
+			Pierwszym parametrem metody musi by&#263; nazwa tabeli do której wstawiamy
+			dane. Kolejny parametr to tabela okre&#347;laj&#261;ca nazwy kolumn oraz ich warto&#347;ci w nowym
+			rekordzie. Innymi s&#322;owy, u&#380;ycie metody <tt class="methodname">insert()</tt>
+			jest równowa&#380;ne z kodem prezentowanym wcze&#347;niej:
+			
+			</p><pre class="programlisting">
+$sql = 'INSERT INTO `coyote_dev` (value) VALUES("adam");';
+$this-&gt;db-&gt;query($sql);
+			</pre><p>
+		</p><p>
+			Zalet&#261; takiego rozwi&#261;zania jest to, i&#380; nie musimy martwi&#263; si&#281; o
+			pisanie dok&#322;adnej sk&#322;adni SQL. Wstawianie rekordów realizowane jest szybciej. 
+		</p><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id483647"></a>Metoda multiInsert()</h3></div></div></div><p>
+				MySQL umo&#380;liwia wstawienie wielu rekordów do tabeli, przy pomocy
+				jednego zapytania SQL. Umo&#380;liwia to metoda <tt class="methodname">multiInsert()</tt>. 
+				Parametrem tej metody jest tablica zawieraj&#261;ca warto&#347;ci rekordów do wstawienia. Oto przyk&#322;ad
+				wykorzystania tej metody:
+				
+				</p><pre class="programlisting">
+$arr = array('adam', 'marta', 'ewelina');
+foreach ($arr as $value)
+{
+	$sql_arr[] = array(
+		'value' =&gt; $value
+	);
+}
+$this-&gt;db-&gt;multiInsert('coyote_dev', $sql_arr);
+				</pre><p>
+			</p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch13s03.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch13.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch13s05.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Wysy&#322;anie zapyta&#324; SQL </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Uaktualnianie rekordów</td></tr></table></div></body></html>

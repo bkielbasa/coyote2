@@ -1,0 +1,4141 @@
+<chapter><title>Struktura tabel bazy danych</title>		<section>
+			<title>Tabela <emphasis>coyote_accessor</emphasis></title>
+			<para>Zawiera informacje o powiązaniach między artykułami (linki); InnoDB free: 148480</para>
+
+				<table>
+		<title>Struktura tabeli coyote_accessor</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>accessor_from</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry>ID artykułu w którym znajduje się odnośnik</entry>
+				</row>
+						<row>
+					<entry>accessor_to</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry>ID artykułu do którego prowadzi odnośnik</entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_accessor</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>accessor_from</entry>
+					<entry>accessor_from</entry>
+				</row>				
+							<row>
+					<entry>accessor_to</entry>
+					<entry>accessor_to</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_adm_log</emphasis></title>
+			<para>Dziennik operacji panelu administracyjnego</para>
+
+				<table>
+		<title>Struktura tabeli coyote_adm_log</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>log_id</entry>
+					<entry>int(10) unsigned (auto_increment)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>log_user</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>log_time</entry>
+					<entry>int(11)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>log_message</entry>
+					<entry>varchar(255)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>log_ip</entry>
+					<entry>varchar(15)</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_adm_log</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>PRIMARY</entry>
+					<entry>log_id</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_adm_menu</emphasis></title>
+			<para></para>
+
+				<table>
+		<title>Struktura tabeli coyote_adm_menu</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>menu_id</entry>
+					<entry>smallint(5) unsigned (auto_increment)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>menu_parent</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>menu_text</entry>
+					<entry>varchar(100)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>menu_auth</entry>
+					<entry>varchar(20)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>menu_controller</entry>
+					<entry>varchar(100)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>menu_action</entry>
+					<entry>varchar(100)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>menu_order</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_adm_menu</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>PRIMARY</entry>
+					<entry>menu_id</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_adm_session</emphasis></title>
+			<para>Lista zalogowanych w panelu administracyjnym</para>
+
+				<table>
+		<title>Struktura tabeli coyote_adm_session</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>session_id</entry>
+					<entry>varchar(32)</entry>
+					<entry>ID sesji (z tabeli coyote_session)</entry>
+				</row>
+						<row>
+					<entry>session_user_id</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry>ID zalogowanego użytkownika</entry>
+				</row>
+						<row>
+					<entry>session_time</entry>
+					<entry>int(11)</entry>
+					<entry>Czas logowania</entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_adm_session</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>PRIMARY</entry>
+					<entry>session_id</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_article</emphasis></title>
+			<para>Lista artykułów ; InnoDB free: 148480 kB</para>
+
+				<table>
+		<title>Struktura tabeli coyote_article</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>article_id</entry>
+					<entry>smallint(5) unsigned (auto_increment)</entry>
+					<entry>ID artykułu (wartość unikalna)</entry>
+				</row>
+						<row>
+					<entry>article_subject</entry>
+					<entry>varchar(100)</entry>
+					<entry>Tytuł artykułu</entry>
+				</row>
+						<row>
+					<entry>article_exists</entry>
+					<entry>tinyint(1)</entry>
+					<entry>Wartość zero oznacza, iż artykuł jest ukryty</entry>
+				</row>
+						<row>
+					<entry>article_counter</entry>
+					<entry>int(8) unsigned</entry>
+					<entry>Licznik odwiedzin danego tekstu</entry>
+				</row>
+						<row>
+					<entry>article_lock</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry>Określa, czy tekst został zablokowany. Możliwe wartości: 0 lub 1</entry>
+				</row>
+						<row>
+					<entry>article_category</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry>Określa, czy tekst jest jednocześnie kategorią. Mozliwe wartości: 0 lub 1</entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_article</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>PRIMARY</entry>
+					<entry>article_id</entry>
+				</row>				
+							<row>
+					<entry>article_subject</entry>
+					<entry>article_subject</entry>
+				</row>				
+							<row>
+					<entry>article_subject</entry>
+					<entry>article_exists</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_attachment</emphasis></title>
+			<para>InnoDB free: 148480 kB</para>
+
+				<table>
+		<title>Struktura tabeli coyote_attachment</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>attachment_id</entry>
+					<entry>smallint(6) unsigned (auto_increment)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>attachment_name</entry>
+					<entry>varchar(50)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>attachment_file</entry>
+					<entry>varchar(50)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>attachment_size</entry>
+					<entry>mediumint(9) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>attachment_image</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>attachment_width</entry>
+					<entry>smallint(6) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>attachment_height</entry>
+					<entry>smallint(6) unsigned</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_attachment</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>PRIMARY</entry>
+					<entry>attachment_id</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_auth_data</emphasis></title>
+			<para>Informacje o kontroli dostępu dla grup; InnoDB free: 148480 kB; (`data_group`) R</para>
+
+				<table>
+		<title>Struktura tabeli coyote_auth_data</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>data_group</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry>ID grupy (klucz obcy do tabeli coyote_group)</entry>
+				</row>
+						<row>
+					<entry>data_option</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry>ID opcji (klucz obcy do tabeli coyote_auth_option)</entry>
+				</row>
+						<row>
+					<entry>data_value</entry>
+					<entry>tinyint(1)</entry>
+					<entry>Wartość konfiguracyjna. Moze przybrać wartość 1 lub zero</entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_auth_data</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>data_role</entry>
+					<entry>data_group</entry>
+				</row>				
+							<row>
+					<entry>data_option</entry>
+					<entry>data_option</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_auth_group</emphasis></title>
+			<para>Lista użytkowników i grup do których przynależą; InnoDB free: 148480 kB; (`user_</para>
+
+				<table>
+		<title>Struktura tabeli coyote_auth_group</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>user_id</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry>ID użytkownika (klucz obcy z tabeli coyote_useR)</entry>
+				</row>
+						<row>
+					<entry>group_id</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry>ID grupy</entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_auth_group</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>user_id</entry>
+					<entry>user_id</entry>
+				</row>				
+							<row>
+					<entry>group_id</entry>
+					<entry>group_id</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_auth_option</emphasis></title>
+			<para>Access Control List; lista opcji dostępu; InnoDB free: 148480 kB</para>
+
+				<table>
+		<title>Struktura tabeli coyote_auth_option</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>option_id</entry>
+					<entry>smallint(5) unsigned (auto_increment)</entry>
+					<entry>ID opcji (unikalne)</entry>
+				</row>
+						<row>
+					<entry>option_text</entry>
+					<entry>varchar(17)</entry>
+					<entry>Nazwa opcji dostępu</entry>
+				</row>
+						<row>
+					<entry>option_label</entry>
+					<entry>varchar(100)</entry>
+					<entry>Krótki opis pozycji</entry>
+				</row>
+						<row>
+					<entry>option_default</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry>Domyślna wartość konfiguracji. Może przyjąć wartość 1 lub zero</entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_auth_option</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>PRIMARY</entry>
+					<entry>option_id</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_ban</emphasis></title>
+			<para></para>
+
+				<table>
+		<title>Struktura tabeli coyote_ban</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>ban_id</entry>
+					<entry>smallint(5) unsigned (auto_increment)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>ban_user_id</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>ban_ip</entry>
+					<entry>varchar(50)</entry>
+					<entry>Pole może zawierać wyrażenia regularne</entry>
+				</row>
+						<row>
+					<entry>ban_email</entry>
+					<entry>varchar(100)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>ban_timeout</entry>
+					<entry>int(11)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>ban_reason</entry>
+					<entry>varchar(255)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>ban_admin</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>ban_flood</entry>
+					<entry>int(11)</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_ban</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>PRIMARY</entry>
+					<entry>ban_id</entry>
+				</row>				
+							<row>
+					<entry>ban_user_id_ip</entry>
+					<entry>ban_user_id</entry>
+				</row>				
+							<row>
+					<entry>ban_user_id_ip</entry>
+					<entry>ban_ip</entry>
+				</row>				
+							<row>
+					<entry>ban_user_id_ip</entry>
+					<entry>ban_timeout</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_block</emphasis></title>
+			<para>InnoDB free: 148480 kB; (`block_module`) REFER `coyote_dev/coyote_module`(`modul</para>
+
+				<table>
+		<title>Struktura tabeli coyote_block</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>block_id</entry>
+					<entry>smallint(5) unsigned (auto_increment)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>block_name</entry>
+					<entry>varchar(100)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>block_region</entry>
+					<entry>varchar(100)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>block_module</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>block_trigger</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>block_auth</entry>
+					<entry>varchar(20)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>block_header</entry>
+					<entry>text</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>block_footer</entry>
+					<entry>text</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>block_template</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>block_pages</entry>
+					<entry>text</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>block_scope</entry>
+					<entry>tinyint(3) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>block_cache</entry>
+					<entry>tinyint(3) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>block_order</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_block</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>PRIMARY</entry>
+					<entry>block_id</entry>
+				</row>				
+							<row>
+					<entry>block_trigger</entry>
+					<entry>block_trigger</entry>
+				</row>				
+							<row>
+					<entry>block_module</entry>
+					<entry>block_module</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_block_group</emphasis></title>
+			<para>InnoDB free: 148480 kB; (`group_id`) REFER `coyote_dev/coyote_group`(`group_id`)</para>
+
+				<table>
+		<title>Struktura tabeli coyote_block_group</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>group_id</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>group_block</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_block_group</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>group_id</entry>
+					<entry>group_id</entry>
+				</row>				
+							<row>
+					<entry>group_block</entry>
+					<entry>group_block</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_broken</emphasis></title>
+			<para>Lista pustych, nieaktywnych linków; InnoDB free: 148480 kB; (`broken_from`) REFE</para>
+
+				<table>
+		<title>Struktura tabeli coyote_broken</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>broken_from</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry>ID tekstu, w którym znajduje się link (klucz obcy do coyote_article,article_id)</entry>
+				</row>
+						<row>
+					<entry>broken_subject</entry>
+					<entry>char(100)</entry>
+					<entry>Tytuł artykułu, który nie istnieje</entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_broken</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>broken_from</entry>
+					<entry>broken_from</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_category</emphasis></title>
+			<para>Lista tekstów przynależnych do danej kategorii; InnoDB free: 148480 kB; (`catego</para>
+
+				<table>
+		<title>Struktura tabeli coyote_category</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>category_id</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry>ID artykułu, który jest jednocześnie kategorią (klucz obcy do tabeli coyote_article)</entry>
+				</row>
+						<row>
+					<entry>category_article</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry>ID tekstu znajdującego się w danej kategorii. Klucz obcy do tabeli coyote_article</entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_category</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>category_id</entry>
+					<entry>category_id</entry>
+				</row>				
+							<row>
+					<entry>category_article</entry>
+					<entry>category_article</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_comment</emphasis></title>
+			<para></para>
+
+				<table>
+		<title>Struktura tabeli coyote_comment</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>comment_id</entry>
+					<entry>mediumint(8) unsigned (auto_increment)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>comment_user</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>comment_username</entry>
+					<entry>varchar(50)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>comment_time</entry>
+					<entry>int(11)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>comment_content</entry>
+					<entry>text</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>comment_ip</entry>
+					<entry>varchar(15)</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_comment</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>PRIMARY</entry>
+					<entry>comment_id</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_comment_v</emphasis></title>
+			<para>VIEW</para>
+
+				<table>
+		<title>Struktura tabeli coyote_comment_v</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>comment_id</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>comment_user</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>comment_username</entry>
+					<entry>varchar(50)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>comment_time</entry>
+					<entry>int(11)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>comment_content</entry>
+					<entry>text</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>comment_ip</entry>
+					<entry>varchar(15)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>id</entry>
+					<entry>int(11)</entry>
+					<entry>ID komentarza, tekstu itp</entry>
+				</row>
+						<row>
+					<entry>module</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry>ID modułu</entry>
+				</row>
+						<row>
+					<entry>plugin</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry>ID modułu przyłączonego (plugin)</entry>
+				</row>
+						<row>
+					<entry>param</entry>
+					<entry>int(11)</entry>
+					<entry>Dodatkowy parametr</entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_comment_v</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+				</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_config</emphasis></title>
+			<para>Dodatkowe opcje konfiguracyjne projektu </para>
+
+				<table>
+		<title>Struktura tabeli coyote_config</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>config_name</entry>
+					<entry>varchar(120)</entry>
+					<entry>Nazwa klucza</entry>
+				</row>
+						<row>
+					<entry>config_value</entry>
+					<entry>varchar(255)</entry>
+					<entry>Wartość klucza</entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_config</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+				</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_forum</emphasis></title>
+			<para>InnoDB free: 148480 kB</para>
+
+				<table>
+		<title>Struktura tabeli coyote_forum</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>forum_id</entry>
+					<entry>smallint(5) unsigned (auto_increment)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>forum_parent</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>left_id</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>right_id</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>forum_subject</entry>
+					<entry>varchar(100)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>forum_description</entry>
+					<entry>varchar(255)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>forum_url</entry>
+					<entry>varchar(255)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>forum_topics</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>forum_posts</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>forum_last_post_id</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>forum_lock</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>forum_order</entry>
+					<entry>tinyint(2) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>forum_rules</entry>
+					<entry>text</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>forum_type</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>forum_prune</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_forum</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>id</entry>
+					<entry>forum_id</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_forum_auth</emphasis></title>
+			<para>InnoDB free: 148480 kB; (`auth_forum`) REFER `coyote_dev/coyote_forum`(`forum_id</para>
+
+				<table>
+		<title>Struktura tabeli coyote_forum_auth</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>auth_forum</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>auth_option</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>auth_group</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>auth_value</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_forum_auth</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>auth_forum</entry>
+					<entry>auth_forum</entry>
+				</row>				
+							<row>
+					<entry>auth_group</entry>
+					<entry>auth_group</entry>
+				</row>				
+							<row>
+					<entry>auth_option</entry>
+					<entry>auth_option</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_forum_log</emphasis></title>
+			<para></para>
+
+				<table>
+		<title>Struktura tabeli coyote_forum_log</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>log_id</entry>
+					<entry>smallint(3) (auto_increment)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>log_user_id</entry>
+					<entry>smallint(6)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>log_text</entry>
+					<entry>text</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>log_time</entry>
+					<entry>int(11)</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_forum_log</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>log_id</entry>
+					<entry>log_id</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_forum_marking</emphasis></title>
+			<para>InnoDB free: 148480 kB; (`user_id`) REFER `coyote_dev/coyote_user`(`user_id`) ON</para>
+
+				<table>
+		<title>Struktura tabeli coyote_forum_marking</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>user_id</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>forum_id</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>mark_time</entry>
+					<entry>int(11)</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_forum_marking</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>PRIMARY</entry>
+					<entry>user_id</entry>
+				</row>				
+							<row>
+					<entry>PRIMARY</entry>
+					<entry>forum_id</entry>
+				</row>				
+							<row>
+					<entry>forum_id</entry>
+					<entry>forum_id</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_forum_moderator</emphasis></title>
+			<para>InnoDB free: 148480 kB; (`forum_id`) REFER `coyote_dev/coyote_forum`(`forum_id`)</para>
+
+				<table>
+		<title>Struktura tabeli coyote_forum_moderator</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>forum_id</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>forum_user</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>forum_group</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_forum_moderator</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>forum_id</entry>
+					<entry>forum_id</entry>
+				</row>				
+							<row>
+					<entry>forum_group</entry>
+					<entry>forum_group</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_group</emphasis></title>
+			<para>Lista grup; InnoDB free: 148480 kB</para>
+
+				<table>
+		<title>Struktura tabeli coyote_group</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>group_id</entry>
+					<entry>mediumint(8) unsigned (auto_increment)</entry>
+					<entry>ID grupy</entry>
+				</row>
+						<row>
+					<entry>group_name</entry>
+					<entry>varchar(40)</entry>
+					<entry>Nazwa grupy</entry>
+				</row>
+						<row>
+					<entry>group_desc</entry>
+					<entry>varchar(85)</entry>
+					<entry>Krótki opis grupy</entry>
+				</row>
+						<row>
+					<entry>group_leader</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry>ID użytkownika, który jest liderem grupy (najczęściej założyciel)</entry>
+				</row>
+						<row>
+					<entry>group_display</entry>
+					<entry>tinyint(1)</entry>
+					<entry>Określa, czy grupa powinna być wyświetlana na liście</entry>
+				</row>
+						<row>
+					<entry>group_open</entry>
+					<entry>tinyint(1)</entry>
+					<entry>Określa, czy grupa jest grupą otwartą</entry>
+				</row>
+						<row>
+					<entry>group_type</entry>
+					<entry>tinyint(1)</entry>
+					<entry>Typ grupy (wartość 0 mają grupy systemowe - nie do usunięcia)</entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_group</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>group_id</entry>
+					<entry>group_id</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_lang</emphasis></title>
+			<para></para>
+
+				<table>
+		<title>Struktura tabeli coyote_lang</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>lang_id</entry>
+					<entry>smallint(2) (auto_increment)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>lang_iso</entry>
+					<entry>char(0)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>lang_dir</entry>
+					<entry>varchar(3)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>lang_author</entry>
+					<entry>varchar(10)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>lang_english_name</entry>
+					<entry>varchar(6)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>lang_local_name</entry>
+					<entry>varchar(6)</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_lang</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>lang_id</entry>
+					<entry>lang_id</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_menu</emphasis></title>
+			<para>InnoDB free: 148480 kB</para>
+
+				<table>
+		<title>Struktura tabeli coyote_menu</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>menu_id</entry>
+					<entry>smallint(5) unsigned (auto_increment)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>menu_name</entry>
+					<entry>varchar(100)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>menu_auth</entry>
+					<entry>varchar(20)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>menu_tag</entry>
+					<entry>varchar(10)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>menu_additional</entry>
+					<entry>text</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>menu_separator</entry>
+					<entry>varchar(255)</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_menu</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>PRIMARY</entry>
+					<entry>menu_id</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_menu_group</emphasis></title>
+			<para>InnoDB free: 148480 kB; (`group_id`) REFER `coyote_dev/coyote_group`(`group_id`)</para>
+
+				<table>
+		<title>Struktura tabeli coyote_menu_group</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>group_id</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>group_item</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_menu_group</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>group_item</entry>
+					<entry>group_item</entry>
+				</row>				
+							<row>
+					<entry>group_id</entry>
+					<entry>group_id</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_menu_item</emphasis></title>
+			<para>InnoDB free: 148480 kB; (`item_menu`) REFER `coyote_dev/coyote_menu`(`menu_id`) </para>
+
+				<table>
+		<title>Struktura tabeli coyote_menu_item</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>item_id</entry>
+					<entry>smallint(5) unsigned (auto_increment)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>item_menu</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>item_name</entry>
+					<entry>varchar(255)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>item_enable</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>item_tag</entry>
+					<entry>varchar(10)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>item_auth</entry>
+					<entry>varchar(20)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>item_description</entry>
+					<entry>varchar(255)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>item_additional</entry>
+					<entry>text</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>item_path</entry>
+					<entry>varchar(255)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>item_order</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_menu_item</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>PRIMARY</entry>
+					<entry>item_id</entry>
+				</row>				
+							<row>
+					<entry>item_menu</entry>
+					<entry>item_menu</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_module</emphasis></title>
+			<para>Lista modułów włączonych do projektu; InnoDB free: 148480 kB</para>
+
+				<table>
+		<title>Struktura tabeli coyote_module</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>module_id</entry>
+					<entry>smallint(5) unsigned (auto_increment)</entry>
+					<entry>Unikalne ID modułu</entry>
+				</row>
+						<row>
+					<entry>module_name</entry>
+					<entry>varchar(50)</entry>
+					<entry>Nazwa modułu (jednocześnie nazwa katalogu w ktorym się znajduje)</entry>
+				</row>
+						<row>
+					<entry>module_type</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry>Wartość zero oznacza moduł systemwoy (nei do usunięcia). Domyślnie wartość 1</entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_module</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>PRIMARY</entry>
+					<entry>module_id</entry>
+				</row>				
+							<row>
+					<entry>module_name</entry>
+					<entry>module_name</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_module_config</emphasis></title>
+			<para>Konfiguracja pluginu w zależności od modułu do którego jest ; InnoDB free: 14848</para>
+
+				<table>
+		<title>Struktura tabeli coyote_module_config</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>config_module</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry>ID modułu (klucz obcy do tabeli coyote_module)</entry>
+				</row>
+						<row>
+					<entry>config_plugin</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry>ID pluginu (klucz obcy do tabeli coyote_module!)</entry>
+				</row>
+						<row>
+					<entry>config_param</entry>
+					<entry>int(11)</entry>
+					<entry>Dodatkowy parametr, np. ID tekstu itp. Domyślnie zero</entry>
+				</row>
+						<row>
+					<entry>config_data</entry>
+					<entry>text</entry>
+					<entry>Konfiguracja pluginu w formie kodu XML</entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_module_config</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>config_module</entry>
+					<entry>config_module</entry>
+				</row>				
+							<row>
+					<entry>config_plugin</entry>
+					<entry>config_plugin</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_module_data</emphasis></title>
+			<para>Tabela powiązań między danymi z pluginów i modułami; InnoDB free: 148480 kB; (`d</para>
+
+				<table>
+		<title>Struktura tabeli coyote_module_data</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>data_id</entry>
+					<entry>int(11)</entry>
+					<entry>ID komentarza, tekstu itp</entry>
+				</row>
+						<row>
+					<entry>data_module</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry>ID modułu</entry>
+				</row>
+						<row>
+					<entry>data_plugin</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry>ID modułu przyłączonego (plugin)</entry>
+				</row>
+						<row>
+					<entry>data_param</entry>
+					<entry>int(11)</entry>
+					<entry>Dodatkowy parametr</entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_module_data</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>data_module</entry>
+					<entry>data_module</entry>
+				</row>				
+							<row>
+					<entry>data_plugin</entry>
+					<entry>data_plugin</entry>
+				</row>				
+							<row>
+					<entry>data_param</entry>
+					<entry>data_param</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_module_plugin</emphasis></title>
+			<para>Lista pluginów dołączonych do modułu; InnoDB free: 148480 kB; (`module_id`) REFE</para>
+
+				<table>
+		<title>Struktura tabeli coyote_module_plugin</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>module_id</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry>ID modułu</entry>
+				</row>
+						<row>
+					<entry>plugin_id</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry>ID modułu, który jest przyłączony do modułu module_id</entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_module_plugin</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>module_id</entry>
+					<entry>module_id</entry>
+				</row>				
+							<row>
+					<entry>plugin_id</entry>
+					<entry>plugin_id</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_pm</emphasis></title>
+			<para></para>
+
+				<table>
+		<title>Struktura tabeli coyote_pm</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>pm_id</entry>
+					<entry>mediumint(8) unsigned (auto_increment)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>pm_read</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>pm_subject</entry>
+					<entry>varchar(100)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>pm_from</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>pm_to</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>pm_time</entry>
+					<entry>int(11)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>pm_folder</entry>
+					<entry>tinyint(4) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>pm_type</entry>
+					<entry>tinyint(4) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>pm_text</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_pm</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>PRIMARY</entry>
+					<entry>pm_id</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_pm_text</emphasis></title>
+			<para></para>
+
+				<table>
+		<title>Struktura tabeli coyote_pm_text</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>pm_text_id</entry>
+					<entry>mediumint(8) unsigned (auto_increment)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>pm_text</entry>
+					<entry>text</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_pm_text</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>PRIMARY</entry>
+					<entry>pm_text_id</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_poll</emphasis></title>
+			<para>InnoDB free: 148480 kB</para>
+
+				<table>
+		<title>Struktura tabeli coyote_poll</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>poll_id</entry>
+					<entry>smallint(5) unsigned (auto_increment)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>poll_user</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>poll_subject</entry>
+					<entry>varchar(100)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>poll_start</entry>
+					<entry>int(11)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>poll_stop</entry>
+					<entry>int(11)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>poll_votes</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>poll_max_options</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>poll_ip</entry>
+					<entry>varchar(15)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>poll_enable</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>poll_forum</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_poll</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>PRIMARY</entry>
+					<entry>poll_id</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_poll_option</emphasis></title>
+			<para>InnoDB free: 148480 kB; (`option_poll`) REFER `coyote_dev/coyote_poll`(`poll_id`</para>
+
+				<table>
+		<title>Struktura tabeli coyote_poll_option</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>option_id</entry>
+					<entry>smallint(5) unsigned (auto_increment)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>option_text</entry>
+					<entry>varchar(100)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>option_poll</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>option_value</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_poll_option</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>PRIMARY</entry>
+					<entry>option_id</entry>
+				</row>				
+							<row>
+					<entry>option_poll</entry>
+					<entry>option_poll</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_poll_vote</emphasis></title>
+			<para>InnoDB free: 148480 kB; (`poll_id`) REFER `coyote_dev/coyote_poll`(`poll_id`) ON</para>
+
+				<table>
+		<title>Struktura tabeli coyote_poll_vote</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>poll_id</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_id</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_poll_vote</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>poll_id</entry>
+					<entry>poll_id</entry>
+				</row>				
+							<row>
+					<entry>user_id</entry>
+					<entry>user_id</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_post</emphasis></title>
+			<para>VIEW</para>
+
+				<table>
+		<title>Struktura tabeli coyote_post</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>post_text</entry>
+					<entry>text</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>post_id</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>post_topic</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>post_forum</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>post_user</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>post_username</entry>
+					<entry>varchar(20)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>post_time</entry>
+					<entry>int(11)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>post_edit_time</entry>
+					<entry>int(11)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>post_edit_user</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>post_enable_smilies</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>post_enable_html</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>post_type</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>post_ip</entry>
+					<entry>varchar(42)</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_post</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+				</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_post_data</emphasis></title>
+			<para>InnoDB free: 148480 kB; (`post_topic`) REFER `coyote_dev/coyote_topic`(`topic_id</para>
+
+				<table>
+		<title>Struktura tabeli coyote_post_data</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>post_id</entry>
+					<entry>mediumint(8) unsigned (auto_increment)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>post_topic</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>post_forum</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>post_user</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>post_username</entry>
+					<entry>varchar(20)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>post_time</entry>
+					<entry>int(11)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>post_edit_time</entry>
+					<entry>int(11)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>post_edit_user</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>post_enable_smilies</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>post_enable_html</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>post_type</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>post_ip</entry>
+					<entry>varchar(42)</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_post_data</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>id</entry>
+					<entry>post_id</entry>
+				</row>				
+							<row>
+					<entry>post_topic</entry>
+					<entry>post_topic</entry>
+				</row>				
+							<row>
+					<entry>post_user</entry>
+					<entry>post_user</entry>
+				</row>				
+							<row>
+					<entry>post_forum</entry>
+					<entry>post_forum</entry>
+				</row>				
+							<row>
+					<entry>post_username</entry>
+					<entry>post_username</entry>
+				</row>				
+							<row>
+					<entry>post_ip</entry>
+					<entry>post_ip</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_post_report</emphasis></title>
+			<para>Raporty na temat postów niezgodnych z regulaminem; InnoDB free: 148480 kB; (`rep</para>
+
+				<table>
+		<title>Struktura tabeli coyote_post_report</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>report_id</entry>
+					<entry>smallint(5) unsigned (auto_increment)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>report_time</entry>
+					<entry>int(11)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>report_user</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>report_post</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>report_topic</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>report_text</entry>
+					<entry>text</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_post_report</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>PRIMARY</entry>
+					<entry>report_id</entry>
+				</row>				
+							<row>
+					<entry>report_post</entry>
+					<entry>report_post</entry>
+				</row>				
+							<row>
+					<entry>report_topic</entry>
+					<entry>report_topic</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_post_text</emphasis></title>
+			<para></para>
+
+				<table>
+		<title>Struktura tabeli coyote_post_text</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>post_id</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>post_text</entry>
+					<entry>text</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_post_text</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>post_id</entry>
+					<entry>post_id</entry>
+				</row>				
+							<row>
+					<entry>post_text</entry>
+					<entry>post_text</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_session</emphasis></title>
+			<para>Lista użytkowników zalogowanych w systemie</para>
+
+				<table>
+		<title>Struktura tabeli coyote_session</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>session_id</entry>
+					<entry>char(32)</entry>
+					<entry>Unikalne ID sesji</entry>
+				</row>
+						<row>
+					<entry>session_user_id</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry>ID użytkownika</entry>
+				</row>
+						<row>
+					<entry>session_ip</entry>
+					<entry>varchar(16)</entry>
+					<entry>IP użytkownika</entry>
+				</row>
+						<row>
+					<entry>session_start</entry>
+					<entry>int(11)</entry>
+					<entry>Utworzenie sesji (pierwsze logowanie)</entry>
+				</row>
+						<row>
+					<entry>session_stop</entry>
+					<entry>int(11)</entry>
+					<entry>Ostatnia aktywność</entry>
+				</row>
+						<row>
+					<entry>session_logged_in</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>session_page</entry>
+					<entry>varchar(255)</entry>
+					<entry>Strona na której aktualnie przebywa użytkownik</entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_session</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>session_id</entry>
+					<entry>session_id</entry>
+				</row>				
+							<row>
+					<entry>session_user_id</entry>
+					<entry>session_user_id</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_skill</emphasis></title>
+			<para>InnoDB free: 148480 kB</para>
+
+				<table>
+		<title>Struktura tabeli coyote_skill</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>skill_id</entry>
+					<entry>smallint(5) unsigned (auto_increment)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>skill_text</entry>
+					<entry>varchar(20)</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_skill</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>PRIMARY</entry>
+					<entry>skill_id</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_template</emphasis></title>
+			<para></para>
+
+				<table>
+		<title>Struktura tabeli coyote_template</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>template_id</entry>
+					<entry>smallint(2) (auto_increment)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>template_dir</entry>
+					<entry>varchar(10)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>template_name</entry>
+					<entry>varchar(10)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>template_author</entry>
+					<entry>varchar(34)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>template_regdate</entry>
+					<entry>int(11)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>template_enabled</entry>
+					<entry>tinyint(1)</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_template</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>template_id</entry>
+					<entry>template_id</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_text</emphasis></title>
+			<para>Rewizje artykułów</para>
+
+				<table>
+		<title>Struktura tabeli coyote_text</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>text_id</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry>ID artykułu (ID musi odpowiadać kluczowi article_id z tabeli coyote_article)</entry>
+				</row>
+						<row>
+					<entry>text_content</entry>
+					<entry>longtext</entry>
+					<entry>Zawartość tekstu</entry>
+				</row>
+						<row>
+					<entry>text_time</entry>
+					<entry>int(11)</entry>
+					<entry>Czas utworzenia rewizji</entry>
+				</row>
+						<row>
+					<entry>text_current</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry>Wartość 1 oznacza aktualną wersję</entry>
+				</row>
+						<row>
+					<entry>text_log</entry>
+					<entry>varchar(85)</entry>
+					<entry>Dziennik zmian w wersji</entry>
+				</row>
+						<row>
+					<entry>text_user</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry>ID użytkownika </entry>
+				</row>
+						<row>
+					<entry>text_ip</entry>
+					<entry>varchar(40)</entry>
+					<entry>IP edycji</entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_text</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>text_id</entry>
+					<entry>text_id</entry>
+				</row>				
+							<row>
+					<entry>text_current</entry>
+					<entry>text_current</entry>
+				</row>				
+							<row>
+					<entry>text_user</entry>
+					<entry>text_user</entry>
+				</row>				
+							<row>
+					<entry>text_user</entry>
+					<entry>text_ip</entry>
+				</row>				
+							<row>
+					<entry>text_content</entry>
+					<entry>text_content</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_text_attachment</emphasis></title>
+			<para>Lista załączników dodanych w danym tekście; InnoDB free: 148480 kB; (`text_id`) </para>
+
+				<table>
+		<title>Struktura tabeli coyote_text_attachment</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>text_id</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>attachment_id</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_text_attachment</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>text_id</entry>
+					<entry>text_id</entry>
+				</row>				
+							<row>
+					<entry>attachment_id</entry>
+					<entry>attachment_id</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_text_cache</emphasis></title>
+			<para>Tabela zawiera parsowane treści artykułów</para>
+
+				<table>
+		<title>Struktura tabeli coyote_text_cache</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>text_id</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry>ID artykułu. Odpowiada kolumnie article_id z tabeli coyote_article</entry>
+				</row>
+						<row>
+					<entry>text_time</entry>
+					<entry>int(11)</entry>
+					<entry>Czas cachowania</entry>
+				</row>
+						<row>
+					<entry>text_content</entry>
+					<entry>longtext</entry>
+					<entry>Cachowana wartość tekstu</entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_text_cache</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>PRIMARY</entry>
+					<entry>text_id</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_topic</emphasis></title>
+			<para>InnoDB free: 148480 kB; (`topic_forum`) REFER `coyote_dev/coyote_forum`(`forum_i</para>
+
+				<table>
+		<title>Struktura tabeli coyote_topic</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>topic_id</entry>
+					<entry>mediumint(8) unsigned (auto_increment)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>topic_subject</entry>
+					<entry>varchar(100)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>topic_views</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>topic_replies</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>topic_forum</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>topic_type</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>topic_poll</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>topic_moved_id</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>topic_first_post_id</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>topic_last_post_id</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_topic</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>id</entry>
+					<entry>topic_id</entry>
+				</row>				
+							<row>
+					<entry>topic_forum</entry>
+					<entry>topic_forum</entry>
+				</row>				
+							<row>
+					<entry>topic_first_post_id</entry>
+					<entry>topic_first_post_id</entry>
+				</row>				
+							<row>
+					<entry>topic_last_post_id</entry>
+					<entry>topic_last_post_id</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_topic_marking</emphasis></title>
+			<para>InnoDB free: 148480 kB; (`topic_id`) REFER `coyote_dev/coyote_topic`(`topic_id`)</para>
+
+				<table>
+		<title>Struktura tabeli coyote_topic_marking</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>topic_id</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_id</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>forum_id</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_topic_marking</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>forum_id</entry>
+					<entry>forum_id</entry>
+				</row>				
+							<row>
+					<entry>topic_id</entry>
+					<entry>topic_id</entry>
+				</row>				
+							<row>
+					<entry>user_id</entry>
+					<entry>user_id</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_topic_watch</emphasis></title>
+			<para>InnoDB free: 148480 kB; (`topic_id`) REFER `coyote_dev/coyote_topic`(`topic_id`)</para>
+
+				<table>
+		<title>Struktura tabeli coyote_topic_watch</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>topic_id</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_id</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_topic_watch</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>user_id</entry>
+					<entry>user_id</entry>
+				</row>				
+							<row>
+					<entry>topic_id</entry>
+					<entry>topic_id</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_tree</emphasis></title>
+			<para>Lista zależności pomiędzy kategoriami tekstów</para>
+
+				<table>
+		<title>Struktura tabeli coyote_tree</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>tree_id</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry>ID kategorii (odpowiada kolumnie article_id z coyote_article)</entry>
+				</row>
+						<row>
+					<entry>tree_parent</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry>ID kategorii macierzystej (może być zero)</entry>
+				</row>
+						<row>
+					<entry>tree_counter</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>left_id</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry>Pole left_id</entry>
+				</row>
+						<row>
+					<entry>right_id</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry>Pole right_id</entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_tree</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>PRIMARY</entry>
+					<entry>tree_id</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_trigger</emphasis></title>
+			<para>InnoDB free: 148480 kB</para>
+
+				<table>
+		<title>Struktura tabeli coyote_trigger</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>trigger_id</entry>
+					<entry>smallint(5) unsigned (auto_increment)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>trigger_name</entry>
+					<entry>varchar(100)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>trigger_header</entry>
+					<entry>varchar(255)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>trigger_description</entry>
+					<entry>varchar(255)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>trigger_type</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_trigger</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>PRIMARY</entry>
+					<entry>trigger_id</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_trigger_event</emphasis></title>
+			<para>InnoDB free: 148480 kB; (`event_trigger`) REFER `coyote_dev/coyote_trigger`(`tri</para>
+
+				<table>
+		<title>Struktura tabeli coyote_trigger_event</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>event_id</entry>
+					<entry>smallint(5) unsigned (auto_increment)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>event_trigger</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>event_name</entry>
+					<entry>varchar(100)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>event_class</entry>
+					<entry>varchar(255)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>event_function</entry>
+					<entry>varchar(255)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>event_path</entry>
+					<entry>varchar(255)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>event_params</entry>
+					<entry>varchar(255)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>event_eval</entry>
+					<entry>text</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_trigger_event</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>PRIMARY</entry>
+					<entry>event_id</entry>
+				</row>				
+							<row>
+					<entry>event_trigger</entry>
+					<entry>event_trigger</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_user</emphasis></title>
+			<para>Tabela przechowuje dane zarejestrowanych użytkowników.; InnoDB free: 148480 kB</para>
+
+				<table>
+		<title>Struktura tabeli coyote_user</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>user_id</entry>
+					<entry>mediumint(8) unsigned (auto_increment)</entry>
+					<entry>ID użytkownika. ID = 0 zarezerwowane jest dla użytkownika anonimowego.</entry>
+				</row>
+						<row>
+					<entry>user_name</entry>
+					<entry>varchar(30)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_active</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_permission</entry>
+					<entry>mediumtext</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_password</entry>
+					<entry>char(13)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_email</entry>
+					<entry>varchar(128)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_confirm_email</entry>
+					<entry>varchar(128)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_actkey</entry>
+					<entry>varchar(40)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_allow_email</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_posts</entry>
+					<entry>mediumint(6) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_allow_posts</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_regdate</entry>
+					<entry>int(11)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_date_format</entry>
+					<entry>varchar(32)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_flood</entry>
+					<entry>int(11)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_allow_smilies</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_allow_sig</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_lastvisit</entry>
+					<entry>int(11)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_visits</entry>
+					<entry>smallint(6) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_realname</entry>
+					<entry>varchar(50)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_resume</entry>
+					<entry>text</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_resume_file</entry>
+					<entry>varchar(40)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_page</entry>
+					<entry>text</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_skilldesc</entry>
+					<entry>text</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_birthday</entry>
+					<entry>varchar(10)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_location</entry>
+					<entry>varchar(30)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_gg</entry>
+					<entry>varchar(10)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_tlen</entry>
+					<entry>varchar(30)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_icq</entry>
+					<entry>varchar(10)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_skype</entry>
+					<entry>varchar(20)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_website</entry>
+					<entry>varchar(200)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_sig</entry>
+					<entry>tinytext</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_avatar</entry>
+					<entry>varchar(85)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_photo</entry>
+					<entry>varchar(85)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_allow_avatar</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_sort</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_template</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_lang</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_ip</entry>
+					<entry>varchar(255)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_failed_ip</entry>
+					<entry>varchar(255)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_lastmark</entry>
+					<entry>int(11)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_posts_per_page</entry>
+					<entry>smallint(2) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_topics_per_page</entry>
+					<entry>smallint(2) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_notify_pm</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_pm</entry>
+					<entry>tinyint(4) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_pm_new</entry>
+					<entry>tinyint(4) unsigned</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_user</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>PRIMARY</entry>
+					<entry>user_id</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_user_attachment</emphasis></title>
+			<para>InnoDB free: 148480 kB; (`attachment_user`) REFER `coyote_dev/coyote_user`(`user</para>
+
+				<table>
+		<title>Struktura tabeli coyote_user_attachment</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>attachment_id</entry>
+					<entry>smallint(6) unsigned (auto_increment)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>attachment_user</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>attachment_filename</entry>
+					<entry>varchar(12)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>attachment_size</entry>
+					<entry>int(10) unsigned</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_user_attachment</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>PRIMARY</entry>
+					<entry>attachment_id</entry>
+				</row>				
+							<row>
+					<entry>attachment_user</entry>
+					<entry>attachment_user</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_user_portfolio</emphasis></title>
+			<para>InnoDB free: 148480 kB; (`portfolio_user`) REFER `coyote_dev/coyote_user`(`user_</para>
+
+				<table>
+		<title>Struktura tabeli coyote_user_portfolio</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>portfolio_id</entry>
+					<entry>mediumint(8) unsigned (auto_increment)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>portfolio_user</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>portfolio_name</entry>
+					<entry>varchar(100)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>portfolio_desc</entry>
+					<entry>text</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>portfolio_url</entry>
+					<entry>varchar(100)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>portfolio_role</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>portfolio_price</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>portfolio_currency</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>portfolio_thumbnail</entry>
+					<entry>varchar(20)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>portfolio_jobcat</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_user_portfolio</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>PRIMARY</entry>
+					<entry>portfolio_id</entry>
+				</row>				
+							<row>
+					<entry>portfolio_user</entry>
+					<entry>portfolio_user</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_user_position</emphasis></title>
+			<para>InnoDB free: 148480 kB; (`position_user`) REFER `coyote_dev/coyote_user`(`user_i</para>
+
+				<table>
+		<title>Struktura tabeli coyote_user_position</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>position_id</entry>
+					<entry>mediumint(8) unsigned (auto_increment)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>position_user</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>position_name</entry>
+					<entry>varchar(100)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>position_company</entry>
+					<entry>varchar(100)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>position_desc</entry>
+					<entry>text</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>position_start</entry>
+					<entry>int(11)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>position_end</entry>
+					<entry>int(11)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>position_role</entry>
+					<entry>tinyint(4)</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_user_position</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>PRIMARY</entry>
+					<entry>position_id</entry>
+				</row>				
+							<row>
+					<entry>position_user</entry>
+					<entry>position_user</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_user_skill</emphasis></title>
+			<para>InnoDB free: 148480 kB; (`user_id`) REFER `coyote_dev/coyote_user`(`user_id`) ON</para>
+
+				<table>
+		<title>Struktura tabeli coyote_user_skill</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>user_id</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_skill</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_experience</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_lastused</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_rate</entry>
+					<entry>tinyint(1) unsigned</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_user_skill</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>user_id</entry>
+					<entry>user_id</entry>
+				</row>				
+							<row>
+					<entry>user_skill</entry>
+					<entry>user_skill</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_watch</emphasis></title>
+			<para>InnoDB free: 148480 kB; (`article_id`) REFER `coyote_dev/coyote_article`(`articl</para>
+
+				<table>
+		<title>Struktura tabeli coyote_watch</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>article_id</entry>
+					<entry>smallint(5) unsigned</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>user_id</entry>
+					<entry>mediumint(8) unsigned</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_watch</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>article_id</entry>
+					<entry>article_id</entry>
+				</row>				
+							<row>
+					<entry>user_id</entry>
+					<entry>user_id</entry>
+				</row>				
+						</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+				<section>
+			<title>Tabela <emphasis>coyote_word</emphasis></title>
+			<para></para>
+
+				<table>
+		<title>Struktura tabeli coyote_word</title>
+		<tgroup cols="3">
+			<thead>
+				<row>
+					<entry>Kolumna</entry>
+					<entry>Typ</entry>
+					<entry>Opis</entry>
+				</row>
+			</thead>
+			<tbody>
+					<row>
+					<entry>word_text</entry>
+					<entry>varchar(34)</entry>
+					<entry></entry>
+				</row>
+						<row>
+					<entry>word_replacement</entry>
+					<entry>varchar(34)</entry>
+					<entry></entry>
+				</row>
+					</tbody>
+		</tgroup>
+	</table>
+		<table>
+		<title>Klucze tabeli coyote_word</title>
+		<tgroup cols="2">
+			<thead>
+				<row>
+					<entry>Klucz</entry>
+					<entry>Kolumna</entry>
+				</row>
+			</thead>
+			<tbody>
+				</tbody>
+		</tgroup>
+	</table>
+	
+		</section>
+		</chapter>

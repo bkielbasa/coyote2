@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+	<install>false</install>
+	<version>1.0-rc2</version>
+	<build_date>20120223</build_date>
+	<scheduler></scheduler>
+
+	<core>
+		<frontController>index.php</frontController>
+		<trigger>true</trigger>
+		<templateConfig>view.cfg</templateConfig>
+		<templateConfig>config.php</templateConfig>
+		<host></host>
+	</core>
+
+	<site>
+		<title>4programmers.net</title>
+		<email></email>
+		<keywords></keywords>
+		<description></description>
+		<copyright></copyright>
+	</site>
+
+	<email>
+		<from>4programmers.net</from>
+		<confirm></confirm>
+		<success></success>
+		<password></password>
+	</email>
+
+	<cache>
+		<!-- mozliwe wartosci: eaccelerator, apc lub wartosc pusta -->
+		<adapter></adapter>
+		<prefix></prefix>
+	</cache>
+
+	<cookie>
+		<prefix>coyote_</prefix>
+		<host></host>
+	</cookie>
+
+	<session>
+		<name>temp</name>
+		<length>600</length>
+		<gc>120</gc>
+		<crypt></crypt>
+	</session>
+
+	<user>
+		<confirm>false</confirm>
+		<name><![CDATA[/^[0-9a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ.=:|#_ ()[\]^-]+$/]]></name>
+	</user>
+
+	<url>
+		<spaceChar>_</spaceChar>
+		<lowercase>false</lowercase>
+		<ucfirst>true</ucfirst>
+		<diacritics>true</diacritics>
+		<remove><![CDATA[^$;#&()`\|,?%~[]{}:\=!"'<>]]></remove>
+	</url>
+
+	<page>
+		<publish>true</publish>
+		<cache>true</cache>
+		<richtext>0</richtext>
+	</page>
+
+	<attachment>
+		<suffix>jpg,jpeg,gif,png,zip,rar</suffix>
+		<limit>20MB</limit>
+	</attachment>
+
+</config>

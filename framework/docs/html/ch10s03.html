@@ -1,0 +1,34 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Wy&#347;wietlanie zawarto&#347;ci konfiguracji</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch10.html" title="Rozdzia&#322; 10. Konfiguracja projektu"><link rel="prev" href="ch10s02.html" title="Automatyczne &#322;adowanie pliku konfiguracji"><link rel="next" href="ch10s04.html" title="Ustawianie warto&#347;ci konfiguracyjnych"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Wy&#347;wietlanie zawarto&#347;ci konfiguracji</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch10s02.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 10. Konfiguracja projektu</th><td width="20%" align="right"> <a accesskey="n" href="ch10s04.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id478838"></a>Wy&#347;wietlanie zawarto&#347;ci konfiguracji</h2></div></div></div><p>W celu wy&#347;wietlenia zawarto&#347;ci klasy Config, mo&#380;na u&#380;y&#263; metody
+            <tt class="methodname">getItem()</tt> nie podaj&#261;c &#380;adnego
+            parametru:</p><pre class="programlisting">Core::debug(Config::getItem());</pre><p>Wówczas zostanie zwrócona tablica PHP z informacjami o konfiguracji. W moim przypadku
+            w rezultacie zastosowania powy&#380;szych instrukcji, na ekranie zostanie wy&#347;wietlona
+            tablica:</p><pre class="programlisting">
+Array
+(
+    [core] =&gt; Array
+        (
+            [root] =&gt; C:/usr/src/coyote/demo/../coyote-1-0/
+            [base] =&gt; C:\usr\src\coyote\demo/
+            [template] =&gt; template
+            [templateConfig] =&gt; config.xml
+            [templateExtension] =&gt; .php
+            [javascript] =&gt; template/js
+        )
+
+    [application] =&gt; My App
+)</pre><p>Mo&#380;esz zauway&#263;, i&#380; w konfiguracji znajduj&#261; si&#281; pola, których nie ustawia&#322;e&#347;. Warto&#347;ci
+            tych pól zosta&#322;y nadane automatycznie przez framework. S&#261; to podstawowe informacje,
+            takie jak &#347;cie&#380;ki czy nazwy katalogów istotne dla prawid&#322;owego dzia&#322;ania frameworka.
+            Zostaj&#261; one ustawione w momencie, gdy Coyote nie mo&#380;e odnale&#378;&#263; tych pól w pliku
+            konfiguracji. Innymi s&#322;owy: je&#380;eli nie ustawisz tych pól r&#281;cznie, w pliku XML, Coyote
+            sam ustawi ich warto&#347;&#263;. &#321;atwo to sprawdzi&#263;. Zmien zawarto&#347;&#263; pliku konfiguracyjnego, tak,
+            aby zawiera&#322; on informacje o rozszerzeniu
+            widoków:</p><pre class="programlisting">
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;config&gt;
+	&lt;application&gt;My App&lt;/application&gt;
+	&lt;core&gt;
+		&lt;templateExtension&gt;.phtml&lt;/templateExtension&gt;
+	&lt;/core&gt;
+&lt;/config&gt;</pre><p>Od tej pory, domy&#347;lnym rozszerzeniem dla plików widoków b&#281;dzie
+            .<span class="emphasis"><em>phtml</em></span>. </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch10s02.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch10.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch10s04.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Automatyczne &#322;adowanie pliku konfiguracji </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Ustawianie warto&#347;ci konfiguracyjnych</td></tr></table></div></body></html>

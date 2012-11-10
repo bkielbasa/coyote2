@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<region>
+		<name>footer</name>
+		<text>Stopka</text>
+		<cache>0</cache>
+	</region>
+	<region>
+		<name>header</name>
+		<text>Nagłówek</text>
+		<cache>0</cache>
+	</region>
+	<region>
+		<name>content</name>
+		<text>Content</text>
+		<cache>0</cache>
+	</region>
+</config>

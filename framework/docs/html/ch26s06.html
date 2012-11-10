@@ -1,0 +1,104 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Metoda setValidators()</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote"><link rel="up" href="ch26.html" title="Rozdzia&#322; 26. Walidacja danych"><link rel="prev" href="ch26s05.html" title="Metoda setOptions()"><link rel="next" href="ch26s07.html" title="Metoda reset()"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Metoda setValidators()</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch26s05.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 26. Walidacja danych</th><td width="20%" align="right"> <a accesskey="n" href="ch26s07.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id403873"></a>Metoda setValidators()</h3></div></div></div><p>Klasa <tt class="classname">Validate</tt> posiada metod&#281;
+            <tt class="methodname">setValidators()</tt>, która stanowi alternatyw&#281; dla metody
+                <tt class="methodname">addValidator()</tt>. Umo&#380;liwia ona przekazanie konfiguracji
+            walidatorów bez konieczno&#347;ci samodzielnego inicjalizowania klas.
+            </p><pre class="programlisting">
+&lt;?php
+
+class Bar extends Controller
+{
+	function main()
+	{
+		$value = '12354567567';
+
+		$validate = &amp;$this-&gt;getLibrary('validate');
+		$validate-&gt;setValidators(array(
+
+				'string'		=&gt; array(
+
+
+						'optional'			=&gt; false,
+						'min'				=&gt; 1,
+						'max'				=&gt; 5,
+						'templates'			=&gt; array(
+
+							'TOO_SHORT'	=&gt; 'Oj nie... %value% nie mo&#380;e by&#263; krótsze ni&#380; %min% znaków!',
+							'TOO_LONG'	=&gt; 'Khem... %value% jest zbyt d&#322;ugie. Maksymalna d&#322;ugo&#347;&#263; znaków to %max%'
+						)
+				),
+				'match'			=&gt; array(
+
+						'pattern'			=&gt; '/[a-zA-Z]+/',
+						'templates'			=&gt; array(
+
+							'NOT_MATCH'	=&gt; 'Uuu... warto&#347;&#263; %value% jest nieprawid&#322;owa'
+						)
+				)
+			)
+		);
+
+		if (!$validate-&gt;isValid($value))
+		{
+			echo '&#321;a&#324;cuch jest nieprawid&#322;owy';
+
+			Core::debug($validate-&gt;getMessages());
+		}
+		else
+		{
+			echo '&#321;a&#324;cuch jest poprawny';
+		}
+	}
+}
+?&gt;</pre><p>Parametrem metody <tt class="methodname">setValidators()</tt> musi by&#263; tablica. Kluczami
+            tablicy s&#261; nazwy walidatorów, które to z kolei zawieraj&#261; kolejne tablice okre&#347;laj&#261;ce
+            opcje walidatorów. Klucz <span class="emphasis"><em>templates</em></span> zawiera informacje o szablonach
+            komunikatów b&#322;&#281;dów. Zwró&#263; uwag&#281;, i&#380; sta&#322;e s&#261; tutaj &#322;a&#324;cuchami - uj&#281;te w apostrofy.
+            Nale&#380;y o tym pami&#281;ta&#263;. </p><p>Takie rozwi&#261;zanie umo&#380;liwia przetrzymywanie konfiguracji walidatorów w plikach
+        konfiguracyjnych i &#322;adowania ich w razie potrzeby do projektu. </p><p>Mo&#380;liwe s&#261; ró&#380;ne konfiguracj&#281; tablicy asocjacyjnej przekazywanej do metody <tt class="methodname">setValidators()</tt>.
+        W powy&#380;szym przyk&#322;adzie klucze tablicy okre&#347;la&#322;y nazw&#281; walidatora, a warto&#347;ci&#261; by&#322;a tablica przekazywana do 
+        konstruktora klasy. Mo&#380;liwe jest przekazanie obiektu klasy walidatora lub - nazwy walidatora - bez parametrów
+        konfiguracji:
+        </p><pre class="programlisting">
+&lt;?php
+
+class Bar extends Controller
+{
+	function main()
+	{
+		$value = '12354567567';
+
+		$validate = &amp;$this-&gt;getLibrary('validate');
+		$validate-&gt;setValidators(array(
+
+				'string',
+				new Validate_Match('/[a-zA-Z]+/')
+			)
+		);
+
+		if (!$validate-&gt;isValid($value))
+		{
+			echo '&#321;a&#324;cuch jest nieprawid&#322;owy';
+
+			Core::debug($validate-&gt;getMessages());
+		}
+		else
+		{
+			echo '&#321;a&#324;cuch jest poprawny';
+		}
+	}
+}
+?&gt;            
+        </pre><p>
+            Mo&#380;liwe jest wi&#281;c przekazywanie samych nazw walidatorów - bez zawierania argumentów, które maj&#261; by&#263; przekazane
+            do konstruktora klasy. Innym sposobem jest przekazanie parametrów walidatora w formie tablicy:
+            </p><pre class="programlisting">
+$validate-&gt;setValidators(array(
+
+		array('string', false, 1, 5),
+		array('match', '/[a-zA-Z]+/')
+	)
+);                
+            </pre><p>
+            Pierwszym elementem tablicy musi by&#263; nazwa walidatora (tzn. <span class="emphasis"><em>string</em></span> oraz <span class="emphasis"><em>match</em></span>), gdy&#380;
+            kolejne elementy b&#281;d&#261; przekazywane do konstruktora klasy w formie parametrów.          
+        </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch26s05.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch26.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch26s07.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Metoda setOptions() </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Metoda reset()</td></tr></table></div></body></html>

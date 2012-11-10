@@ -1,0 +1,54 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Przekazywanie parametrów do zdarzenia</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1"><link rel="up" href="ch18.html" title="Rozdzia&#322; 18. Triggery"><link rel="prev" href="ch18s04.html" title="Triggery dost&#281;pne w systemie"><link rel="next" href="ch19.html" title="Rozdzia&#322; 19. Cache"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Przekazywanie parametrów do zdarzenia</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch18s04.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 18. Triggery</th><td width="20%" align="right"> <a accesskey="n" href="ch19.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id403144"></a>Przekazywanie parametrów do zdarzenia</h2></div></div></div><p> Spójrz na poni&#380;szy
+            przyk&#322;ad:</p><pre class="programlisting">
+&lt;?php
+
+class Foo extends Controller
+{
+    public function Bar($comment)
+    {
+        echo 'System wykry&#322; akcje dodawania komentarza: ' . $comment;
+    }
+    
+    function main()
+    {
+        Trigger::add('system.onBeforeSubmit', array('class' =&gt; 'Foo', 'function' =&gt; 'bar'));
+        
+        $comment = 'Przyk&#322;adowy komentarz';
+        // pobieranie, analiza tresci itp
+        Trigger::call('system.onBeforeSubmit', $comment);
+        
+        // dodanie komentarza		
+    }
+}
+?&gt;</pre><p>W
+            metodzie <tt class="methodname">main()</tt> dodali&#347;my nowe zdarzenie dla triggera <span><b class="command">system.onBeforeSubmit</b></span>. Wywo&#322;anie zdarze&#324; przypisanych dla danego triggera
+            nast&#281;puje za pomoc&#261; metody <tt class="methodname">call()</tt> z klasy
+            <tt class="classname">Trigger</tt>. </p><p>Zwró&#263; uwage, &#380;e w metodzie <tt class="methodname">Bar()</tt> zadeklarowa&#322;em parametr. W
+            momencie wywo&#322;ania triggera, zawarto&#347;&#263; komentarza zostanie przes&#322;ana do zdarzenia. </p><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id403205"></a>Przekazywanie parametrów przez referencj&#281;</h3></div></div></div><p>Kolejny przyk&#322;ad: oprogramowanie triggera <span class="emphasis"><em>system.onDisplay</em></span>.
+                Utwórz nowy widok <tt class="filename">foo.php</tt>:</p><pre class="programlisting">Witam! To jest &lt;b&gt;przyklad&lt;/b&gt; oprogramowania triggera &lt;b&gt;system.onDisplay&lt;/b&gt;!</pre><p>Nasz trywialny przyk&#322;ad b&#281;dzie polega&#322; na zamianie znacznika &lt;b&gt; na &lt;i&gt; w
+                widoku. Oto nasz
+                kontroler:</p><pre class="programlisting">
+&lt;?php
+
+class Foo extends Controller
+{
+    public function Bar(&amp;$content)
+    { 
+        $content[0] = str_replace(array('&lt;b&gt;', '&lt;/b&gt;'), array('&lt;i&gt;', '&lt;/i&gt;'), $content[0]);
+    }
+    
+    function main()
+    {
+        Trigger::add('system.display', array('class' =&gt; 'Foo', 'function' =&gt; 'bar'));
+        
+        echo $this-&gt;load-&gt;view('foo');		
+    }
+}
+?&gt;</pre><p>W metodzie <tt class="methodname">main()</tt> dodajemy zdarzenie dla triggera
+                    <span><b class="command">system.onDisplay</b></span>. W metodzie <tt class="methodname">Bar</tt>
+                wykonujemy prost&#261; operacj&#281; - zamian&#281; znacznika &lt;b&gt; na &lt;i&gt;. W klasie <tt class="filename">view.class.php</tt> nast&#281;puje wywo&#322;anie zdarze&#324;
+                triggera:</p><pre class="programlisting">Trigger::call('system.onDisplay', array(&amp;$this-&gt;content));</pre><p>Zwró&#263; uwag&#281; na sposób przekazania do zdarzenia, warto&#347;ci pola
+                <tt class="varname">$content</tt>. Je&#380;eli chcemy przekaza&#263; do zdarzenia parametry w formie
+                referencji, nale&#380;y przekaza&#263; je w formie tablicy. W ten sposób zdarzenia mog&#261;
+                modyfikowa&#263; parametr, a w naszym przypadku - tre&#347;&#263; strony, która jest przesy&#322;ana do
+                przegl&#261;darki. </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch18s04.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch18.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch19.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Triggery dost&#281;pne w systemie </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Rozdzia&#322; 19. Cache</td></tr></table></div></body></html>

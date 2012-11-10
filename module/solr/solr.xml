@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<installation type="module">
+	<name>solr</name>
+	<text>Wyszukiwarka Solr</text>
+	<version>1.0-rc2</version>
+	<system>1.0-rc2</system>
+	<author>Adam Boduch</author>
+	
+	<setup>
+		<install>
+			<controller>solr</controller>
+			<action>install</action>
+			<folder>setup</folder>
+		</install>
+		<uninstall>
+			<controller>solr</controller>
+			<action>uninstall</action>
+			<folder>setup</folder>
+		</uninstall>
+		
+		<connector>
+			<name>solr</name>
+			<class>solr</class>
+			<text>Strona wyszukiwarki Solr</text>
+			<controller>solr</controller>
+			<action>main</action>
+			<folder></folder>
+		</connector>
+	</setup>
+</installation>

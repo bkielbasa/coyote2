@@ -1,0 +1,26 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Struktura katalogów</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch03.html" title="Rozdzia&#322; 3. Wprowadzenie"><link rel="prev" href="ch03s04.html" title="Tworzenie folderu aplikacji"><link rel="next" href="ch03s06.html" title="Kolejno&#347;&#263; odczytywanych plików"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Struktura katalogów</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch03s04.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 3. Wprowadzenie</th><td width="20%" align="right"> <a accesskey="n" href="ch03s06.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id472144"></a>Struktura katalogów</h2></div></div></div><p>
+            W katalogu <tt class="filename">controller</tt> powiniene&#347; umieszcza&#263; pliki kontrolerów. 
+            Reszta ju&#380; zale&#380;y od Ciebie. Jednak&#380;e korzystaj&#261;c z loadera Coyote wymagana jest okre&#347;lona struktura
+            katalogów. Poniewa&#380; loader domy&#347;lnie poszkuje bibliotek w katalogach
+            <tt class="filename">lib</tt>. Klas modeli natomiast w katalogach <tt class="filename">model</tt>, a
+            helperów - w folderze <tt class="filename">helper</tt>. 
+        </p><p>
+            Coyote dostarcza oczywi&#347;cie w&#322;asny
+            
+            zestaw bibliotek, które mo&#380;esz znale&#378;&#263; w katalogu lib. Oto przyk&#322;ad jak z nich
+            kozysta&#263;:
+            </p><pre class="programlisting">
+$this-&gt;load-&gt;library('feed');
+$feed = $this-&gt;feed-&gt;import('http://4programmers.net/rss.php?rss=topic');
+
+print_r($feed);
+            </pre><p>
+        </p><p>
+            W tym przyk&#322;adzie za&#322;adowali&#347;my bibliotek&#281; <tt class="classname">feed</tt>, do obs&#322;ugi nag&#322;ówków
+            RSS 2.0. Tutaj wykorzystali&#347;my metod&#281; <tt class="methodname">import()</tt>, która pobra&#322;a
+            nag&#322;ówki ze wskazanego URL i skonwertowa&#322;a je do postaci tablicy PHP.
+        </p><p>
+            Podsumowuj&#261;c, w swojej aplikcji mo&#380;esz mie&#263; nast&#281;puj&#261;ce katalogi:
+        </p><p>
+            </p><div class="table"><a name="id472235"></a><p class="title"><b>Tabela 3.2. Katalogi aplikacji korzystaj&#261;cej z Coyote</b></p><table summary="Katalogi aplikacji korzystaj&#261;cej z Coyote" border="0"><colgroup><col><col></colgroup><thead><tr><th>Folder</th><th>Opis</th></tr></thead><tbody><tr><td>cache</td><td>Folder z plikami cache</td></tr><tr><td>lib</td><td>Folder zawieraj&#261;cy dodatkowe biblioteki</td></tr><tr><td>model</td><td>Folder zawieraj&#261;cy klasy modelu</td></tr><tr><td>module</td><td>Folder zawieraj&#261;cy dodatkowe modu&#322;y</td></tr><tr><td>i18n</td><td>Folder zawieraj&#261;cy pliki j&#281;zykowe</td></tr><tr><td>helper</td><td>Folder zawieraj&#261;cy pliki pomocników (helper)</td></tr><tr><td>template</td><td>Folder zawierj&#261;cy widoki</td></tr><tr><td>log</td><td>Folder zawierj&#261;cy ewentualne logi systemowe</td></tr></tbody></table></div><p>
+        </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch03s04.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch03.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch03s06.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Tworzenie folderu aplikacji </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Kolejno&#347;&#263; odczytywanych plików</td></tr></table></div></body></html>

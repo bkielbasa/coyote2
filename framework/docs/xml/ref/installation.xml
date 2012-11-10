@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter>
+    <title>Instalacja</title>
+    
+    <para>
+        Od samego początku autorom projektu przyświecała myśl, aby framework nie wymagał
+        instalacji oraz konfiguracji. Wystarczy ściągnąć spakowane pliki projektu ze strony: <ulink
+            url="http://boduch.net/coyote">http://boduch.net/coyote/</ulink> i rozpakować w
+        odopwiednim katalogu serwera. Następnie wystarczy wejść w odpowiedni katalog projektu - np.:
+        <command>http://127.0.0.1/coyote</command>
+    </para>
+    
+    <para>
+        Jeżeli wszystko poszło dobrze, Twoim oczom ukaże się powitalna strona projektu. Od tej
+        chwili możesz zacząć programować przy użyciu Coyote'a. 
+        
+        <caution>
+            Strona powitalna nie stanowi integralnej części frameworka. 
+            Służy ona jedynie do prezentacji głównych właściwości projektu. 
+            Z powodzeniem możesz usunąć niepotrzebne pliki kikając w przycisk 
+            <emphasis role="italic">Usuń teraz</emphasis> na stronie powitalnej. 
+        </caution>
+    </para>
+    
+    <section>
+        <title>Pasek debug</title>
+        
+        <para>
+            Domyślnie, w prawym, górnym rogu strony znajduje się
+            pasek <emphasis role="italic">debug</emphasis>. Jest on generowany automatycznie PO
+            wygenerowaniu właściwej strony. Zawiera kilka informacji o samym projekcie jak i o
+            zmiennych/stałych wykorzystywanych w systemie. Są to informacje przydatne na etapie
+            projektowania. Aby ujrzeć szczególy wystarczy kliknąc na daną pozycję. Rozwinie się
+            wówczas okno z dodatkowymi informacjami.
+        </para>
+        
+        <para>
+            Pierwsza ikona umożliwia wyświetlenie informacji o samej wersji frameworka, wersji 
+            PHP oraz systemie operacyjnym.
+        </para>
+        
+        <para>
+            Druga zakładka (ikona) ilość pamięci zużytej na wygenerowanie
+            strony.
+        </para>
+        
+        <para>
+            Trzecia zakładka prezentuje zawartość dziennika (logi), który został
+            wygenerowany w trakcie. Tutaj możesz znaleźć informacje z ostrzeżeniami, wskzówkami (również
+            ostrzeżeniami samego interpretera PHP).
+        </para>
+            
+        <para>
+            Czwarta zakładka prezentuje zawartość
+            zmiennych globalnych. Znajduje się tutaj również konfiguracja projektu oraz lista stałych
+            zadeklarowanych w projekcie. 
+        </para>
+            
+        <para>
+            Ostatnia zakładka prezentuje czasy wygenerowania poszczególnych elementów strony. 
+        </para>
+            
+        <para>
+            Pasek możesz zamknąć klikając na czerwoną ikonkę na pasku. 
+        </para>
+            
+        <para>
+            <note>
+                Domyślnie aplikacja działa w trybie <emphasis role="bold">DEBUG</emphasis>. Oznacza
+                to, że czas generowania strony jest dłuższy. Program podczas generowania gromadzi
+                informacje na temat projektu (logi, czas generowania poszczególnych podzespołów), a na
+                końcu prezentuje wszystko w formie paska debug. W prosty sposób możesz wyłaczyć
+                generowanie samego paska jak i działanie w trybie deweloperskim (DEBUG). Wystarczy, że
+                odnajdziesz w pliku index.php (głównym pliku projektu) stałą <constant>DEBUG</constant>,
+                a następnie zmienisz jej wartość na false. 
+            </note>
+            
+            
+            <warning>
+                Pamiętaj o tym, aby wyłączyć tryb DEBUG w finalnej wersji produktu umieszczonej
+                na serwerze. Ze wzgledów bezpieczeństwa.
+            </warning>
+                    
+        </para>
+    </section>
+    
+    <section>
+        <title>Konfiguracja</title>
+        
+        <para>
+            Framework został napisany tak, że do prawidłowego działanie nie potrzebuje wcale pliku
+            konfiguracyjnego. Co prawda, domyślnie, po ściągnięciu i rozpakowaniu projektu, w głównym
+            katalogu znajdziesz plik <emphasis role="italic">config.xml</emphasis>, lecz nie jest on
+            wcale potrzebny! Możesz więc go wykasować, a projekt nadal będzie działał tak samo. Więcej
+            na temat konfiguracji, znajdziesz w dalszej części tego podręcznika. 
+        </para>
+        
+    </section>
+</chapter>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter>
+    <title>Klasa Output</title>
+    <para>Klasa <classname>Output</classname> związana jest odpowiedzią serwera na żądanie
+        użytkownika. Umożliwia wysłanie nagłówków HTTP, ciastek (cookies) czy dodatkowych znaczników
+        strony WWW. <note>Więcej informacji o klasie Output, znajdziesz w dokumentacji API
+            frameworka. </note></para>
+    <section>
+        <title>Metoda setTitle()</title>
+        <para>Metoda umożliwia ustawienie tytułu dla strony. Jednakże w szablonie strony, należy
+            określić, w którym miejscu ma zostać umieszczony tytuł (w postaci znacznika &lt;title>)
+            -
+            np.:<programlisting>&lt;html>
+&lt;head>
+&lt;?= $output->getTitle(); ?>
+&lt;/head>
+&lt;body>
+...
+&lt;/body>
+&lt;/html></programlisting></para>
+    </section>
+    <section>
+        <title>Metoda setMeta()</title>
+        <para>Służy do przekazania dodatkowych parametrów w postaci znacznika &lt;meta>.
+            Np.:<programlisting>$this->output->setMeta('Description', 'Oto opis strony');
+// następnie w widoku:
+&lt;head>
+&lt;?= $output->getMeta(); ?>
+&lt;/head></programlisting></para>
+        <para>Metoda <methodname>getMeta()</methodname> zwróci przekazane nagłówki w postaci
+            znaczników &lt;meta>. Nagłówki przekazane do klasy Output, można usunąc przy pomocy
+            metody <methodname>removeMeta()</methodname>. <note>Analogicznie działają metody
+                setHttpMeta(), getHttpMeta() oraz removeHttpMeta(), z tym, że generują znaczniki
+                &lt;meta http-equiv name=" ... </note></para>
+    </section>
+    <section>
+        <title>Ustalanie szablonów CSS</title>
+        <para>Klasa <classname>Output</classname> zapewnia kilka metod umożliwiających przekazanie
+            nazw szablonów CSS. Przede wszystkim metoda <methodname>addStylesheet()
+            </methodname>umożliwia dodanie do listy, kolejnego szablonu
+            CSS:<programlisting>$this->output->addStylesheet('main'); // dodanie szablonu main.css</programlisting></para>
+        <para>Pierwszym parametrem metody jest nazwa szablonu (bez rozszerzenia
+            <emphasis>.css</emphasis>!). Parametr może zawierać wiele nazw szablonów, które muszą
+            być oddzielone znakiem
+            przecinka:<programlisting>$this->output->addStylesheet('main,foo'); // dodanie szablonu main.css oraz foo.css</programlisting></para>
+        <para>Metoda addStylesheet() posiada dodatkowy, opcjonalny parametr określające atrybuty dla znacznika
+            &lt;link>:<programlisting>$this->addStylesheet('main,foo',  array('media' => 'print')); </programlisting></para>
+        <para>Teraz, w szablonie należy umieścić odwołanie do metody
+            <methodname>getStylesheet()</methodname>, która zwraca kod HTML w postaci znaczników
+            &lt;link> zawierających odwołania do szablonów
+            CSS:<programlisting>&lt;head>
+&lt;?= $output->getStylesheet(); ?>
+&lt;/head></programlisting></para>
+        <para>Taki kod spowoduje wygenerowanie
+            kodu:<programlisting>&lt;head>
+&lt;link rel="stylesheet" type="text/css" href="http://127.0.0.1/template/main.css" media="print" />
+&lt;link rel="stylesheet" type="text/css" href="http://127.0.0.1/template/foo.css" media="print" />
+&lt;/head></programlisting></para>
+        <para>Aby usunąć przekazany już szablon, należy użyć metody
+            <methodname>removeStylesheet()</methodname>. </para>
+        <para>Klasa Output udostępnia również metodę <methodname>setStylesheet()</methodname> która
+            działa tak samo jak <methodname>addStylesheet()</methodname>, z tą różnicą, iż ta druga
+            jako parametr może przyjąć zarówno łańcuch (określający nazwę pliku) jak i tablicę z nazwami szablonów:<programlisting>
+$this->output->setStylesheet(array(
+		array('main'),
+		array('foo'), 'array('media' => 'print')
+	)
+);</programlisting></para>
+        <para>Tak wywołana metoda spowoduje ustawienie kolejnych styli CSS.</para>
+    </section>
+</chapter>

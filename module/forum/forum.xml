@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<installation type="module">
+	<name>forum</name>
+	<text>Forum dyskusyjne</text>
+	<version>1.0-rc2</version>
+	<system>1.0-rc2</system>
+	<author>Adam Boduch</author>
+
+	<menu>
+		<name>Forum</name>
+		<controller>forum</controller>
+		<action>main</action>
+		<auth>a_</auth>
+	</menu>
+	<menu parent="forum">
+		<name>Lista powodów moderacji</name>
+		<controller>forum</controller>
+		<action>reason</action>
+		<auth>a_</auth>
+	</menu>
+	<menu parent="forum">
+		<name>Komentarze</name>
+		<controller>forum</controller>
+		<action>comment</action>
+		<auth>a_</auth>
+	</menu>
+	<menu parent="forum">
+		<name>Statystyki</name>
+		<controller>forum</controller>
+		<action>stat</action>
+		<auth>a_</auth>
+	</menu>
+
+	<setup>
+		<install>
+			<controller>forum</controller>
+			<action>install</action>
+			<folder>setup</folder>
+		</install>
+		<uninstall>
+			<controller>forum</controller>
+			<action>uninstall</action>
+			<folder>setup</folder>
+		</uninstall>
+
+		<schema>install/schema.sql</schema>
+
+		<table>topic_user</table>
+		<table>topic_marking</table>
+		<table>forum_marking</table>
+		<table>forum_reason</table>
+		<table>post_vote</table>
+        <table>post_comment</table>
+        <table>post_attachment</table>
+		<table>post</table>
+		<table>topic</table>
+		<table>forum</table>
+
+		<function>GET_TOPIC_LAST_POST</function>
+		<function>GET_TOPIC_FIRST_POST</function>
+        <function>GET_FORUM_LAST_POST</function>
+
+		<auth value="f_" default="1">Dostęp do forum</auth>
+		<auth value="f_read" default="1">Czytanie forum</auth>
+		<auth value="f_write" default="1">Pisanie na forum</auth>
+		<auth value="f_sticky" default="0">Zakładanie przyklejonych tematów</auth>
+		<auth value="f_announcement" default="1">Pisanie ogłoszeń</auth>
+		<auth value="f_html" default="0">Używanie HTML</auth>
+		<auth value="f_delete" default="0">Kasowanie tematów</auth>
+		<auth value="f_edit" default="0">Edycja postów</auth>
+		<auth value="f_lock" default="0">Blokowanie tematów</auth>
+		<auth value="f_move" default="0">Przenoszenie tematów</auth>
+		<auth value="f_merge" default="0">Łączenie postów</auth>
+		<auth value="f_vote" default="1">Wyświetlanie ilości głosów oddanych na post</auth>
+		<auth value="f_tag" default="1">Możliwość tagowania wątków</auth>
+
+		<trigger>application.onPostSubmit</trigger>
+		<trigger>application.onPostSubmitComplete</trigger>
+		<trigger>application.onPostEdit</trigger>
+		<trigger>application.onPostEditComplete</trigger>
+		<trigger>application.onPostDelete</trigger>
+		<trigger>application.onPostDeleteComplete</trigger>
+		<trigger>application.onTopicDelete</trigger>
+		<trigger>application.onTopicDeleteComplete</trigger>
+		<trigger>application.onTopicMove</trigger>
+		<trigger>application.onTopicMoveComplete</trigger>
+		<trigger>application.onPostCommentSubmit</trigger>
+		<trigger>application.onPostCommentSubmitComplete</trigger>
+		<trigegr>application.onTopicSubjectEdit</trigegr>
+		<trigger>application.onTopicSubjectEditComplete</trigger>
+		<trigger>application.onTopicSolved</trigger>
+		<trigger>application.onTopicSolvedComplete</trigger>
+
+		<notify>
+			<name>Powiadamiaj o nowych postach w obserwowanych wątkach</name>
+			<message>Nowa odpowiedź w wątku {subject}</message>
+			<trigger>application.onPostSubmitComplete</trigger>
+			<default>3</default>
+			<module>forum</module>
+
+			<email>
+				<name>onPostSubmitComplete</name>
+				<description>E-mail wysyłany do obserwatora danego wątku</description>
+				<subject>{sender} dodał nową odpowiedź w wątku {subject}</subject>
+				<format>html</format>
+				<text>
+<![CDATA[
+Witaj {user_name},<br /><br />
+
+{sender} dodał nową odpowiedź w wątku {subject}. <br /><br />
+
+<hr />
+<p>{content}</p>
+<hr /><br /><br />
+
+Odnośnik do wątku: <a href="{url}">{url}</a>
+<br /><br />
+-- <br />
+Pozdrawiamy,<br />
+{site_title}
+]]>
+				</text>
+			</email>
+
+		</notify>
+
+		<notify>
+			<name>Powiadamiaj o przeniesieniu Twojego wątku</name>
+			<message>Temat {subject} został przeniesiony do kategorii {forum}</message>
+			<trigger>application.onTopicMoveComplete</trigger>
+			<default>3</default>
+			<module>forum</module>
+
+			<email>
+				<name>onTopicMoveComplete</name>
+				<description>E-mail wysyłany do autora danego wątku, w momencie jego przeniesienia</description>
+				<subject>Wątek {subject} został przeniesiony do kategorii {forum}</subject>
+				<format>plain</format>
+				<text>
+<![CDATA[
+Witaj {user_name},
+
+{sender} przeniósł wątek {subject} do kategorii {forum} z powodu:
+{reasonName}
+
+Szczegóły:
+-----------------------------------------------------
+{reasonText}
+-----------------------------------------------------
+
+Odnośnik do wątku: {url}
+
+--
+Pozdrawiamy,
+{site_title}
+]]>
+				</text>
+			</email>
+
+		</notify>
+
+		<notify>
+			<name>Powiadamiaj o usunięciu Twojego wątku</name>
+			<message>Wątek {subject} został usunięty</message>
+			<trigger>application.onTopicDeleteComplete</trigger>
+			<default>3</default>
+			<module>forum</module>
+
+			<email>
+				<name>onTopicDeleteComplete</name>
+				<description>E-mail wysyłany do autora w momencie usunięcia danego wątku</description>
+				<subject>Wątek {subject} został usunięty</subject>
+				<format>plain</format>
+				<text>
+<![CDATA[
+Witaj {user_name},
+
+{sender} usunął wątek {subject} z powodu:
+{reasonName}
+
+Szczegóły:
+-----------------------------------------------------
+{reasonText}
+-----------------------------------------------------
+
+--
+Pozdrawiamy,
+{site_title}
+]]>
+				</text>
+			</email>
+
+		</notify>
+
+		<notify>
+			<name>Powiadamiaj o usunięciu Twojego postu</name>
+			<message>Twój post w wątku {subject} został usunięty</message>
+			<trigger>application.onPostDeleteComplete</trigger>
+			<default>3</default>
+			<module>forum</module>
+
+			<email>
+				<name>onPostDeleteComplete</name>
+				<description>E-mail wysyłany do autora w momencie usunięcia danego postu</description>
+				<subject>Twój post w wątku {subject} został usunięty</subject>
+				<format>plain</format>
+				<text>
+<![CDATA[
+Witaj {user_name},
+
+{sender} usunął Twój post w wątku {subject} z powodu:
+{reasonName}
+
+Szczegóły:
+-----------------------------------------------------
+{reasonText}
+-----------------------------------------------------
+
+--
+Pozdrawiamy,
+{site_title}
+]]>
+				</text>
+			</email>
+
+		</notify>
+
+		<notify>
+			<name>Powiadamiaj o nowym komentarzu w Twoim poście</name>
+			<message>{sender} dodał komentarz do postu w temacie {subject}</message>
+			<trigger>application.onPostCommentSubmitComplete</trigger>
+			<default>3</default>
+			<module>forum</module>
+
+			<email>
+				<name>onPostCommentSubmitComplete</name>
+				<description>E-mail wysyłany do autora w momencie skomentowania jego postu</description>
+				<subject>{sender} dodał komentarz do postu w wątku {subject}</subject>
+				<format>plain</format>
+				<text>
+<![CDATA[
+Witaj {user_name},
+
+{sender} dodał komentarz do Twojego postu w wątku {subject}:
+
+-----------------------------------------------------
+{comment}
+-----------------------------------------------------
+
+Odnośnik do komentarza: {url}
+
+--
+Pozdrawiamy,
+{site_title}
+]]>
+				</text>
+			</email>
+
+		</notify>
+
+		<notify>
+			<name>Powiadamiaj o modyfikacji Twojego lub obserwowanego postu</name>
+			<message>{sender} zmodyfikował post w wątku {subject}</message>
+			<trigger>application.onPostEditComplete</trigger>
+			<default>3</default>
+			<module>forum</module>
+
+			<email>
+				<name>onPostEditComplete</name>
+				<description>E-mail wysyłany w momencie modyfikacji obserwowanego postu</description>
+				<subject>{sender} zmodyfikował Twój post w wątku {subject}</subject>
+				<format>html</format>
+				<text>
+<![CDATA[
+<p>Witaj {user_name},</p>
+
+<p>{sender} zmodyfikował post w wątku <strong>{subject}</strong>.<br />
+Różnica pomiędzy oryginalnym postem, a modyfikacją:</p>
+
+<hr />
+<p>{content}</p>
+<hr />
+
+<p>Odnosnik do postu: <a href="{url}">{url}</a></p>
+<p>-- <br />
+Pozdrawiamy,<br />{site_url}</p>
+]]>
+				</text>
+			</email>
+		</notify>
+
+		<notify>
+			<name>Powiadamiaj o zmianie tytułu wątku</name>
+			<message>Tytuł wątku {subject} został zmieniony</message>
+			<trigger>application.onTopicSubjectEditComplete</trigger>
+			<default>1</default>
+			<module>forum</module>
+		</notify>
+
+		<notify>
+			<name>Powiadamiaj jeżeli Twoja odpowiedź zostanie zaakceptowana przez autora wątku</name>
+			<message>Twoja odpowiedź w wątku {subject} została zaakceptowana</message>
+			<trigger>application.onTopicSolvedComplete</trigger>
+			<default>1</default>
+			<module>forum</module>
+		</notify>
+
+		<notify>
+			<name>Powiadamiaj o wystąpieniu Twojego loginu w komentarzach na forum</name>
+			<message>{sender} wspomniał o Tobie w komentarzu na forum</message>
+			<trigger>application.onPostCommentSubmitComplete</trigger>
+			<class>Notify_Post_Comment_Login</class>
+			<default>1</default>
+			<module>forum</module>
+		</notify>
+
+		<notify>
+			<name>Powiadamiaj o wystąpieniu Twojego loginu w postach na forum</name>
+			<message>{sender} wspomniał o Tobie w poście na forum</message>
+			<trigger>application.onPostSubmitComplete</trigger>
+			<class>Notify_Post_Login</class>
+			<default>1</default>
+			<module>forum</module>
+		</notify>
+
+
+        <connector>
+			<name>forum</name>
+			<class>forum</class>
+			<text>Strona główna forum</text>
+			<controller>forum</controller>
+			<action>main</action>
+			<folder></folder>
+		</connector>
+
+        <connector>
+			<name>forumView</name>
+			<class>forum_view</class>
+			<text>Kategoria forum</text>
+			<controller>forum</controller>
+			<action>view</action>
+			<folder></folder>
+		</connector>
+
+		<connector>
+			<name>forumSearch</name>
+			<class>forum_search</class>
+			<text>Wyszukiwarka forum</text>
+			<controller>search</controller>
+			<action>main</action>
+			<folder>forum</folder>
+		</connector>
+
+        <connector>
+			<name>topic</name>
+			<class>topic</class>
+			<text>Temat na forum</text>
+			<controller>topic</controller>
+			<action>view</action>
+			<folder></folder>
+		</connector>
+
+		<user>
+			<field type="int">
+				<name>user_post</name>
+				<text>Liczba postów</text>
+				<title></title>
+				<auth></auth>
+				<readonly>true</readonly>
+				<values default="0" />
+				<option>
+					<name>dataType</name>
+					<value>mediumint</value>
+				</option>
+				<option>
+					<name>min</name>
+					<value>0</value>
+				</option>
+			</field>
+			<field type="checkbox">
+				<name>user_allow_count</name>
+				<text>Pokazuj licznik postów</text>
+				<title>Licznik postów będzie widoczny przy każdym poście</title>
+				<auth></auth>
+                <filter>intval</filter>
+				<values default="1" />
+			</field>
+            <field type="checkbox">
+                <name>user_allow_smilies</name>
+                <text>Pokazuj uśmieszki w poście</text>
+                <auth></auth>
+                <filter>intval</filter>
+                <values default="1" />
+            </field>
+            <field type="checkbox">
+            	<name>user_allow_notify</name>
+            	<text>Automatycznie obserwuj wątek, w którym biorę udział</text>
+            	<filter>intval</filter>
+            	<values default="0" />
+            </field>
+            <field type="checkbox">
+            	<name>user_allow_sig</name>
+            	<text>Wyświetlaj sygnaturki użytkowników</text>
+            	<filter>intval</filter>
+            	<values default="1" />
+            </field>
+			<field type="textarea">
+				<name>user_sig</name>
+				<text>Sygnatura</text>
+				<title>Podpis będzie widoczny przy każdym Twoim poście</title>
+				<auth></auth>
+				<values default="" />
+				<option>
+					<name>cols</name>
+					<value>50</value>
+				</option>
+				<option>
+					<name>rows</name>
+					<value>5</value>
+				</option>
+				<option>
+					<name>max</name>
+					<value>500</value>
+				</option>
+			</field>
+
+		</user>
+
+	</setup>
+
+	<ucp>
+		<menu>
+			<name>Oceny moich postów</name>
+			<title>Zobacz jak oceniane są Twoje posty</title>
+			<class>vote-icon</class>
+			<url>@user?controller=Vote</url>
+		</menu>
+		<menu>
+			<name>Statystyki moich postów</name>
+			<title>Zobacz, w których kategoriach najczęściej się udzielasz</title>
+			<class>stat-icon</class>
+			<url>@user?controller=Stat</url>
+		</menu>
+		<menu>
+			<name>Zaakceptowane odpowiedzi</name>
+			<title>Zobacz, które z Twoich odpowiedzi zostały zaakceptowane przez autora</title>
+			<class>accept-icon</class>
+			<url>@user?controller=Accept</url>
+		</menu>
+	</ucp>
+
+</installation>

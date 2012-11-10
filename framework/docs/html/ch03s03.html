@@ -1,0 +1,80 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Kontrolery</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch03.html" title="Rozdzia&#322; 3. Wprowadzenie"><link rel="prev" href="ch03s02.html" title="Pierwsze kroki"><link rel="next" href="ch03s04.html" title="Tworzenie folderu aplikacji"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Kontrolery</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch03s02.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 3. Wprowadzenie</th><td width="20%" align="right"> <a accesskey="n" href="ch03s04.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id420733"></a>Kontrolery</h2></div></div></div><p>
+            My&#347;l&#281;, &#380;e w poprzednim rozdziale wyja&#347;nilismy nieco zasady tworzenia kontrolerów. Podsumujmy:
+            
+            </p><div class="itemizedlist"><ul type="disc"><li>Kontroler musi by&#263; umieszczony w katalogu controller</li><li>Kontrolery mog&#261; by&#263; grupowane w podkatalogach</li><li>Nazwa pliku PHP odpowiada nazwie kontrolera</li><li>Nazwa klasy musi odpowiada&#263; nazwie kontrolera. </li><li>Kontrolery mog&#261; posiada&#263; akcje.</li></ul></div><p>
+        </p><p>
+            Zauwa&#380;y&#322;e&#347; zapewne, &#380;e nazwa akcji odpowiada metodzie w klasie kontrolera. Powracaj&#261;c do
+            poprzedniego przyk&#322;adu: je&#380;eli URL kszta&#322;tuje si&#281; w nast&#281;puj&#261;cy sposób:
+            <tt class="computeroutput">http://serwer.com/Foo/Bar/View</tt>, wykonany zostanie
+            kontroler <span class="italic">Bar</span>, z podkatalogu <span class="italic">Foo</span> oraz akcja <span class="italic">View</span>.
+            
+            </p><div class="important" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">WA&#379;NE</h3>
+                W systemach *nix rozró&#380;niana jest wielko&#347;&#263; znaków. Wobec tego nazwy plików z kontrolerami oraz nazwy
+                modu&#322;ów musz&#261; by&#263; pisane ma&#322;ymi literami. Przyk&#322;adowo /controller/foo.php, a nie
+                /controller/FOO.php. 
+            </div><p>
+        </p><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id420820"></a>Akcje prywatne</h3></div></div></div><p>
+                Skoro powiedzieli&#347;my, &#380;e akcja odpowiada metodzie w kontrolerze, musimy wspomnie&#263;
+                równie&#380; o metodach prywatnych. PHP5 umo&#380;liwia tworzenie metod prywatnych, które b&#281;d&#261;
+                dostepne jedynie w obr&#281;bie danej klasy. Je&#380;eli chcemy, aby dost&#281;p do danej metody nie by&#322;
+                mo&#380;liwy z zewn&#261;trz, musimy zadeklarowa&#263; akcj&#281; jako prywatn&#261;:
+            
+                </p><pre class="programlisting">
+private function view()
+{
+    echo 'Private metod';
+}            
+                </pre><p>
+            </p><p>
+                Teraz przy próbie wej&#347;cia na stron&#281; 
+                <tt class="computeroutput">http://127.0.0.1/framework/Foo/Bar/View</tt>, wy&#347;wietli si&#281;
+                b&#322;&#261;d. 
+            </p></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id420865"></a>Konstruktor klas</h3></div></div></div><p>
+                Jak ka&#380;da klasa PHP5, tak&#380;e kontroler mo&#380;e zawiera&#263; konstruktor. Nie zapomnij jednak,
+                aby zawrze&#263; w nim instrukcje wywo&#322;uj&#261;ce konstrktor
+                bazowy:
+                </p><pre class="programlisting">
+function __construct()
+{
+    parent::__construct();
+    
+    // dalszy kod
+}
+                </pre><p>
+            </p><p>
+                W konstruktorze mo&#380;emy zawrze&#263; kod, który ma by&#263; wykonywany zaraz po inicjalizacji
+                kontrolera. 
+            </p></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id420901"></a>Informacje o module, kontrolerze i akcji</h3></div></div></div><p>
+                W prosty sposób mo&#380;emy odczyta&#263; nazw&#281; podkatalogu, kontrolera czy
+                akcji:
+                </p><pre class="programlisting">
+&lt;?php
+
+class Bar extends Controller
+{
+    function main()
+    {
+        echo 'Controller: ' . $this-&gt;getController() . '&lt;br &gt;';
+        echo 'Action: ' . $this-&gt;getAction() . '&lt;br /&gt;';
+        echo 'Folder: ' . $this-&gt;getFolder();
+    }
+}
+?&gt;
+                </pre><p>
+            </p><p>
+                Metoda <tt class="varname">getController()</tt> zwraca nazw&#281; kontrolera,
+                <tt class="varname">getAction()</tt> - nazw&#281; akcji, a <tt class="varname">getFolder()</tt> - jak
+                nietrudno si&#281; domy&#347;le&#263; - nazw&#281; podkatalogu. 
+            </p></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id420404"></a>Metoda __start()</h3></div></div></div><p>
+                Czasami istnieje konieczno&#347;&#263; wykonania jakiej&#347; czynno&#347;ci przed wykonaniem kodu z akcji
+                (metody) klasy, ale ju&#380; po wykonaniu kodu z konstruktora klasy. Istnieje taka mo&#380;liwo&#347;&#263; za
+                spraw&#261; specjalnej merody <tt class="methodname">__start()</tt>. Je&#380;eli takow&#261; umie&#347;cisz w
+                kontrolerze, system wywo&#322;a t&#261; metod&#281; zanim wywo&#322;a akcj&#281;. 
+            </p></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id471852"></a>Metoda __call()</h3></div></div></div><p>
+                Je&#380;eli jeste&#347; programist&#261; PHP, na pewno wiesz o magicznej metodzie
+                <tt class="methodname">__call()</tt>. Powiedzieli&#347;my sobie, &#380;e je&#380;eli system nie b&#281;dzie
+                móg&#322; w danym kontrolerze zlokalizowa&#263; metodzie odpowiadaj&#261;cej akcji, wy&#347;wietli b&#322;&#261;d 404.
+                Tutaj wdar&#322;o si&#281; ma&#322;e niedopowiedzenie. Owszem, stanie si&#281; tak pod warunkiem, i&#380; w klasie
+                nie zadeklarowano metody <tt class="methodname">__call()</tt>. W takim wypadku, system wywo&#322;a
+                metod&#281; <tt class="methodname">__call()</tt>, z której ju&#380; sam mo&#380;esz zdecydowa&#263; jakie b&#281;dzie
+                dzia&#322;anie programu. </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch03s02.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch03.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch03s04.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Pierwsze kroki </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Tworzenie folderu aplikacji</td></tr></table></div></body></html>

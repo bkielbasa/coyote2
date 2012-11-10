@@ -1,0 +1,83 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Rozdzia&#322; 20. Cache</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="pt01.html" title="Cz&#281;&#347;&#263; I. Dokumentacja techniczna"><link rel="prev" href="ch19s05.html" title="Przekazywanie parametrów do zdarzenia"><link rel="next" href="ch20s02.html" title="Metody put() oraz get()"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Rozdzia&#322; 20. Cache</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch19s05.html">Poprzedni</a> </td><th width="60%" align="center">Cz&#281;&#347;&#263; I. Dokumentacja techniczna</th><td width="20%" align="right"> <a accesskey="n" href="ch20s02.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="chapter" lang="pl"><div class="titlepage"><div><div><h2 class="title"><a name="id496168"></a>Rozdzia&#322; 20. Cache</h2></div></div></div><div class="toc"><p><b>Spis tre&#347;ci</b></p><dl><dt><span class="section"><a href="ch20.html#id496769">Inicjalizacja klasy</a></span></dt><dt><span class="section"><a href="ch20s02.html">Metody put() oraz get()</a></span></dt><dt><span class="section"><a href="ch20s03.html">Niszczenie danych</a></span></dt><dt><span class="section"><a href="ch20s04.html">Adaptery cache</a></span></dt></dl></div><p>
+		Cache, czyli mechanizm sk&#322;adowania danych w celu przyspieszenia operacji. Jest stosowany w
+        wielu rozwi&#261;zaniach informatycznych, m.in. w przegl&#261;darkach WWW. Cache s&#322;u&#380;y przyspieszeniu
+        dzia&#322;ania aplikacji, co równie&#380; mo&#380;e nast&#261;pi&#263; w przypadku frameworka Coyote. Przyk&#322;adowo:
+        nasza aplikacja wymaga dost&#281;pno&#347;ci pewnych danych zapisannych w bazie danych. Dane s&#261;
+        podzielone na kilka tabel, lecz same warto&#347;ci nieczesto si&#281; zmieniaj&#261;. W takim przypadku
+        mo&#380;emy odci&#261;&#380;y&#263; baz&#281; danych i przenie&#347;&#263; ci&#281;&#380;ar odczytu tych danych na klas&#281;
+        <tt class="classname">Cache</tt>. 
+	</p><p>
+		Coyote Framework udost&#281;pnia kilka adapterów cache, takich jak cache oparty na
+		plikach tekstowych oraz oparty o akceleratory - eAccelerator, APC.
+	</p><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id496769"></a>Inicjalizacja klasy</h2></div></div></div><p>
+			Bibliotek&#281; (klas&#281;) <tt class="classname">Cache</tt> &#322;adujemy do projektu tak jak ka&#380;d&#261;
+            inn&#261; klas&#281;. Wa&#380;nym jest, aby utworzy&#263; w katalogu z projektem folder <tt class="filename">
+			/cache</tt> i ustawi&#263; mu prawa zapisu (jedynie na systemach Unix).
+			Jest to istotne w przypadku adapterów opartych o pliki tekstowe, które w tym
+			w&#322;a&#347;nie katalogu zapisuj&#261; dane z cache.
+		</p><p>
+			Zaprezentujmy prosty przyk&#322;ad wykorzystania klasy
+            <tt class="classname">Cache</tt>:
+
+			</p><pre class="programlisting">
+&lt;?php
+                
+class Bar extends Controller
+{
+    function main()
+    {
+        $cache = $this-&gt;load-&gt;library('cache');
+        
+        if (!$cache-&gt;start('foo'))
+        {
+            Benchmark::start('foo');
+        
+            for ($i = 0; $i &lt; 500000; $i++)
+            {
+                $result[] = $i * log($i);
+            }
+            sort($result);
+            Benchmark::stop('foo');
+            
+            echo "Dokonano $i iteracji p&#281;tli w czasie... " . Benchmark::elapsed('foo') . ' sek.';
+            $cache-&gt;end('foo');
+        }
+        else
+        {
+            echo '&lt;hr /&gt;';
+            echo 'Te dane zosta&#322;y odcztyane z cache';
+        }    
+    }
+}
+?&gt;
+			</pre><p>
+		</p><p>
+			Mamy tutaj prosty kontroler. W kodzie dokonujemy 500 tys. iteracji p&#281;til, dokonujemy
+            bezsensownych operacji, tak, aby wyd&#322;u&#380;y&#263; czas dzia&#322;ania skryptu. Instrukcje te zostan&#261;
+            wykonane tylko raz, nast&#281;pnie zostan&#261; zapisane w <tt class="classname">Cache</tt>. Przy
+            kolejnym od&#347;wie&#380;eniu strony instrukcje nie zostan&#261; wykonane po raz kolejny - dane
+            zostan&#261; odczytane z cache. 
+		</p><p>
+			W naszym przyk&#322;adzie, cachowanie danych zaczyna si&#281; po wywo&#322;aniu metody
+            <tt class="methodname">start()</tt> z klasy <tt class="classname">Cache</tt>. Metoda ta
+            zwraca warto&#347;&#263; true i wy&#347;wietlane na ekranie cachowane dane je&#380;eli te istniej&#261; w cache.
+            W przeciwnym wypadku (je&#380;eli dane nie s&#261; w cache), zwraca warto&#347;&#263; false, co owocuje
+            wykonaniem naszej bezsensownej p&#281;til. Cachowanie ko&#324;czy si&#281; w momencie wykonania metody
+            <tt class="methodname">end()</tt>. Innymi s&#322;owy do cache w&#281;druje wszystko, co
+            wy&#347;wietlone zostanie w oknie przegl&#261;darki pomi&#281;dzy metod&#261;
+            <tt class="methodname">start()</tt> a <tt class="methodname">end()</tt>. 
+		</p><p>
+			Podstawowym warunkiem prawid&#322;owego dzia&#322;ania takiej aplikacji jest nazwa klucza (w tym
+            przypadku <span class="emphasis"><em>foo</em></span>), który musimy poda&#263; jako parametr w metodzie
+            <tt class="methodname">start()</tt> oraz <tt class="methodname">end()</tt>. 
+			
+			Nazwa klucza oznacza nazw&#281; pod jak&#261; b&#281;d&#261; figurowa&#263; nasze cachowane dane. Dane s&#261; skladowane w pliku,
+			w katalogu <tt class="filename">/cache</tt>.
+
+			</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>
+				Metoda end() mo&#380;e posiada&#263; drugi, opcjonalny parametr okre&#347;laj&#261;cy liczb&#281;
+				sekund, jakie cachowane dane b&#281;d&#261; wa&#380;ne (domy&#347;lnie jest to 0, czyli dane nie zostan&#261;
+				przeterminowane). Np. warto&#347;&#263; 120 oznacza iz po up&#322;ywie 2 minut od czasu sk&#322;adowania
+				danych w cache, te przestan&#261; by&#263; aktualne.
+			</div><p>
+		</p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch19s05.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="pt01.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch20s02.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Przekazywanie parametrów do zdarzenia </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Metody put() oraz get()</td></tr></table></div></body></html>

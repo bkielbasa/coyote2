@@ -1,0 +1,21 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Przekazywanie danych do widoku</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch14.html" title="Rozdzia&#322; 14. Widoki"><link rel="prev" href="ch14s02.html" title="Zwracanie wyniku w akcji"><link rel="next" href="ch14s04.html" title="U&#380;ywanie kodu PHP w szablonach"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Przekazywanie danych do widoku</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch14s02.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 14. Widoki</th><td width="20%" align="right"> <a accesskey="n" href="ch14s04.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id487076"></a>Przekazywanie danych do widoku</h2></div></div></div><p>Przekazanie danych do widoku wi&#261;&#380;e si&#281; po prostu z przypisaniem danego pola w klasie
+            kontrolera:</p><pre class="programlisting">
+function main()
+{
+	$this-&gt;username = 'Adam Boduch';
+	$this-&gt;names = array(
+		'Adam',
+		'Marta',
+		'Karolina'
+	);
+
+	return View::MAIN;
+}</pre><p>W metodzie <tt class="methodname">main()</tt> przypisujemy dwa pola w klasie -
+                <tt class="varname">username</tt> oraz tablic&#281; <tt class="varname">user</tt>. Warto&#347;ci tych pól
+            dost&#281;pne s&#261; w widoku, który z kolei przypisuje te dane do szablonu, który odpowiada za
+            wy&#347;wietlenie danych w formie akceptowalnej przez u&#380;ytkownika (np. kod
+            HTML):</p><pre class="programlisting">&lt;h1&gt;Witaj &lt;?= $username; ?&gt;&lt;/h1&gt;
+&lt;hr /&gt;
+&lt;?php foreach ($names as $key =&gt; $name) : ?&gt;
+&lt;b&gt;&lt;?= $key; ?&gt;&lt;/b&gt; &lt;?= $name; ?&gt;&lt;/br &gt;
+&lt;?php endforeach; ?&gt;</pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch14s02.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch14.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch14s04.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Zwracanie wyniku w akcji </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> U&#380;ywanie kodu PHP w szablonach</td></tr></table></div></body></html>

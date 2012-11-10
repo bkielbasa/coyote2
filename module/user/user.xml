@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<installation>
+	<name>user</name>
+	<text>Moduł użytkownika</text>
+	<version>1.0-rc2</version>
+
+	<ucp>
+		<menu>
+			<name>Konfiguracja konta</name>
+			<title>Podstawowa konfiguracja konta w serwisie</title>
+			<class>user-icon</class>
+			<url>@user</url>
+		</menu>
+		<menu>
+			<name>Bezpieczeństwo</name>
+			<title>Ustawienia bezpieczeństwa profilu</title>
+			<class>security-icon</class>
+			<url>@user?controller=Security</url>
+		</menu>
+		<menu>
+			<name>Ostatnie wizyty</name>
+			<title>Ostatnie wizyty w serwisie</title>
+			<class>visit-icon</class>
+			<url>@user?controller=Visit</url>
+		</menu>
+		<menu>
+			<name>Informacja o profilu</name>
+			<title>Informacje o profilu</title>
+			<class>info-icon</class>
+			<url>@user?controller=Info</url>
+		</menu>
+		<menu>
+			<name>Zmiana hasła</name>
+			<title>Zmiana hasła do konta</title>
+			<class>psw-icon</class>
+			<url>@user?controller=Psw</url>
+		</menu>
+		<menu>
+			<name>Powiadomienia</name>
+			<title>Powiadomienia oraz konfiguracja powiadomień</title>
+			<class>notify-icon</class>
+			<url>@user?controller=Notify</url>
+		</menu>
+		<menu>
+			<name><![CDATA[Wiadomości prywatne (<?php echo User::data('pm_unread'); ?>/<?php echo User::data('pm'); ?>)]]></name>
+			<title>Wiadomości prywatne</title>
+			<class>pm-icon</class>
+			<url>@user?controller=Pm</url>
+		</menu>
+		<menu>
+			<name>Obserwowane</name>
+			<title>Lista obserwowanych stron</title>
+			<class>watch-icon</class>
+			<url>@user?controller=Watch</url>
+		</menu>
+	</ucp>
+</installation>

@@ -1,0 +1,53 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Konwencja nazewnictwa</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="apa.html" title="Dodatek A. Standard kodowania"><link rel="prev" href="apa.html" title="Dodatek A. Standard kodowania"><link rel="next" href="apas03.html" title="Formatowanie kodu"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Konwencja nazewnictwa</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="apa.html">Poprzedni</a> </td><th width="60%" align="center">Dodatek A. Standard kodowania</th><td width="20%" align="right"> <a accesskey="n" href="apas03.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id504182"></a>Konwencja nazewnictwa</h2></div></div></div><p>
+            W Coyote stosujemy angielski zapis kodu. Tzn. nie nazywamy zmiennych <tt class="varname">$idUzytkownika</tt>
+            tylko <tt class="varname">$userId</tt>. Tyczy si&#281; to równie&#380; nazw klas, metod czy funkcji.
+        </p><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id504204"></a>Nazewnictwo plików</h3></div></div></div><p>
+                Pliki powinny posiada&#263; rozszerzenia .php. Nazwy plików piszemy ma&#322;ymi znakami -
+                np. <tt class="filename">foo.php</tt>, <tt class="filename">bar.php</tt> zamiast
+                <tt class="filename">Foo.php</tt>. Dodatkowo biblioteki frameworka (gromadzone w katalogu
+                <tt class="filename">/lib</tt>) powinny posiada&#263; ko&#324;cówk&#281; .class - np.
+                <tt class="filename">foo.class.php</tt>. 
+            </p><p>
+                Analogicznie pliki helperów - <tt class="filename">bar.helper.php</tt> (z katalogu
+                <tt class="filename">/helper</tt>) oraz pliki j&#281;zykowe (z katalogu<tt class="filename">
+                    /i18n</tt>) - <tt class="filename">foo.lang.php</tt> oraz modele (z katalog
+                <tt class="filename">/model</tt>) - <tt class="filename">foo.model.php</tt>. 
+            </p></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id504306"></a>Nazewnictwo klas</h3></div></div></div><p>
+                Dla wyró&#380;nienia, pierwsza litera w nazwie klasy powinna by&#263; zapisana wielk&#261; liter&#261;
+                - np. <tt class="classname">Lang</tt>, <tt class="classname">Config</tt> itp. Jako separator w
+                nazwie, powinno by&#263; u&#380;yte podkre&#347;lenie - np. <tt class="classname">Front_Controller</tt>,
+                zamiast <tt class="classname">FrontController</tt>. Wyj&#261;tkami s&#261; nazwy klas wyj&#261;tków,
+                które zapisujemy: <tt class="classname">SqlErrorException</tt>,
+                <tt class="classname">UserErrorException</tt> (z przyrostkiem
+                <span class="emphasis"><em>Exception</em></span>). 
+            </p></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id504357"></a>Nazewnictwo interfejsów</h3></div></div></div><p>
+                Nazwy interfejsów powinna poprzedza&#263; wielka litera I - np.
+                <tt class="interfacename">IConfig</tt>, <tt class="interfacename">IDb</tt>. 
+            </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>
+				Uwaga! Pocz&#261;wszy od wersji 1.2, nazwy interfejsów powinny posida&#263; przyrostek
+				<span class="emphasis"><em>Interface</em></span> - np. <tt class="interfacename">Config_Interface</tt>,
+				<tt class="interfacename">Db_Interface</tt>.
+			</div></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id504399"></a>Nazewnictwo metod</h3></div></div></div><p>
+                Pocz&#261;wszy od wersji 0.9.4-rc2 zmieniono sposób zapisu nazw metod. Zamiast znaku
+                podkre&#347;lenia (_) stosuje si&#281; styl wielb&#322;&#261;dzi, jednak pierwszy znak w nazwie musi by&#263;
+                pisany ma&#322;a liter&#261; - np. <tt class="methodname">getByName()</tt>,
+                <tt class="methodname">findUser()</tt> zamiast <tt class="methodname">get_by_name()</tt>
+                oraz <tt class="methodname">find_user()</tt>. Stare nazewnictwo mo&#380;e jeszcze figurowa&#263; w
+                niektórych bibliotekach, lecz zostanie poprawione w kolejnych wersjach.
+            </p><p>
+                Dopuszczalne jest poprzedzanie nazw metod znakami __ (np. w kontrolerach) dla
+                podkre&#347;lenia, i&#380; dana metoda mimo, i&#380; jest oznaczona jako public, jest metod&#261;
+                pomocnicz&#261; (wykorzystywan&#261; np. jako metoda zwrotna lub metoda wykorzystywana przez
+                &#380;&#261;dania AJAX). 
+            </p></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id504461"></a>Nazewnictwo funkcji</h3></div></div></div><p>
+                Ca&#322;y framework jest praktycznie obiektowy. Oparty o model MVC. Z funkcjami mamy do
+                czynienia bardzo rzadko - praktycznie jedynie w helperach. Wówczas dopuszczalne jest
+                u&#380;ycie znaku podkre&#347;lenia (_) zamiast stylu wielb&#322;&#261;dziego - np.
+                <tt class="methodname">html_img()</tt>,<tt class="methodname">information_box()</tt>.
+            </p></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id504492"></a>Nazewnictwo zmiennych</h3></div></div></div><p>
+                Zaleca si&#281; u&#380;ywanie stylu wielb&#322;&#261;dziego w przypadku zmiennych oraz pól klas,
+                podobnie jak w przypadku metod.                
+            </p></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id504510"></a>Nazewnictwo sta&#322;ych</h3></div></div></div><p>
+                Nazwy sta&#322;ych powinny zawiera&#263; wy&#322;&#261;cznie wielkie litery. Dozwolone jest u&#380;ywanie znaków
+                "_"
+            </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="apa.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="apa.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="apas03.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Dodatek A. Standard kodowania </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Formatowanie kodu</td></tr></table></div></body></html>

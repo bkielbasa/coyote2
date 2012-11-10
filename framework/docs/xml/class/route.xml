@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter>
+    <title>Mechanizm routingu</title>
+    <para>O mechanizmie URL obsługiwanym przez system, była już mowa we wcześniejszych fragmentach
+        podręcznika. Mechanizm routingu zapewnia bardziej zaawansowane metody analizy URL i
+        rozdzielania zadań do odpowiednich kontrolerów. Standardowy URL rozpoznawany przez system
+        wygląda tak:<programlisting>http://serwer.com/Kontroler/Akcja/Parametry</programlisting></para>
+    <para>Zakładając, że chcemy utworzyć kontroler, który będzie obsługiwał panel użytkownika, nasz
+        URL mógłby wyglądać w ten
+        sposób:<programlisting>http://serwer.com/User/Main/1</programlisting></para>
+    <para>Parametrem w tym przypadku jest ID użytkownika. Taki URL wygląda elegancko, lecz mógłby
+        wyglądać lepiej, gdybyśmy pomineli nazwę akcji <methodname>Main</methodname>. W tym celu
+        musimy utworzyć nową regułę routera. Otwórz plik konfiguracji projektu (w moim przypadku
+        jest to <filename>config.xml</filename>) i umieść w nim następujące
+        instrukcje:<programlisting>
+&lt;route>
+    &lt;name>user&lt;/name>
+    &lt;url>/User/:id&lt;/url>
+    &lt;controller>user&lt;/controller>
+    &lt;action>main&lt;/action>
+&lt;/route></programlisting></para>
+    <para>Utworzyliśmy tym samym nową regułę o nazwie <emphasis>user</emphasis>. Mechanizm routingu,
+        przy każdorazowym żądaniu sprawdzać będzie, czy żądany URL nie pasuje do którejś z reguł
+        zapisanych w konfiguracji. Fraza <emphasis>:id</emphasis> oznacza tutaj zmienną. Jeżeli nasz
+        URL będzie wyglądał tak: <command>/User/1, /User/23423, /User/boduch</command>, wówczas
+        utworzony zostanie kontroler <classname>user</classname>, a wykonana akcja
+        <methodname>main</methodname>. Aby korzystać z mechanizmu routingu nie trzeba inicjalizować
+        żadnych dodatkowych klas. Adresy URL są analizowane przez klasę
+        <classname>Router</classname>, która jest automatycznie inicjalizowana przez framework.</para>
+    <section>
+        <title>Zmienne</title>
+        <para>W regułach routingu możemy używać specjalnych symboli, zaczynających się od znaku :
+            (dwukropek). Tak, jak w poprzednim przykładzie - w miejsce <emphasis>:id</emphasis>
+            spodziewamy się otrzymać ID usera, i system routingu powinien brać to pod uwagę. Wartość
+            takiej zmiennej zapisywana jest klasie <classname>Controller</classname>, z której
+            dziedziczą wszystkie kontrolery. Stąd, w naszym kontrolerze <classname>User</classname>,
+            możemy w prosty sposób odczytać ID
+            użytkownika:<programlisting>
+class User extends Controller
+{
+    function __construct()
+    {
+        parent::__construct();
+        
+        if (!$this->router->id || $this->router->id &lt; 0)
+        {
+            $this->redirect('@homepage');
+        }
+    }
+
+}
+            </programlisting></para>
+        <para><note>Dostęp do klasy Router jest możliwy w każdym kontrolerze. W klasie bazowej -
+                Controller - tworzona jest referencja do obiektu tej klasy. </note>System routingu
+            rozpoznaje dwie specjalne zmienne - <emphasis>:controller</emphasis> oraz
+                <emphasis>:action</emphasis>. Pójdźmy dalej i zmodyfikujmy naszą regułę routingu w
+            ten
+            sposób:<programlisting>
+&lt;route>
+    &lt;name>user&lt;/name>
+    &lt;url>/User/:id/:controller/:action&lt;/url>
+&lt;/route></programlisting></para>
+        <para>Tym samym pod postacią <emphasis>:controller</emphasis>, system będzie poszukiwał
+            nazwy kontrolera, a pod <emphasis>:action</emphasis> - nazwy akcji. Tak więc URL
+                <command>/User/1/Portfolio/Submit</command> spowoduje próbę wywołania metody
+                <methodname>submit()</methodname> z klasy (kontrolera)
+            <classname>portfolio</classname>. Jeżeli natomiast URL będzie wyglądał w ten sposób:
+                <command>/User/1</command> system może mieć problemy ze zidentyfikowaniem nazwy
+            kontrolera oraz akcji. Dlatego w takich wypadkach, warto ustalać wartości
+            domyślne:<programlisting>
+ lt;route>
+    &lt;name>user&lt;/name>
+    &lt;url>/User/:id/:controller/:action&lt;/url>
+    &lt;default>
+    	&lt;controller>user&lt;/controller>
+    	&lt;action>main&lt;/action>
+    &lt;/default>
+&lt;/route></programlisting></para>
+        <para>Dzięki temu, zawsze, w przypadku niemożności odnalezienia nazwy kontrolera oraz akcji
+            - system przybierze wartości domyślne. </para>
+        <section>
+            <title>Wyrażenia regularne</title>
+            <para>Załóżmy, że każdy użytkownik w naszym serwisie identyfikowany jest za pomocą ID,
+                które jest liczbą. Natomiast pod naszą regułę odpowiada zarówno URL <command
+                >/User/1</command> jak i <command>/User/boduch</command>. Aby to zmienić musimy
+                dodać specjalne reguły wyrażeń
+                regularnych:<programlisting>
+&lt;route>
+    &lt;name>user&lt;/name>
+    &lt;url>/User/:id/:controller/:action&lt;/url>
+    &lt;default>
+    	&lt;controller>user&lt;/controller>
+    	&lt;action>main&lt;/action>
+    &lt;/default>
+    &lt;requirements>
+    	&lt;id>(\d+)&lt;/id>
+    &lt;/requirements>
+&lt;/route></programlisting></para>
+            <para>Dzięki temu parametr<emphasis> :id</emphasis> zawsze będzie dodatkowo sprawdzany.
+                Jeżeli nie jest on liczbą, reguła zostanie odrzucona. </para>
+        </section>
+    </section>
+    <section>
+        <title>Operator *</title>
+        <para>Nieraz w adresie chcemy przekazać dodatkowe parametry. Przykładowo: <command
+                >/User/1/Portfolio/Submit/Parametr1</command> Wówczas należy nieco zmodyfikować
+            regułe routingu, mówiącą, iż być może do adresu URL będą dołączane dodatkowe parametry i
+            je również należy brać pod
+            uwagę:<programlisting>
+&lt;route>
+    &lt;name>user&lt;/name>
+    &lt;url>/User/:id/:controller/:action/*&lt;/url>
+    &lt;default>
+    	&lt;controller>user&lt;/controller>
+    	&lt;action>main&lt;/action>
+    &lt;/default>
+    &lt;requirements>
+    	&lt;id>(\d+)&lt;/id>
+    &lt;/requirements>
+&lt;/route></programlisting></para>
+        <para>Drobna zmiana polega na dodaniu na końcu reguły operatora *. Parametry przekazane w
+            URL możemy odczytać w
+            kontrolerze:<programlisting>&lt;?php
+
+class User extends Controller
+{
+	function main($param1)
+	{
+		echo 'ID usera: ' . $this->router->id . '&lt;br />';
+		echo 'Parametr: ' . $param1;
+	}
+}
+?></programlisting></para>
+        <para>Dodatkowe parametry przekazywane są jako parametry akcji (metod). Można również
+            wykorzystać metodę <methodname>getArgument()</methodname> z klasy
+            <classname>Router</classname> lub - rozwiązanie skrótowe - metodę
+                <methodname>getArgument()</methodname> z klasy
+            <classname>Controller</classname>:<programlisting>&lt;?php
+
+class User extends Controller
+{
+	function main($param1)
+	{
+		echo 'ID usera: ' . $this->router->id . '&lt;br />';
+		echo 'Parametr: ' . $param1 . '&lt;br />';
+		echo 'Parametr: ' . $this->getArgument(0) . '&lt;br />';
+		echo 'Parametr: ' . $this->getArgument(0) . '&lt;br />';
+	}
+}
+?></programlisting></para>
+        <para>W parametrze metody należy podać numer parametru, którego wartość chcemy odczytać.
+        </para>
+    </section>
+    <section>
+        <title>Subdomeny</title>
+        <para>Niekiedy koniecznym będzie, aby nasz serwis obsługiwał subdomeny. Na szczęściej system
+            routingu potrafi oprócz URL, zidentyfikować również nazwę domeny i - w razie
+            konieczności - wywołać odpowiedni kontroler. Powróćmy do poprzedniego przykładu. Chcemy,
+            aby URL w naszym serwisie kształtowł się następująco: <command
+                >http://user.serwer.com/User/1</command>. W regule należy wówczas dodać kolejną
+            informacje na temat
+            hostu:<programlisting>
+&lt;route>
+	&lt;name>user&lt;/name>
+	&lt;url>/User/:id/:controller/:action/*&lt;/url>
+	&lt;default>
+		&lt;controller>user&lt;/controller>
+		&lt;action>main&lt;/action>
+	&lt;/default>
+	&lt;requirements>
+		&lt;id>(\d+)&lt;/id>
+	&lt;/requirements>
+	&lt;host>/^(www\.)?user\.(.+$)/&lt;/host>
+&lt;/route></programlisting></para>
+        <para>Mamy tu więc do czynienia z kolejnym wyrażeniem regularnym, który sprawdzi obecny host
+            pod kątem tego, z naszej reguły <emphasis>user</emphasis>. Jeżeli chcemy, możemy równie
+            dobrze "na sztywno" wpisać jaka domena ma być brana pod uwagę przy tej
+                regule:<programlisting>&lt;host>user.serwer.com&lt;/host></programlisting><note>Jeżeli
+                umieszczasz wyrażenie regularne w znaczniku &lt;host>, musi ono być rozpoczęte i
+                zakończone znakiem /. </note></para>
+    </section>
+    <section>
+        <title>Generowanie URL</title>
+        <para>Kolejnym tematem jest generowanie URL na podstawie informacji zawartych w regułach
+            routingu. Oto prosta reguła routingu o nazwie
+            homepage:<programlisting>
+&lt;route>
+	&lt;name>homepage&lt;/name>
+	&lt;url>/&lt;/url>
+	&lt;controller>index&lt;/controller>
+	&lt;action>main&lt;/action>
+&lt;/route></programlisting></para>
+        <para>Jak widzisz reguła zostanie dopasowana jeżeli żądanie tyczy się głównej strony naszego
+            serwisu. Jeżeli chcesz wygnerować pełny URL do głównej strony, możesz skorzystać z
+            funkcji <function>url()</function> z helpera <filename
+            >url.helper.php</filename>:<programlisting>echo url('@homepage'); // efekt: http://serwer.com/</programlisting></para>
+        <para>W funkcji <function>url()</function> jako parametr, możemy podać nazwę reguły na
+            podstawie której wygenerowany zostanie URL (przed nazwą reguły należy umieścić znak @).
+            Inny
+            przykład:<programlisting>
+echo url('@user?id=1'); // efekt: http://serwer.com/User/1
+echo url('@user?id=1/Parametr1'); // efekt: http://serwer.com/User/1/Parametr1
+echo url('@user?id=1&amp;controller=Portfolio'); // efekt: http://serwer.com/User/1/Portfolio
+echo url('@user?id=1&amp;a=2'); // efekt: http://serwer.com/User/1?a=2</programlisting></para>
+        <para>Jeżeli wygenerowany URL ma prowadzić do subdomeny, w regule routingu należy ustawić
+            parametr <emphasis>subdomain</emphasis> (oprócz paramtru
+            host):<programlisting>
+&lt;route>
+	&lt;name>user&lt;/name>
+	&lt;url>/User/:id/:controller/:action/*&lt;/url>
+	&lt;default>
+		&lt;controller>user&lt;/controller>
+		&lt;action>main&lt;/action>
+	&lt;/default>
+	&lt;requirements>
+		&lt;id>(\d+)&lt;/id>
+	&lt;/requirements>
+	&lt;host>/^(www\.)?user\.(.+$)/&lt;/host>
+&lt;subdomain>user.serwer.com&lt;/subdomain>
+&lt;/route>
+echo url('@user?id=1'); // efekt: http://user.serwer.com/User/1</programlisting></para>
+    </section>
+    <section>
+        <title>Przechwytywanie wszystkich adresów</title>
+        <para>Konfigurując regułę routingu zamiast adresu URL (parametr url); można wpisać znak *.
+            Oznacza to, że dana reguła będzie odpowiadała każdemu adresowi. Innymi słowy -
+            każdorazowe wywołanie, obojetnie jakiego adresu URL - spowoduje wykonanie danego
+            kontrolera. </para>
+    </section>
+    <section>
+        <title>Sortowanie reguł</title>
+        <para>Klasa Router odczytuje reguły w kolejności w jakiej zostały one zapisane w pliku
+            konfiguracji. Jeżeli dany URL pasuje wzorcowi danej reguły, system pominie dalsze
+            sprawdzanie i zwróci nazwę kontrolera i akcji. Istnieje możliwość posortowania reguł,
+            niezależnie od tego w jakiej kolejności zostały one zapisane w pliku konfiguracyjnym.
+            Można wyobrazić sobie następującą sytuację: w głównym pliku konfiguracji aplikacji
+            zadeklarowane są dane reguły. Ostatnia reguła (*) służy do przechwycenia adresów, które
+            nie zostały dopasowane do żadnej z reguł. Chcemy np. przekazać sterowanie do kontrolera,
+            który wyświetli błąd typu 404, ale dodatkowo - zapisze w bazie danych niedziałający
+            adres. Chcemy, aby reguła * była sprawdzana na samym końcu. Proste - możemy po prostu
+            zadeklarować ją na samym końcu pliku konfiguracyjnego. Jednak wyobraź sobie sytuację w
+            której do aplikacji przyłączane są dodatkowe moduły, które również zawierają reguły
+            routingu. Wówczas nasza reguła * nie będzie już ostatnia. Spowoduje to, iż reguły
+            zadeklarowane w module nigdy nie będą brane pod uwagę - system zakończy pracę na regule
+            * i pominie dalsze sprawdzanie. </para>
+        <para>Aby Coyote sortował reguły, muszą one dodatkowo zawierać parametr order, który będzie
+            oznaczał ich kolejność.
+            Przykładowo:<programlisting>	
+&lt;route>
+	&lt;name>user&lt;/name>
+	&lt;url>/User/:id/:controller/:action/*&lt;/url>
+	&lt;default>
+		&lt;controller>user&lt;/controller>
+		&lt;action>main&lt;/action>
+	&lt;/default>
+	&lt;requirements>
+		&lt;id>(\d+)&lt;/id>
+	&lt;/requirements>
+	&lt;order>1&lt;/order>
+&lt;/route>
+&lt;route>
+	&lt;name>homepage&lt;/name>
+	&lt;url>/&lt;/url>
+	&lt;controller>index&lt;/controller>
+	&lt;action>main&lt;/action>
+	&lt;order>2&lt;/order>
+&lt;/route>
+&lt;route>
+	&lt;name>all&lt;/name>
+	&lt;url>*&lt;/url>
+	&lt;controller>404&lt;/controller>
+	&lt;order>5465464&lt;/order>
+&lt;/route></programlisting></para>
+        <para>Oprócz tego, w konfiguracji należy utworzyć pole <emphasis>core.sortRoutes</emphasis>,
+            aby system wiedział, czy ma marnować czas na sortowanie
+            reguł:<programlisting>	
+&lt;core>
+	&lt;sortRoutes>true&lt;/sortRoutes>
+&lt;/core></programlisting></para>
+    </section>
+    <section>
+        <title>Grupowanie kontrolerów w podkatalogach</title>
+        <para>Coyote umożliwia grupowanie kontrolerów w podkatalogach. Ustalając reguły routingu
+            musimy zaznaczyć nazwę katalogu jeżeli kontroler jest umieszczony w podkatalogu. Określa
+            to znacznik <emphasis>folder</emphasis>, konfiguracji:
+            <programlisting>&lt;route>
+		&lt;name>homepage&lt;/name>
+		&lt;url>/&lt;/url>
+		&lt;controller>index&lt;/controller>
+		&lt;action>main&lt;/action>
+		&lt;folder>adm&lt;/folder>
+	&lt;/route></programlisting></para>
+        <para>W takim przypadku po użytkowik - żądając dostępu do strony głównej naszego serwisu, w
+            rzeczywistości wczyta kontroler <filename>index.php</filename>, z katalogu <filename
+                >/controller/adm</filename>.</para>
+        <para>W regule, w parametrze url, można zawierać zmienną <emphasis>:folder</emphasis>, tak
+            samo jak robimy to ze zmienną <emphasis>:controller</emphasis>, czy
+            <emphasis>:action</emphasis>:<programlisting>&lt;route>
+		&lt;name>Foo&lt;/name>
+		&lt;url>/User/:folder&lt;/url>
+		&lt;controller>404&lt;/controller>
+		&lt;default>
+			&lt;folder>main&lt;/folder>
+		&lt;/default>
+	&lt;/route></programlisting></para>
+        <para>W tym przykładzie, lokalizacja kontrolera zależy od wartości parametru
+                <emphasis>folder</emphasis>. Jeżeli wartość tego nie zostanie znaleziona w adresie
+            URL, przyjęty zostanie domyślny folder - <filename>main</filename>. </para>
+    </section>
+</chapter>

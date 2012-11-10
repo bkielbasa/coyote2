@@ -1,0 +1,26 @@
+#pastebin-recent
+{
+			float:				left;
+			width:				200px;
+}
+
+#pastebin-recent ul li
+{
+			margin:				5px 0 5px 0;
+}
+
+#pastebin-recent small
+{
+			display:			block;
+			font-size:			12px;
+}
+
+fieldset label
+{
+			text-align:			left !important;
+}
+
+fieldset ul
+{
+			margin-left:		235px !important;
+}

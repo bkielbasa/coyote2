@@ -1,0 +1,25 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Rozdzia&#322; 19. Triggery</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="pt01.html" title="Cz&#281;&#347;&#263; I. Dokumentacja techniczna"><link rel="prev" href="ch18s04.html" title="Skrócone operacje na bazie"><link rel="next" href="ch19s02.html" title="Pisanie zdarze&#324;"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Rozdzia&#322; 19. Triggery</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch18s04.html">Poprzedni</a> </td><th width="60%" align="center">Cz&#281;&#347;&#263; I. Dokumentacja techniczna</th><td width="20%" align="right"> <a accesskey="n" href="ch19s02.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="chapter" lang="pl"><div class="titlepage"><div><div><h2 class="title"><a name="id495190"></a>Rozdzia&#322; 19. Triggery</h2></div></div></div><div class="toc"><p><b>Spis tre&#347;ci</b></p><dl><dt><span class="section"><a href="ch19.html#id495236">W&#322;&#261;czanie triggerów</a></span></dt><dt><span class="section"><a href="ch19s02.html">Pisanie zdarze&#324;</a></span></dt><dt><span class="section"><a href="ch19s03.html">Przypisywanie zdarze&#324; w pliku konfiguracyjnym</a></span></dt><dt><span class="section"><a href="ch19s04.html">Triggery dost&#281;pne w systemie</a></span></dt><dt><span class="section"><a href="ch19s05.html">Przekazywanie parametrów do zdarzenia</a></span></dt><dd><dl><dt><span class="section"><a href="ch19s05.html#id496649">Przekazywanie parametrów przez referencj&#281;</a></span></dt></dl></dd></dl></div><p>Triggery, czyli wyzwalacze umo&#380;liwiaj&#261; wykonanie dodatkowych instrukcji w zale&#380;no&#347;ci od
+        zaistnia&#322;ych sytuacji. Przyk&#322;adowo, chcemy wykona&#263; jakie&#347; instrukcje w momencie, gdy system
+        jest gotowy - jeszcze przed inicjalizacj&#261; kontrolera. Przyk&#322;ady mo&#380;na mno&#380;y&#263;: mo&#380;emy wykona&#263;
+        jakie&#347; dodatkowe instrukcje gdy do przegl&#261;darki zostanie wys&#322;any widok (np. wy&#347;wietlaj&#261;c
+        czas generowania strony - w sumie). </p><p>Kolejny przyk&#322;ad: masz w swojej aplikacji system komentarzy. Istnieje mo&#380;liwo&#347;&#263;
+        komentowania artyku&#322;ów, newsów, czy galerii. Za ka&#380;dym razem, przed dodaniem komentarzy,
+        chcemy przefiltrowa&#263; tre&#347;&#263; komentarza pod k&#261;tem kodu HTML (w celu jego usuni&#281;cia). Mo&#380;emy
+        oczywi&#347;cie za ka&#380;dym razem przed dodaniem komentarza, filtrowa&#263; jego
+        tre&#347;&#263;:</p><pre class="programlisting">$comment = htmlspecialchars($comment);
+// dodaj komentarz</pre><p>Za&#322;ó&#380;my
+        teraz, &#380;e chcemy, aby w panelu administracyjnym naszej strony by&#322;a mo&#380;liwo&#347;&#263;, w jakich
+        dzia&#322;ach (modu&#322;ach) dozwolone b&#281;dzie u&#380;ywanie kodu HTML, a w jakich nie. Mo&#380;emy oczywi&#347;cie w
+        ka&#380;dym module doda&#263; instrukcj&#281;
+        warunkow&#261;:</p><pre class="programlisting">if ($filter_html)
+{
+    $comment = htmlspecialchars($comment);
+}
+// dodaj komentarz</pre><p>Lepszym
+        rozwi&#261;zaniem w takim wypadku b&#281;dzie trigger. Przed dodaniem komentarza mo&#380;emy wywo&#322;a&#263;
+        trigger:</p><pre class="programlisting">Trigger::call('comment.onBeforeSubmit', array(&amp;$comment)); 
+// dodanie komentarza</pre><p>Wówczas
+        system sprawdzi, czy do triggera comment.onBeforeSubmit s&#261; przypisane jakie&#347; zdarzenia (czy
+        to funkcje, czy metody) i je&#380;eli tak - wywo&#322;a je. </p><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id495236"></a>W&#322;&#261;czanie triggerów</h2></div></div></div><p>Funkcja triggerów musi zosta&#263; aktywowana. W pliku konfiguracyjnym projektu, dodaj
+            nast&#281;puj&#261;c&#261; opcj&#281;
+            konfiguracji:</p><pre class="programlisting">$config['core']['trigger'] = true;</pre><p>Od tego momentu b&#281;dziesz móg&#322; korzysta&#263; z triggerów w swojej aplikacji. </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch18s04.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="pt01.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch19s02.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Skrócone operacje na bazie </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Pisanie zdarze&#324;</td></tr></table></div></body></html>

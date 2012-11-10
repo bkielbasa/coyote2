@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <trigger>
+        <!-- musimy tutaj umiescic pusty element, ze wzgledu na bug w klasie Config_Xml -->
+        <system.onBeforeAction>
+
+        </system.onBeforeAction>
+        <system.onBeforeAction>
+            <name>loadCache</name>
+            <class>gcache</class>
+            <function>load</function>
+        </system.onBeforeAction>
+        
+		
+        <system.onDisplay>
+            <name>saveCache</name>
+            <class>gcache</class>
+            <function>save</function>
+        </system.onDisplay>
+        <!--  bug w klasie Config_Xml spowodowany wywolaniem funkcji array_merge_recursive -->
+        <system.onDisplay></system.onDisplay>
+    </trigger>
+</config>

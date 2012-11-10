@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<installation type="module">
+	<name>gzip</name>
+	<text>Kompresja Gzip przy wysyłaniu strony</text>
+	<version>1.0</version>
+	<system>1.0-rc2</system>
+	<author>Adam Boduch</author>
+
+	<setup>
+		<event trigger="system.onBeforeAction">
+			<name>gzip</name>
+			<class>gzipoutput</class>
+			<function>compress</function>
+		</event>
+	</setup>
+</installation>

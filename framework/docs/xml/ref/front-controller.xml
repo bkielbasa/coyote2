@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter>
+    <title>Plik front controllera</title>
+    
+    <para>
+        <note>
+            Front Controller – jeden ze wzorców projektowych stosowany w projektowaniu aplikacji internetowych. We wzorcu tym istnieje jeden, centralny obiekt (np. serwlet), który zarządza wszystkimi żadaniami przychodzącymi od klienta. Wzorzec ten jest często stosowany ze wzorcem MVC.
+        </note>
+        
+        <emphasis>Żródło: Wikipedia</emphasis>
+    </para>
+    
+    <para>
+        Wspomnieliśmy już że najelpszym sposobem korzystania z frameworka, jest oddzielenie plików samego frameworka, 
+        od plików aplikacji. Należy traktować pliki frameworka jak jądro, którego nie powinno się modyfikować jeżeli
+        nie ma takiej wyraźnej potrzeby. Na swoim lokalnym serwerze możesz utworzyć katalog aplikacji, w której 
+        będziesz umieszczał kontrolery, modele i inne potrzebne pliki. Sposobem na osiągnięcie tego jest skorzystanie
+        ze wzorca <emphasis>front controllera</emphasis>.
+    </para>
+    
+    <para>
+        Pierwszym krokiem jest utworzenie w katalogu z aplikacją (nazwijmy go <filename>demo</filename>) pliku 
+        <filename>index.php</filename>. Do tego pliku będą kierowane wszystkie żądania użytkownika.
+    </para>
+    
+    <section>
+        <title>Utworzenie pliku .htaccess</title>
+        
+        <para>
+            W katalogu z projektem, umieść plik <filename>.htaccess</filename>, który będzie odpowiedzialny za
+            kierowanie żądania do pliku front controllera (czyli <filename>index.php</filename>):
+            
+            <programlisting>
+<![CDATA[
+php_flag short_open_tag on
+
+Options +FollowSymlinks
+RewriteEngine on
+
+RewriteCond %{REQUEST_URI} \..+$
+RewriteCond %{REQUEST_URI} !\.html$
+RewriteCond %{REQUEST_URI} !\.php$
+RewriteRule .* - [L]
+
+RewriteCond %{REQUEST_FILENAME} !-s [NC]
+RewriteCond %{REQUEST_FILENAME} !-d [NC]
+RewriteRule ^(.+) index.php/$1 [L]
+
+ErrorDocument 500 "<h2>Application error</h2>Coyote application failed to start properly"
+]]>                
+            </programlisting>
+            
+            W pliku <filename>.htaccess</filename> umieściliśmy reguły modułu Apache - mod_rewrite.
+            Nie będziemy rozpisywać się tutaj o samym mod_rewrite, gdyż to nie jest przedmiotem
+            tej dokumentacji.
+        </para>
+        
+        <para>
+            Dzięki takiemu zapisowi, żądania kierowane przez użytkownika (np. http://localhost/demo/Foo) będą
+            kierowane wprost do pliku front controllera, który natomiast zainicjuje biblioteki frameworka
+            i przekaże żądanie do odpowiedniego kontrolera.
+        </para>
+            
+    </section>
+    
+    <section>
+        <title>Zawartość pliku front controllera</title>
+        
+        <para>
+            W katalogu z frameworkiem, znajduje się przykładowy plik <filename>index.php</filename>, który
+            możesz wykorzystać w swojej aplikacji:
+            
+            <programlisting>
+<![CDATA[
+<?php
+/**
+ * @package Coyote-F
+ * @author Adam Boduch <adam@boduch.net>
+ * @copyright Copyright (c) Adam Boduch (Coyote Group)
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
+ */
+
+/**
+ *	Ustawienie raportowania bledow. W ustawieniu E_ALL, wszystkie bledy i ostrzezenia
+ *	beda domyslnie wyswietlane. To ustawienie jest wykorzystywane przez projekt, tylko
+ *	wowczas, gdy nie wykorzystujemy klasy error. Wtedy klasa error zajmuje sie 
+ *	wyswietlaniem i analiza bledow projektu i decyduje, ktore komunikaty wyswietlic.
+ */
+error_reporting(E_ALL);
+
+/**
+ * Ustawienie lokalizacji dla jezyka polskiego. Jezeli chcesz, mozesz usunac
+ * ponizsza linie, lub zmienic lokalizacje 
+ */
+setlocale(LC_ALL, array('pl_PL.UTF8', 'polish_pol')); 
+
+/**
+ * Ustawienie strefy czasowej na polska. Jezeli chcesz, mozesz dowolnie zmienic ponizsze
+ * ustawienie lub usunac ponizsza linie i pozostawic ustawienie domyslne
+ */
+date_default_timezone_set('Europe/Warsaw');
+
+
+/**
+ * Domyslnie wartosc true. Skrypt jednak jest wowczas generowany wolniej ze wzgledu
+ * na informacje zbierane w trakcie wykonywania. Ulatwia to prace programiscie. Jednak
+ * w wersji finalnej, wartosc DEBUG powinna wynosic false.
+ */
+DEFINE('DEBUG', true);
+
+
+/**
+ *	Domyslnie wartosc tej zmiennej jest pusta. Mozesz ja wykorzystac jezeli ten plik
+ *	(index.php) nie jest umieszczony w folderze z frameworkiem. Wowczas ta zmienna okresla,
+ *	w ktorym katalogu znajduja sie pliki frameworka. Nie zapomnij na koncu dodac slasha (/),
+ *	np. coyote-f/
+ */
+$system_dir = 'framework/';
+
+/**
+ *	Ta zmienna nie powinna byc zmieniana. Okresla ona sciezke do katalogu, w ktorym
+ *	znajduja sie pliki frameworka. 
+ */
+$root_dir = realpath(dirname(__FILE__)) . '/' . $system_dir;
+$root_dir = str_replace('\\', '/', $root_dir);
+
+if (!file_exists($root_dir . 'lib/core.class.php'))
+{
+	die('Could not find framework directory');
+}
+include_once($root_dir . 'lib/core.class.php');
+
+/**
+ * Ustawienie sciecki do katalogu aplikacji
+ */
+Core::setBasePath(getcwd());
+
+/**
+ * Ustawienie pliku konfiguracji projektu
+ */
+Core::setConfigPath('config.xml');
+/**
+ *	Metoda bootstrap() sluzy do inicjalizacji podstawowych zmiennych projektu
+ */
+Core::bootstrap($root_dir)->dispatch();
+?>
+]]>                
+            </programlisting>
+            
+            Budowa tego pliku jest prosta. Jego zadaniem jest ustawienie środowiska oraz inicjalizacja ścieżek
+            do katalogu z frameworkiem. 
+            
+            <note>
+                Jeżeli chcesz zmienić w swojej aplikacji ustawienia samego PHP, to jest dobre miejsce aby
+                umieścić odpowiednie funkcje (np. <methodname>setlocale()</methodname>, <methodname>error_reporting()</methodname>
+            </note>
+                
+        </para>
+        
+        <para>
+            Na samym początku następuje ustawienie lokalizacji dla naszego projektu (w tym przypadku - Polska) 
+            oraz strefy czasowej. Następnie zadklearowana zostaje stała DEBUG. Jest to stała wykorzystywana
+            przez framework i określa tryb pracy aplikacji. W trybie DEBUG podczas działania (generowania) strony, 
+            zbierana jest informacja na temat wykorzystywanych bibliotek, czasie generowania czy zapytaniach SQL.
+        </para>
+        
+        <para>
+            Następna ważna instrukcja to wywołanie metody <methodname>setBasePath()</methodname>, która
+            ustawia ścieżkę do katalogu aplikacji (NIE frameworka!)
+        </para>
+        
+        <para>
+            W kolejnych instrukcjach następuje ustawienie ścieżki do katalogu z frameworkiem oraz załadowanie
+            głównej klasy - <classname>Core</classname>. Metoda <methodname>setConfigPath()</methodname> powoduje
+            załadowanie pliku konfiguracyjnego - <filename>config.xml</filename>. Jeżeli nie posiadasz takiego pliku
+            lub nie chcesz, aby w tym momencie został on załadowany do projektu, możesz spokojnie usunąć tę linię kodu.
+        </para>
+        
+        <para>
+            Najważniejsza instrukcja w tym pliku, znajduje się na samym końcu. Wywołujemy tutaj bowiem
+            metodę <methodname>bootstrap()</methodname>, która inicjalizuje podstawowe elementy systemu. 
+        </para>
+        
+    </section>
+    
+    
+</chapter>

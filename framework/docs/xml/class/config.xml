@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../docbook/html/docbook.xsl"?>
+<chapter>
+    <title>Konfiguracja projektu</title>
+    <para> W niemal każdej aplikacji wykorzystującej framework, potrzebna jest konfiguracja, która
+        na stałe zapisana jest na serwerze. Konfiguracja może przechowywać informacje wymagane do
+        połączenia z bazą danych (serwer, login itp.) lub inne takie jak - tytuł strony czy stałe
+        informacje, które nie podlegają zmianom w trakcie działania systemu. Coyote wykorzystuje w
+        tym celu klasę <classname>Config</classname>, która znajduje się w pliku <filename>/lib/config.class.php</filename>. System próbuje odczytać plik konfiguracji wraz ze
+        starem aplikacji - jeżeli plik konfiguracji nie zostanie określony, system albo wyświetli
+        błąd - albo - przejdzie do dalszych czynności. Zależy to od tego, czy została określona
+        nazwa pliku konfiguracyjnego. <warning>Powinieneś odpowiednio zabezpieczyć pliki
+            konfiguracji, tak, aby dostęp do nich nie był możliwy z zewnątrz. Możesz do tego
+            wykorzystać reguły .htaccess.</warning></para>
+    <section>
+        <title>Ładowanie pliku konfiguracji do projektu</title>
+        <para>Klasa <classname>Config</classname> zawiera metody statyczne, dostepne w każdym
+            momencie działania aplikacji. Do załadowania konfiguracji do projektu, można wykorzystać
+            metodę <methodname>load()</methodname>, podając ścieżkę do pliku konfiguracyjnego -
+            np.:<programlisting>Config::load('config/config.xml'); // poszukuje pliku w katalogu /config </programlisting></para>
+        <para>Przykładowy plik konfguracyjny może wyglądać
+            tak:<programlisting>&lt;?xml version="1.0" encoding="utf-8"?>
+&lt;config>
+	&lt;application>My App&lt;/application>
+&lt;/config></programlisting></para>
+        <para>Aby odczytać zwartość pola application, należy użyć metody
+            <methodname>getItem()</methodname>:<programlisting>echo Config::getItem('application'); // wyświetli My App</programlisting></para>
+        <para>Jeżeli dane pole nie znajduje się w pliku konfiguracji - metoda
+            <methodname>getItem()</methodname> zwróci wartość null. Drugim, opcjonalnym parametrem
+            metody <methodname>getItem()</methodname> jest wartość domyślna. Zostanie ona zwrócona
+            jeżeli dany klucz nie znajduje się w
+            konfiguracji:<programlisting>echo Config::getItem('application', 'My App v.2');// zwróci My App v.2 jeżeli pole application nie znajduj się w konfiguracji</programlisting></para>
+    </section>
+    <section>
+        <title>Automatyczne ładowanie pliku konfiguracji</title>
+        <para>Dużym ułatwieniem jest automatyczne ładowanie konfiguracji tuż po starcie systemu
+            (inicjalizacja w klasie <classname>Core</classname>). Należy jednak określić ścieżkę
+            oraz nazwę pliku w momencie inicjalizacji systemu. Otwórz plik <filename>index.php</filename> znajdujący się w głównym katalogu projektu i umieść następującą
+            instrukcję przed instrukcją wywołującą metodę
+            <methodname>bootstrap()</methodname>:<programlisting>Core::setConfigPath('config/config.xml');</programlisting></para>
+        <para>Statyczna metoda <methodname>setConfigPath()</methodname> z klasy
+            <classname>Core</classname> umożliwia ustawienie ścieżki do głównego pliku konfiguracji.
+            Od tej pory ten plik będzie ładowany tuż po stacie systemu - nie ma konieczności
+            ładowania go, z użyciem metody <methodname>load()</methodname>. </para>
+        <para>Metoda <methodname>setConfigPath()</methodname> przypisuje ścieżki plików konfiguracji
+            do tablicy. Oznacza to, że możemy określić wiele plików konfiguracyjnych, które zostaną
+            załadowane na starcie aplikacji. </para>
+    </section>
+    <section>
+        <title>Wyświetlanie zawartości konfiguracji</title>
+        <para>W celu wyświetlenia zawartości klasy Config, można użyć metody
+            <methodname>getItem()</methodname> nie podając żadnego
+            parametru:<programlisting>Core::debug(Config::getItem());</programlisting></para>
+        <para>Wówczas zostanie zwrócona tablica PHP z informacjami o konfiguracji. W moim przypadku
+            w rezultacie zastosowania powyższych instrukcji, na ekranie zostanie wyświetlona
+            tablica:<programlisting>
+Array
+(
+    [core] => Array
+        (
+            [root] => C:/usr/src/coyote/demo/../coyote-1-0/
+            [base] => C:\usr\src\coyote\demo/
+            [template] => template
+            [templateConfig] => config.xml
+            [templateExtension] => .php
+            [javascript] => template/js
+        )
+
+    [application] => My App
+)</programlisting></para>
+        <para>Możesz zauwayć, iż w konfiguracji znajdują się pola, których nie ustawiałeś. Wartości
+            tych pól zostały nadane automatycznie przez framework. Są to podstawowe informacje,
+            takie jak ścieżki czy nazwy katalogów istotne dla prawidłowego działania frameworka.
+            Zostają one ustawione w momencie, gdy Coyote nie może odnaleźć tych pól w pliku
+            konfiguracji. Innymi słowy: jeżeli nie ustawisz tych pól ręcznie, w pliku XML, Coyote
+            sam ustawi ich wartość. Łatwo to sprawdzić. Zmien zawartość pliku konfiguracyjnego, tak,
+            aby zawierał on informacje o rozszerzeniu
+            widoków:<programlisting>
+&lt;?xml version="1.0" encoding="utf-8"?>
+&lt;config>
+	&lt;application>My App&lt;/application>
+	&lt;core>
+		&lt;templateExtension>.phtml&lt;/templateExtension>
+	&lt;/core>
+&lt;/config></programlisting></para>
+        <para>Od tej pory, domyślnym rozszerzeniem dla plików widoków będzie
+            .<emphasis>phtml</emphasis>. </para>
+    </section>
+    <section>
+        <title>Ustawianie wartości konfiguracyjnych</title>
+        <para>Aby przypisać nową wartość konfiguracji w trakcie działania aplikacji, należy użyć
+            metody
+            <methodname>setItem()</methodname>:<programlisting>
+echo Config::getItem('application');
+Config::setItem('application', 'My App v.3');
+echo Config::getItem('application');</programlisting></para>
+        <para>Ustawianie wartości w trakcie działania aplikacji może być dobrym sposobem na
+            przechowywanie globalnych danych w trakcie działania programu. Do ustawienia wartości
+            danego klucza, można wykorzystać statyczną metodę <methodname>setDefault()</methodname>.
+            Rózni się ona od <methodname>setItem()</methodname> tym, iż wartość zostanie ustawiona
+            tylko wtedy jeżeli ta nie została ustawiona wcześniej (innymi słowy - nie nadpisuje już
+            istniejącej
+            wartości):<programlisting>		
+Config::setDefault('application', 'My App v.3');
+echo Config::getItem('application'); // nadal wyświetli My App
+            </programlisting></para>
+        <para>Alternatywnym rozwiązaniem jest zastosowanie instrukcji
+            warunkowej:<programlisting>		
+if (!Config::getItem('application'))
+{
+	Config::setItem('application', 'My App v.3');
+}
+echo Config::getItem('application'); // nadal wyświetli My App
+            </programlisting></para>
+        <para>Jednakże użycie metody <methodname>setDefault()</methodname> skraca kod do jednej
+            instrukcji. </para>
+        <note>Użycie metody setItem() spowoduje zastąpienie istniejącej wartości znajdującej się pod
+            danym kluczem. </note>
+        <para>Metoda setItem() zastępuje wartość jeżeli dany klucz został zadeklarowany już
+            wcześniej.
+            Np.:<programlisting>		Config::setItem('foo', 'foo');
+		Config::setItem('foo', 'bar');
+
+		echo Config::getItem('foo'); // wyświetli "bar"</programlisting></para>
+        <para>Nieraz przydatne może się okazać dodanie wartości - zamiast jej zastąpywania.
+            Przykładowo - pole <emphasis>templateConfig</emphasis> określa nazwę pliku
+            konfiguracyjnego dla widoków. Jednak system umożliwia zadeklarowanie kilku nazw plików,
+            które będą przeszukiwane przez Coyote'a. Wówczas możemy użyć metody
+                <methodname>addItem()</methodname>:<programlisting>		
+Config::addItem('foo', 'foo');
+Config::addItem('foo', 'bar');
+
+Core::debug(Config::getItem('foo')); 
+/*
+stdClass Object
+(
+    [0] => foo
+    [1] => bar
+)
+*/
+
+Config::addItem('core.templateConfig', 'myConfig.ini');
+Core::debug(Config::getItem('core.templateConfig'));
+/*
+stdClass Object
+(
+    [0] => config.xml
+    [1] => myConfig.ini
+)
+		*/</programlisting></para>
+    </section>
+    <section>
+        <title>Przestrzenie nazw</title>
+        <para>W miare rozbudowy Twojej aplikacji, rozmiary plików konfiguracyjnych mogą przybrać na
+            wielkości. Klucze konfiguracji mogą być grupowane w przestrzenie nazw. Na podstawie
+            znaku kropki, Coyote rozdzieli klucze i utworzy w pamięci tablice PHP. Oto
+                przykład:<programlisting>		
+Config::setItem('application.name', 'My App');
+Config::setItem('application.version', '1.0');
+Config::setItem('core.version', '1.1');
+
+Core::debug(Config::getItem());
+/* rezultat:
+Array
+(
+    [core] => Array
+        (
+            [root] => C:/usr/src/coyote/demo/../coyote-1-0/
+            [base] => C:\usr\src\coyote\demo/
+            [templateExtension] => .phtml
+            [template] => template
+            [templateConfig] => config.xml
+            [javascript] => template/js
+            [version] => 1.1
+        )
+
+    [application] => Array
+        (
+            [name] => My App
+            [version] => 1.0
+        )
+
+)
+*/</programlisting><note>Mimo,
+                iż konfiguracja zapisana jest w pliku XML, Coyote przekształci znaczniki XML na
+                tablice PHP.</note><note>Statyczna metoda <methodname>debug()</methodname> klasy
+                    <classname>Core</classname> umożliwia wyświetlanie zawartości tablic, obiektów
+                czy zmiennych.</note></para>
+        <para> Przestrzenie nazw, mimo, iż w rzeczywistości są to tablice - pomagają zachować pewną
+            organizację. </para>
+        <para>Odczyt wartości takiego pola nie różni się niczym od odczytu zwykłego pola. Należy
+            jednak podać nazwę klucza oraz przestrzeni:
+            <programlisting>echo Config::getItem('core.version');</programlisting></para>
+        <para>Możesz również odczytać zawartość całej przestrzeni, podając jej
+            nazwę:<programlisting>Core::debug(Config::getItem('core'));</programlisting></para>
+        <para>W takim przypadku, zawartość przestrzenii <emphasis>core</emphasis>, zostanie zwrócona
+            jako obiekt, tak więc możliwe jest alternatywny odczyt pól z przestrzenii
+            nazw:<programlisting>echo Config::getItem('core')->version;</programlisting></para>
+    </section>
+    <section>
+        <title>Podział pliku konfiguracji</title>
+        <para>Nie ma ograniczenia mówiącego, iż cała konfiguracja powinna być trzymana w jednym
+            pliku. Wszystko zależy od Ciebie - możesz rozdzielić plik konfiguracji na kilka
+            mniejszych plików i ładować je do projektu przy pomocy metody
+            <methodname>load()</methodname>. Aby bardziej ułatwić sprawę, w głównym pliku
+            konfiguracji możesz zawrzeć instrukcje o plikach, które mają być również automatycznie
+            załadowane. W pliku XML, służy do tego dyrektywa
+            include:<programlisting>&lt;include>config/route.xml&lt;/include></programlisting></para>
+        <para>Zawartość znacznika musi wskazywać na ścieżkę do pliku, który ma zostać załadowany do
+            projektu. W tym przypadku zostanie załadowany plik <emphasis>route.xml</emphasis>, z
+            katalogu <filename>config</filename>. </para>
+    </section>
+    <section>
+        <title>Adaptery</title>
+        <para>Domyślnym formatem plików konfiguracji Coyote'a jest format XML. Coyote jednak
+            obsługuje inne formaty, takie jak pliki INI czy pliki PHP zawierające tablice, która po
+            prostu zostanie wczytana do projektu. Nic nie stoi również na przeszkodzie, aby samemu
+            napiasć adapter, czym zajmiemy się nieco później. </para>
+        <section>
+            <title>Adapter XML</title>
+            <para> XML jest bardzo popularnym formatem, szeroko wykorzystywanym w rozmaitych
+                aplikacjach. Jest to również zalecany format przechowywania konfiguracji w
+                aplikacjach wykorzystujących Coyote. Klasa <classname>Config</classname>
+                automatycznie rozpozna format XML po rozserzeniu oraz zainicjalizuje odpowiedni
+                adapter. Klasa <classname>Config</classname> przekonwertuje znaczniki XML na tablcę
+                PHP. Oznacza to, że taki plik
+                XML:<programlisting>&lt;?xml version="1.0" encoding="utf-8"?>
+&lt;config>
+	&lt;site>
+		&lt;name>4programmers.net&lt;/name>
+		&lt;version>1.0&lt;/version>
+		&lt;description>Serwis o programowaniu&lt;/description>
+	&lt;/site>
+&lt;/config></programlisting></para>
+            <para>Zostanie przekonwertowany na tablicę
+                PHP:<programlisting>Array
+(
+    [core] => Array
+        (
+            [root] => C:/usr/src/coyote/demo/../coyote-1-0/
+            [base] => C:\usr\src\coyote\demo/
+            [template] => template
+            [templateConfig] => config.xml
+            [templateExtension] => .php
+            [javascript] => template/js
+        )
+
+    [site] => Array
+        (
+            [name] => 4programmers.net
+            [version] => 1.0
+            [description] => Serwis o programowaniu
+        )
+
+)</programlisting>Dzięki
+                temu w prosty sposób możemy odczytać wartości
+                konfiguracji:<programlisting>		
+echo Config::getItem('site.name');
+echo Config::getItem('site')->name;
+Core::debug(Config::getItem('site')); // obiekt site
+                </programlisting></para>
+        </section>
+        <section>
+            <title>Adapter PHP</title>
+            <para>Format XML jest popularny i przenośny. Jednak dla Ciebie - jako programisty PHP,
+                lepszym rozwiązaniem może się wydawać zapisywanie konfiguracji wprost - w pliku PHP.
+                Np.:<programlisting>&lt;?php
+
+$config['site'] = array(
+	'name'		=> '4programmers.net',
+	'version'	=> '1.0',
+	'description'	=> 'Serwis o programowaniu'
+	)
+;
+
+?></programlisting></para>
+            <para>Taki sposób jest wydajniejszy ponieważ system nie traci czasu na konwersje na
+                format PHP. Ponad to, plik PHP może zawierać dodatkowe instrukcje języka PHP - w tym
+                instrukcję <code>include</code> umożliwiającą ładowanie innych plików (w tym
+                konfiguracji). </para>
+        </section>
+        <section>
+            <title>Adapter INI</title>
+            <para>Innym sposobem zapisywania konfiguracji jest plik INI. Sekcje w pliku INI będą
+                stanowiły nazwę przestrzeni nazw, czyli innymi słowy - sekcja utworzy nowy klucz w
+                tablicy asocjacyjnej w procesie konwersji na format
+                PHP:<programlisting>[site]
+
+name = 4programmers.net
+version = 1.0
+description = To jest serwis o programowaniu</programlisting></para>
+            <para>Po załadowaniu takiego pliku INI, metoda <methodname>getItem()</methodname>
+                zwróci:<programlisting>Array
+(
+    [core] => Array
+        (
+            [root] => C:/usr/src/coyote/demo/../coyote-1-0/
+            [base] => C:\usr\src\coyote\demo/
+            [template] => template
+            [templateConfig] => config.xml
+            [templateExtension] => .php
+            [javascript] => template/js
+        )
+
+    [site] => Array
+        (
+            [name] => 4programmers.net
+            [version] => 1.0
+            [description] => To jest serwis o programowaniu
+        )
+
+)</programlisting></para>
+            <para> W pliku INI, klucze mogą dodatkowo posiadać znak kropki, który rozdzieli taki
+                klucz na poszczególne elementy.
+                Przykładowo:<programlisting>[final]
+
+site.name = 4programmers.net
+site.version = 1.0
+site.description = To jest serwis o programowaniu
+
+[developer]
+
+site.name = 4programmers.net beta
+site.version = 2.0-dev
+site.description = To jest testowa wersja serwisu o programowaniu</programlisting>Teraz
+                wykonanie takiego kodu w
+                kontrolerze:<programlisting>		Config::load('config/config.ini');
+		Core::debug(Config::getItem()); 
+
+		echo Config::getItem('developer.site.name');</programlisting>Spowoduje
+                wyświetlenie na
+                ekranie:<programlisting>Array
+(
+    [core] => Array
+        (
+            [root] => C:/usr/src/coyote/demo/../coyote-1-0/
+            [base] => C:\usr\src\coyote\demo/
+            [template] => template
+            [templateConfig] => config.xml
+            [templateExtension] => .php
+            [javascript] => template/js
+        )
+
+    [final] => Array
+        (
+            [site] => Array
+                (
+                    [name] => 4programmers.net
+                    [version] => 1.0
+                    [description] => To jest serwis o programowaniu
+                )
+
+        )
+
+    [developer] => Array
+        (
+            [site] => Array
+                (
+                    [name] => 4programmers.net beta
+                    [version] => 2.0-dev
+                    [description] => To jest testowa wersja serwisu o programowaniu
+                )
+
+        )
+
+)
+4programmers.net beta</programlisting></para>
+        </section>
+        <section>
+            <title>Własny adapter</title>
+            <para>Przypuśćmy, że oprócz konfiguracji zapisanej w plikach XML oraz INI, w swojej
+                aplikacji posiadasz również konfiguracje zapisaną w tabeli bazy danych. Napiszemy
+                dodatkowy adapter, który będzie wczytywał zawarość tabeli do konfiguracji projektu.
+                Tabela jest bardzo
+                prosta:<programlisting>CREATE TABLE coyote_config (
+  config_name varchar(120) NOT NULL COMMENT 'Nazwa klucza',
+  config_value varchar(255) NOT NULL COMMENT 'Wartość klucza'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Dodatkowe opcje konfiguracyjne projektu ';</programlisting></para>
+            <para>Adaptery konfiguracji muszą implementować interfejs IConfig, który prezentuje się
+                następująco:<programlisting>/**
+ * Interface dla adapterow konfiguracji
+ */
+interface IConfig 
+{
+	public function load($path);
+	/**
+	 * Do metody przekazywane jest rozszerzenie pliku konfiguracyjnego. Jezeli metoda zwroci true,
+	 * to oznacza, iz akceptuje wybrane rozszerzenie i mozna przetwarzac dane. Jezeli nie - wyswietlany
+	 * jest blad programu o braku danego kontrolera
+	 */
+	public function isAccept($suffix);
+}</programlisting></para>
+            <para>Czyli innymi słowy - nasz adapter musi posiadać metody load() oraz isAccept(). W
+                katalogu swojej aplikacji utwórz folder lib. Następnie, w nim utwórz kolejny katalog
+                - config. Tutaj umieścimy nasz adapter. Plik nazwij db.class.php. Jego zawartość
+                może być
+                następująca:<programlisting>&lt;?php
+
+class Config_Db implements IConfig
+{
+	public function load($path)
+	{
+		$config = array();
+
+		$db = &amp;Load::loadClass('db', true, 'mysql');
+		$db->connect('localhost', 'root', 'root', 'coyote_dev');
+
+		$query = $db->query('SELECT * FROM coyote_config'); 
+		foreach ($query as $row)
+		{ 
+			$config[$row['config_name']] = $row['config_value'];
+		}
+		return $config;
+	}
+
+	public function isAccept($suffix)
+	{
+		return true;
+	}
+}
+
+?></programlisting></para>
+            <para>Domyślnie, klasa <classname>Config</classname> jest przystosowana do wczytywania
+                konfiguracji z plików umieszczonych, fizycznie na dysku komputera. Dlatego do metody
+                    <methodname>load()</methodname> przekazywany jest parametr określający ścieżkę
+                do pliku konfiguracji. W naszej klasie ignorujemy ten parametr. Metoda
+                    <methodname>load()</methodname> musi zwracać tablicę PHP zawierającą
+                konfigurację. Zostanie ona połączona z dotychczasową konfiguracją projektu. </para>
+            <para>Metoda <methodname>isAccept()</methodname> powinna zwracać TRUE lub FALSE w
+                zależności czy dany format pliku jest akceptowany przez adapter. Klasa
+                    <classname>Config</classname> wywołuje metodę
+                <methodname>isAccept()</methodname> przekazując w parametrze rozszerzenie pliku
+                konfiguracyjnego. Na tej podstawie adapter powinien stwierdzić, czy rozserzenie jest
+                dla niego akceptowalne i zwrócić TRUE lub FALSE. </para>
+            <para>Jeszcze jedna istotna sprawa: klasa Config domyślnie jest przystosowana do
+                wczytywania plików konfiguracji z dysku. Tzn. poszukuje pliku o podanej nazwie i
+                jeżeli go znajduje - wywołuje metodę <methodname>load()</methodname> z odpowiedniego
+                adaptera. Aby nasz adapter miał szansę zadziałać, umieść w katalogu /config plik
+                config.db. Treść jest nieważna - może to być pusty plik. Ważne, aby istniał i loader
+                potrafił go odnaleźć. </para>
+            <para>Teraz najważniejsze - uruchomienie adaptera. Najpierw musimy wywołać metodę
+                    <methodname>setAdapter()</methodname> klasy <classname>Config</classname>, aby
+                ustawić nowy adapter tej klasy. Następnie wczytujemy konfigurację wykorzystując
+                metodę
+                l<methodname>oad()</methodname>:<programlisting>Config::setAdapter(new Config_Db);
+		Config::load('config/config.db');
+
+		Core::debug(Config::getItem());</programlisting></para>
+        </section>
+    </section>
+    <section>
+        <title>Cache konfiguracji</title>
+        <para>Wyobraź sobie, że konfiguracja Twojego projektu podzielona jest na 10 pliów XML oraz
+            kilka plików INI. Wszystko w całość łączy plik PHP. Możemy przyspieszyć działanie
+            aplikacji cachując konfiguracje projektu. Spowoduje to zapisanie całej konfiguracji w
+            jednym pliku PHP, w postaci tablicy PHP. W przypadku, gdy konfiguracja Twojego projektu
+            zawiera wiele instrukcji (np. XML), które muszą być parsowane, taki zabieg może
+            przyspieszyć działanie programu. </para>
+        <para>Cachowanie polega na zapisaniu całej zawartości tablicy <varname>$config</varname> z
+            klasy <classname>Config</classname>, do jednego pliku PHP. Konfiguracja zapisywana jest
+            w katalogu cache, więc musisz takowy najpierw utworzyć. Cachowanie konfiguracji możliwe
+            jest po ustawieniu opcji config.compile. Oto przykład kodu:
+            <programlisting>&lt;?php
+
+class Index extends Controller
+{
+	function main()
+	{
+		// nie potrzeba ladowania tego pliku - zostal on cachowany
+		if (!Config::isCached())
+		{
+			Config::load('config/config.ini');
+		}
+		echo Config::getItem('developer.site.name');
+
+		if (!Config::isCached())
+		{
+			Config::setAdapter(new Config_Db);
+			Config::load('config/config.db');
+		}
+
+		Core::debug(Config::getItem());
+
+		Config::setItem('config.compile', true);
+	}
+}
+?></programlisting></para>
+        <para>Metoda<methodname> isCached()</methodname> zwraca TRUE jeżeli dane zostały odczytane z
+            cache. Zwróc uwagę, że wówczas nie jest konieczne wczytanie pliku INI czy konfiguracji z
+            bazy danych - znajduje się ona już w cache!</para>
+    </section>
+    <section>
+        <title>Automatyczne ładowanie zasobów</title>
+        <para>Ręczne wywoływanie bibliotek, modeli czy helperów może być nużące i niepraktyczne
+            jeżeli często wykorzystujemy dane zasoby. Stąd możliwość automatycznego ich ładowania
+            wraz ze startem systemu. Następuje to w momencie utworzenia instancji klasy
+                <classname>Load</classname>. </para>
+        <para> Konstruktor klasy Load odczytuje parametr <emphasis>autoload</emphasis> konfiguracji
+            i na tej podstawie umożliwia załadowanie bibliotek, helperów czy modeli. Wystarczy
+            zadeklarować w pliku konfiguracyjnym znacznik autoload:
+            <programlisting>
+&lt;autoload>
+	&lt;helper>system&lt;/helper>
+	&lt;helper>url&lt;/helper>
+	&lt;helper>html&lt;/helper>
+	&lt;library>email&lt;/library>
+	&lt;model>foo&lt;/model>
+&lt;/autoload>                
+            </programlisting></para>
+        <section>
+            <title>Automatyczne łączenie z bazą danych</title>
+            <para> Niemal w każdej aplikacji będziesz zmuszony korzystać z bazy danych. Wygodnym
+                rozwiązaniem jest, aby framework inicjował połączenie z bazą danych za nas, abyśmy
+                nie musieli tego robić w każdym kontrolerze, co jest raczej niewygodne. Dlatego
+                loader wykrywa, czy w pliku konfiguracyjnym nie określiliśmy ustawień bazy danych.
+                Jeżeli tak - postara się on zainicjować połączenie. Przede wszystkim - ustalmy
+                konfiguracje bazy danych w pliku
+                konfiguracyjnym:<programlisting>&lt;databases>
+
+		&lt;default>
+			&lt;adapter>mysql&lt;/adapter>
+			&lt;host>localhost&lt;/host>
+			&lt;user>root&lt;/user>
+			&lt;password>root&lt;/password>
+			&lt;dbname>coyote_dev&lt;/dbname>
+		&lt;/default>
+		
+	&lt;/databases></programlisting></para>
+            <para> Ustawiliśmy podstawowe wartości konfiguracyjne dla bazy danych. Ale to nie
+                wszystko, gdyż w konfiguracji możemy mieć kilka ustawień baz danych. System musi
+                wiedzieć, z którą łączyć się automatycznie. Ustaw argument autoload dla znacznika
+                default w ten
+                sposób:<programlisting>	&lt;databases autoload="default">
+
+		&lt;default>
+			&lt;adapter>mysql&lt;/adapter>
+			&lt;host>localhost&lt;/host>
+			&lt;user>root&lt;/user>
+			&lt;password>root&lt;/password>
+			&lt;dbname>coyote_dev&lt;/dbname>
+		&lt;/default>
+		
+	&lt;/databases></programlisting></para>
+            <para> Od tego momentu system będzie automatycznie związywał połączenie z bazą danych
+                określoną jako default w konfiguracji aplikacji. </para>
+        </section>
+    </section>
+</chapter>

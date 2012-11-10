@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<installation type="module">
+	<name>wiki</name>
+	<text>Moduł Wiki</text>
+	<author>Adam Boduch</author>
+	<version>1.0-rc2</version>
+	<system>1.0-rc2</system>
+
+	<option type="checkbox">
+		<name>enableWiki</name>
+		<text>Zezwalaj na edycję tekstu</text>
+		<title>Możliwość zablokowania edycji tekstu przez użytkowników</title>
+		<values default="1" />
+		<auth>a_</auth>
+	</option>
+	<option type="checkbox">
+		<name>enableMenu</name>
+		<text>Włącz wyświetlanie menu</text>
+		<title>Włącza wyświetlanie menu w przypadku, gdy na danej stronie istnieją kategorie potomne</title>
+		<values default="1" />
+		<auth>a_</auth>
+	</option>
+    <option type="select">
+        <name>menuLimit</name>
+        <text>Limit wyświetlania linków w menu</text>
+        <title>Ograniczenie wyświetlania linków w menu</title>
+        <values default="0">
+			<value id="0">Nieograniczona</value>
+			<value id="5">5 pozycji</value>
+			<value id="10">10 pozycji</value>
+			<value id="15">15 pozycji</value>
+			<value id="20">20 pozycji</value>
+			<value id="25">25 pozycji</value>
+			<value id="30">30 pozycji</value>
+			<value id="35">35 pozycji</value>
+            <value id="40">40 pozycji</value>
+            <value id="45">45 pozycji</value>
+            <value id="50">50 pozycji</value>
+		</values>
+		<auth>a_</auth>
+    </option>
+
+	<setup>
+        <auth value="w_rename" default="0">Zmiana nazwy artykułu</auth>
+
+		<connector>
+			<name>wiki</name>
+			<text>Strona Wiki</text>
+			<class>wiki</class>
+			<controller>wiki</controller>
+			<action>view</action>
+		</connector>
+
+		<route>
+			<name>wiki</name>
+			<url>:mode/*</url>
+			<controller>wiki</controller>
+			<action>main</action>
+			<requirements>
+				<mode>(View|Edit|History|Watch|Preview|Write|Diff)</mode>
+			</requirements>
+			<default>
+				<action>view</action>
+			</default>
+		</route>
+	</setup>
+</installation>

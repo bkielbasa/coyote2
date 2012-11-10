@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter>
+    <title>Modele</title>
+    
+    <para>
+        Modele służą do operowania na danych. W Coyote mają postać normalnych klas,
+        umieszczonych w katalogu <filename>/model</filename>. Klasy modelu muszą spełniać pewne
+        wymogi:
+    </para>
+    
+    <itemizedlist>
+        <listitem>Nazwa klasy musi posiadać końcówkę _Model.</listitem>
+        <listitem>Plik modelu musi posiadać konówkę .model.php.</listitem>
+        <listitem>Model musi dziedziczyć po klasie Model. </listitem>
+    </itemizedlist>
+    
+    <para>
+        W swoim projekcie utwórz katalog <filename>/model</filename>, a w nim plik
+        <filename>foo.model.php</filename>. Niech nasza przykładowa klasa modelu posiada taką
+        postać:
+        <programlisting>
+&lt;?php
+
+class Foo_Model extends Model
+{
+    const VERSION = '1.0';
+    
+    public function getVersion()
+    {
+        return self::VERSION;
+    }
+}
+
+?>
+        </programlisting>
+    </para>
+    
+    <para>
+        Model może zostać załadowany dzięki metodzie <methodname>model()</methodname> z klasy
+        loadera (<classname>Load</classname>). W naszym przykładowy kontrolerze możemy więc utworzyć
+        taki kod:
+        <programlisting>
+&lt;?php
+
+class Index_Controller extends Controller 
+{
+    function main()
+    {
+        $foo = &amp;$this->load->model('foo');
+        // wyswietlenei wersji (pobranie danych z modelu)
+        echo $foo->getVersion();
+    }
+}
+?>
+        </programlisting>
+    </para>
+    
+    <para>
+        Jak widzisz, w parametrze metody <methodname>model()</methodname> podajemy jedynie nazwę
+        modelu (bez końcówki <emphasis>_Model</emphasis>). Metoda <methodname>model()</methodname>
+        zwraca referencję do obiektu klasy. Od tej pory możemy wykorzystać obecne w nim metody. Oto
+        równoważne użycie
+        modelu:
+        <programlisting>
+$this->load->model('foo');
+// wyswietlenei wersji (pobranie danych z modelu)
+echo $this->model->foo->getVersion();
+        </programlisting>
+    </para>
+    
+    <para>
+        Teraz model <classname>foo</classname> może być wykorzystywany w wielu miejscach w
+        projekcie. Kontrolera nie interesuje skąd pochodzą dane. Model może je odczytywać z bazy
+        danych, pliku XML itp. Model może dostarczać np. informacje o użytkowniku pobierane z bazy
+        danych. W odpowiednim miejscu (czy to strona główna naszej strony WWW, czy panel
+        administracyjny dostępny tylko dla administratorów) ładujemy odpowiedni model, a następnie -
+        wywołujemy odpowiednią metodę, która dostarcza nam informacje o użytkowniku. 
+        <note>
+            Aby wczytać model do projektu, można wykorzystać metodę getModel(), która zadeklarowana jest w
+            klasie Controller. Jest również dostepna w kontrolerach, ktore dziedziczą po tej klasie.
+        </note>
+    </para>
+    
+    <section>
+        <title>Pobieranie danych z modelu, w widoku</title>
+        
+        <para>
+            Dane dostarczane przez model mogą być wykorzystywane bezpośrednio w widoku - z
+            pominięciem warstwy kontrolera:
+            <programlisting>
+&lt;!-- w widoku (kod HTML): -->
+Wersja: &lt;b>&lt;?= $model->foo->getVersion(); ?>&lt;/b>
+            </programlisting>
+        </para>
+    </section>
+</chapter>

@@ -1,0 +1,177 @@
+body
+{
+	background-color:		#7f7f7f;
+	margin:			0;
+	font-family:	Verdana, Arial, Helvetica, sans-serif;
+	font-size:		11px;
+}
+
+ul, li
+{
+	padding:		0;
+	margin:			0;
+}
+
+img
+{
+	border:			0;
+}
+
+h1
+{
+	font-size:		1.5em;
+	margin:			15px 0 15px 0;
+}
+
+hr
+{
+	line-height:	1px;
+	height:			1px;
+	border:			none;
+	border-top:		1px solid #ddd;
+}
+
+#container
+{
+	background-color:		white;
+	width:			90%;
+	margin:			0 auto 0 auto;
+	overflow:		hidden;
+}
+
+#topBg
+{
+	background:		url('img/top_bg.gif') repeat-x;
+	width:			100%;
+	height:			20px;
+}
+
+#bottom
+{
+	width:			90%;
+	margin:			0 auto 0 auto;		
+	height:			11px;
+	background-color:		white;
+	clear:			both;
+}
+
+#bottom .left
+{
+	background:		url('img/bottom_left.gif') no-repeat 100% 100%;
+	width:			11px;
+	height:			11px;
+	float:			left;
+}
+
+#bottom .right
+{
+	background:		url('img/bottom_right.gif') no-repeat 100% 100%;
+	width:			11px;
+	height:			11px;	
+	float:			right;
+}
+
+#footer
+{
+	color:			#ddd;
+	width:			90%;
+	margin:			2px auto 0 auto;
+	font-family:	Arial;
+	padding:		2px 0 0 10px;
+}
+
+#logo
+{
+	float:			left;
+}
+
+#menu
+{
+	list-style:		none;
+	float:			right;	
+	margin:			45px 0 0 0;
+	width:			500px;
+	background:		url("img/menu_border.gif") no-repeat 100% 100%;
+}
+
+#menu li
+{
+	float:			right;
+	display:		block;
+}
+
+#menu li a
+{
+	float:			left;
+	display:		block;	
+	background:		#dddddd url("img/gray_top_right.gif") no-repeat top right;
+	margin-right:	5px;
+	margin-bottom:	3px;
+	color:			black;
+	text-decoration:		none;
+}
+
+#menu li a span 
+{
+	background:		url("img/gray_top_left.gif") no-repeat top left;
+	display:		block;
+	padding:		3px 15px 3px 16px;
+	font-family:	Helvetica;
+	font-size:		10px;
+}
+
+#menu li.active a
+{
+}
+
+#menu li.active a span
+{
+}
+
+#content
+{
+	clear:			both;
+	font-size:		12px;
+	padding:		20px;
+}
+
+fieldset span
+{
+	display:		block;
+	clear:			both;
+	padding:		5px 0 5px 0;
+}
+
+fieldset
+{
+	border:			none;
+	padding:		5px;
+}
+
+fieldset b
+{
+	display:		block;
+	float:			left;
+	width:			30%;	
+}
+
+fieldset em
+{
+	font-size:		10px;
+	display:		block;
+	margin-left:	30%;
+}
+
+#content .download
+{
+	background:		url("img/arrow_black.gif") no-repeat 0 50%;
+	padding-left:	15px;
+	list-style:		none;
+}
+
+#content .docs
+{
+	background:		url("img/text_i.gif") no-repeat 0 50%;
+	padding-left:	15px;
+	list-style:		none;
+}

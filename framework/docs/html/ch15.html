@@ -1,0 +1,83 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Rozdzia&#322; 15. Mechanizm routingu</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="pt01.html" title="Cz&#281;&#347;&#263; I. Dokumentacja techniczna"><link rel="prev" href="ch14s08.html" title="Konfiguracja widoku"><link rel="next" href="ch15s02.html" title="Operator *"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Rozdzia&#322; 15. Mechanizm routingu</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch14s08.html">Poprzedni</a> </td><th width="60%" align="center">Cz&#281;&#347;&#263; I. Dokumentacja techniczna</th><td width="20%" align="right"> <a accesskey="n" href="ch15s02.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="chapter" lang="pl"><div class="titlepage"><div><div><h2 class="title"><a name="id491347"></a>Rozdzia&#322; 15. Mechanizm routingu</h2></div></div></div><div class="toc"><p><b>Spis tre&#347;ci</b></p><dl><dt><span class="section"><a href="ch15.html#id491431">Zmienne</a></span></dt><dd><dl><dt><span class="section"><a href="ch15.html#id491575">Wyra&#380;enia regularne</a></span></dt></dl></dd><dt><span class="section"><a href="ch15s02.html">Operator *</a></span></dt><dt><span class="section"><a href="ch15s03.html">Subdomeny</a></span></dt><dt><span class="section"><a href="ch15s04.html">Generowanie URL</a></span></dt><dt><span class="section"><a href="ch15s05.html">Przechwytywanie wszystkich adresów</a></span></dt><dt><span class="section"><a href="ch15s06.html">Sortowanie regu&#322;</a></span></dt><dt><span class="section"><a href="ch15s07.html">Grupowanie kontrolerów w podkatalogach</a></span></dt></dl></div><p>O mechanizmie URL obs&#322;ugiwanym przez system, by&#322;a ju&#380; mowa we wcze&#347;niejszych fragmentach
+        podr&#281;cznika. Mechanizm routingu zapewnia bardziej zaawansowane metody analizy URL i
+        rozdzielania zada&#324; do odpowiednich kontrolerów. Standardowy URL rozpoznawany przez system
+        wygl&#261;da tak:</p><pre class="programlisting">http://serwer.com/Kontroler/Akcja/Parametry</pre><p>Zak&#322;adaj&#261;c, &#380;e chcemy utworzy&#263; kontroler, który b&#281;dzie obs&#322;ugiwa&#322; panel u&#380;ytkownika, nasz
+        URL móg&#322;by wygl&#261;da&#263; w ten
+        sposób:</p><pre class="programlisting">http://serwer.com/User/Main/1</pre><p>Parametrem w tym przypadku jest ID u&#380;ytkownika. Taki URL wygl&#261;da elegancko, lecz móg&#322;by
+        wygl&#261;da&#263; lepiej, gdyby&#347;my pomineli nazw&#281; akcji <tt class="methodname">Main</tt>. W tym celu
+        musimy utworzy&#263; now&#261; regu&#322;&#281; routera. Otwórz plik konfiguracji projektu (w moim przypadku
+        jest to <tt class="filename">config.xml</tt>) i umie&#347;&#263; w nim nast&#281;puj&#261;ce
+        instrukcje:</p><pre class="programlisting">
+&lt;route&gt;
+    &lt;name&gt;user&lt;/name&gt;
+    &lt;url&gt;/User/:id&lt;/url&gt;
+    &lt;controller&gt;user&lt;/controller&gt;
+    &lt;action&gt;main&lt;/action&gt;
+&lt;/route&gt;</pre><p>Utworzyli&#347;my tym samym now&#261; regu&#322;&#281; o nazwie <span class="emphasis"><em>user</em></span>. Mechanizm routingu,
+        przy ka&#380;dorazowym &#380;&#261;daniu sprawdza&#263; b&#281;dzie, czy &#380;&#261;dany URL nie pasuje do której&#347; z regu&#322;
+        zapisanych w konfiguracji. Fraza <span class="emphasis"><em>:id</em></span> oznacza tutaj zmienn&#261;. Je&#380;eli nasz
+        URL b&#281;dzie wygl&#261;da&#322; tak: <span><b class="command">/User/1, /User/23423, /User/boduch</b></span>, wówczas
+        utworzony zostanie kontroler <tt class="classname">user</tt>, a wykonana akcja
+        <tt class="methodname">main</tt>. Aby korzysta&#263; z mechanizmu routingu nie trzeba inicjalizowa&#263;
+        &#380;adnych dodatkowych klas. Adresy URL s&#261; analizowane przez klas&#281;
+        <tt class="classname">Router</tt>, która jest automatycznie inicjalizowana przez framework.</p><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id491431"></a>Zmienne</h2></div></div></div><p>W regu&#322;ach routingu mo&#380;emy u&#380;ywa&#263; specjalnych symboli, zaczynaj&#261;cych si&#281; od znaku :
+            (dwukropek). Tak, jak w poprzednim przyk&#322;adzie - w miejsce <span class="emphasis"><em>:id</em></span>
+            spodziewamy si&#281; otrzyma&#263; ID usera, i system routingu powinien bra&#263; to pod uwag&#281;. Warto&#347;&#263;
+            takiej zmiennej zapisywana jest klasie <tt class="classname">Controller</tt>, z której
+            dziedzicz&#261; wszystkie kontrolery. St&#261;d, w naszym kontrolerze <tt class="classname">User</tt>,
+            mo&#380;emy w prosty sposób odczyta&#263; ID
+            u&#380;ytkownika:</p><pre class="programlisting">
+class User extends Controller
+{
+    function __construct()
+    {
+        parent::__construct();
+        
+        if (!$this-&gt;router-&gt;id || $this-&gt;router-&gt;id &lt; 0)
+        {
+            $this-&gt;redirect('@homepage');
+        }
+    }
+
+}
+            </pre><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>Dost&#281;p do klasy Router jest mo&#380;liwy w ka&#380;dym kontrolerze. W klasie bazowej -
+                Controller - tworzona jest referencja do obiektu tej klasy. </div><p>System routingu
+            rozpoznaje dwie specjalne zmienne - <span class="emphasis"><em>:controller</em></span> oraz
+                <span class="emphasis"><em>:action</em></span>. Pójd&#378;my dalej i zmodyfikujmy nasz&#261; regu&#322;&#281; routingu w
+            ten
+            sposób:</p><pre class="programlisting">
+&lt;route&gt;
+    &lt;name&gt;user&lt;/name&gt;
+    &lt;url&gt;/User/:id/:controller/:action&lt;/url&gt;
+&lt;/route&gt;</pre><p>Tym samym pod postaci&#261; <span class="emphasis"><em>:controller</em></span>, system b&#281;dzie poszukiwa&#322;
+            nazwy kontrolera, a pod <span class="emphasis"><em>:action</em></span> - nazwy akcji. Tak wi&#281;c URL
+                <span><b class="command">/User/1/Portfolio/Submit</b></span> spowoduje prób&#281; wywo&#322;ania metody
+                <tt class="methodname">submit()</tt> z klasy (kontrolera)
+            <tt class="classname">portfolio</tt>. Je&#380;eli natomiast URL b&#281;dzie wygl&#261;da&#322; w ten sposób:
+                <span><b class="command">/User/1</b></span> system mo&#380;e mie&#263; problemy ze zidentyfikowaniem nazwy
+            kontrolera oraz akcji. Dlatego w takich wypadkach, warto ustala&#263; warto&#347;ci
+            domy&#347;lne:</p><pre class="programlisting">
+ lt;route&gt;
+    &lt;name&gt;user&lt;/name&gt;
+    &lt;url&gt;/User/:id/:controller/:action&lt;/url&gt;
+    &lt;default&gt;
+    	&lt;controller&gt;user&lt;/controller&gt;
+    	&lt;action&gt;main&lt;/action&gt;
+    &lt;/default&gt;
+&lt;/route&gt;</pre><p>Dzi&#281;ki temu, zawsze, w przypadku niemo&#380;no&#347;ci odnalezienia nazwy kontrolera oraz akcji
+            - system przybierze warto&#347;ci domy&#347;lne. </p><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id491575"></a>Wyra&#380;enia regularne</h3></div></div></div><p>Za&#322;ó&#380;my, &#380;e ka&#380;dy u&#380;ytkownik w naszym serwisie identyfikowany jest za pomoc&#261; ID,
+                które jest liczb&#261;. Natomiast pod nasz&#261; regu&#322;&#281; odpowiada zarówno URL <span><b class="command">/User/1</b></span> jak i <span><b class="command">/User/boduch</b></span>. Aby to zmieni&#263; musimy
+                doda&#263; specjalne regu&#322;y wyra&#380;e&#324;
+                regularnych:</p><pre class="programlisting">
+&lt;route&gt;
+    &lt;name&gt;user&lt;/name&gt;
+    &lt;url&gt;/User/:id/:controller/:action&lt;/url&gt;
+    &lt;default&gt;
+    	&lt;controller&gt;user&lt;/controller&gt;
+    	&lt;action&gt;main&lt;/action&gt;
+    &lt;/default&gt;
+    &lt;requirements&gt;
+    	&lt;id&gt;(\d+)&lt;/id&gt;
+    &lt;/requirements&gt;
+&lt;/route&gt;</pre><p>Dzi&#281;ki temu parametr<span class="emphasis"><em> :id</em></span> zawsze b&#281;dzie dodatkowo sprawdzany.
+                Je&#380;eli nie jest on liczb&#261;, regu&#322;a zostanie odrzucona. </p></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch14s08.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="pt01.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch15s02.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Konfiguracja widoku </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Operator *</td></tr></table></div></body></html>

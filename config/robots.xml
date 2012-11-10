@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<robots>
+		<googlebot>Google</googlebot>
+		<msnbot>MSN</msnbot>
+		<yahoo>Yahoo</yahoo>
+		<adsbot-google>AdsBot-Google</adsbot-google>
+        <feedfetcher-google>FeedFetcher-Google</feedfetcher-google>
+        <altavista>AltaVista</altavista>
+        <ia_archiver>Alexa</ia_archiver>
+        <bingbot>Bing</bingbot>
+        <Mediapartners-Google>Google Adsense</Mediapartners-Google>
+        <W3C-checklink>W3C [Linkcheck]</W3C-checklink>
+        <W3C_>W3C Validator</W3C_>
+        <Yahoo-MMCrawle>Yahoo MMCrawler</Yahoo-MMCrawle>
+	</robots>
+</config>

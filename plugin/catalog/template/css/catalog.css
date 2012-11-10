@@ -1,0 +1,160 @@
+.catalog
+{
+		padding:				2px 7px 2px 5px;
+}
+
+#catalog div.catalog:nth-child(odd)
+{
+		background-color: 		#f8f8f8;
+		border-radius:			6px;
+		-moz-border-radius:		6px;
+		-webkit-border-radius:	6px;
+}
+
+.catalog h3
+{
+		font-size:				16px;
+		padding:				6px 0;
+}
+
+.catalog span
+{
+		float:					left;
+		color:					#999;
+		font-size:				12px;
+}
+
+.catalog .comment
+{
+		float:					right;
+		color:					#999;
+		font-size:				12px;
+		padding-left:			20px;
+		background:				url('../img/commentsIcon.png') no-repeat 0 50%;
+}
+
+.catalog div
+{
+		clear:					both;
+		border-top:				1px solid #e5e5e5;
+		text-align:				justify;	
+		padding:				5px 0 5px 0;
+		margin:					25px 0 10px 0;
+}
+
+.catalog div p
+{
+		height:					34px;	
+}
+
+.catalog div p a
+{
+		color:					#444;				
+}
+
+.catalog div p a:hover
+{
+		text-decoration:		none;
+}
+
+#folder
+{
+		border:					1px solid #e5e2de;
+		overflow:				hidden;
+		padding:				10px 0 10px 0;
+		border-radius:			5px;
+		background-color:		#f6f6f6;
+}
+
+#folder ol
+{
+		list-style-type:		none;
+		width:					80%;
+		margin:					auto;
+}
+
+#folder ol li
+{	
+		float:					left;
+		width:					30%;
+		background:				url('../img/folderIcon.png') no-repeat 0 2px;
+		padding:				2px 0 2px 20px;
+}
+
+#folder ol li a
+{
+		color:					#000;
+}
+
+.catalog-nav
+{
+		width:					100%;
+		overflow:				hidden;
+		margin:					10px 0 10px 0;
+}
+
+.catalog-nav .left
+{
+		float:					left;
+}
+
+.catalog-nav .center
+{
+		float:					left;
+		margin:					auto;
+		width:					90%;
+		text-align:				center;
+}
+
+.catalog-nav .right
+{
+		float:					right;
+}
+
+.catalog-nav .button
+{
+		text-indent:			-3333px;
+		display:				inline-block;
+		width:					16px;
+		height:					16px;
+}
+
+.resultset-first
+{
+		background:				url('../img/resultset_first.png') no-repeat;		
+}
+
+.resultset-first-disable
+{
+		background-image:		url('../img/resultset_first_black.png');
+}
+
+.resultset-last
+{
+		background:				url('../img/resultset_last.png') no-repeat;
+}
+
+.resultset-last-disable
+{
+		background-image:		url('../img/resultset_last_black.png');
+}
+
+.resultset-prev
+{
+		background:				url('../img/resultset_previous.png') no-repeat;
+}
+
+.resultset-prev-disable
+{
+		background-image:		url('../img/resultset_previous_black.png');
+}
+
+.resultset-next
+{
+		background:				url('../img/resultset_next.png') no-repeat;
+}
+
+.resultset-next-disable
+{
+		background-image:		url('../img/resultset_next_black.png');
+}

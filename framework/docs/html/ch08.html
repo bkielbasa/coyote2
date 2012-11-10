@@ -1,0 +1,69 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Rozdzia&#322; 8. Helpery</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="pt01.html" title="Cz&#281;&#347;&#263; I. Dokumentacja techniczna"><link rel="prev" href="ch07s06.html" title="Dziedziczenie po klasie Context"><link rel="next" href="ch09.html" title="Rozdzia&#322; 9. Modele"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Rozdzia&#322; 8. Helpery</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch07s06.html">Poprzedni</a> </td><th width="60%" align="center">Cz&#281;&#347;&#263; I. Dokumentacja techniczna</th><td width="20%" align="right"> <a accesskey="n" href="ch09.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="chapter" lang="pl"><div class="titlepage"><div><div><h2 class="title"><a name="id477010"></a>Rozdzia&#322; 8. Helpery</h2></div></div></div><div class="toc"><p><b>Spis tre&#347;ci</b></p><dl><dt><span class="section"><a href="ch08.html#id478375">Pisanie w&#322;asnych helperów</a></span></dt></dl></div><p>
+        Helpery to pliki PHP zawieraj&#261;ce funkcje lub
+        klasy, które mog&#261; by&#263; przydatne na etapie projektowania aplikacji. Coyote zawiera kilka
+        helperów, które mo&#380;esz u&#380;y&#263; w swojej aplikacji:
+        
+        </p><div class="table"><a name="id477030"></a><p class="title"><b>Tabela 8.1. Helpery w Coyote</b></p><table summary="Helpery w Coyote" border="0"><colgroup><col><col></colgroup><thead><tr><th>Nazwa pliku helpera</th><th>Opis</th></tr></thead><tbody><tr><td>system.helper.php</td><td>Zawiera funkcje systemowe, przydatne w widokach</td></tr><tr><td>url.helper.php</td><td>Zawiera funkcje url() oraz klas&#281; Url</td></tr><tr><td>html.helper.php</td><td>Zawiera klas&#281; HTML u&#322;atwiaj&#261;c&#261; tworzenie znaczników HTML</td></tr><tr><td>form.helper.php</td><td>Zawiera klas&#281; s&#322;u&#380;&#261;c&#261; do tworzenia formularzy HTML</td></tr><tr><td>box.helper.php</td><td>Zawiera klas&#281; Box umo&#380;liwiaj&#261;c&#261; tworzenie komunikatów informacyjnych</td></tr><tr><td>array.helper.php</td><td>Zawiera funkcje do operowania na tablicach.</td></tr><tr><td>text.helper.php</td><td>Zawiera klas&#281; Text s&#322;u&#380;&#261;c&#261; do operowaniu na tek&#347;cie</td></tr><tr><td>time.helper.php</td><td>Zawiera klas&#281; Time s&#322;u&#380;&#261;c&#261; do operacji na datach</td></tr><tr><td>sort.helper.php</td><td>Klasa Sort umo&#380;liwia tworzenie linków sortuj&#261;cych tabele</td></tr><tr><td>sql.helper.php</td><td>Klasa SQL umo&#380;liwiaj&#261;ca wykonanie instrukcji SQL znajduj&#261;cych si&#281; w
+                        zewn&#281;trznym pliku</td></tr><tr><td>breadcrumb.helper.php</td><td>Klasa umo&#380;liwiaj&#261;ca tworzenie mechanizmu breadcrumb</td></tr></tbody></table></div><p>
+        
+        </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>
+            Pliki helperów musz&#261; znajdowa&#263; si&#281; w katalogu <tt class="filename">/helper</tt> projektu.
+        </div><p>
+    </p><p>
+        Helpery mog&#261; by&#263; &#322;adowane automatycznie (wi&#281;cej informacji na ten temat
+        znajdziesz w rozdziale Konfiguracja projektu) lub jawnie w trakcie dzia&#322;ania aplikacji. Do
+        tego celu nale&#380;y wykorzysta&#263; metod&#281; <tt class="classname">helper()</tt> z klasy
+        <tt class="classname">load</tt>:
+        
+        </p><pre class="programlisting">
+$this-&gt;load-&gt;helper('box');
+Box::information('Informacja', 'Hello World!');
+        </pre><p>
+     </p><p>
+        Jak
+        widzisz, helpery wykorzystuje si&#281; podobnie jak biblioteki. Raz za&#322;adowany helper w&#322;&#261;cza do
+        projektu funkcje lub klasy, które mog&#261; by&#263; wykorzystywane w obr&#281;bie ca&#322;ego projektu.
+    </p><p>
+        Oczywi&#347;cie mo&#380;esz pisa&#263; w&#322;asne helpery i w&#322;&#261;cza&#263; je do projektu. Zasada
+        dzia&#322;ania jest podobna jak w przypadku bibliotek. Nazwy plików helperów musz&#261; mie&#263; form&#281;
+        <tt class="filename">xxx.helper.php</tt>, np. <tt class="filename">foo.helper.php</tt> i musz&#261; znajdowa&#263;
+        si&#281; w katalogu <tt class="filename">/helper</tt> projektu. 
+    </p><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id478375"></a>Pisanie w&#322;asnych helperów</h2></div></div></div><p>
+            Tworzenie w&#322;asnych helperów jest bajecznie proste. Zak&#322;adaj&#261;c, &#380;e w swoim projekcie posiadasz
+            katalog <tt class="filename">/helper</tt>, utwórz w nim plik <tt class="filename">foo.helper.php</tt>. 
+        </p><p>
+            Helpery mog&#261; zawiera&#263; zarówno funkcje jak i klasy. Zalecanym rozwi&#261;zaniem jest grupowanie w metody
+            klasy. Dzi&#281;ki temu, nie ma konieczno&#347;ci jawnego za&#322;adowania  helpera do projektu - zostanie on 
+            za&#322;adowany w momencie, gdy zajdzie taka konieczno&#347;&#263;.
+            
+            </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>
+                W rzeczywisto&#347;ci za&#322;adowaniem helpera zajmuje si&#281; klasa loadera.
+            </div><p>
+        </p><p>
+            Przyk&#322;adowy helper mo&#380;e mie&#263; nast&#281;puj&#261;c&#261; posta&#263;:
+            </p><pre class="programlisting">
+
+&lt;?php
+
+class Foo
+{
+    public static function fooBar()
+    {
+        echo 'Hello from helper Foo';
+    }
+}
+
+            </pre><p>
+            
+            Teraz, w dowolnym miejscu projektu, czy to w kontrolerze, czy w widoku, mo&#380;esz u&#380;y&#263; helpera:
+            
+            </p><pre class="programlisting">
+
+Foo::fooBar();
+                
+            </pre><p>
+            
+            </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>
+                Zauwa&#380;, &#380;e metoda <tt class="methodname">fooBar</tt> jest metod&#261; statyczn&#261;!
+            </div><p>
+        </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch07s06.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="pt01.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch09.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Dziedziczenie po klasie Context </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Rozdzia&#322; 9. Modele</td></tr></table></div></body></html>

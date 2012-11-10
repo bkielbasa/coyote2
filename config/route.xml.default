@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<route>
+		<name>default</name>
+		<url>/:controller/:action/*</url>
+		<default>
+			<controller>index</controller>
+			<action>main</action>
+		</default>
+		<folder>setup</folder>
+	</route>
+</config>

@@ -1,0 +1,16 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>W&#322;asna klasa loadera</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote"><link rel="up" href="ch14.html" title="Rozdzia&#322; 14. Loader"><link rel="prev" href="ch14s14.html" title="Metoda view()"><link rel="next" href="ch15.html" title="Rozdzia&#322; 15. Klasa Controller"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">W&#322;asna klasa loadera</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch14s14.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 14. Loader</th><td width="20%" align="right"> <a accesskey="n" href="ch15.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id386573"></a>W&#322;asna klasa loadera</h3></div></div></div><p> Je&#380;eli nie odpowiada Ci obecny kszta&#322;t klasy Load, albo chcia&#322;by&#347; po prostu -
+            rozbudowa&#263; j&#261; o swoje metody bez zmiany jej oryginalnego wygladu (dziedziczenie),
+            powiniene&#347; okre&#347;li&#263; &#347;cie&#380;k&#281; do klasy loadera. Loader &#322;adowany jest do projektu w
+            metodzie <tt class="methodname">bootstrap()</tt> klasy <tt class="classname">Core</tt>.
+            Domy&#347;lnie framework poszukuje loadera pod &#347;cie&#380;k&#261; <tt class="filename">lib/load.class.php</tt>. Je&#380;eli chcesz ustawi&#263; now&#261; &#347;cie&#380;k&#281; do loadera, musisz
+            skorzysta&#263; z metody <tt class="methodname">setLoaderPath() </tt>i wywo&#322;a&#263; j&#261; przed metod&#261;
+                <tt class="methodname">bootstrap()</tt>. W tym celu otwórz plik <tt class="filename">index.php</tt> swojego projektu i dopisz jedn&#261; lini&#281;
+            kodu:</p><pre class="programlisting">Core::setLoaderPath('lib/myloader.class.php');
+/**
+ * Ustawienie pliku konfiguracji projektu
+ */
+Core::setConfigPath('config.xml');
+/**
+ *	Metoda bootstrap() sluzy do inicjalizacji podstawowych zmiennych projektu
+ */
+Core::bootstrap($root_dir)-&gt;dispatch();</pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch14s14.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch14.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch15.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Metoda view() </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Rozdzia&#322; 15. Klasa Controller</td></tr></table></div></body></html>

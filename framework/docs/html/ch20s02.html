@@ -1,0 +1,68 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Metody put() oraz get()</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch20.html" title="Rozdzia&#322; 20. Cache"><link rel="prev" href="ch20.html" title="Rozdzia&#322; 20. Cache"><link rel="next" href="ch20s03.html" title="Niszczenie danych"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Metody put() oraz get()</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch20.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 20. Cache</th><td width="20%" align="right"> <a accesskey="n" href="ch20s03.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id497611"></a>Metody put() oraz get()</h2></div></div></div><p>
+			Innym rozwi&#261;zaniem jakie oferuje klasa <tt class="classname">Cache</tt>, jest
+            wykorzystanie metod <tt class="classname">put()</tt> oraz <tt class="classname">get()</tt>.
+            Metoda <tt class="classname">put()</tt> s&#322;u&#380;y do umieszczania w bazie danych ró&#380;nego rodzaju
+            danych - np. tablicy, obiektów. Zacznijmy jednak od czego&#347; prostszego -
+            &#322;a&#324;cucha:</p><pre class="programlisting">
+$cache = $this-&gt;load-&gt;library('cache');
+
+if (!$cache-&gt;get('string'))
+{
+    echo $s = 'Losowa liczba: ' . rand(1, 1000);
+    $cache-&gt;put('string', $s);
+}
+else
+{
+    echo $cache-&gt;get('string');
+}		
+            </pre><p>Pierwszy warunek sprawdza, czy klucz <span class="emphasis"><em>string</em></span> znajduje si&#281; w cache.
+            Je&#380;eli nie - generujemy nowy &#322;a&#324;cuch i umieszczamy go w cache. W przeciwnym przypadku -
+            wy&#347;wietlamy zawarto&#347;&#263; klucza <span class="emphasis"><em>string</em></span> z cache.</p><p>Podobnie ma si&#281; sprawa z zapisywaniem tablic, czy ca&#322;ych obiektów:</p><pre class="programlisting">
+if (!$cache-&gt;get('class'))
+{ 
+    $foo = new FooBar();
+    $foo-&gt;a = rand(1, 1000);
+    $foo-&gt;b = 'foo';
+    
+    $cache-&gt;put('class', serialize($foo));
+}
+else
+{
+    $foo = new FooBar();
+    $foo = unserialize($cache-&gt;get('class'));
+}		
+
+debug($foo);          
+        </pre><p>Nast&#281;puje tutaj proces serializacji obiektu i zapisu do cache. Po ponownym od&#347;wie&#380;eniu
+            strony, zawarto&#347;&#263; obiektu (tzn. pól obiektu) b&#281;dzie taka sama. </p><p>Powiedzieli&#347;my ju&#380;, &#380;e dane zapisywane s&#261; w pliku <tt class="filename">cache_data.php</tt>
+            w katalogu <tt class="filename">/cache</tt>. Metoda <tt class="methodname">put()</tt> ma t&#281;
+            przewag&#281;, iz umozliwia zapisanie danej warto&#347;ci w innym pliku. Dlaczego to takie
+            istostne? Poniewa&#380; zawarto&#347;&#263; pliku <tt class="filename">cache_data.php</tt> jest odczytywana
+            w momencie &#322;adowania biblioteki. Czyli je&#380;eli dodamy klas&#281; <tt class="classname">Cache</tt>
+            do listy w pliku autoload (automatycznie &#322;adowane zasoby), ta, za ka&#380;dym od&#347;wie&#380;eniem
+            strony, wczyta do pami&#281;ci zwarto&#347;&#263; pliku <tt class="filename">cache_data.php</tt>. Niby
+            dobrze, ale je&#380;eli ten plik ma za&#322;ó&#380;my - 60 kB, a danych nie potrzebujemy przy ka&#380;dym
+            od&#347;wie&#380;eniu strony (tzn. w ka&#380;dym konstrolerze)? Mo&#380;emy te dane zapisa&#263; w innym pliku i
+            odczytywa&#263; je&#380;eli s&#261; potrzebne. W takim przypadku, nazwa klucza, musi posiada&#263;
+            podkre&#347;lenie na pocz&#261;tku, czyli np.: _foo, _bar, _data. Czyli modyfikuj&#261;c poprzedni
+            przyk&#322;ad, mo&#380;emy zrobi&#263;
+            tak:</p><pre class="programlisting">
+if (!$cache-&gt;get('_class'))
+{ 
+    $foo = new FooBar();
+    $foo-&gt;a = rand(1, 1000);
+    $foo-&gt;b = 'foo';
+    
+    $cache-&gt;put('_class', serialize($foo), 60);
+}
+else
+{
+    $foo = new FooBar();
+    $foo = unserialize($cache-&gt;get('_class'));
+}		
+
+debug($foo);</pre><p>Teraz, dane zostan&#261; zapisane w pliku <tt class="filename">data_class.php</tt> i zostan&#261;
+            odczytane jedynie wtedy, gdy ich potrzebujemy. Zwró&#263; uwag&#281;, &#380;e tutaj u&#380;y&#322;em trzeciego
+            parametru w metodzie <tt class="methodname">put()</tt>. Trzeci, opcjonalny parametr oznacza
+            wa&#380;no&#347;&#263; danych. Oznacza to, &#380;e wa&#380;no&#347;&#263; danych wyga&#347;nie po jednej minucie i wtedy nast&#261;pi
+            od&#347;wie&#380;enie cache. </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch20.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch20.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch20s03.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Rozdzia&#322; 20. Cache </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Niszczenie danych</td></tr></table></div></body></html>

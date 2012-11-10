@@ -1,0 +1,29 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Bezpiecze&#324;stwo</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote"><link rel="up" href="ch17.html" title="Rozdzia&#322; 17. Obs&#322;uga baz danych"><link rel="prev" href="ch17s08.html" title="Klasa Db_Result"><link rel="next" href="ch17s10.html" title="Mechanizm transakcji"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Bezpiecze&#324;stwo</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch17s08.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 17. Obs&#322;uga baz danych</th><td width="20%" align="right"> <a accesskey="n" href="ch17s10.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id389804"></a>Bezpiecze&#324;stwo</h3></div></div></div><p>W procesie wysy&#322;ania zapyta&#324; SQL, szczególn&#261; uwag&#281; nale&#380;y przywi&#261;za&#263; do bezpiecze&#324;stwa
+      wysy&#322;anych danych. Przyk&#322;adowo, spójrz na poni&#380;szy
+      kod:</p><pre class="programlisting">$username = $_GET['username'];
+
+		$query = "SELECT * FROM coyote_user WHERE user_name = '$username'";
+		debug($this-&gt;db-&gt;query($query)-&gt;fetch());</pre><p>Pobieramy tutaj parametr bezpo&#347;rednio z tablicy $_GET, bez &#380;adnego filtrowania danych. Po
+      podstawieniu w miejsce parametru username warto&#347;ci x' OR 1='1 otrzymujemy zapytanie
+      SQL:</p><pre class="programlisting">SELECT * FROM coyote_user WHERE user_name = 'x' OR 1='1'</pre><p>które pobiera wszystkie rekordy z tabeli. Mo&#380;esz si&#281; przed tym zabezpieczy&#263; u&#380;ywaj&#261;c
+      metody <tt class="methodname">quote()</tt> z klasy <tt class="classname">Db</tt>:
+      </p><pre class="programlisting">$username = $this-&gt;db-&gt;quote($_GET['username']);</pre><p>Jej zadaniem jest rzutowanie na okre&#347;lony typ danych. Tzn. je&#380;eli parametr metody
+        <tt class="methodname">quote()</tt> oka&#380;e si&#281; &#322;a&#324;cuchem, przed znakami specjalnymi dodany
+      zostanie znak \. </p><p>Innym rozwi&#261;zaniem b&#281;dzie zastosowanie tzw. mechanizmu za&#347;lepek. Klasa
+      <tt class="classname">Db</tt> zadba wówczas o prawid&#322;owy format
+      danych:</p><pre class="programlisting">$sql = "SELECT * FROM coyote_user WHERE user_name = '?'";
+		$q = $this-&gt;db-&gt;query($sql, $_GET['username']);
+
+		debug($q-&gt;fetch());</pre><p>W zapytaniu znaki ? zostan&#261; zast&#261;pione warto&#347;ci&#261; przekazan&#261; w parametrze metody
+        <tt class="methodname">query()</tt>. Dodatkowo dane te zostan&#261; zwalidowane przez klas&#281;
+        <tt class="classname">Db</tt>. </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>Wi&#281;cej informacji o mechani&#378;mie SQL Injection mo&#380;na znale&#378;&#263;
+        w internecie - tutaj nie b&#281;dziemy dok&#322;adnie omawia&#263; techniki dzia&#322;ania tego mechanizmu.
+      </div><p>Tak wi&#281;c podsumowuj&#261;c: je&#380;eli chcesz pobiera&#263; dane wprost z tablicy $_GET/$_POST,
+      najlepiej przepu&#347;&#263; je wcze&#347;niej przez metod&#281; <tt class="methodname">quote()</tt> lub u&#380;yj
+      mechanizmu za&#347;lepek. Najlepszym jednak sposobem na zabezpieczenie si&#281; przed atakami XSS oraz
+      SQL Injection, jest niepbieranie danych z tablicy $_POST/$_GET a wykorzystuj&#261;c wewn&#281;trzny
+      mechanizm frameworka, który zajmuje si&#281; filtrowaniem zewn&#281;trznych
+      danych:</p><pre class="programlisting">$username = $this-&gt;get-&gt;username;
+
+		$query = "SELECT * FROM coyote_user WHERE user_name = '$username'";
+		debug($this-&gt;db-&gt;query($query)-&gt;fetch());</pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch17s08.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch17.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch17s10.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Klasa Db_Result </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Mechanizm transakcji</td></tr></table></div></body></html>

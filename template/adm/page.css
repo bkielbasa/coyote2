@@ -1,0 +1,296 @@
+#content
+{
+		padding:			0;
+}
+
+#submenu
+{
+		border-bottom:		none;
+}
+
+#page-tree
+{
+		float:				left;
+		width:				220px;
+		background:			#f4f4f4;
+		border-right:		2px solid #ddd;
+		padding:			10px;
+		position:			relative;
+		min-height:			300px;
+		overflow-y:			auto;
+		overflow-x:			auto;
+}
+
+#page-tree ol
+{
+		list-style-type:	none;
+		overflow:			hidden;
+		border-bottom:		1px solid #ddd;
+		padding-bottom:		5px;
+}
+
+#page-tree ol li
+{
+		float:				left;
+}
+
+#page-tree ol li a
+{
+		display:			block;
+		width:				16px;
+		padding:			0 3px 0 3px;
+		height:				16px;
+		cursor:				pointer;
+}
+
+#page-toggle
+{
+		background:			url('img/arrowUpIcon.png') no-repeat;
+}
+
+#page-bin
+{
+		background:			url('img/binIcon.png') no-repeat;
+}
+
+#page-bin-empty
+{
+		background:			url('img/binEmptyIcon.png') no-repeat;
+}
+
+#page-add
+{
+		background:			url('img/pageAddIcon.png') no-repeat;
+}
+
+#page-hide
+{
+		background:			url('img/hideBoxIcon.png') no-repeat;
+}
+
+#page-find
+{
+		background:			url('img/pageFindIcon.png') no-repeat;
+}
+
+#page-refresh
+{
+		background:			url('img/refreshIcon.png') no-repeat;
+}
+
+.attachment-loader
+{
+		background:			#fafafa url('img/attachmentLoader.gif') no-repeat 5px 50% !important;
+}
+
+#page-tree h2
+{
+		font-size:			13px;
+		background:			url('img/siteIcon.png') no-repeat 0 0;
+		padding-left:		20px;
+}
+
+#page-tree ul
+{
+		margin-left:		17px;
+		list-style-type:	none;
+}
+
+#page-tree ul li 
+{
+		clear:				both;
+		padding:			2px 0 2px 0;
+}
+
+#page-tree ul li img
+{
+		vertical-align:		middle;
+		cursor:				pointer;
+}
+
+#page-tree ul li em
+{
+		background:			url('img/sub.gif') no-repeat;
+		width:				10px;
+		height:				10px;		
+		display:			block;
+		float:				left;
+		margin:				2px 5px 0 0;
+}
+
+#page-tree ul li em.close
+{
+		background:			url('img/subClose.gif') no-repeat;
+		cursor:				pointer;
+}
+
+#page-tree ul li em.open
+{
+		background:			url('img/subOpen.gif') no-repeat;
+		cursor:				pointer;
+}
+
+#page-tree ul li a
+{
+		font-weight:		normal;
+		color:				#000;
+		font-size:			11px;
+		margin-left:		5px;
+		padding:			2px;
+}
+
+#page-tree ul li a:hover
+{
+		background:			#fff;
+		border:				1px solid #ddd;
+		text-decoration:	none;
+}
+
+#page-tree ul li a strike
+{
+		color:				red;
+}
+
+#page-submit
+{
+		font-size:			10px;
+}
+
+#page-submit fieldset
+{
+		margin:				0;
+		padding:			0;
+		border:				none;
+}
+
+#page-submit fieldset ol li
+{
+		margin:				1px 0 1px 0;
+}
+
+#page-submit fieldset input[type=submit], #page-submit fieldset input[type=button]
+{
+		padding-top:		1px;
+		padding-bottom:		1px;
+		background-image:	url('img/bulletGoIcon.png');
+}
+
+#page-submit fieldset input[type=text]
+{
+		background:			#fff;
+		width:				auto;
+}
+
+.connector-row
+{
+		display:			none;
+}
+
+.page-loader
+{
+		position:			absolute;
+		width:				100%;
+		height:				100%;
+		top:				0;
+		left:				0;
+		opacity:			0.7;
+		text-align:			center;
+		background:			#fff url('img/ajax-loader.gif') no-repeat 50% 30%;
+}
+
+#page-content
+{
+		padding:			10px;
+		overflow:			hidden;
+}
+
+#parent
+{
+		cursor:				pointer;
+		font-weight:		bold;
+		padding:			1px 0 2px 20px;
+		background:			url('img/treeIcon.png') no-repeat;
+}
+
+#parent.enable
+{
+		background:			url('img/linkIcon.png') no-repeat;
+}
+
+#preview
+{
+		position:			absolute;
+		top:				0;
+		left:				0;
+		width:				100%;
+		background:			url('img/previewBackground.png');
+}
+
+#preview-content
+{
+		width:				90%;
+		margin:				0 auto 0 auto;
+		padding:			10px;
+		overflow-x:			auto;
+		background-color:	#fff;
+}
+
+b.overlay-top, b.overlay-bottom
+{
+		display:			block;
+		background:			transparent;
+}
+
+b.overlay-top b, b.overlay-bottom b
+{
+		display:			block;
+		height:				1px;
+		overflow:			hidden; 
+		background:			#fff;
+}
+
+b.round1
+{
+		margin:				0 5px;
+}
+
+b.round2
+{
+		margin:				0 3px;
+}
+
+b.round3
+{
+		margin:				0 2px
+}
+
+b.overlay-top b.round4, b.overlay-bottom b.round4
+{
+		margin:				0 1px;
+		height:				2px;
+}
+
+b.overlay-top
+{
+		width:				92%;
+		margin:				30px auto 0 auto;
+}
+
+b.overlay-bottom
+{
+		width:				92%;
+		margin:				0 auto 30px auto;
+}
+
+.overlay-close
+{
+		display:			block;
+		cursor:				pointer;
+		background:			url('img/overlayCloseIcon.png') no-repeat;
+		width:				42px;
+		height:				42px;
+		position:			absolute;
+		top:				10px;
+		right:				3%;
+}
+

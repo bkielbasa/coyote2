@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<installation type="module">
+	<name>install</name>
+	<text>Moduł instalatora</text>
+	<version>1.0-rc2</version>
+	<system>1.0-rc2</system>
+	<author>Adam Boduch</author>
+</installation>

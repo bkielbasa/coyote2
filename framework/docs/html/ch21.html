@@ -1,0 +1,47 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Rozdzia&#322; 21. ACL</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="pt01.html" title="Cz&#281;&#347;&#263; I. Dokumentacja techniczna"><link rel="prev" href="ch20s04.html" title="Adaptery cache"><link rel="next" href="ch22.html" title="Rozdzia&#322; 22. Walidacja danych"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Rozdzia&#322; 21. ACL</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch20s04.html">Poprzedni</a> </td><th width="60%" align="center">Cz&#281;&#347;&#263; I. Dokumentacja techniczna</th><td width="20%" align="right"> <a accesskey="n" href="ch22.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="chapter" lang="pl"><div class="titlepage"><div><div><h2 class="title"><a name="id497461"></a>Rozdzia&#322; 21. ACL</h2></div></div></div><p>ACL to akronim od s&#322;ów <span class="emphasis"><em>Access Control List</em></span>, czyli <span class="emphasis"><em>lista
+            kontroli dost&#281;pu</em></span>. Popularna w systemach Unixowych pozwala na dok&#322;adn&#261;
+        kontrol&#281; w dost&#281;pie do plików danym u&#380;ytkownikom. Coyote posiada prost&#261; klas&#281;
+        <tt class="classname">acl</tt> umo&#380;liwiaj&#261;c&#261; tworzenie prostych systemów z wykorzystaniem ACL.
+        Biblioteka nie jest rozbudowana tote&#380; wykorzystanie jej opcji nie powinno stanowi&#263; problemu.</p><p>Dzi&#281;ki klasie ACL mo&#380;emy tworzy&#263; u&#380;ytkowników i przydziela&#263; im prawa do danych opcji
+            (<span class="emphasis"><em>allow</em></span>, <span class="emphasis"><em>deny</em></span>). Klasa acl umo&#380;liwia tworzenia
+        hierarchii u&#380;ytkowników. Oznacza to, i&#380; mo&#380;emy utworzy&#263; grup&#281; - np.
+        <span class="emphasis"><em>Admin</em></span>, a nast&#281;pnie przypisa&#263; u&#380;ytkowników do tej grupy. Odpowiada za to
+        metoda
+        <tt class="methodname">create()</tt>:</p><pre class="programlisting">		$acl-&gt;create('Admin');
+$acl-&gt;create('Adam', 'Admin');
+$acl-&gt;create('Marta', 'Admin');</pre><p>W tym przyk&#322;adzie utworzyli&#347;my grup&#281; <span class="emphasis"><em>Admin</em></span> i przypisali&#347;my do niej
+        dwóch u&#380;ytkowników (<span class="emphasis"><em>Adam</em></span>, <span class="emphasis"><em>Marta</em></span>). Mo&#380;emy ustala&#263;
+        prawa zarówno dla ca&#322;ej grupy jak i pojedy&#324;czych u&#380;ytkowników, co prezentuje poni&#380;szy
+        przyk&#322;ad:</p><pre class="programlisting">
+&lt;?php
+            
+class Bar extends Controller
+{
+    function main()
+    {
+        $acl = &amp;$this-&gt;load-&gt;library('acl');
+        
+        $acl-&gt;create('Admin');
+        $acl-&gt;create('Adam', 'Admin');
+        $acl-&gt;create('Marta', 'Admin');
+        
+        $acl-&gt;allow('Admin', 'Delete');
+        // zabraniamy uzytkownikowi Marta
+        $acl-&gt;deny('Marta', 'Delete');
+        
+        var_dump($acl-&gt;get('Admin', 'Delete')); // true
+        var_dump($acl-&gt;get('Adam', 'Delete')); // true
+        var_dump($acl-&gt;get('Marta', 'Delete')); // false
+        
+        $acl-&gt;create('Anonymous'); // uzytkownik anonimowy
+        $acl-&gt;deny('Anonymous', 'Delete'); 
+        
+        var_dump($acl-&gt;get('Anonymous', 'Delete')); // false    
+    }
+}
+?&gt;</pre><p>Metoda <tt class="methodname">allow()</tt> zezwala danej grupie/u&#380;ytkownikowi na wykonanie
+        okre&#347;lonej akcji. W tym przypadku nadali&#347;my ca&#322;ej grupie <span class="emphasis"><em>Admin</em></span> prawa do
+        wykonania operacji <span class="emphasis"><em>Delete</em></span>. Nast&#281;pnie zabronili&#347;my u&#380;ytkownikowi z tej
+        grupy (<span class="emphasis"><em>Marta</em></span>) na wykonanie tej operacji (metoda
+        <tt class="methodname">deny()</tt>). Metod&#261; <tt class="methodname">get()</tt> mo&#380;emy sprawdzi&#263;,
+        czy dany u&#380;ytkownik posiada prawa (true lub false) do wykonania danej akcji.</p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch20s04.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="pt01.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch22.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Adaptery cache </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Rozdzia&#322; 22. Walidacja danych</td></tr></table></div></body></html>

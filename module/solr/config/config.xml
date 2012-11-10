@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<solr>
+		<host>localhost</host>
+		<port>8983</port>
+		<path>/solr/core0/</path>
+	</solr>
+</config>

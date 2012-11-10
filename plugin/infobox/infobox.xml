@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<installation type="plugin">
+	<name>infobox</name>
+	<text>Plugin do wyświetlania informacji o nowościach w serwisie</text>
+	<version>1.0-pre1</version>
+	<system>1.0-rc2</system>
+	<author>Adam Boduch</author>
+
+	<menu parent="plugin">
+		<name>Komunikaty informacyjne</name>
+		<controller>infobox</controller>
+		<action>main</action>
+		<auth>a_</auth>
+	</menu>
+
+	<setup>
+		<schema>install/schema.sql</schema>
+
+		<table>infobox_marking</table>
+		<table>infobox</table>
+
+		<route>
+			<name>infobox</name>
+			<url>Infobox/__close</url>
+			<controller>infobox</controller>
+			<action>close</action>
+		</route>
+	</setup>
+
+	<ucp>
+		<menu>
+			<name>Komunikaty</name>
+			<title>Zobacz liste archiwalnych komunikatów</title>
+			<class>infobox-icon</class>
+			<url>@user?controller=Infobox</url>
+		</menu>
+	</ucp>
+</installation>

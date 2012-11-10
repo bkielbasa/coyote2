@@ -1,0 +1,140 @@
+#content
+{
+		overflow:				hidden;
+}
+
+#page-tools
+{
+		position:			absolute;
+		top:				0;
+		right:				-223px;
+		z-index:			999;
+		border-left:		2px solid #ddd;
+		border-top:			2px solid #ddd;
+		border-bottom:			2px solid #ddd;
+		background:			#f3f3f3;
+		border-bottom-left-radius: 5px;
+		-moz-border-radius-bottomleft:	5px;
+		-webkit-border-bottom-left-radius:	5px;
+}
+
+#page-tools ul
+{
+		margin:				5px 10px 0 15px;		
+}
+
+#page-tools ul li
+{
+		float:				none;
+		border:				none;
+		border-bottom:		1px solid #ddd;
+		padding:			7px 0 7px 20px;
+}
+
+#page-tools ul li:last-child
+{
+		border-bottom:		none;
+}
+
+.page-edit
+{
+		background:			url('../img/pageEditIcon.png') no-repeat 0 50% !important;
+}
+
+.page-add
+{
+		background:			url('../img/pageAddIcon.png') no-repeat 0 50% !important;
+}
+
+.page-watch
+{
+		background:			url('../img/pageSaveIcon.png') no-repeat 0 50% !important;
+}
+
+.page-history
+{
+		background:			url('../img/pageHistoryIcon.png') no-repeat 0 50% !important;
+}
+
+#page-tools ul li a
+{
+		color:				#000;
+		font-weight:		normal;
+}
+
+#page-menu
+{
+		position:			absolute;
+		width:				30px;
+		height:				30px;
+		right:				0;
+		top:				0;
+		z-index:			1000;
+		cursor:				pointer;
+}
+
+#page-menu span
+{
+		background:			#f3f3f3 url('../img/sidebar.png') no-repeat 50% 50%;
+		width:				30px;
+		height:				30px;
+		display:			block;
+		border-top:			2px solid #ddd;
+		border-bottom:		2px solid #ddd;
+		border-left:		2px solid #ddd;
+		border-top-left-radius:	5px;
+		border-bottom-left-radius:	5px;
+		-moz-border-radius-bottomleft:	5px;
+		-webkit-border-bottom-left-radius:	5px;
+		-moz-border-radius-topleft:	5px;
+		-webkit-border-top-left-radius:	5px;
+}
+
+.parent-span
+{
+		background:			url('../img/sideTreeIcon.png') no-repeat 0 50%;
+		padding-left:		20px;
+}
+
+#media
+{
+		width:				100%;
+		border:				none;
+		border-spacing:		0;
+}
+
+.box-bubble
+{
+		border:					1px solid #000;
+		background-color:		#444;
+		padding:				4px;
+		color:					#ccc;
+		font-size:				0.9em;
+		font-family:			Arial;
+		min-width:				150px;
+		max-width:				300px;
+		position:				absolute;
+}
+
+.page-loader
+{
+		background:				#fff url('../img/ajax-loader.gif') no-repeat;
+		width:					48px;
+		height:					48px;
+		margin:					20px auto 0 auto;
+}
+
+pre
+{
+		white-space: 			pre-wrap;
+}
+
+pre ins
+{
+		color:					green;
+}
+
+pre del
+{
+		color:					red;
+}

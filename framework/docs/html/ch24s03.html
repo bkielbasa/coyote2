@@ -1,0 +1,71 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Walidacja plików</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch24.html" title="Rozdzia&#322; 24. Wysy&#322;anie plików na serwer"><link rel="prev" href="ch24s02.html" title="Odczytywanie informacji o odebranym pliku"><link rel="next" href="ch25.html" title="Rozdzia&#322; 25. Klasa Output"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Walidacja plików</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch24s02.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 24. Wysy&#322;anie plików na serwer</th><td width="20%" align="right"> <a accesskey="n" href="ch25.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id501792"></a>Walidacja plików</h2></div></div></div><p>Bardzo istostn&#261; spraw&#261; jest walidacja odbieranych danych. Nie mo&#380;emy sobie pozwoli&#263; na
+            to, aby u&#380;ytkownik wysy&#322;a&#322; na serwer pliki wykonywalne <span class="emphasis"><em>.exe</em></span>, czy
+            np. <span class="emphasis"><em>.php</em></span>. W tym celu mo&#380;emy wykorzysta&#263; walidator
+                <tt class="classname">Validate_Upload</tt>. Oto zmodyfikowana metoda
+                <tt class="methodname">submit()</tt>:</p><pre class="programlisting">
+public function submit()
+{
+	// deklaracja interfejsu IValidate
+	Load::loadFile('lib/validate.class.php');
+	$validate = new Validate_Upload;
+
+	$validate-&gt;setSuffix('jpg,gif');
+	$validate-&gt;setFileSize('1MB');
+
+	if (!$validate-&gt;isValid('File'))
+	{
+		Core::debug($validate-&gt;getMessages());
+
+		exit;
+	}
+
+	$upload = &amp;$this-&gt;getLibrary('upload');
+	$upload-&gt;setDestination('tmp');
+
+	if ($upload-&gt;recive('File'))
+	{
+		echo 'Nazwa pliku: ' . $upload-&gt;getFileName() . '&lt;br /&gt;';
+		echo 'Rozmiar pliku: ' . $upload-&gt;getFileSize() . ' bajtów&lt;br /&gt;';
+		echo '&#346;cie&#380;ka do pliku: ' . $upload-&gt;getFilePath() . '&lt;br /&gt;';
+		echo 'Rozszerzenie pliku: ' . $upload-&gt;getSuffix() . '&lt;br /&gt;';
+		echo 'Typ MIME: ' . $upload-&gt;getFileMime();
+
+		Core::debug($upload-&gt;getFileInfo());
+	}
+}</pre><p>Metoda <tt class="methodname">setSuffix()</tt> ustala mo&#380;liwe, akceptowalne rozszerzenia,
+            natomiast <tt class="methodname">setFileSize()</tt> maksymalny rozmiar pliku. W tym
+            przyk&#322;adzie system akceptuje jedynie pliki JPG oraz GIF o maksymalnym rozmiarze 1 MB. </p><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id501874"></a>Metoda setOptional()</h3></div></div></div><p>Metoda umo&#380;liwia okre&#347;lenie, czy wysy&#322;aj&#261;c formularz, u&#380;ytkownik MUSI okre&#347;li&#263;
+                plik do wys&#322;ania, czy te&#380; nie. Domy&#347;lnie element jest opcjonalny tak wi&#281;c w
+                przypadku, gdy u&#380;ytkownik nie okre&#347;li pliku do wys&#322;ania, metoda
+                    <tt class="methodname">isValid()</tt> i tak zwróci true. Aby to zmieni&#263;, mo&#380;esz
+                zastosowa&#263; taki
+            kod:</p><pre class="programlisting">$validate-&gt;setOptional(false);</pre></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id501906"></a>Metoda setSuffix()</h3></div></div></div><p>Umo&#380;liwia okre&#347;lenie dopuszczalnych rozszerze&#324; plików. Parametrem metody mo&#380;e by&#263;
+                &#322;a&#324;cuch zawieraj&#261;cy rozszerzenia (oddzielone przecinkiem) lub tablica
+                rozszerze&#324;:</p><pre class="programlisting">$validate-&gt;setSuffix('jpg,gif');
+// lub:
+$validate-&gt;setSuffix(array('jpg', 'gif')); </pre></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id501931"></a>Metoda setMime()</h3></div></div></div><p>Umo&#380;liwia ustalenie dopuszczalnych typów plików. Podobnie jak w przypadku metody
+                    <tt class="methodname">setSuffix()</tt>, parametrem mo&#380;e by&#263; &#322;a&#324;cuch lub tablica
+                    typów:</p><pre class="programlisting">$validate-&gt;setMime('image/jpeg'); // akceptujemy tylko obrazy </pre><p>
+                </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>Klasa Upload, niezale&#380;nie od ustawie&#324; zabezpiecza przed wysy&#322;aniem plików o
+                    typie application/octet-stream oraz text/x-delimtext. </div></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id501965"></a>Metoda setFileSize()</h3></div></div></div><p>Metoda umo&#380;liwia ustalenie maksymalnego rozmiaru dla pliku. Parametrem metody mo&#380;e
+                by&#263; liczba okre&#347;laj&#261;ca maksymalny rozmiar pliku (w bajtach) lub &#322;a&#324;cuch typu string.
+                Oto
+                przyk&#322;ady:</p><pre class="programlisting">$validate-&gt;setFileSize(10); // 10 bajtów
+$validate-&gt;setFileSize('100KB'); // 100 kilobajtów
+$validate-&gt;setFileSize('100MB'); // 100 megabajtów
+$validate-&gt;setFileSize('100GB'); // 100 gigabajtów</pre></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id501995"></a>Metoda setWidth()</h3></div></div></div><p>Je&#380;eli spodziewamy si&#281;, i&#380; wysy&#322;anym przez u&#380;ytkownika plikiem b&#281;dzie obraz,
+                mo&#380;emy okre&#347;li&#263; maksymaln&#261; szeroko&#347;&#263; oraz wysoko&#347;&#263; obrazu (w pikselach). Oto
+                przyk&#322;ad:</p><pre class="programlisting">$validate-&gt;setWidth(20);
+		$validate-&gt;setHeight(20);</pre></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id502018"></a>Metoda setHeight()</h3></div></div></div><p>Ustawia maksymalny, mo&#380;liwy rozmiar odbieranego obrazu. </p></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id502030"></a>U&#380;ycie metody setOptions()</h3></div></div></div><p>Oczywi&#347;cie, podobnie jak w przypadku innych walidatorów, mo&#380;liwe jest u&#380;ycie
+                metody <tt class="methodname">setOptions()</tt> w celu ustawienia konfiguracji
+                walidatora:
+                </p><pre class="programlisting">
+$validate-&gt;setOptions(array(
+		'suffix'		=&gt; 'jpg,gif',
+		'filesize'		=&gt; '1MB',
+		'mime'			=&gt; 'image/jpeg'
+	)
+);</pre><p>Parametry walidatora mo&#380;emy okre&#347;li&#263; równie&#380; w konstruktorze klasy, którego
+                nag&#322;ówek wygl&#261;da
+                tak:</p><pre class="programlisting">function __construct($optional = true, $filesize = 0, $suffix = null, $mime = null, $width = null, $height = null)
+</pre></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch24s02.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch24.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch25.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Odczytywanie informacji o odebranym pliku </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Rozdzia&#322; 25. Klasa Output</td></tr></table></div></body></html>

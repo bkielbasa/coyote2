@@ -1,0 +1,30 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Rozdzia&#322; 24. Wysy&#322;anie plików na serwer</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="pt01.html" title="Cz&#281;&#347;&#263; I. Dokumentacja techniczna"><link rel="prev" href="ch23s04.html" title="Klasa Filter_Input"><link rel="next" href="ch24s02.html" title="Odczytywanie informacji o odebranym pliku"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Rozdzia&#322; 24. Wysy&#322;anie plików na serwer</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch23s04.html">Poprzedni</a> </td><th width="60%" align="center">Cz&#281;&#347;&#263; I. Dokumentacja techniczna</th><td width="20%" align="right"> <a accesskey="n" href="ch24s02.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="chapter" lang="pl"><div class="titlepage"><div><div><h2 class="title"><a name="id500338"></a>Rozdzia&#322; 24. Wysy&#322;anie plików na serwer</h2></div></div></div><div class="toc"><p><b>Spis tre&#347;ci</b></p><dl><dt><span class="section"><a href="ch24.html#id500328">Tworzenie formularza HTML</a></span></dt><dt><span class="section"><a href="ch24s02.html">Odczytywanie informacji o odebranym pliku</a></span></dt><dd><dl><dt><span class="section"><a href="ch24s02.html#id501759">Metoda setOverwrite()</a></span></dt></dl></dd><dt><span class="section"><a href="ch24s03.html">Walidacja plików</a></span></dt><dd><dl><dt><span class="section"><a href="ch24s03.html#id501874">Metoda setOptional()</a></span></dt><dt><span class="section"><a href="ch24s03.html#id501906">Metoda setSuffix()</a></span></dt><dt><span class="section"><a href="ch24s03.html#id501931">Metoda setMime()</a></span></dt><dt><span class="section"><a href="ch24s03.html#id501965">Metoda setFileSize()</a></span></dt><dt><span class="section"><a href="ch24s03.html#id501995">Metoda setWidth()</a></span></dt><dt><span class="section"><a href="ch24s03.html#id502018">Metoda setHeight()</a></span></dt><dt><span class="section"><a href="ch24s03.html#id502030">U&#380;ycie metody setOptions()</a></span></dt></dl></dd></dl></div><p>Umieszczenie odpowiedniego formularza HTML umo&#380;liwia przes&#322;anie wskazanego przez
+        u&#380;ytkownika, pliku na serwer, który zajmie si&#281; jego odebraniem i - ewentualnie -
+        umieszczenie w konkretnym miejscu.</p><p>Element &lt;input type="file" /&gt; umieszczony w kodzie HTML spowoduje wy&#347;wietlenie
+        odpowiedniej kontrolki przez przegl&#261;dark&#281; internetow&#261;. Dzi&#281;ki temu u&#380;ytkownik korzystaj&#261;cy z
+        witryny, mo&#380;e umie&#347;ci&#263; na serwerze wybrany plik. Oczywi&#347;cie pod warunkiem, i&#380; serwer
+        zaakceptuje dany plik. </p><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id500328"></a>Tworzenie formularza HTML</h2></div></div></div><p>Do utworzenia formularza HTML, mo&#380;na u&#380;y&#263; helperów dostarczonych przez framework.
+            Konkretnie, klas&#281; <tt class="filename">form.helper.php</tt>. Oto kod przyk&#322;adowej
+            akcji:</p><pre class="programlisting">&lt;?php
+
+class Test extends Controller
+{
+	function main()
+	{
+		echo Form::openMultipart('Test/Submit');
+		echo Form::file('File');
+		echo Form::submit('', 'Wy&#347;lij');
+		echo Form::close();
+	}
+
+	public function submit()
+	{
+
+	}
+}
+?&gt;</pre><p>Metoda <tt class="methodname">main()</tt>wygeneruje, a nast&#281;pnie prze&#347;le do u&#380;ytkownika
+            taki kod
+            HTML:</p><pre class="programlisting">&lt;form method="POST" enctype="multipart/form-data" action="http://127.0.0.1/coyote-1-0/index.php/Test/Submit" &gt;
+&lt;input type="file" value="" name="File" /&gt;
+&lt;input type="submit" value="Wy&#347;lij" /&gt;
+&lt;/form&gt;</pre></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch23s04.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="pt01.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch24s02.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Klasa Filter_Input </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Odczytywanie informacji o odebranym pliku</td></tr></table></div></body></html>

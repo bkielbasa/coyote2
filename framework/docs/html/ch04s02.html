@@ -1,0 +1,105 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Zawarto&#347;&#263; pliku front controllera</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch04.html" title="Rozdzia&#322; 4. Plik front controllera"><link rel="prev" href="ch04.html" title="Rozdzia&#322; 4. Plik front controllera"><link rel="next" href="ch05.html" title="Rozdzia&#322; 5. Klasa Core"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Zawarto&#347;&#263; pliku front controllera</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 4. Plik front controllera</th><td width="20%" align="right"> <a accesskey="n" href="ch05.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id473792"></a>Zawarto&#347;&#263; pliku front controllera</h2></div></div></div><p>
+            W katalogu z frameworkiem, znajduje si&#281; przyk&#322;adowy plik <tt class="filename">index.php</tt>, który
+            mo&#380;esz wykorzysta&#263; w swojej aplikacji:
+            
+            </p><pre class="programlisting">
+
+&lt;?php
+/**
+ * @package Coyote-F
+ * @author Adam Boduch &lt;adam@boduch.net&gt;
+ * @copyright Copyright (c) Adam Boduch (Coyote Group)
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
+ */
+
+/**
+ *	Ustawienie raportowania bledow. W ustawieniu E_ALL, wszystkie bledy i ostrzezenia
+ *	beda domyslnie wyswietlane. To ustawienie jest wykorzystywane przez projekt, tylko
+ *	wowczas, gdy nie wykorzystujemy klasy error. Wtedy klasa error zajmuje sie 
+ *	wyswietlaniem i analiza bledow projektu i decyduje, ktore komunikaty wyswietlic.
+ */
+error_reporting(E_ALL);
+
+/**
+ * Ustawienie lokalizacji dla jezyka polskiego. Jezeli chcesz, mozesz usunac
+ * ponizsza linie, lub zmienic lokalizacje 
+ */
+setlocale(LC_ALL, array('pl_PL.UTF8', 'polish_pol')); 
+
+/**
+ * Ustawienie strefy czasowej na polska. Jezeli chcesz, mozesz dowolnie zmienic ponizsze
+ * ustawienie lub usunac ponizsza linie i pozostawic ustawienie domyslne
+ */
+date_default_timezone_set('Europe/Warsaw');
+
+
+/**
+ * Domyslnie wartosc true. Skrypt jednak jest wowczas generowany wolniej ze wzgledu
+ * na informacje zbierane w trakcie wykonywania. Ulatwia to prace programiscie. Jednak
+ * w wersji finalnej, wartosc DEBUG powinna wynosic false.
+ */
+DEFINE('DEBUG', true);
+
+
+/**
+ *	Domyslnie wartosc tej zmiennej jest pusta. Mozesz ja wykorzystac jezeli ten plik
+ *	(index.php) nie jest umieszczony w folderze z frameworkiem. Wowczas ta zmienna okresla,
+ *	w ktorym katalogu znajduja sie pliki frameworka. Nie zapomnij na koncu dodac slasha (/),
+ *	np. coyote-f/
+ */
+$system_dir = 'framework/';
+
+/**
+ *	Ta zmienna nie powinna byc zmieniana. Okresla ona sciezke do katalogu, w ktorym
+ *	znajduja sie pliki frameworka. 
+ */
+$root_dir = realpath(dirname(__FILE__)) . '/' . $system_dir;
+$root_dir = str_replace('\\', '/', $root_dir);
+
+if (!file_exists($root_dir . 'lib/core.class.php'))
+{
+	die('Could not find framework directory');
+}
+include_once($root_dir . 'lib/core.class.php');
+
+/**
+ * Ustawienie sciecki do katalogu aplikacji
+ */
+Core::setBasePath(getcwd());
+
+/**
+ * Ustawienie pliku konfiguracji projektu
+ */
+Core::setConfigPath('config.xml');
+/**
+ *	Metoda bootstrap() sluzy do inicjalizacji podstawowych zmiennych projektu
+ */
+Core::bootstrap($root_dir)-&gt;dispatch();
+?&gt;
+                
+            </pre><p>
+            
+            Budowa tego pliku jest prosta. Jego zadaniem jest ustawienie &#347;rodowiska oraz inicjalizacja &#347;cie&#380;ek
+            do katalogu z frameworkiem. 
+            
+            </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>
+                Je&#380;eli chcesz zmieni&#263; w swojej aplikacji ustawienia samego PHP, to jest dobre miejsce aby
+                umie&#347;ci&#263; odpowiednie funkcje (np. <tt class="methodname">setlocale()</tt>, <tt class="methodname">error_reporting()</tt></div><p>
+                
+        </p><p>
+            Na samym pocz&#261;tku nast&#281;puje ustawienie lokalizacji dla naszego projektu (w tym przypadku - Polska) 
+            oraz strefy czasowej. Nast&#281;pnie zadklearowana zostaje sta&#322;a DEBUG. Jest to sta&#322;a wykorzystywana
+            przez framework i okre&#347;la tryb pracy aplikacji. W trybie DEBUG podczas dzia&#322;ania (generowania) strony, 
+            zbierana jest informacja na temat wykorzystywanych bibliotek, czasie generowania czy zapytaniach SQL.
+        </p><p>
+            Nast&#281;pna wa&#380;na instrukcja to wywo&#322;anie metody <tt class="methodname">setBasePath()</tt>, która
+            ustawia &#347;cie&#380;k&#281; do katalogu aplikacji (NIE frameworka!)
+        </p><p>
+            W kolejnych instrukcjach nast&#281;puje ustawienie &#347;cie&#380;ki do katalogu z frameworkiem oraz za&#322;adowanie
+            g&#322;ównej klasy - <tt class="classname">Core</tt>. Metoda <tt class="methodname">setConfigPath()</tt> powoduje
+            za&#322;adowanie pliku konfiguracyjnego - <tt class="filename">config.xml</tt>. Je&#380;eli nie posiadasz takiego pliku
+            lub nie chcesz, aby w tym momencie zosta&#322; on za&#322;adowany do projektu, mo&#380;esz spokojnie usun&#261;&#263; t&#281; lini&#281; kodu.
+        </p><p>
+            Najwa&#380;niejsza instrukcja w tym pliku, znajduje si&#281; na samym ko&#324;cu. Wywo&#322;ujemy tutaj bowiem
+            metod&#281; <tt class="methodname">bootstrap()</tt>, która inicjalizuje podstawowe elementy systemu. 
+        </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch04.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch04.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch05.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Rozdzia&#322; 4. Plik front controllera </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Rozdzia&#322; 5. Klasa Core</td></tr></table></div></body></html>

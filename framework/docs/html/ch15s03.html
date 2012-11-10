@@ -1,0 +1,23 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Subdomeny</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch15.html" title="Rozdzia&#322; 15. Mechanizm routingu"><link rel="prev" href="ch15s02.html" title="Operator *"><link rel="next" href="ch15s04.html" title="Generowanie URL"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Subdomeny</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch15s02.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 15. Mechanizm routingu</th><td width="20%" align="right"> <a accesskey="n" href="ch15s04.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id491729"></a>Subdomeny</h2></div></div></div><p>Niekiedy koniecznym b&#281;dzie, aby nasz serwis obs&#322;ugiwa&#322; subdomeny. Na szcz&#281;&#347;ciej system
+            routingu potrafi oprócz URL, zidentyfikowa&#263; równie&#380; nazw&#281; domeny i - w razie
+            konieczno&#347;ci - wywo&#322;a&#263; odpowiedni kontroler. Powró&#263;my do poprzedniego przyk&#322;adu. Chcemy,
+            aby URL w naszym serwisie kszta&#322;tow&#322; si&#281; nast&#281;puj&#261;co: <span><b class="command">http://user.serwer.com/User/1</b></span>. W regule nale&#380;y wówczas doda&#263; kolejn&#261;
+            informacje na temat
+            hostu:</p><pre class="programlisting">
+&lt;route&gt;
+	&lt;name&gt;user&lt;/name&gt;
+	&lt;url&gt;/User/:id/:controller/:action/*&lt;/url&gt;
+	&lt;default&gt;
+		&lt;controller&gt;user&lt;/controller&gt;
+		&lt;action&gt;main&lt;/action&gt;
+	&lt;/default&gt;
+	&lt;requirements&gt;
+		&lt;id&gt;(\d+)&lt;/id&gt;
+	&lt;/requirements&gt;
+	&lt;host&gt;/^(www\.)?user\.(.+$)/&lt;/host&gt;
+&lt;/route&gt;</pre><p>Mamy tu wi&#281;c do czynienia z kolejnym wyra&#380;eniem regularnym, który sprawdzi obecny host
+            pod k&#261;tem tego, z naszej regu&#322;y <span class="emphasis"><em>user</em></span>. Je&#380;eli chcemy, mo&#380;emy równie
+            dobrze "na sztywno" wpisa&#263; jaka domena ma by&#263; brana pod uwag&#281; przy tej
+                regule:</p><pre class="programlisting">&lt;host&gt;user.serwer.com&lt;/host&gt;</pre><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>Je&#380;eli
+                umieszczasz wyra&#380;enie regularne w znaczniku &lt;host&gt;, musi ono by&#263; rozpocz&#281;te i
+                zako&#324;czone znakiem /. </div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch15s02.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch15.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch15s04.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Operator * </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Generowanie URL</td></tr></table></div></body></html>

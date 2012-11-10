@@ -1,0 +1,30 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Odczytywanie informacji o odebranym pliku</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch24.html" title="Rozdzia&#322; 24. Wysy&#322;anie plików na serwer"><link rel="prev" href="ch24.html" title="Rozdzia&#322; 24. Wysy&#322;anie plików na serwer"><link rel="next" href="ch24s03.html" title="Walidacja plików"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Odczytywanie informacji o odebranym pliku</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch24.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 24. Wysy&#322;anie plików na serwer</th><td width="20%" align="right"> <a accesskey="n" href="ch24s03.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id501688"></a>Odczytywanie informacji o odebranym pliku</h2></div></div></div><p>J&#281;zyk PHP udost&#281;pnia odpowiedni mechanizm umo&#380;liwiaj&#261;cy odczyt informacji o pliku.
+            Informacje o plikach wys&#322;anych przez u&#380;ytkownika, dost&#281;pne s&#261; poprzez tablic&#281;
+                <tt class="varname">$_FILES</tt>, gdzie kluczem tablicy jest nazwa kontrolki &lt;input&gt;.
+            Coyote udost&#281;pnia klas&#281; Upload, która w prosty sposób umo&#380;liwia odebranie pliku
+            wys&#322;anego przez u&#380;ytkownika. Oto metoda submit()
+            kontrolera:</p><pre class="programlisting">
+public function submit()
+{
+	$upload = &amp;$this-&gt;getLibrary('upload');
+	$upload-&gt;setDestination('tmp');
+
+	if ($upload-&gt;recive('File'))
+	{
+		echo 'Nazwa pliku: ' . $upload-&gt;getFileName() . '&lt;br /&gt;';
+		echo 'Rozmiar pliku: ' . $upload-&gt;getFileSize() . ' bajtów&lt;br /&gt;';
+		echo '&#346;cie&#380;ka do pliku: ' . $upload-&gt;getFilePath() . '&lt;br /&gt;';
+		echo 'Rozszerzenie pliku: ' . $upload-&gt;getSuffix() . '&lt;br /&gt;';
+		echo 'Typ MIME: ' . $upload-&gt;getFileMime();
+
+		Core::debug($upload-&gt;getFileInfo());
+	}
+}</pre><p>Metoda <tt class="methodname">setDestination()</tt> ustawia katalog, w którym zostanie
+            umieszczony plik wys&#322;any przez u&#380;ytkownika. Metoda <tt class="methodname">recive()</tt>
+            odbiera ów plik i umieszcza w podanym katalogu, dostarczaj&#261;c przy tym informacje o tym
+            pliku. Powy&#380;szy przyk&#322;ad prezentuje mo&#380;liwo&#347;ci tej klasy w zakresie prezentowania
+            informacji o odebranym pliku. W wyniku takiego kodu, dany plik zostanie umieszczony w
+            folderze <tt class="filename">tmp</tt>, w g&#322;ównym katalogu projektu. </p><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id501759"></a>Metoda setOverwrite()</h3></div></div></div><p>Domy&#347;lnie, je&#380;eli w danym katalogu, znajduje si&#281; ju&#380; plik o podanej nazwie, system
+                wy&#347;wietli b&#322;&#261;d informuj&#261;cy o próbie zast&#261;pienia ów pliku. Je&#380;eli chcesz, aby system
+                domy&#347;lnie zast&#281;powa&#322; plik je&#380;eli taki ju&#380; istnieje, nale&#380;y wywo&#322;a&#263; metod&#281;
+                    <tt class="methodname">setOverwrite()</tt>:</p><pre class="programlisting">$upload-&gt;setOverwrite(true); // zast&#281;puj plik je&#380;eli taki ju&#380; istnieje</pre></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch24.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch24.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch24s03.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Rozdzia&#322; 24. Wysy&#322;anie plików na serwer </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Walidacja plików</td></tr></table></div></body></html>

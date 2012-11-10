@@ -1,0 +1,73 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Pobieranie danych</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote"><link rel="up" href="ch17.html" title="Rozdzia&#322; 17. Obs&#322;uga baz danych"><link rel="prev" href="ch17s06.html" title="Usuwanie rekordów"><link rel="next" href="ch17s08.html" title="Klasa Db_Result"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Pobieranie danych</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch17s06.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 17. Obs&#322;uga baz danych</th><td width="20%" align="right"> <a accesskey="n" href="ch17s08.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id388870"></a>Pobieranie danych</h3></div></div></div><p>Jakkolwiek mo&#380;liwe jest pisanie zapyta&#324; SQL i wysy&#322;anie ich do serwera przy pomocy metody
+        <tt class="methodname">query()</tt>, tak w przypadku prostych zapyta&#324; mo&#380;e to by&#263; zbyteczne.
+      Klasa <tt class="classname">Db</tt> wykona to za nas. Oto prosty przyk&#322;ad pobrania wszystkich
+      rekordów w bazie, a nast&#281;pnie wy&#347;wietlenie
+        ich:</p><pre class="programlisting">$db = &amp;$this-&gt;db;
+
+		// SELECT * FROM coyote_dev
+		$q = $db-&gt;select()-&gt;from('coyote_dev')-&gt;get();
+
+		Core::debug($q-&gt;fetch());</pre><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>Metoda
+        debug() z klasy Core, umo&#380;liwia przyjazne wy&#347;wietlenie zawarto&#347;ci tablic, czy obiektów.
+      </div><p>Metoda <tt class="methodname">select()</tt> pobiera wszystkie kolumny z danej tabeli,
+      okre&#347;lanej w parametrze metody <tt class="methodname">from()</tt>. Obydwie metody zwracaj&#261;
+      instancj&#281; klasy <tt class="classname">Db</tt>. </p><p>Metoda <tt class="methodname">get()</tt> generuje zapytanie i wysy&#322;a je do serwera
+      bazodanowego. Zwraca obiekt klasy <tt class="classname">Db_Result</tt>. Wy&#347;wietlenie zawarto&#347;ci
+      pobranych rekordów, w formie tablicy, realizuje metoda <tt class="methodname">fetch()</tt> (o tym
+      b&#281;dzie mowa w kolejnym podpunkcie).</p><div class="section" lang="pl"><div class="titlepage"><div><div><h4 class="title"><a name="id388950"></a>Metoda select()</h4></div></div></div><p>Metoda <tt class="methodname">select()</tt> s&#322;u&#380;y do okre&#347;lenia jakie kolumny danych tabel
+        zostan&#261; pobrane. Domy&#347;lnie s&#261; to wszystkie kolumny. Mo&#380;na sprecyzowa&#263; jakie kolumny maj&#261;
+        zosta&#263; pobrane, oddzielaj&#261;c je
+        przecinkami:</p><pre class="programlisting">$q = $db-&gt;select('id, value')-&gt;from('coyote_dev')-&gt;get();</pre><p>Metoda <tt class="methodname">select()</tt> przyjmuje równie&#380; parametry w formie
+        tablicowej:</p><pre class="programlisting">$db = &amp;$this-&gt;db;
+
+		$col = array('id', 'value');
+		$q = $db-&gt;select($col)-&gt;from('coyote_dev')-&gt;get();</pre></div><div class="section" lang="pl"><div class="titlepage"><div><div><h4 class="title"><a name="id388993"></a>Metoda from()</h4></div></div></div><p>W zapytaniu SELECT mo&#380;emy &#322;&#261;czy&#263; wiele tabel. Parametrem metody
+        <tt class="methodname">from()</tt> mo&#380;e by&#263; albo &#322;a&#324;cuch albo tablica.
+        </p><pre class="programlisting">$col = array('id', 'value');
+		$q = $db-&gt;select($col)-&gt;from('coyote_dev, coyote_user')-&gt;get();</pre><p>Pomineli&#347;my w tym zapytaniu warunek WHERE, co spowoduje wykonanie zapytania z iloczynem
+        kartezja&#324;skim. Jednak nie to jest w tym momencie najwa&#380;niejsze. W parametrze metody mo&#380;emy
+        okre&#347;la&#263; równie&#380; aliasy
+        tabel:</p><pre class="programlisting">$col = array('id', 'value');
+		// SELECT id, value FROM coyote_dev d, coyote_user u 
+		$q = $db-&gt;select($col)-&gt;from(array('d' =&gt; 'coyote_dev', 'u' =&gt; 'coyote_user'))-&gt;get();</pre></div><div class="section" lang="pl"><div class="titlepage"><div><div><h4 class="title"><a name="id389042"></a>Metoda where()</h4></div></div></div><p>W zapytaniach SQL cz&#281;sto musimy okre&#347;la&#263; dodatkowe warunki. W tym celu musimy skorzysta&#263;
+        z metody <tt class="methodname">where()</tt>, która podobnie jak metody przedstawione wcze&#347;niej
+        - równie&#380; zwraca instancj&#281; klasy <tt class="classname">Db</tt>. Poni&#380;sze zapytanie pobierze
+        wszystkich u&#380;ytkowników z tabeli, pod warunkiem, &#380;e ID b&#281;dzie mniejsze od
+        100:</p><pre class="programlisting">$db = &amp;$this-&gt;db;
+		$q = $db-&gt;select('user_id, user_name')-&gt;from('coyote_user')-&gt;where('user_id &lt; 100')-&gt;get();</pre><p>Warunki WHERE mog&#261; by&#263; &#322;&#261;czone (domy&#347;lnie operatorem
+        AND):</p><pre class="programlisting">$db = &amp;$this-&gt;db;
+		$q = $db-&gt;select('user_id, user_name')-&gt;from('coyote_user')-&gt;
+						where('user_id &lt; 100')-&gt;
+						where('LENGTH(user_name) &lt; 5')-&gt;get();</pre><p>Powy&#380;sze instrukcje s&#261; adekwatne do wykonania zapytania: <span><b class="command">SELECT user_id,
+          user_name FROM coyote_user WHERE user_id &lt; 100 AND LENGTH(user_name) &lt; 5</b></span>. </p><p>Je&#380;eli chcemy po&#322;&#261;czy&#263; obydwa warunki operatorem OR, mo&#380;emy zawrze&#263; warunek w parametrze
+        metody
+        <tt class="methodname">where()</tt>:</p><pre class="programlisting">$db = &amp;$this-&gt;db;
+		$q = $db-&gt;select('user_id, user_name')-&gt;from('coyote_user')-&gt;
+						where('user_id &lt; 100 OR LENGTH(user_name) &lt; 5')-&gt;
+						get();</pre></div><div class="section" lang="pl"><div class="titlepage"><div><div><h4 class="title"><a name="id389124"></a>Metody order() oraz limit()</h4></div></div></div><p>Metody <tt class="methodname">order()</tt> oraz <tt class="methodname">limit()</tt>
+        odpowiadaj&#261; instrukcj&#261; SQL - ORDER BY oraz
+        LIMIT:</p><pre class="programlisting">$db = &amp;$this-&gt;db;
+		$q = $db-&gt;select('user_id, user_name')-&gt;
+						from('coyote_user')-&gt;
+						where('user_id &lt; 100 OR LENGTH(user_name) &lt; 5')-&gt;
+						order('user_id DESC')-&gt;
+						limit(0, 10)-&gt;
+						get();</pre></div><div class="section" lang="pl"><div class="titlepage"><div><div><h4 class="title"><a name="id389154"></a>Instrukcje JOIN</h4></div></div></div><p>W klasie Db znajduj&#261; si&#281; trzy metody odpowiadaj&#261;ce za zapytanie JOIN:
+          l<tt class="methodname">eftJoin()</tt>, <tt class="methodname">rightJoin()</tt> oraz
+          <tt class="methodname">innerJoin()</tt> odpowiadaj&#261;ce kolejno za zapytania LEFT JOIN, RIGHT
+        JOIN oraz INNER JOIN.
+        Przyk&#322;ad:</p><pre class="programlisting">$q = $this-&gt;db-&gt;select()-&gt;where('user_id &lt; 10')
+				 -&gt;leftJoin('coyote_template', 'template_id = user_template')-&gt;get('coyote_user');
+		debug($q-&gt;fetch());</pre><p>Pierwszym parametrem metody musi by&#263; nazwa &#322;&#261;czonej tabeli - a drugim - warunek
+          &#322;&#261;czenia.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>Opcjonalnym parametrem metody get() jest nazwa tabeli bazy
+      danych.</div></div><div class="section" lang="pl"><div class="titlepage"><div><div><h4 class="title"><a name="id389201"></a>Instrukcja GROUP BY</h4></div></div></div><p>Do wstawienia instrukcji GROUP BY, w cia&#322;o zapytania, s&#322;u&#380;y metoda
+        <tt class="methodname">group()</tt>:</p><pre class="programlisting">$this-&gt;db-&gt;select()-&gt;from('coyote_user')-&gt;group('user_id'); 
+// SELECT * FROM coyote_user GROUP BY user_id</pre></div><div class="section" lang="pl"><div class="titlepage"><div><div><h4 class="title"><a name="id389224"></a>Instrukcja IN</h4></div></div></div><p>Metoda <tt class="methodname">in()</tt> umo&#380;liwia wstawienie w zapytaniu instrukcji SQL -
+        IN. U&#380;ycie metody jest proste. Pierwszym jej parametrm musi by&#263; nazwa pola, a drugim -
+        tablica warto&#347;ci:
+        </p><pre class="programlisting">$this-&gt;db-&gt;select()-&gt;from('coyote_user')-&gt;in('user_id', array(1,2,3))-&gt;get();
+// rownoznaczne z :
+$this-&gt;db-&gt;select()-&gt;from('coyote_user')-&gt;where('user_id IN(' . implode(',', array(1,2,3)) . ')')-&gt;get();</pre><p>Jak wi&#281;c widzisz, metoda <tt class="methodname">in()</tt> potrafi skróci&#263; czas pisania
+        instrukcji.</p></div><div class="section" lang="pl"><div class="titlepage"><div><div><h4 class="title"><a name="id389267"></a>Metoda like()</h4></div></div></div><p>Metoda <tt class="methodname">like()</tt> dodaje do zapytania warunek
+        LIKE:</p><pre class="programlisting">$this-&gt;db-&gt;select()-&gt;like('user_name', '%adam%')-&gt;get('coyote_user');
+// SELECT * FROM coyote_user WHERE user_name LIKE "%adam%"</pre></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch17s06.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch17.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch17s08.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Usuwanie rekordów </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Klasa Db_Result</td></tr></table></div></body></html>

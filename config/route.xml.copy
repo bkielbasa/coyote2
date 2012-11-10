@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<core>
+		<sortRoutes>SORT_ASC</sortRoutes>
+		<setDefaultRoute>false</setDefaultRoute>
+	</core>
+
+	<route>
+		<name>adm</name> 
+		<url>/adm/:controller/:action/*</url>
+		<folder>adm</folder>
+		<default>
+			<controller>index</controller>
+		</default>
+		<order>1</order>
+	</route>
+	
+	<route>
+		<name>user</name>
+		<url>/User/:controller/:action/*</url>
+		<folder>ucp</folder>
+		<default>
+			<controller>index</controller>
+			<action>main</action>
+		</default>
+		<order>2</order>
+	</route>	
+	<route>
+		<name>profile</name>
+		<url>/Profile/:id</url>
+		<folder>ucp</folder>
+		<controller>profile</controller>
+		<default>
+			<action>main</action>
+		</default>
+		<order>3</order>
+	</route>
+	<route>
+		<name>attachment</name>
+		<url>/Attachment/:action/*</url>
+		<controller>attachment</controller>
+		<default>
+			<action>submit</action>
+		</default>
+		<order>4</order>
+	</route>	
+</config>

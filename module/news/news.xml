@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<instalation type="module">
+	<name>news</name>
+	<text>Moduł publikacji newsów w serwisie</text>
+	<version>1.0-rc1</version>
+	<system>1.0-rc2</system>
+	<author>Adam Boduch</author>
+
+    <option type="int">
+		<name>snippetLimit</name>
+		<text>Długość tekstu zajawki newsa</text>
+        <title>Określa długość tekstu jaka powinna być przeznaczona na wyświetlanie zajawki newsa na stronie głównej modułu Nowosci</title>
+		<values default="230" />
+	</option>
+	<option type="text">
+		<name>store</name>
+		<text>Katalog grafik</text>
+        <title>Określ katalog, w którym powinny być przechowywane miniaturki z obrazami. Jeżeli wartość jest pusta, miniatury nie będą przechowywane na serwerze</title>
+		<values default="store/_a/" />
+	</option>
+
+    <setup>
+		<schema>install/schema.sql</schema>
+
+		<table>news_vote</table>
+		<table>news</table>
+        <function>GET_USER_SCORE</function>
+
+		<connector>
+			<name>news</name>
+			<text>Wpis w katalogu "Nowości"</text>
+			<class>news</class>
+			<controller>news</controller>
+			<action>view</action>
+			<folder></folder>
+		</connector>
+		<connector>
+			<name>newsHome</name>
+			<text>Strona główna katalogu nowości</text>
+			<class>news_home</class>
+			<controller>news</controller>
+			<action>main</action>
+			<folder></folder>
+		</connector>
+
+		<snippet>
+			<name>News</name>
+			<class>news</class>
+			<text>Wyświetlanie listy najpopularniejszych nowości</text>
+		</snippet>
+
+	</setup>
+</instalation>

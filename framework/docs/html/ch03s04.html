@@ -1,0 +1,115 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Tworzenie folderu aplikacji</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch03.html" title="Rozdzia&#322; 3. Wprowadzenie"><link rel="prev" href="ch03s03.html" title="Kontrolery"><link rel="next" href="ch03s05.html" title="Struktura katalogów"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Tworzenie folderu aplikacji</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch03s03.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 3. Wprowadzenie</th><td width="20%" align="right"> <a accesskey="n" href="ch03s05.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id471893"></a>Tworzenie folderu aplikacji</h2></div></div></div><p>
+            Ok, zapomnij teraz o ca&#322;ym frameworku. Oczwi&#347;cie swoje biblioteki i pliki mo&#380;esz 
+            umieszcza&#263; w folderze z frameworkiem.
+            
+            Jednak mo&#380;esz traktowa&#263; go jako j&#261;dro, w którym nie trzeba nic zmienia&#263;. Mo&#380;esz utworzy&#263;
+            swój w&#322;asny katalog aplikacji, w którym b&#281;dziesz Tworzy&#322; struktur&#281; folderów wed&#322;ug w&#322;asnego
+            uznania. Jedyne co musisz zrobi&#263;, to za&#322;&#261;czy&#263; plik j&#261;dra frameworka do swojej aplikacji. W
+            ten sposób na serwerze mo&#380;esz mie&#263; kilka serwisów, które korzystaj&#261; z tej samej wersji
+            frameworka. Utwórz na serwerze nowy katalog. Nazwijmy go <span class="italic">project</span>
+        </p><p>
+            W nowym folderze stwórz plik index.php oraz katalog <tt class="filename">controller</tt>. Zawarto&#347;&#263; pliku
+            index.php powinna zawiera&#263; instrukcje w&#322;&#261;czaj&#261;ce do apliakcji plik Front Controllera. Oto jak
+            mo&#380;e on
+            wygl&#261;da&#263;:
+            </p><pre class="programlisting">
+&lt;?php
+
+error_reporting(E_ALL);
+setlocale(LC_ALL, array('pl_PL.UTF8', 'polish_pol')); 
+date_default_timezone_set('Europe/Warsaw');
+
+DEFINE('DEBUG', true);
+
+$system_dir = '../coyote-1-0/';
+
+/**
+*	Ta zmienna nie powinna byc zmieniana. Okresla ona sciezke do katalogu, w ktorym
+*	znajduja sie pliki frameworka. 
+*/
+$root_dir = realpath(dirname(__FILE__)) . '/' . $system_dir;
+$root_dir = str_replace('\\', '/', $root_dir);
+
+if (!file_exists($root_dir . 'lib/core.class.php'))
+{
+die('Could not find framework directory');
+}
+include_once($root_dir . 'lib/core.class.php');
+
+/**
+* Ustawienie sciezki do katalogu, w ktorym znajduje sie aplikacja
+*/
+Core::setBasePath(getcwd());
+/**
+*	Metoda bootstrap() sluzy do inicjalizacji podstawowych zmiennych projektu
+*/
+Core::bootstrap($root_dir)-&gt;dispatch();
+?&gt;
+            </pre><p>
+         </p><p>
+            Mamy tutaj kilka instrukcji, które ustawiaj&#261; &#347;cie&#380;ki do aplikacji oraz frameworka. Zmienna
+            <tt class="varname">$system_dir</tt> musi wskazywa&#263; na folder systemowy (z plikami frameworka).
+            Zmienna <tt class="varname">$root_dir</tt> tworzy wobec tego pe&#322;n&#261; &#347;cie&#380;k&#281; do plików systemu.
+            Metoda <tt class="methodname">bootstrap()</tt> inicjalizuje podstawowe zmienne
+            systemu.
+        </p><p>
+            Metoda <tt class="methodname">setBasePath()</tt> ustawia &#347;cie&#380;k&#281; do
+            katalogu z aplikacj&#261;. Poniewa&#380; domy&#347;lnie, je&#380;eli nie ustawimy tej &#347;cie&#380;ki - system przyjmie,
+            iz &#347;cie&#380;k&#261; aplikacji jest &#347;cie&#380;ka do frameworka. 
+        </p><p>
+            Póki co to wszystko. 
+            
+            Gratulacje, w&#322;a&#347;nie poprawnie utworzy&#322;e&#347; nowy projekt korzystaj&#261;cy z Coyote. Po próbie
+            wej&#347;cia np. poprzez adres http://serwer.com/project wy&#347;wietli si&#281; informacja o b&#322;&#281;dzie.
+            Wszak nie utworzyli&#347;my jeszcze &#380;adnego kontrolera, st&#261;d aplikacja nie wie jak&#261; stron&#281; ma
+            wygnerowa&#263;. Komunikat powinien by&#263; podobny do tego:
+                </p><pre class="programlisting">
+Page not found
+
+The requested page was not found. It may have been moved, been deleted, or archived.
+Request file does not exist: controller/index.php
+                </pre><p>
+        </p><p>
+            Utwórz w swoim katalogu z aplikacj&#261;, folder controller. Umie&#347;&#263; w nim plik
+            <tt class="filename">index.php</tt>, którego zawarto&#347;&#263; mo&#380;e by&#263; nast&#281;puj&#261;ca:
+            
+            </p><pre class="programlisting">
+&lt;?php
+
+class Index extends Controller
+{
+    function main()
+    {
+        echo 'Hello World';
+    }
+}
+?&gt;
+            </pre><p>
+        </p><p>
+            Napisail&#347;my w ten sposób prosty kontroler. 
+            
+            Teraz, po wpisaniu w przegl&#261;darce adresu do projektu (np.
+            http://serwer.com/project) powinien wy&#347;wietli&#263; si&#281; napis <span class="emphasis"><em>Hello World</em></span>. 
+        </p><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id472076"></a>Tworzenie pliku konfiguracji</h3></div></div></div><p>
+                Coyote nie potrzebuje konfiguracji. Lecz w ka&#380;dej wi&#281;kszej aplikacji pliki
+                konfiguracyjne s&#261; potrzebne. Mog&#261; zawiera&#263; podstawowe informacje o ustawieniach projektu.
+                
+                W naszym nowym folderze utwórz plik <tt class="filename">config.xml</tt>. 
+                Przyk&#322;adowa konfiguracja naszego nowego projektu mo&#380;e wygl&#261;da&#263;
+                tak:
+                </p><pre class="programlisting">
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;config&gt;
+&lt;application&gt;My App&lt;/application&gt;
+&lt;/config&gt;
+                </pre><p>
+            </p><p>
+                Coyote automatycznie wczyta plik konfiguracji do swoich zasobów. Teraz, w ka&#380;dym
+                miejscu, w programie b&#281;dziesz móg&#322; odczyta&#263; warto&#347;&#263; pól konfiguracji. S&#322;u&#380;y do tego klasa
+                <tt class="classname">Config</tt>, a konkretnie - metoda
+                <tt class="methodname">getItem()</tt>:
+                </p><pre class="programlisting">
+echo 'Hello World &lt;br /&gt;';
+echo Config::getItem('application');
+                </pre><p>
+            </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch03s03.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch03.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch03s05.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Kontrolery </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Struktura katalogów</td></tr></table></div></body></html>

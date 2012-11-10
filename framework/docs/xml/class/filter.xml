@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter>
+    <title>Filtrowanie danych</title>
+    <para>Filtrowanie danych umożliwia usunięcie, konwersję i innego rodzaju przekształcenia danych.
+        Klasa <classname>Validate</classname> omawiana wcześniej umożliwia jedynie sprawdzenie
+        poprawności danych - nie zapewnia ich przekształceń. Jesteśmy więc wówczas zmuszeni użyć
+        mechanizmu filtrowania. <note>Budowa i działanie klasy <clasname>Filter</clasname> jest
+            bardzo podobne do klasy Validate. Zachęcamy do zapoznania się z kodami źródłowymi tej
+            klasy. </note></para>
+    <section>
+        <title>Filtry</title>
+        <para>Filtry danych mogą być metodami, klasami lub funkcjami. Dodanie filtra do kolejki
+            umożliwia metoda <methodname>addFilter()</methodname>, a samo filtrowanie odbywa się w
+            metodzie
+            <methodname>filterData()</methodname>:<programlisting>&lt;?php
+
+class Bar extends Controller
+{
+	function main()
+	{
+		$value = '&lt;b>Coyote&lt;/b>';
+
+		$filter = &amp;$this->getLibrary('filter');
+		$filter->addFilter('htmlspecialchars');
+
+		echo $filter->filterData($value);
+	}
+}
+?></programlisting></para>
+        <para>W tym prostszym przykładzie do kolejki dodaliśmy filtr
+            <emphasis>htmlspecialchars</emphasis>. Jak łatwo się domyśleć klasa
+            <classname>Filter</classname> wywoła funkcję <function>htmlspecialchars()</function> na
+            wartości <varname>$value</varname>. Jak wspomniałem - parametrem metody
+                <methodname>addFilter()</methodname> może być instancja klasy. Musi ona jednak
+            implementować interfejs
+            <interfacename>IFilter</interfacename>:<programlisting>&lt;?php
+
+class Bar extends Controller
+{
+	function main()
+	{
+		$value = '     &lt;b>Coyote&lt;/b>       ';
+
+		$filter = &amp;$this->getLibrary('filter');
+		$filter->addFilter('trim');
+		$filter->addFilter('htmlspecialchars');
+		$filter->addFilter(new Filter_Replace('#', '&amp;', '|'));
+
+		echo $filter->filterData($value);
+	}
+}
+?></programlisting></para>
+        <para>W powyższym przykładzie wykorzystano klasę filtra -
+            <classname>Filter_Replace</classname>. Usuwa ona z łańcucha znaki podane w konstruktorze
+            klasy. <note>Parametrem konstruktora może być również tablica znaków. </note></para>
+        <para>Parametrem metody <methodname>addFilter()</methodname> może być również tablica
+            określająca nazwę klasy filtra oraz parametry, które zostaną przekazane do konstruktora
+            klasy:</para>
+        <programlisting>
+$filter->addFilter('trim');
+$filter->addFilter('htmlspecialchars');
+$filter->addFilter(array('replace', '#', '&lt;', '|'));
+        </programlisting>
+        <note>Pamiętaj, iż pierwszym elementem tablicy przekazywanej do metody addFilter() musi być
+            nazwa filtra (bez przedrostka <emphasis>Filter</emphasis>)</note>
+        <section>
+            <title>Pisanie własnego filtra</title>
+            <para>Oczywiście nic nie stoi na przeszkodzie, aby napisać własny filtr danych. Klasy
+                filtrów muszą implementować interfejs
+                <interfacename>IFilter</interfacename>:<programlisting>interface IFilter 
+{
+	public function filter($value);
+}</programlisting></para>
+            <para>Musi więc posiadać metodę <methodname>filter()</methodname>, która będzie
+                wywoływana w kolejce przez klasę <classname>Filter</classname>. Swoją klasę filtra
+                umieść w katalogu <filename>lib/filter</filename>. Plik klasy filtra musi mieć
+                budowę taką jak każda inna biblioteka frameworka - czyli <emphasis>&lt;nazwa
+                    klasy>.class.php</emphasis>. </para>
+            <para>Dla przykładu - możemy utworzyć klasę, która będzie zamieniała składnię wikipedii
+                na kod
+                HTML:<programlisting>&lt;?php
+
+class Filter_Wiki implements IFilter
+{
+	public function filter($value)
+	{
+		$value = preg_replace('#\'\'\'(.+?)\'\'\'#', '&lt;b>$1&lt;/b>', $value);
+		$value = preg_replace('#\'\'(.+?)\'\'#', '&lt;i>$1&lt;/i>', $value);
+		$value = preg_replace('#`(.+?)`#', '&lt;tt>$1&lt;/tt>', $value);
+
+		return $value;
+	}
+}
+?></programlisting></para>
+            <para>Naturalnie to tylko przykład - budowa klasy jest bardzo prosty. Podobnie jak
+                wykorzystanie tej
+                klasy:<programlisting>&lt;?php
+
+class Bar extends Controller
+{
+	function main()
+	{
+		$value = "''pochylony tekst'', '''pogrubiony tekst'''";
+
+		$filter = &amp;$this->getLibrary('filter');
+		$filter->addFilter(new Filter_Wiki);
+
+		echo $filter->filterData($value);
+	}
+}
+?></programlisting></para>
+        </section>
+        <section>
+            <title>Filtr XSS</title>
+            <para>Klasa Filter_Xss umożliwia usunięcie potencjalnie niebezpiecznego kodu
+                umożliwiającego ataki typu XSS. Klasa usuwa z łańcucha atrbuty znaczników HTML
+                związane ze zdarzeniami JavaScript oraz - niebezpieczne znaczniki HTML.
+                Przykładowo:<programlisting>
+$value = '&lt;a onclick="alert(document.cookie);">click me&lt;/a>';
+
+$filter = &amp;$this->getLibrary('filter');
+$filter->addFilter(new Filter_Xss);
+
+echo $filter->filterData($value);</programlisting></para>
+            <para>Łańcuch <varname>$value</varname> zostanie przekształcony
+                na:<programlisting>&amp;lt;a onclick="alert();"&amp;gt;click me&lt;/a></programlisting></para>
+        </section>
+        <section>
+            <title>Filtr stripNewLines()</title>
+            <para>Jest to metoda klasy <classname>Filter</classname>. Umożliwia usunięcie znaków
+                nowej linii z łańcucha.</para>
+        </section>
+        <section>
+            <title>Filtr int()</title>
+            <para>Metoda klasy <classname>Filter</classname>: rzutowanie wartości na typ
+            integer.</para>
+        </section>
+        <section>
+            <title>Filtr string()</title>
+            <para>Metoda klasy <classname>Filter</classname>: rzutowanie na typ string.</para>
+        </section>
+        <section>
+            <title>Filtr float()</title>
+            <para>Metoda klasy <classname>Filter</classname>: rzutowanie na typ float.</para>
+        </section>
+    </section>
+    <section>
+        <title>Metoda setFilters()</title>
+        <para>Metoda setFilters() umożliwia ustawienie kolejki filtrów bez inicjalizacji
+            ewentualnych klas. Metoda szczególnie przydatna w przypadku, gdy konfiguracja filtrów
+            jest zapisana - np. w plikach XML. Wówczas można wywołać metodę setFilters() z
+            konfiguracją odczytaną z zewnętrznego pliku.
+            Przykład:<programlisting>&lt;?php
+
+class Bar extends Controller
+{
+	function main()
+	{
+		$value = '&lt;a onclick="alert(document.cookie);">(click)_me&lt;/a>';
+
+		$filter = &amp;$this->getLibrary('filter');
+		$filter->setFilters(array(
+
+				'string',
+				'xss'				=> array(),
+				'replace'			=> array('_', '(', ')')
+			)
+		);				
+
+		echo $filter->filterData($value);
+	}
+}
+?></programlisting></para>
+        <para>Jeżeli klucz tablicy jest łańcuchem, a wartością - tablica, oznacza to, że filtr jest
+            klasą. Coyote utworzy nową instancję klasy i przekaże do jej konstruktora wartości
+            podane w tablicy. W przeciwnym przypadku - system uzna, że filtr jest funkcją. </para>
+        <para>Elementem tablicy asocjacyjnej przekazywanej do <methodname>setFilters()</methodname>
+            może być tablica zawierająca informacje o filtrze oraz o jego parametrach. W takim
+            przypadku, pierwszym elementem filtra musi być jego nazwa (bez przefrostka
+                <emphasis>Filter</emphasis>), gdyż kolejne elementy zostaną przekazane do
+            konstruktora filtra:</para>
+        <programlisting>
+$filter->setFilters(array(
+
+        'string',
+        array('xss'),
+        array('replace', '_', '(', ')')
+    )
+);
+        </programlisting>
+    </section>
+    <section>
+        <title>Statyczna metoda call()</title>
+        <para>Statyczna metoda <methodname>call()</methodname> umożliwia wywołanie filtra bez
+            konieczności inicjalizacji klasy:
+            <programlisting>
+$value = '&lt;a onclick="alert(document.cookie);">(click)_me&lt;/a>';
+
+Load::loadClass('filter', false);
+echo Filter::call($value, new Filter_Xss);</programlisting></para>
+    </section>
+    <section>
+        <title>Klasa Filter_Input</title>
+
+        <para>Klasa <classname>Filter_Input</classname> znajduje się w pliku
+                <filename>input.class.php</filename>, w katalogu <filename>filter</filename>.
+            Umożliwia ona walidację oraz filtrowanie większej ilości danych (np. tablicy)
+            jednocześnie. Można ją wykorzystać do sprawdzenia poprawności - np. formularza. Klasa
+                <classname>Filter_Input</classname> posiada metody
+            <methodname>addValidator()</methodname>, <methodname>setValidators()</methodname>,
+                <methodname>addFilter()</methodname>, <methodname>setFilters()</methodname>,
+            podobnie jak klasy <classname>Filter</classname>, czy <classname>Validate</classname>.
+            Jedyna różnica jest taka, iż podczas deklarowania reguł walidatorów, czy filtrów -
+            musimy sprecyzować jakich pól tablicy (czy np. formularza) one dotyczą. Oto przykładowy
+            skrypt, który sprawdza poprawność tablicy <varname>$foo</varname>:</para>
+        <programlisting>
+&lt;?php
+
+class Test extends Controller
+{
+	function main()
+	{
+		$foo = array(
+			'name'		=> '&lt;a onclick="alert(\'Hello\');">User name&lt;/a>',
+			'email'		=> 'invalid(at)email.com'
+		);
+
+		$filter = new Filter_Input;
+
+		$filter->setFilters(array(
+
+			'name'		=> array(
+					'string',
+					array('xss')
+			),
+			'email'		=> array(
+					'string',
+					'htmlspecialchars'
+			)
+		));
+		$filter->setValidators(array(
+
+			'name'		=> array(
+					'string'
+			),
+			'email'		=> array(
+					array('string', false, 1, 30),
+					'email'
+			)
+		));
+
+		if ($filter->isValid($foo))
+		{
+			echo 'OK&lt;br />';
+			Core::debug($filter->getValues());
+		}
+		else
+		{
+			echo 'Bledy:&lt;/br >';
+			Core::debug($filter->getMessages());
+		}
+	}
+}
+?>        
+    </programlisting>
+        <para>Dzięki metodom <methodname>setFilters()</methodname> oraz
+            <methodname>setValidators()</methodname> przekazaliśmy reguły walidatorów i filtrów.
+            Zasada działania tych metod jest taka sama jak w klasach <classname>Validate</classname>
+            oraz <classname>Filter</classname>.</para>
+        <para>Metoda <methodname>isValid()</methodname> zwraca TRUE w przypadku, gdy proces
+            walidacji przebiegł poprawnie, a FALSE - jeżeli zakończyło się to porażką. </para>
+        <para>Metoda <methodname>getMessages()</methodname> zwraca błędy w formie tablicy, gdzie
+            kluczem jest nazwa walidowanego pola - np.:</para>
+        <programlisting>
+Array
+(
+    [email] => Array
+    (
+        [0] => Adres "invalid(at)email.com" nie jest prawidłowym adresem e-mail
+    )
+
+)        
+    </programlisting>
+        <para>Metoda <methodname>getValues()</methodname> zwraca wartości pól walidowanej tablicy po
+        procesie filtrowania oraz walidacji. </para>
+        <section>
+            <title>Metoda setRules()</title>
+            <para>W poprzednim przykładzie rozdzielałem reguły na reguły walidatora oraz filtra. Użyłem do tego
+            dwóch metod - <methodname>setValidators()</methodname> oraz <methodname>setFilters()</methodname>.
+            Możliwe jest połączenie dwóch tablic - reguł filtrów oraz walidatorów, a następnie przekazanie tych reguł w metodzie
+            <methodname>setRules()</methodname>:
+            <programlisting>
+$filter = new Filter_Input;
+
+$data['filter'] = array(
+
+	'name'		=> array(
+			'string',
+			array('xss')
+	),
+	'email'		=> array(
+			'string',
+			'htmlspecialchars'
+	)
+);
+$data['validator'] = array(
+
+	'name'		=> array(
+			'string'
+	),
+	'email'		=> array(
+			array('string', false, 1, 30),
+			'email'
+	)
+);
+$filter->setRules($data);                
+            </programlisting>
+                Reguły walidatorów oraz filtrów można przekazać również w konstruktorze klasy:
+              <programlisting>
+$filter = new Filter_Input($data);                  
+              </programlisting>
+            </para>
+        </section>
+    </section>
+
+</chapter>

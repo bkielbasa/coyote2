@@ -1,0 +1,699 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter>
+    <title>Wprowadzenie</title>
+    
+    <para>
+        W tym rozdziale, wprowadzimy pare pojęć, z którymi powinieneś się zapoznać. Przybliżymy
+        pokrótce zasady działania frameworka. 
+    </para>
+        
+    <section>
+        <title>MVC</title>
+        
+        <para>
+            MVC, czyli akronim od słów <emphasis role="italic">Model-View-Controller</emphasis>. 
+            Jest to architektoniczny wzorzec projektowania aplikacji. Ideą tego wzorca jest odzielenie 
+            warstwy danych, logiki oraz prezentacji. 
+        </para>
+        
+        <para>
+            <emphasis role="bold">Model</emphasis> reprezentuje strukturę danych. Przeważnie zawiera
+            klasy pobierające, uaktualniające informacje z nośnika danych. Nośnikiem danych może być
+            baza danych, plik XML. 
+        </para>
+        
+        <para>
+            <emphasis role="bold">Widok</emphasis> to warstwa prezentacyjna. Innymi słowy jest to
+            warstwa zawierająca kod XHTML, XML, DocBook w zależności od formy prezentacji naszych
+            danych. Widok może pobierać dane od modelu i/lub kontrolera.            
+        </para>
+        
+        <para>
+            <emphasis role="bold">Kontroler</emphasis> to warstwa logiki. Kontroler pobiera dane od
+            modelu, oraz wywołuje widok. Może również przekazać dane do widoku. Każde żadanie jest
+            przekazywane kontrolerowi, który decyduje o dalszych instrukcjach. 
+        </para>
+        
+        Więcej informacji na temat wzorca MVC możesz znaleźć pod adresem <ulink url="http://en.wikipedia.org/wiki/MVC"
+            >http://en.wikipedia.org/wiki/MVC</ulink>. 
+    </section>
+    
+    <section>
+        <title>Pierwsze kroki</title>
+        
+        <para>
+            Jeżeli poprawnie zainstalowałeś serwer
+            HTTP, PHP oraz Coyote, możemy zaczynać. Jeżeli chcesz możesz usunąć pliki strony powitalnej.
+            Wystarczy kliknąć na przycisk <emphasis role="italic">Usuń pliki projektu</emphasis> na
+            głównej stronie powitalnej. Od tej pory posiadasz na dysku framework w "czystej" postaci.
+            Jeżeli wiesz już czym jest architektura MVC, możemy przystąpić do pierwszej czynności, czyli
+            napisania standardowego <emphasis role="bold">Hello World</emphasis>. 
+        </para>
+        
+        <section>
+            <title>Hello World</title>
+            
+            <para>
+                Pierwszym krokiem będzie utworzenie kontrolera <filename>index.php</filename>, w
+                katalogu <filename>controller</filename>. Plik kontrolera musi posiadać taką samą nazwę
+                co jego klasa. Tak więc utwórz plik <filename>index.php</filename>, który powinien mieć
+                taką postać:
+                <programlisting>
+&lt;?php
+
+class Index extends Controller
+{
+    function main()
+    {
+        echo 'Hello World';
+    }
+}
+?>
+                </programlisting>
+            </para>
+            
+            <para>
+                Jak widzisz budowa kontrolera jest prosta. Znajduje się tutaj metoda
+                <methodname>main()</methodname> która jest główną metodą każdego kontrolera. Innymi
+                słowy jest domyślną <emphasis>akcją</emphasis>. Jeżeli w URL nie zostanie przekazana
+                nazwa akcji, zostanie wygenerowany kod domyślnej - <methodname>main()</methodname>. 
+            </para>
+            
+            <para>
+                Napis <emphasis>Hello World</emphasis> powinien się wyświetlić w momencie wejścia na
+                główną stronę projektu, czyli np. http://127.0.0.1/coyote/index.php
+                
+                <note>
+                    Aby uniknąć
+                    konfliktów w nazewnictwie, nazwa klasy kontrolera może posiadać przyrostek _Controller
+                    - np.: Index_Controller.
+                </note>
+            </para>
+            
+        </section>
+        
+        <section>
+            <title>URL w Coyote</title>
+            
+            <para>
+                Domyślnie Coyote generuje tzw. przyjazne linki, które z łatwością są indeksowane
+                przez wyszukiwarki. Domyślnie linki w Coyote mają postać: 
+                http://serwer.com/Kontroler/Akcja, czyil np. http://serwer.com/Blog/View.
+                
+                System, tak skonstrułowany URL rozpozna i utworzy obiekt odopwiedniej klasy (kontrolera). 
+                W tym przypadku kontrolerem jest <emphasis>Blog</emphasis>, a akcją - <emphasis>View</emphasis>. 
+                Innymi słowy utworzona zostanie instancja klasy <classname>blog</classname>, znajdująca się w
+                <filename>controller/blog.php</filename>. Wykonany zostanie kod metody <methodname>view</methodname>. 
+                
+                <important>
+                    Przyjęto założenie, że nazwy metod zaczynamy
+                    od małej litery. Nazwa akcji, czy kontrolera zawarta w URL może być pisana małymi lub
+                    wielkimi literami. Nie ma to znaczenia. Czyli może to być np. http://serwer.com/Blog/View, 
+                    jak i również http://serwer.com/blog/view. 
+                </important>
+            </para>
+            
+            <para>
+                Domyślnie każdy URL w Coyote kształtowany jest następująco: http://sewer.com/index.php/Blog. 
+                Czyli innymi słowy w URL dołączana jest nazwa skryptu zawierającego <emphasis role="italic">Front Controller</emphasis>.
+                
+                Oczywiście konfiguracja umożliwia wyłączenie tego. Wcześniej jednak trzeba odpowiednio
+                skonfigurować serwer, tak, aby każde żądanie było przekazywane do <emphasis role="italic">Front Controllera</emphasis>. 
+                W tym celu, w głównym katalogu projektu umieść plik <filename>.htaccess</filename> o następującej
+                treści:
+                
+                <programlisting>
+Options +FollowSymlinks
+RewriteEngine on
+#Jesli masz zainstalowany system Coyote w podkatalogu (np. www.example.pl/coyote/)
+#to usun komentarz z ponizszej linii i ustaw prawidlowo nazwe podkatalogu
+#RewriteBase /coyote/
+
+RewriteCond %{REQUEST_FILENAME} !-s [NC]
+RewriteCond %{REQUEST_FILENAME} !-d [NC]
+RewriteRule ^(.+) index.php/$1 [L]
+                </programlisting>
+            </para>
+            
+            <para>
+                Takie instrukcje oznaczają, iż serwer przy każdym żądaniu będzie sprawdzał, czy
+                istnieje dany plik lub katalog. Jeżeli istnieje - wyświetla go. Jeżeli nie - wykonywany
+                będzie skrypt <filename>index.php</filename>. 
+            </para>
+            
+            <para>
+                Ostatnią rzeczą, którą musisz zrobić, to ustawienie parametru konfiguracji
+                frameworka. Otwórz plik <filename>config.xml</filename> (lub inny, zawierający
+                konfiguracje projektu) i odszukaj właściwość <varname>frontController</varname>.
+                Zmodyfikuj tę wartość do takiej postaci:
+            
+                <programlisting>&lt;frontController>&lt;/frontController></programlisting>
+            </para>
+            
+            <para>
+                Od tej pory nasze URL'e będą wyglądały lepiej. 
+                <note>
+                    Więcej informacji o konfiguracji URL, znajdziesz w sekcji poświęconej systemowi routingu.
+                </note>
+                
+                <note>
+                    Równie dobrze możesz usunąć znacznik &lt;fontController> z pliku
+                    konfiguracji. Więcej o znaczeniu poszczególnych opcji konfiguracji, dowiesz się w
+                    sekcji poświęconej konfiguracji frameworka. 
+                </note>
+            </para>
+        </section>
+        
+        <section>
+            <title>Umieszczanie kontrolerów w podkatalogach</title>
+            
+            <para>
+                Kontrolery aplikacji mogą być gromadzone w podkataloach. Przeprowadźmy mały test. 
+                W katalogu controller, utwórz folder foo. Następnie umieść w nim plik bar.php:
+                    <programlisting>
+&lt;?php
+
+class Bar extends Controller
+{
+    function main()
+    {
+        echo 'Hello from: ' . get_class();
+    }
+}
+?>
+                    </programlisting>
+            </para>
+            
+            <para>
+                Możesz sprawdzić działanie wpisując w pasku adresu przeglądarki, adres:
+                <computeroutput>http://serwer.com/Foo/Bar</computeroutput>. 
+                
+                <note>
+                    Jak to działa?
+                    Jeżeli wpiszemy w pasku adres URL, taki jak powyżej, system poszuka w katalogu
+                    controller, kontrolera o nazwie foo. Jeżeli go nie odnajdzie - sprawdzi, czy
+                    istnieje katalog Foo. W tym momencie Foo jest traktowane jako <emphasis role="italic">podkatalog</emphasis>. 
+                    A Bar jako nazwa kontrolera.
+                </note>
+            </para>
+        
+        </section>
+        
+        <section>
+            <title>Parametry</title>
+            
+            <para>
+                Do URL'a mogą być przekazywane dodatkowe parametry. Przeanalizujmy następujący
+                przykład: <computeroutput>http://serwer.com/Foo/Bar/Main/12/56</computeroutput>
+            </para>
+            
+            <para>W tym momencie możemy wyróżnić:</para>
+            
+            <para>
+                <table frame="none">
+                    <title>Parametry URL</title>
+                    <tgroup cols="2">
+                        <colspec colname="c1" colnum="1"/>
+                        <colspec colname="c2" colnum="2"/>
+                        <thead>
+                            <row>
+                                <entry>Parametr</entry>
+                                <entry>Opis</entry>
+                            </row>
+                        </thead>
+                        <tbody>
+                            <row>
+                                <entry>Foo</entry>
+                                <entry>Nazwa modułu</entry>
+                            </row>
+                            <row>
+                                <entry>Bar</entry>
+                                <entry>Nazwa kontrolera</entry>
+                            </row>
+                            <row>
+                                <entry>Main</entry>
+                                <entry>Nazwa akcji</entry>
+                            </row>
+                            <row>
+                                <entry>12</entry>
+                                <entry>Parametr</entry>
+                            </row>
+                            <row>
+                                <entry>56</entry>
+                                <entry>Parametr</entry>
+                            </row>
+                        </tbody>
+                    </tgroup>
+                </table>
+            </para>
+            
+            <para>
+                Następujący kod pobiera listę parametrów przekazanych do
+                URL:
+                <programlisting>
+&lt;?php
+
+class Bar extends Controller
+{
+    function main()
+    {
+        echo 'Hello from: ' . get_class() . '&lt;br />';
+        echo 'Action: ' . __FUNCTION__ . '&lt;br />';
+        echo 'Parametr(s): ';
+        
+        foreach ($this->router->getArguments() as $arg)
+        {
+            echo $arg . '  ';
+        }
+    }
+}
+?>
+                </programlisting>
+            </para>
+            
+            <para>
+                Taki kod spowoduje wyświetlenie w oknie przeglądarki następujących
+                informacji:
+                <programlisting>
+Hello from: Bar
+Action: main
+Parametr(s): 12 54
+                </programlisting>
+            </para>
+            
+            <para>
+                Jak widzisz, do pobierania wartości parametru służy metoda <methodname>getArguments()</methodname>. 
+                Zwraca ona tablicę parametrów przekazanych wraz z URL'em.
+                
+                <note>
+                    Aby pobrać jeden, konkretny parametr, można skorzystać z metody getArgument(). 
+                    W parametrze należy podać numer parametru, poczyanając od zera (tzn. pierwszy parametr będzie miał indeks zero, drugi - jeden itd.).
+                </note>
+            </para>
+            
+            <para>
+                Weźmy pod uwagę inny przykład. W URL'u chcemy przekazać nasze imię oraz wiek.
+                Taki URL może wyglądać tak: http://127.0.0.1/framework/Foo/Bar/main/Adam/99. 
+                
+                Zamiast korzystać z metod tablicy <varname>param</varname> możemy przekształcić kontroler w ten
+            sposób:
+                <programlisting>
+&lt;?php
+
+class Bar extends Controller
+{
+    function main($name, $age)
+    {
+        echo "My name is $name, and I'm $age\n";
+    }
+}
+?>
+                </programlisting>
+            </para>
+                
+            <para>
+                Jak widzisz, wartości parametrów zostały przekazane bezpośrednio do akcji.
+                
+                <important>
+                    Wartości parametrów są "bezpieczne". Tj. dane wcześniej są filtrowane pod względem XSS oraz SQL
+                    Injection. 
+                </important>
+            </para>
+            
+        </section>
+    </section>
+    
+    <section>
+        <title>Kontrolery</title>
+        
+        <para>
+            Myślę, że w poprzednim rozdziale wyjaśnilismy nieco zasady tworzenia kontrolerów. Podsumujmy:
+            
+            <itemizedlist>
+                <listitem>Kontroler musi być umieszczony w katalogu controller</listitem>
+                <listitem>Kontrolery mogą być grupowane w podkatalogach</listitem>
+                <listitem>Nazwa pliku PHP odpowiada nazwie kontrolera</listitem>
+                <listitem>Nazwa klasy musi odpowiadać nazwie kontrolera. </listitem>
+                <listitem>Kontrolery mogą posiadać akcje.</listitem>
+            </itemizedlist>
+        </para>
+        
+        <para>
+            Zauważyłeś zapewne, że nazwa akcji odpowiada metodzie w klasie kontrolera. Powracając do
+            poprzedniego przykładu: jeżeli URL kształtuje się w następujący sposób:
+            <computeroutput>http://serwer.com/Foo/Bar/View</computeroutput>, wykonany zostanie
+            kontroler <emphasis role="italic">Bar</emphasis>, z podkatalogu <emphasis role="italic"
+                >Foo</emphasis> oraz akcja <emphasis role="italic">View</emphasis>.
+            
+            <important>
+                W systemach *nix rozróżniana jest wielkość znaków. Wobec tego nazwy plików z kontrolerami oraz nazwy
+                modułów muszą być pisane małymi literami. Przykładowo /controller/foo.php, a nie
+                /controller/FOO.php. 
+            </important>
+        </para>
+        
+        <section>
+            <title>Akcje prywatne</title>
+            
+            <para>
+                Skoro powiedzieliśmy, że akcja odpowiada metodzie w kontrolerze, musimy wspomnieć
+                również o metodach prywatnych. PHP5 umożliwia tworzenie metod prywatnych, które będą
+                dostepne jedynie w obrębie danej klasy. Jeżeli chcemy, aby dostęp do danej metody nie był
+                możliwy z zewnątrz, musimy zadeklarować akcję jako prywatną:
+            
+                <programlisting>
+private function view()
+{
+    echo 'Private metod';
+}            
+                </programlisting>
+            </para>
+            
+            <para>
+                Teraz przy próbie wejścia na stronę 
+                <computeroutput>http://127.0.0.1/framework/Foo/Bar/View</computeroutput>, wyświetli się
+                błąd. 
+            </para>
+        </section>
+        
+        <section>
+            <title>Konstruktor klas</title>
+            
+            <para>
+                Jak każda klasa PHP5, także kontroler może zawierać konstruktor. Nie zapomnij jednak,
+                aby zawrzeć w nim instrukcje wywołujące konstrktor
+                bazowy:
+                <programlisting>
+function __construct()
+{
+    parent::__construct();
+    
+    // dalszy kod
+}
+                </programlisting>
+            </para>
+            
+            <para>
+                W konstruktorze możemy zawrzeć kod, który ma być wykonywany zaraz po inicjalizacji
+                kontrolera. 
+            </para>
+        </section>
+        
+        <section>
+            <title>Informacje o module, kontrolerze i akcji</title>
+            
+            <para>
+                W prosty sposób możemy odczytać nazwę podkatalogu, kontrolera czy
+                akcji:
+                <programlisting>
+&lt;?php
+
+class Bar extends Controller
+{
+    function main()
+    {
+        echo 'Controller: ' . $this->getController() . '&lt;br >';
+        echo 'Action: ' . $this->getAction() . '&lt;br />';
+        echo 'Folder: ' . $this->getFolder();
+    }
+}
+?>
+                </programlisting>
+            </para>
+            
+            <para>
+                Metoda <varname>getController()</varname> zwraca nazwę kontrolera,
+                <varname>getAction()</varname> - nazwę akcji, a <varname>getFolder()</varname> - jak
+                nietrudno się domyśleć - nazwę podkatalogu. 
+            </para>
+        </section>
+        
+        <section>
+            <title>Metoda __start()</title>
+            
+            <para>
+                Czasami istnieje konieczność wykonania jakiejś czynności przed wykonaniem kodu z akcji
+                (metody) klasy, ale już po wykonaniu kodu z konstruktora klasy. Istnieje taka możliwość za
+                sprawą specjalnej merody <methodname>__start()</methodname>. Jeżeli takową umieścisz w
+                kontrolerze, system wywoła tą metodę zanim wywoła akcję. 
+            </para>
+        </section>
+        
+        <section>
+            <title>Metoda __call()</title>
+            
+            <para>
+                Jeżeli jesteś programistą PHP, na pewno wiesz o magicznej metodzie
+                <methodname>__call()</methodname>. Powiedzieliśmy sobie, że jeżeli system nie będzie
+                mógł w danym kontrolerze zlokalizować metodzie odpowiadającej akcji, wyświetli błąd 404.
+                Tutaj wdarło się małe niedopowiedzenie. Owszem, stanie się tak pod warunkiem, iż w klasie
+                nie zadeklarowano metody <methodname>__call()</methodname>. W takim wypadku, system wywoła
+                metodę <methodname>__call()</methodname>, z której już sam możesz zdecydować jakie będzie
+                działanie programu. </para>
+        </section>
+    </section>
+    
+    <section>
+        <title>Tworzenie folderu aplikacji</title>
+        
+        <para>
+            Ok, zapomnij teraz o całym frameworku. Oczwiście swoje biblioteki i pliki możesz 
+            umieszczać w folderze z frameworkiem.
+            
+            Jednak możesz traktować go jako jądro, w którym nie trzeba nic zmieniać. Możesz utworzyć
+            swój własny katalog aplikacji, w którym będziesz Tworzył strukturę folderów według własnego
+            uznania. Jedyne co musisz zrobić, to załączyć plik jądra frameworka do swojej aplikacji. W
+            ten sposób na serwerze możesz mieć kilka serwisów, które korzystają z tej samej wersji
+            frameworka. Utwórz na serwerze nowy katalog. Nazwijmy go <emphasis role="italic">project</emphasis>
+        </para>
+        
+        <para>
+            W nowym folderze stwórz plik index.php oraz katalog <filename>controller</filename>. Zawartość pliku
+            index.php powinna zawierać instrukcje włączające do apliakcji plik Front Controllera. Oto jak
+            może on
+            wyglądać:
+            <programlisting>
+&lt;?php
+
+error_reporting(E_ALL);
+setlocale(LC_ALL, array('pl_PL.UTF8', 'polish_pol')); 
+date_default_timezone_set('Europe/Warsaw');
+
+DEFINE('DEBUG', true);
+
+$system_dir = '../coyote-1-0/';
+
+/**
+*	Ta zmienna nie powinna byc zmieniana. Okresla ona sciezke do katalogu, w ktorym
+*	znajduja sie pliki frameworka. 
+*/
+$root_dir = realpath(dirname(__FILE__)) . '/' . $system_dir;
+$root_dir = str_replace('\\', '/', $root_dir);
+
+if (!file_exists($root_dir . 'lib/core.class.php'))
+{
+die('Could not find framework directory');
+}
+include_once($root_dir . 'lib/core.class.php');
+
+/**
+* Ustawienie sciezki do katalogu, w ktorym znajduje sie aplikacja
+*/
+Core::setBasePath(getcwd());
+/**
+*	Metoda bootstrap() sluzy do inicjalizacji podstawowych zmiennych projektu
+*/
+Core::bootstrap($root_dir)->dispatch();
+?>
+            </programlisting>
+         </para>
+            
+        <para>
+            Mamy tutaj kilka instrukcji, które ustawiają ścieżki do aplikacji oraz frameworka. Zmienna
+            <varname>$system_dir</varname> musi wskazywać na folder systemowy (z plikami frameworka).
+            Zmienna <varname>$root_dir</varname> tworzy wobec tego pełną ścieżkę do plików systemu.
+            Metoda <methodname>bootstrap()</methodname> inicjalizuje podstawowe zmienne
+            systemu.
+        </para>
+        
+        <para>
+            Metoda <methodname>setBasePath()</methodname> ustawia ścieżkę do
+            katalogu z aplikacją. Ponieważ domyślnie, jeżeli nie ustawimy tej ścieżki - system przyjmie,
+            iz ścieżką aplikacji jest ścieżka do frameworka. 
+        </para>
+        
+        <para>
+            Póki co to wszystko. 
+            
+            Gratulacje, właśnie poprawnie utworzyłeś nowy projekt korzystający z Coyote. Po próbie
+            wejścia np. poprzez adres http://serwer.com/project wyświetli się informacja o błędzie.
+            Wszak nie utworzyliśmy jeszcze żadnego kontrolera, stąd aplikacja nie wie jaką stronę ma
+            wygnerować. Komunikat powinien być podobny do tego:
+                <programlisting>
+Page not found
+
+The requested page was not found. It may have been moved, been deleted, or archived.
+Request file does not exist: controller/index.php
+                </programlisting>
+        </para>
+        
+        <para>
+            Utwórz w swoim katalogu z aplikacją, folder controller. Umieść w nim plik
+            <filename>index.php</filename>, którego zawartość może być następująca:
+            
+            <programlisting>
+&lt;?php
+
+class Index extends Controller
+{
+    function main()
+    {
+        echo 'Hello World';
+    }
+}
+?>
+            </programlisting>
+        </para>
+        
+        <para>
+            Napisailśmy w ten sposób prosty kontroler. 
+            
+            Teraz, po wpisaniu w przeglądarce adresu do projektu (np.
+            http://serwer.com/project) powinien wyświetlić się napis <emphasis>Hello World</emphasis>. 
+        </para>
+        
+        <section>
+            <title>Tworzenie pliku konfiguracji</title>
+            
+            
+            <para>
+                Coyote nie potrzebuje konfiguracji. Lecz w każdej większej aplikacji pliki
+                konfiguracyjne są potrzebne. Mogą zawierać podstawowe informacje o ustawieniach projektu.
+                
+                W naszym nowym folderze utwórz plik <filename>config.xml</filename>. 
+                Przykładowa konfiguracja naszego nowego projektu może wyglądać
+                tak:
+                <programlisting>
+&lt;?xml version="1.0" encoding="utf-8"?>
+&lt;config>
+&lt;application>My App&lt;/application>
+&lt;/config>
+                </programlisting>
+            </para>
+            
+            <para>
+                Coyote automatycznie wczyta plik konfiguracji do swoich zasobów. Teraz, w każdym
+                miejscu, w programie będziesz mógł odczytać wartość pól konfiguracji. Służy do tego klasa
+                <classname>Config</classname>, a konkretnie - metoda
+                <methodname>getItem()</methodname>:
+                <programlisting>
+echo 'Hello World &lt;br />';
+echo Config::getItem('application');
+                </programlisting>
+            </para>
+        </section>
+    </section>
+    
+    <section>
+        <title>Struktura katalogów</title>
+        
+        <para>
+            W katalogu <filename>controller</filename> powinieneś umieszczać pliki kontrolerów. 
+            Reszta już zależy od Ciebie. Jednakże korzystając z loadera Coyote wymagana jest określona struktura
+            katalogów. Ponieważ loader domyślnie poszkuje bibliotek w katalogach
+            <filename>lib</filename>. Klas modeli natomiast w katalogach <filename>model</filename>, a
+            helperów - w folderze <filename>helper</filename>. 
+        </para>
+        
+        <para>
+            Coyote dostarcza oczywiście własny
+            
+            zestaw bibliotek, które możesz znaleźć w katalogu lib. Oto przykład jak z nich
+            kozystać:
+            <programlisting>
+$this->load->library('feed');
+$feed = $this->feed->import('http://4programmers.net/rss.php?rss=topic');
+
+print_r($feed);
+            </programlisting>
+        </para>
+        
+        <para>
+            W tym przykładzie załadowaliśmy bibliotekę <classname>feed</classname>, do obsługi nagłówków
+            RSS 2.0. Tutaj wykorzystaliśmy metodę <methodname>import()</methodname>, która pobrała
+            nagłówki ze wskazanego URL i skonwertowała je do postaci tablicy PHP.
+        </para>
+        
+        <para>
+            Podsumowując, w swojej aplikcji możesz mieć następujące katalogi:
+        </para>
+        
+        <para>
+            <table frame="none">
+                <title>Katalogi aplikacji korzystającej z Coyote</title>
+                <tgroup cols="2">
+                    <colspec colname="c1" colnum="1"/>
+                    <colspec colname="c2" colnum="2"/>
+                    <thead>
+                        <row>
+                            <entry>Folder</entry>
+                            <entry>Opis</entry>
+                        </row>
+                    </thead>
+                    <tbody>
+                        <row>
+                            <entry>cache</entry>
+                            <entry>Folder z plikami cache</entry>
+                        </row>
+                        <row>
+                            <entry>lib</entry>
+                            <entry>Folder zawierający dodatkowe biblioteki</entry>
+                        </row>
+                        <row>
+                            <entry>model</entry>
+                            <entry>Folder zawierający klasy modelu</entry>
+                        </row>
+                        <row>
+                            <entry>module</entry>
+                            <entry>Folder zawierający dodatkowe moduły</entry>
+                        </row>
+                        <row>
+                            <entry>i18n</entry>
+                            <entry>Folder zawierający pliki językowe</entry>
+                        </row>
+                        <row>
+                            <entry>helper</entry>
+                            <entry>Folder zawierający pliki pomocników (helper)</entry>
+                        </row>
+                        <row>
+                            <entry>template</entry>
+                            <entry>Folder zawierjący widoki</entry>
+                        </row>
+                        <row>
+                            <entry>log</entry>
+                            <entry>Folder zawierjący ewentualne logi systemowe</entry>
+                        </row>
+                    </tbody>
+                </tgroup>
+            </table>
+        </para>
+    </section>
+    
+    <section>
+        <title>Kolejność odczytywanych plików</title>
+        
+        <para>
+            Na tym etapie należy powiedzieć ważną rzecz, o której musisz mieć świadomość. Framework
+            automatycznie ustawia ścieżki include_path dla katalogu z frameworkiem oraz dla katalogu z
+            aplikacją. Oznacza to, że próbując wywołać jakiś zasób (bibliotekę, plik konfiguracji itp.)
+            system najpierw poszukuje go w katalogu z aplikacją, a następnie w katalogu z frameworkiem.
+            Powróćmy do przykładu naszego pliku konfiguracyjnego. W momencie startu aplikacji framework
+            spróbuje odnaleźć plik konfiguracyjny z katalogu aplikacji, a następnie - z katalogu
+            frameworku. Ze względu na działanie mechanizmu konfiguracji, jeżeli takie pliki zostaną
+            odnalezione w obydwóch katalogach - zostaną połączone. Tak więc przed pisaniem aplikacji pod
+            Coyote, zalecane jest usunięcie wszystkich niepotrzebnych plików z katalogu z frameworkiem
+            (między innymi pliku config.xml, który domyślnie jest umieszczony w katalogu Coyote'a).
+        </para>
+    </section>        
+    
+</chapter>

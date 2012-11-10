@@ -1,0 +1,209 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Adaptery</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch10.html" title="Rozdzia&#322; 10. Konfiguracja projektu"><link rel="prev" href="ch10s06.html" title="Podzia&#322; pliku konfiguracji"><link rel="next" href="ch10s08.html" title="Cache konfiguracji"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Adaptery</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch10s06.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 10. Konfiguracja projektu</th><td width="20%" align="right"> <a accesskey="n" href="ch10s08.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id479725"></a>Adaptery</h2></div></div></div><p>Domy&#347;lnym formatem plików konfiguracji Coyote'a jest format XML. Coyote jednak
+            obs&#322;uguje inne formaty, takie jak pliki INI czy pliki PHP zawieraj&#261;ce tablice, która po
+            prostu zostanie wczytana do projektu. Nic nie stoi równie&#380; na przeszkodzie, aby samemu
+            napias&#263; adapter, czym zajmiemy si&#281; nieco pó&#378;niej. </p><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id479744"></a>Adapter XML</h3></div></div></div><p> XML jest bardzo popularnym formatem, szeroko wykorzystywanym w rozmaitych
+                aplikacjach. Jest to równie&#380; zalecany format przechowywania konfiguracji w
+                aplikacjach wykorzystuj&#261;cych Coyote. Klasa <tt class="classname">Config</tt>
+                automatycznie rozpozna format XML po rozserzeniu oraz zainicjalizuje odpowiedni
+                adapter. Klasa <tt class="classname">Config</tt> przekonwertuje znaczniki XML na tablc&#281;
+                PHP. Oznacza to, &#380;e taki plik
+                XML:</p><pre class="programlisting">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;config&gt;
+	&lt;site&gt;
+		&lt;name&gt;4programmers.net&lt;/name&gt;
+		&lt;version&gt;1.0&lt;/version&gt;
+		&lt;description&gt;Serwis o programowaniu&lt;/description&gt;
+	&lt;/site&gt;
+&lt;/config&gt;</pre><p>Zostanie przekonwertowany na tablic&#281;
+                PHP:</p><pre class="programlisting">Array
+(
+    [core] =&gt; Array
+        (
+            [root] =&gt; C:/usr/src/coyote/demo/../coyote-1-0/
+            [base] =&gt; C:\usr\src\coyote\demo/
+            [template] =&gt; template
+            [templateConfig] =&gt; config.xml
+            [templateExtension] =&gt; .php
+            [javascript] =&gt; template/js
+        )
+
+    [site] =&gt; Array
+        (
+            [name] =&gt; 4programmers.net
+            [version] =&gt; 1.0
+            [description] =&gt; Serwis o programowaniu
+        )
+
+)</pre><p>Dzi&#281;ki
+                temu w prosty sposób mo&#380;emy odczyta&#263; warto&#347;ci
+                konfiguracji:</p><pre class="programlisting">		
+echo Config::getItem('site.name');
+echo Config::getItem('site')-&gt;name;
+Core::debug(Config::getItem('site')); // obiekt site
+                </pre></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id479820"></a>Adapter PHP</h3></div></div></div><p>Format XML jest popularny i przeno&#347;ny. Jednak dla Ciebie - jako programisty PHP,
+                lepszym rozwi&#261;zaniem mo&#380;e si&#281; wydawa&#263; zapisywanie konfiguracji wprost - w pliku PHP.
+                Np.:</p><pre class="programlisting">&lt;?php
+
+$config['site'] = array(
+	'name'		=&gt; '4programmers.net',
+	'version'	=&gt; '1.0',
+	'description'	=&gt; 'Serwis o programowaniu'
+	)
+;
+
+?&gt;</pre><p>Taki sposób jest wydajniejszy poniewa&#380; system nie traci czasu na konwersje na
+                format PHP. Ponad to, plik PHP mo&#380;e zawiera&#263; dodatkowe instrukcje j&#281;zyka PHP - w tym
+                instrukcj&#281; <tt class="code">include</tt> umo&#380;liwiaj&#261;c&#261; &#322;adowanie innych plików (w tym
+                konfiguracji). </p></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id479863"></a>Adapter INI</h3></div></div></div><p>Innym sposobem zapisywania konfiguracji jest plik INI. Sekcje w pliku INI b&#281;d&#261;
+                stanowi&#322;y nazw&#281; przestrzeni nazw, czyli innymi s&#322;owy - sekcja utworzy nowy klucz w
+                tablicy asocjacyjnej w procesie konwersji na format
+                PHP:</p><pre class="programlisting">[site]
+
+name = 4programmers.net
+version = 1.0
+description = To jest serwis o programowaniu</pre><p>Po za&#322;adowaniu takiego pliku INI, metoda <tt class="methodname">getItem()</tt>
+                zwróci:</p><pre class="programlisting">Array
+(
+    [core] =&gt; Array
+        (
+            [root] =&gt; C:/usr/src/coyote/demo/../coyote-1-0/
+            [base] =&gt; C:\usr\src\coyote\demo/
+            [template] =&gt; template
+            [templateConfig] =&gt; config.xml
+            [templateExtension] =&gt; .php
+            [javascript] =&gt; template/js
+        )
+
+    [site] =&gt; Array
+        (
+            [name] =&gt; 4programmers.net
+            [version] =&gt; 1.0
+            [description] =&gt; To jest serwis o programowaniu
+        )
+
+)</pre><p> W pliku INI, klucze mog&#261; dodatkowo posiada&#263; znak kropki, który rozdzieli taki
+                klucz na poszczególne elementy.
+                Przyk&#322;adowo:</p><pre class="programlisting">[final]
+
+site.name = 4programmers.net
+site.version = 1.0
+site.description = To jest serwis o programowaniu
+
+[developer]
+
+site.name = 4programmers.net beta
+site.version = 2.0-dev
+site.description = To jest testowa wersja serwisu o programowaniu</pre><p>Teraz
+                wykonanie takiego kodu w
+                kontrolerze:</p><pre class="programlisting">		Config::load('config/config.ini');
+		Core::debug(Config::getItem()); 
+
+		echo Config::getItem('developer.site.name');</pre><p>Spowoduje
+                wy&#347;wietlenie na
+                ekranie:</p><pre class="programlisting">Array
+(
+    [core] =&gt; Array
+        (
+            [root] =&gt; C:/usr/src/coyote/demo/../coyote-1-0/
+            [base] =&gt; C:\usr\src\coyote\demo/
+            [template] =&gt; template
+            [templateConfig] =&gt; config.xml
+            [templateExtension] =&gt; .php
+            [javascript] =&gt; template/js
+        )
+
+    [final] =&gt; Array
+        (
+            [site] =&gt; Array
+                (
+                    [name] =&gt; 4programmers.net
+                    [version] =&gt; 1.0
+                    [description] =&gt; To jest serwis o programowaniu
+                )
+
+        )
+
+    [developer] =&gt; Array
+        (
+            [site] =&gt; Array
+                (
+                    [name] =&gt; 4programmers.net beta
+                    [version] =&gt; 2.0-dev
+                    [description] =&gt; To jest testowa wersja serwisu o programowaniu
+                )
+
+        )
+
+)
+4programmers.net beta</pre></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id479982"></a>W&#322;asny adapter</h3></div></div></div><p>Przypu&#347;&#263;my, &#380;e oprócz konfiguracji zapisanej w plikach XML oraz INI, w swojej
+                aplikacji posiadasz równie&#380; konfiguracje zapisan&#261; w tabeli bazy danych. Napiszemy
+                dodatkowy adapter, który b&#281;dzie wczytywa&#322; zawaro&#347;&#263; tabeli do konfiguracji projektu.
+                Tabela jest bardzo
+                prosta:</p><pre class="programlisting">CREATE TABLE coyote_config (
+  config_name varchar(120) NOT NULL COMMENT 'Nazwa klucza',
+  config_value varchar(255) NOT NULL COMMENT 'Warto&#347;&#263; klucza'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Dodatkowe opcje konfiguracyjne projektu ';</pre><p>Adaptery konfiguracji musz&#261; implementowa&#263; interfejs IConfig, który prezentuje si&#281;
+                nast&#281;puj&#261;co:</p><pre class="programlisting">/**
+ * Interface dla adapterow konfiguracji
+ */
+interface IConfig 
+{
+	public function load($path);
+	/**
+	 * Do metody przekazywane jest rozszerzenie pliku konfiguracyjnego. Jezeli metoda zwroci true,
+	 * to oznacza, iz akceptuje wybrane rozszerzenie i mozna przetwarzac dane. Jezeli nie - wyswietlany
+	 * jest blad programu o braku danego kontrolera
+	 */
+	public function isAccept($suffix);
+}</pre><p>Czyli innymi s&#322;owy - nasz adapter musi posiada&#263; metody load() oraz isAccept(). W
+                katalogu swojej aplikacji utwórz folder lib. Nast&#281;pnie, w nim utwórz kolejny katalog
+                - config. Tutaj umie&#347;cimy nasz adapter. Plik nazwij db.class.php. Jego zawarto&#347;&#263;
+                mo&#380;e by&#263;
+                nast&#281;puj&#261;ca:</p><pre class="programlisting">&lt;?php
+
+class Config_Db implements IConfig
+{
+	public function load($path)
+	{
+		$config = array();
+
+		$db = &amp;Load::loadClass('db', true, 'mysql');
+		$db-&gt;connect('localhost', 'root', 'root', 'coyote_dev');
+
+		$query = $db-&gt;query('SELECT * FROM coyote_config'); 
+		foreach ($query as $row)
+		{ 
+			$config[$row['config_name']] = $row['config_value'];
+		}
+		return $config;
+	}
+
+	public function isAccept($suffix)
+	{
+		return true;
+	}
+}
+
+?&gt;</pre><p>Domy&#347;lnie, klasa <tt class="classname">Config</tt> jest przystosowana do wczytywania
+                konfiguracji z plików umieszczonych, fizycznie na dysku komputera. Dlatego do metody
+                    <tt class="methodname">load()</tt> przekazywany jest parametr okre&#347;laj&#261;cy &#347;cie&#380;k&#281;
+                do pliku konfiguracji. W naszej klasie ignorujemy ten parametr. Metoda
+                    <tt class="methodname">load()</tt> musi zwraca&#263; tablic&#281; PHP zawieraj&#261;c&#261;
+                konfiguracj&#281;. Zostanie ona po&#322;&#261;czona z dotychczasow&#261; konfiguracj&#261; projektu. </p><p>Metoda <tt class="methodname">isAccept()</tt> powinna zwraca&#263; TRUE lub FALSE w
+                zale&#380;no&#347;ci czy dany format pliku jest akceptowany przez adapter. Klasa
+                    <tt class="classname">Config</tt> wywo&#322;uje metod&#281;
+                <tt class="methodname">isAccept()</tt> przekazuj&#261;c w parametrze rozszerzenie pliku
+                konfiguracyjnego. Na tej podstawie adapter powinien stwierdzi&#263;, czy rozserzenie jest
+                dla niego akceptowalne i zwróci&#263; TRUE lub FALSE. </p><p>Jeszcze jedna istotna sprawa: klasa Config domy&#347;lnie jest przystosowana do
+                wczytywania plików konfiguracji z dysku. Tzn. poszukuje pliku o podanej nazwie i
+                je&#380;eli go znajduje - wywo&#322;uje metod&#281; <tt class="methodname">load()</tt> z odpowiedniego
+                adaptera. Aby nasz adapter mia&#322; szans&#281; zadzia&#322;a&#263;, umie&#347;&#263; w katalogu /config plik
+                config.db. Tre&#347;&#263; jest niewa&#380;na - mo&#380;e to by&#263; pusty plik. Wa&#380;ne, aby istnia&#322; i loader
+                potrafi&#322; go odnale&#378;&#263;. </p><p>Teraz najwa&#380;niejsze - uruchomienie adaptera. Najpierw musimy wywo&#322;a&#263; metod&#281;
+                    <tt class="methodname">setAdapter()</tt> klasy <tt class="classname">Config</tt>, aby
+                ustawi&#263; nowy adapter tej klasy. Nast&#281;pnie wczytujemy konfiguracj&#281; wykorzystuj&#261;c
+                metod&#281;
+                l<tt class="methodname">oad()</tt>:</p><pre class="programlisting">Config::setAdapter(new Config_Db);
+		Config::load('config/config.db');
+
+		Core::debug(Config::getItem());</pre></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch10s06.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch10.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch10s08.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Podzia&#322; pliku konfiguracji </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Cache konfiguracji</td></tr></table></div></body></html>

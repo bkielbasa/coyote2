@@ -1,0 +1,17 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Implementacja interfejsu ArrayAccess</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch17.html" title="Rozdzia&#322; 17. Klasa GPC"><link rel="prev" href="ch17s05.html" title="Implementacja interfejsu Countable"><link rel="next" href="ch18.html" title="Rozdzia&#322; 18. Klasa Model"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Implementacja interfejsu ArrayAccess</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch17s05.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 17. Klasa GPC</th><td width="20%" align="right"> <a accesskey="n" href="ch18.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id494521"></a>Implementacja interfejsu ArrayAccess</h2></div></div></div><p>Poniewa&#380; klasa <tt class="classname">Gpc</tt> implementuje interfejs
+                <tt class="interfacename">ArrayAccess</tt>, w klasach dziedzicz&#261;cych po
+                <tt class="classname">Gpc</tt>, mo&#380;liwy jest dostep do elementów jak do zwyk&#322;ych
+            tablic:</p><pre class="programlisting">echo $_GET['id'];
+echo $this-&gt;get['id'];
+$this-&gt;get['id'] = 2;
+echo $this-&gt;get['id'];
+echo $_GET['id'];</pre><p>Takie zastosowanie jest praktyczne je&#380;eli parametr $_GET jest tablica i chcemy w prosty sposób uzyska&#263; dost&#281;p do jej elementu:
+            </p><pre class="programlisting">
+ // np. http://127.0.0.1/demo/index.php/Index/Main?id[]=2&amp;id[]=3
+ echo $this-&gt;get['id'][1]; 
+ 
+ Core::debug($this-&gt;get-&gt;id);
+            </pre><p>
+            </p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Ostrze&#380;enie</h3>Je&#380;eli parametrem jest tablica (jak parametr id w poprzednim przyk&#322;adzie), klasa Gpc przefiltruje równie&#380; elementy tej tablicy.</div><p>
+            
+        </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch17s05.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch17.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch18.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Implementacja interfejsu Countable </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Rozdzia&#322; 18. Klasa Model</td></tr></table></div></body></html>

@@ -1,0 +1,39 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Metoda setFilters()</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch23.html" title="Rozdzia&#322; 23. Filtrowanie danych"><link rel="prev" href="ch23.html" title="Rozdzia&#322; 23. Filtrowanie danych"><link rel="next" href="ch23s03.html" title="Statyczna metoda call()"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Metoda setFilters()</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch23.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 23. Filtrowanie danych</th><td width="20%" align="right"> <a accesskey="n" href="ch23s03.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id500677"></a>Metoda setFilters()</h2></div></div></div><p>Metoda setFilters() umo&#380;liwia ustawienie kolejki filtrów bez inicjalizacji
+            ewentualnych klas. Metoda szczególnie przydatna w przypadku, gdy konfiguracja filtrów
+            jest zapisana - np. w plikach XML. Wówczas mo&#380;na wywo&#322;a&#263; metod&#281; setFilters() z
+            konfiguracj&#261; odczytan&#261; z zewn&#281;trznego pliku.
+            Przyk&#322;ad:</p><pre class="programlisting">&lt;?php
+
+class Bar extends Controller
+{
+	function main()
+	{
+		$value = '&lt;a onclick="alert(document.cookie);"&gt;(click)_me&lt;/a&gt;';
+
+		$filter = &amp;$this-&gt;getLibrary('filter');
+		$filter-&gt;setFilters(array(
+
+				'string',
+				'xss'				=&gt; array(),
+				'replace'			=&gt; array('_', '(', ')')
+			)
+		);				
+
+		echo $filter-&gt;filterData($value);
+	}
+}
+?&gt;</pre><p>Je&#380;eli klucz tablicy jest &#322;a&#324;cuchem, a warto&#347;ci&#261; - tablica, oznacza to, &#380;e filtr jest
+            klas&#261;. Coyote utworzy now&#261; instancj&#281; klasy i przeka&#380;e do jej konstruktora warto&#347;ci
+            podane w tablicy. W przeciwnym przypadku - system uzna, &#380;e filtr jest funkcj&#261;. </p><p>Elementem tablicy asocjacyjnej przekazywanej do <tt class="methodname">setFilters()</tt>
+            mo&#380;e by&#263; tablica zawieraj&#261;ca informacje o filtrze oraz o jego parametrach. W takim
+            przypadku, pierwszym elementem filtra musi by&#263; jego nazwa (bez przefrostka
+                <span class="emphasis"><em>Filter</em></span>), gdy&#380; kolejne elementy zostan&#261; przekazane do
+            konstruktora filtra:</p><pre class="programlisting">
+$filter-&gt;setFilters(array(
+
+        'string',
+        array('xss'),
+        array('replace', '_', '(', ')')
+    )
+);
+        </pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch23.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch23.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch23s03.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Rozdzia&#322; 23. Filtrowanie danych </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Statyczna metoda call()</td></tr></table></div></body></html>

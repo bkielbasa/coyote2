@@ -1,0 +1,111 @@
+#page-header
+{
+		margin:					0 0 10px 0;	
+		padding-bottom:			10px;
+}
+
+#page-category
+{
+		background-color:		#f3f3f3;
+		border:					1px solid #e5e2de;
+		padding:				10px;
+		margin:					15px 0 15px 0;
+}
+
+#page-category span
+{
+		background:				url('../img/blackArrow.gif') no-repeat 50% 50%;
+		padding:				0 0 2px 0;
+}
+
+#page-category span em
+{
+		visibility:				hidden;
+}
+
+#page ul
+{
+		margin-left:			10px;
+		list-style-type:		none;
+}
+
+#page ol
+{
+		margin-left:		20px;
+}
+
+#page ul li
+{
+		background:				url('../img/dot.gif') no-repeat 0 8px;
+		padding-left:			10px;
+}
+
+.page-content
+{
+		border-top:			1px solid #ccc;
+		border-bottom:		1px solid #ccc;
+		padding:			5px 0 5px 0;
+}
+
+#page-tools
+{
+		float:				right;
+}
+
+#page-tools ul li
+{
+		background:			none;
+		float:				left;
+		font-size:			12px;
+		font-weight:		bold;
+		font-family:		Arial, sans-serif;
+		border-right:		1px solid #deeaf1;
+		padding:			2px 5px 2px 5px;
+}
+
+#page-children
+{
+		float:				right;
+		width:				250px;
+		padding:			4px 10px 0 10px;
+		border-left:		1px solid #ccc;
+}
+
+#page-children h3
+{
+		font-variant:		small-caps;
+		font-size:			15px;
+		margin-bottom:		12px;
+		margin-top:			0;
+}
+
+#page-children ul
+{
+		margin-left:		0;
+		list-style-type:		none;
+}
+
+#page-children ul li
+{
+		padding:			3px 0 3px 10px;
+		border-bottom:		1px dashed #ccc;
+		background-position:	0 12px;
+}
+
+#page-children ul li:last-child
+{
+		border-bottom:		none;
+}
+
+#page-children ul li a
+{
+		color:				#111111;
+}
+
+#page-children ul li small
+{
+		display:			block;
+		color:				#999999;
+		font-size:			11px;
+}
+

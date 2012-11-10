@@ -1,0 +1,94 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Rozdzia&#322; 7. Biblioteki</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="pt01.html" title="Cz&#281;&#347;&#263; I. Dokumentacja techniczna"><link rel="prev" href="ch06s13.html" title="Metoda getArgument()"><link rel="next" href="ch07s02.html" title="Konwencje w nazewnictwie"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Rozdzia&#322; 7. Biblioteki</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch06s13.html">Poprzedni</a> </td><th width="60%" align="center">Cz&#281;&#347;&#263; I. Dokumentacja techniczna</th><td width="20%" align="right"> <a accesskey="n" href="ch07s02.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="chapter" lang="pl"><div class="titlepage"><div><div><h2 class="title"><a name="id477324"></a>Rozdzia&#322; 7. Biblioteki</h2></div></div></div><div class="toc"><p><b>Spis tre&#347;ci</b></p><dl><dt><span class="section"><a href="ch07.html#id477462">Metoda statyczne loadera</a></span></dt><dd><dl><dt><span class="section"><a href="ch07.html#id477549">Przekazywanie parametrów do konstruktora</a></span></dt></dl></dd><dt><span class="section"><a href="ch07s02.html">Konwencje w nazewnictwie</a></span></dt><dt><span class="section"><a href="ch07s03.html">Dziedziczenie</a></span></dt><dt><span class="section"><a href="ch07s04.html">Zast&#281;powanie bibliotek j&#261;dra</a></span></dt><dt><span class="section"><a href="ch07s05.html">Metoda initialize()</a></span></dt><dt><span class="section"><a href="ch07s06.html">Dziedziczenie po klasie Context</a></span></dt></dl></div><p>
+        Biblioteki w Coyote maj&#261; posta&#263; zwyk&#322;ych klas. Mog&#261; one zosta&#263; u&#380;yte w ka&#380;dym miejscu
+        aplikacji w momencie, gdy ich potrzebujemy. W Coyote biblioteki znajduj&#261; si&#281; w katalogu
+        <tt class="filename">lib</tt>. Nic nie stoi na przeszkodzie, aby&#347; umie&#347;ci&#322; swoje biblioteki,
+        w&#322;a&#347;nie w katalogu <tt class="filename">lib</tt> swojego projektu. Mo&#380;esz np. potrzebowa&#263; w
+        swojej aplikacji biblioteki usuwaj&#261;cej wszystkie niepotrzebne znaczniki HTML z &#322;a&#324;cucha.
+        Tak&#261; bibliotek&#281; mo&#380;esz wykorzysta&#263; w ka&#380;dym miejscu swojej aplikacji. Przeprowad&#378;my prosty
+        eksperyment. Utwórz w katalogu swojej aplikacji folder <tt class="filename">lib</tt>. W katalogu
+        tym umie&#347;&#263; plik <tt class="filename">foo.class.php</tt>, który b&#281;dzie nasz&#261; bibliotek&#261;.
+        
+        Biblioteki musz&#261; posiada&#263; sufiks .<span class="emphasis"><em>class.php</em></span>. Kod naszej biblioteki mo&#380;e
+        wygl&#261;da&#263;
+        tak:
+        </p><pre class="programlisting">
+&lt;?php
+
+class Foo
+{
+    public function bar()
+    {
+        echo 'Metoda bar() z biblioteki Foo';
+    }
+}
+?&gt;
+        </pre><p>
+    </p><p>
+        Biblioteki mo&#380;emy wykorzystywa&#263; w ka&#380;dym miejscu aplikacji - w innych bibliotekach lub
+        kontrolerach. Np. w ten sposób:
+        </p><pre class="programlisting">
+$foo = new Foo;
+$foo-&gt;bar();
+        </pre><p>
+    </p><p>
+        Tworzymy obiekt klasy <tt class="classname">Foo</tt>, a nast&#281;pnie wywo&#322;ujemy metod&#281;
+        <tt class="methodname">bar()</tt>. Plik PHP z klas&#261; <tt class="classname">Foo</tt> jest &#322;adowany przez loader, który
+        poszukuje pliku <tt class="filename">foo.class.php</tt> w katalogu <tt class="filename">lib</tt>. 
+    </p><p>
+        Jest to jeden ze sposobów za&#322;adowania biblioteki w programie. Tworzymy tutaj nowy obiekt
+        klasy, ale nie zawsze jest to po&#380;&#261;dane. Ba, by&#263; mo&#380;e musisz wykorzysta&#263; obiekt klasy
+        <tt class="classname">Foo</tt> w wielu miejscach aplikacji (w kontrolerze oraz w innej
+        bibliotece). Mo&#380;e zaistnie&#263; sytuacja, w której nie chcemy tworzy&#263; kilku instancji tej samej
+        klasy. Tutaj, z pomoc&#261; przychodzi loader, który przechowuje referencj&#281; do instancji klasy.
+        Mo&#380;esz j&#261; uzyska&#263; dzi&#281;ki statycznej metodzie
+        <tt class="methodname">loadClass()</tt>:
+        
+        </p><pre class="programlisting">
+$foo = &amp;Load::loadClass('foo');
+$foo-&gt;bar();
+
+// inne operacje
+// ponowne uzycie biblioteki
+$foo = &amp;load::loadClass('foo');
+$foo-&gt;bar();
+        </pre><p>
+    </p><p>
+        W takim kodzie, nast&#261;pi podwójne u&#380;ycie metody <tt class="methodname">bar()</tt> jednak&#380;e z
+        tej samej instancji klasy <tt class="classname">Foo</tt>. Innymi s&#322;owy nie s&#261; tworzone dwie
+        instancje klasy <tt class="classname">Foo</tt>.
+    </p><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id477462"></a>Metoda statyczne loadera</h2></div></div></div><p>
+            Klasa loadera (<tt class="classname">Load</tt>) posiada u&#380;yteczn&#261;, statyczn&#261; metod&#281;
+            <tt class="methodname">loadClass()</tt>. Umo&#380;liwia za&#322;adowania i utworzenie instancji
+            klasy lub - za&#322;adowanie klasy statycznej. Poni&#380;sze instrukcje s&#261;
+            równowa&#380;ne:
+            </p><pre class="programlisting">
+$foo = &amp;$this-&gt;load-&gt;library('foo');
+$foo1 = &amp;Load::loadClass('foo');
+$foo2 = new Foo;
+            </pre><p>
+        </p><p>
+            Metoda <tt class="methodname">library()</tt>, podobnie jak statyczna metoda
+            <tt class="methodname">loadClass()</tt> nie tworzy kolejnej instancji klasy je&#380;eli ta
+            zosta&#322;a ju&#380; utworzona. Zapobiera równie&#380; ponownemu wczytaniu danego pliku do projektu. 
+        </p><p>
+            Metoda <tt class="methodname">loadClass()</tt> posiada dwa kolejne (opcjonalne)
+            parametry. Pierwszy z nich okre&#347;la, czy tworzona ma by&#263; instancja danej klasy (domy&#347;lnie
+            true - jest tworzona); drugi - przekazuje parametry do konstruktora klasy je&#380;eli
+            tworzona jest jego instancja. Przeanalizuj nast&#281;puj&#261;cy
+            przyk&#322;ad:
+            
+            </p><pre class="programlisting">
+Load::loadClass('user', false);
+User::load(); // u&#380;ycie statycznej metody z klasy User - nie zosta&#322;a utworzona jej instancja
+$this-&gt;user-&gt;load(); // b&#322;ad! Nie istnieje instancja klasy User
+            </pre><p>
+        </p><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id477549"></a>Przekazywanie parametrów do konstruktora</h3></div></div></div><p> 
+                Niekiedy konieczne jest przekazanie do konstruktora metody dodatkowych
+                parametrów. Mo&#380;na to zrobi&#263; w prosty sposób wywo&#322;uj&#261;c jawnie konstruktor
+                klasy:
+                </p><pre class="programlisting">
+$foo = new Foo('bar', 1); 
+// lub:
+Load::loadClass('foo', true, array('bar', 1));
+                </pre><p>
+            </p></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch06s13.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="pt01.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch07s02.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Metoda getArgument() </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Konwencje w nazewnictwie</td></tr></table></div></body></html>

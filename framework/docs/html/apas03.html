@@ -1,0 +1,118 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Formatowanie kodu</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="apa.html" title="Dodatek A. Standard kodowania"><link rel="prev" href="apas02.html" title="Konwencja nazewnictwa"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Formatowanie kodu</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="apas02.html">Poprzedni</a> </td><th width="60%" align="center">Dodatek A. Standard kodowania</th><td width="20%" align="right"> </td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id504528"></a>Formatowanie kodu</h2></div></div></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id504535"></a>&#321;a&#324;cuchy</h3></div></div></div><p>
+                Stosujemy apostrofy tam gdzie to jest mo&#380;liwe.
+                
+                </p><pre class="programlisting">
+
+$a = 'Hello World';
+                   
+                    
+                </pre><p>
+            </p><p>
+                W miare mo&#380;liwo&#347;ci u&#380;ywamy operatora "." pozostawiaj&#261;c jedn&#261; spacj&#281; pomi&#281;dzy
+                wyrazami:
+                
+                </p><pre class="programlisting">
+
+$a = 'Hello ' . 'World';
+                    
+                    
+                </pre><p>
+            </p><p>
+                Tam gdzie jest to konieczne (w celu zwi&#281;kszania czytelno&#347;ci) mo&#380;emy u&#380;ywa&#263;
+                apostrofu:
+                
+                </p><pre class="programlisting">
+
+$a = 'Mam na imi&#281; ' . $name . ', lat: ' . $age . ', mam ' . $height . ' cm wzrostu';
+$a = "Mam na imi&#281; $name, lat: $age, mam $height cm wzrostu"; // czytelniej
+                                 
+                </pre><p>
+            </p></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id504598"></a>Odst&#281;py</h3></div></div></div><p>
+				W miar&#281; mo&#380;liwo&#347;ci nale&#380;y stosowa&#263; odst&#281;py mi&#281;dzy liniami oraz specje pomi&#281;dzy
+				wywo&#322;aniami operatorów, aby zwi&#281;kszy&#263; czytelno&#347;&#263; kodu.
+			</p><pre class="programlisting">
+
+$a='Hello'.' '.'World'; // &#378;le
+$a = 'Hello' . ' ' . 'World'; // dobrze
+
+if($x&lt;1) {
+	echo '&#377;le';
+}
+
+if ($x &lt; 1)
+{
+	echo 'Dobrze';
+}
+
+			</pre></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id504625"></a>Klasy</h3></div></div></div><p>
+                Klasy musz&#261; by&#263; deklarowane zgodnie z nazewnictwem opisanym w poprzedniej cz&#281;&#347;ci.
+                Dodatkowo klamra otwieraj&#261;ca musi znajdowa&#263; si&#281; w kolejnej
+                linii:
+                </p><pre class="programlisting">
+
+/** 
+* Komentarz
+*/
+class Foo
+{
+// metody
+}
+
+class Foo {
+// &#377;le }
+           
+                    
+                </pre><p>
+            </p><p>
+                Pomi&#281;dzy s&#322;owem kluczowym class, a nazw&#261; klasy musi si&#281; znale&#378;&#263; jedna spacja
+                przerwy. Dobrym zwyczajem jest umieszczanie komentarza opisuj&#261;cego dzia&#322;anie klasy,
+                zgodnie z konwencj&#261; akceptowan&#261; przez oprogramowanie PHPDoc. 
+            </p></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id504668"></a>Pola klasy</h3></div></div></div><p>
+                Pola klasy musz&#261; by&#263; oznaczone jako <span class="emphasis"><em>private</em></span>,
+                <span class="emphasis"><em>public</em></span> lub <span class="emphasis"><em>protected</em></span>:
+                
+                </p><pre class="programlisting">
+
+// Dobrze
+class Foo
+{
+    private $bar;
+    private $foo;
+}
+
+// &#377;le
+class Foo
+{
+    private
+    $bar;
+    $foo;
+}
+                    
+                    
+                </pre><p>
+            </p></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id504704"></a>Metody klasy</h3></div></div></div><p>
+                W nazewnictwie metod stosujemy styl wielb&#322;&#261;dzi. Nale&#380;y pami&#281;ta&#263; o wci&#281;ciach 
+                w kodzie w wielko&#347;ci jednej tabulacji.
+                
+                </p><pre class="programlisting">
+
+class Foo
+{
+    public function Bar() // Dobrze
+    {
+    // instrukcje
+    }
+    
+    function FooBar() {  // &#377;le
+    }
+    
+    public function foobar() // &#377;le
+    {
+    }
+}
+                    
+                    
+                </pre><p>
+                
+                Klamra otwieraj&#261;ca powinna znajdowa&#263; si&#281; w nowej linii.
+            </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="apas02.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="apa.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> </td></tr><tr><td width="40%" align="left" valign="top">Konwencja nazewnictwa </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> </td></tr></table></div></body></html>

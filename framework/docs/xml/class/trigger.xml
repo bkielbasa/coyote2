@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter>
+    <title>Triggery</title>
+    <para>Triggery, czyli wyzwalacze umożliwiają wykonanie dodatkowych instrukcji w zależności od
+        zaistniałych sytuacji. Przykładowo, chcemy wykonać jakieś instrukcje w momencie, gdy system
+        jest gotowy - jeszcze przed inicjalizacją kontrolera. Przykłady można mnożyć: możemy wykonać
+        jakieś dodatkowe instrukcje gdy do przeglądarki zostanie wysłany widok (np. wyświetlając
+        czas generowania strony - w sumie). </para>
+    <para>Kolejny przykład: masz w swojej aplikacji system komentarzy. Istnieje możliwość
+        komentowania artykułów, newsów, czy galerii. Za każdym razem, przed dodaniem komentarzy,
+        chcemy przefiltrować treść komentarza pod kątem kodu HTML (w celu jego usunięcia). Możemy
+        oczywiście za każdym razem przed dodaniem komentarza, filtrować jego
+        treść:<programlisting>$comment = htmlspecialchars($comment);
+// dodaj komentarz</programlisting>Załóżmy
+        teraz, że chcemy, aby w panelu administracyjnym naszej strony była możliwość, w jakich
+        działach (modułach) dozwolone będzie używanie kodu HTML, a w jakich nie. Możemy oczywiście w
+        każdym module dodać instrukcję
+        warunkową:<programlisting>if ($filter_html)
+{
+    $comment = htmlspecialchars($comment);
+}
+// dodaj komentarz</programlisting>Lepszym
+        rozwiązaniem w takim wypadku będzie trigger. Przed dodaniem komentarza możemy wywołać
+        trigger:<programlisting>Trigger::call('comment.onBeforeSubmit', array(&amp;$comment)); 
+// dodanie komentarza</programlisting>Wówczas
+        system sprawdzi, czy do triggera comment.onBeforeSubmit są przypisane jakieś zdarzenia (czy
+        to funkcje, czy metody) i jeżeli tak - wywoła je. </para>
+    <section>
+        <title>Włączanie triggerów</title>
+        <para>Funkcja triggerów musi zostać aktywowana. W pliku konfiguracyjnym projektu, dodaj
+            następującą opcję
+            konfiguracji:<programlisting>$config['core']['trigger'] = true;</programlisting></para>
+        <para>Od tego momentu będziesz mógł korzystać z triggerów w swojej aplikacji. </para>
+    </section>
+    <section>
+        <title>Pisanie zdarzeń</title>
+        <para>Utwórz nowy kontroler w swoim projekcie. Dla przykładu, dodamy zdarzenie dla triggera
+                <emphasis>system.onShutdown</emphasis>. Jest to trigger, który wywoływany jest w
+            momencie, gdy kod kontrolerów zostanie wywołany. Jest to zakończenie działania
+            aplikacji, w tym momencie najczęściej kod HTML został wysłany do przeglądarki. Możemy
+            oprogramować dodatkowe zdarzenie, bez modyfikacji kodu kontrolerów. </para>
+        <para>Niech nasz przykładowy kontroler przybieże taką
+            postać:<programlisting>
+&lt;?php
+
+class Foo extends Controller
+{
+    public function Bar()
+    {
+        echo 'System zakończył działanie&lt;br />';
+        echo 'Czas generowania strony: ' . Benchmark::elapsed();
+    }
+    
+    function main()
+    {
+        Trigger::add('system.onShutdown', array('class' => 'Foo', 'function' => 'Bar'));
+    }
+}
+?></programlisting></para>
+        <para>W tym momencie po zakończeniu generowania wszystkich instrukcji, zostanie wykonany kod
+            z metody <methodname>Bar()</methodname>. W tym momencie (w metodzie
+            <methodname>main()</methodname>) dodaliśmy nowe zdarzenie dla triggera
+                <emphasis>system.onShutdown</emphasis>. <note>Wywołanie tego triggera znajduje się w
+                pliku core.class.php frameworka. </note></para>
+        <para>Pierwszym parametrem musi być nazwa triggea, a drugim - tablica zawierająca informacje
+            o lokalizacji kodu, który zamierzamy wykonać. Tablica może mieć następujące klucze:</para>
+        <table>
+            <title>Opcje konfiguracji dla zdarzenia</title>
+            <tgroup cols="2">
+                <thead>
+                    <row>
+                        <entry>Klucz</entry>
+                        <entry>Opis</entry>
+                    </row>
+                </thead>
+                <tbody>
+                    <row>
+                        <entry>function</entry>
+                        <entry>Nazwa funkcji, która zostanie wykonana. Może to być również nazwa
+                            metody.</entry>
+                    </row>
+                    <row>
+                        <entry>class</entry>
+                        <entry>Nazwa klasy. Może zawierać łańcuch określający nazwę klasy lub
+                            referencję do obiektu.</entry>
+                    </row>
+                    <row>
+                        <entry>path</entry>
+                        <entry>Nasz kod może być zawarty w zewnętrznym pliku. Wówczas klasa Trigger
+                            załaduje ten plik przy pomocy instrukcji include_once()</entry>
+                    </row>
+                    <row>
+                        <entry>params</entry>
+                        <entry>Dodatkowe parametry jakie zostaną przekazane do zdarzenia.</entry>
+                    </row>
+                    <row>
+                        <entry>eval</entry>
+                        <entry>Dodatkowy kod PHP, który zostanie wykonany (parametr funkcji
+                        eval())</entry>
+                    </row>
+                </tbody>
+            </tgroup>
+        </table>
+    </section>
+    <section>
+        <title>Przypisywanie zdarzeń w pliku konfiguracyjnym</title>
+        <para> W pliku konfiguracyjnym możemy określić zdarzenia dla danego triggera. Wówczas zbędne
+            staje się ręczne przypisywanie przy pomocy metody <methodname>add()</methodname>.
+            Przykładowo, możemy przypisać zdarzenia dla triggera system.shutdown w pliku config.php:
+            <programlisting>
+// obsluga hookow (triggerow)
+$config['core']['trigger'] = true;
+
+$config['trigger']['system.onShutdown'][] = array(
+    'class'			=> 'debug',
+    'function'		=> 'explain',
+    'params'		=> array()
+);
+
+$config['trigger']['system.onShutdown'][] = array(
+    'class'			=> 'foo',
+    'function'		=> 'bar'
+);            
+            </programlisting>
+            Jak widzisz, w rezultacie takiej konfiguracji do triggera
+            <emphasis>system.onShutdown</emphasis>, zostały przypisane dwa zdarzenia. </para>
+    </section>
+    <section>
+        <title>Triggery dostępne w systemie</title>
+        <para>We frameworku istnieje kilka triggerów, które zostały przedstawione w tabeli poniżej.
+            Dzięki nim możemy w naszej aplikacji odpowiednio zareagować w momencie ich wywołania
+            (np. wykonać dodatkowy kod przed faktyczną inicjalizacją i wykonaniem akcji). <table>
+                <title>Triggery dostępne w systemie</title>
+                <tgroup cols="3">
+                    <thead>
+                        <row>
+                            <entry>Trigger</entry>
+                            <entry>Lokalizacja</entry>
+                            <entry>Opis</entry>
+                        </row>
+                    </thead>
+                    <tbody>
+                        <row>
+                            <entry>system.onReady</entry>
+                            <entry>core.class.php</entry>
+                            <entry>System jest gotowy. Front controller został zainicjalizowany, do
+                                systemu został załadowany loader oraz klasa Benchmark.</entry>
+                        </row>
+                        <row>
+                            <entry>system.onBeforeSystem</entry>
+                            <entry>core.class.php</entry>
+                            <entry>Zostały załadowane moduły oraz konfiguracja. Klasa Router oraz
+                                Dispatcher nie zostały zainicjalizowane.</entry>
+                        </row>
+                        <row>
+                            <entry>system.onBeforeController</entry>
+                            <entry>dispatcher.class.php</entry>
+                            <entry>Przed wykonaniem (inicjalizacją) kontrolera.</entry>
+                        </row>
+                        <row>
+                            <entry>system.onBeforeAction</entry>
+                            <entry>disptcher.class.php</entry>
+                            <entry>Uruchomiony został konstruktor kontrolera, zasoby zostały
+                                załadowane. Przed wykonaniem kodu z akcji.</entry>
+                        </row>
+                        <row>
+                            <entry>system.onBeforeStart</entry>
+                            <entry>disptcher.class.php</entry>
+                            <entry>Przed wykonaniem metody __start() w klasy kontrolera (jeżeli
+                                takowa istnieje w klasie).</entry>
+                        </row>
+                        <row>
+                            <entry>system.onAfterStart</entry>
+                            <entry>disptcher.class.php</entry>
+                            <entry>Po wykonaniu metody __start() w klasy kontrolera (jeżeli takowa
+                                istnieje w klasie).</entry>
+                        </row>
+                        <row>
+                            <entry>system.onDisplay</entry>
+                            <entry>view.class.php</entry>
+                            <entry>Tuż przed wysłaniem zawartości widoku to przeglądarki. Do
+                                zdarzenia przesłana zostanie zawartośc widoku.</entry>
+                        </row>
+                        <row>
+                            <entry>system.onShutdown</entry>
+                            <entry>core.class.php</entry>
+                            <entry>Tuż przed zakończniem działania aplikacji. </entry>
+                        </row>
+                    </tbody>
+                </tgroup>
+            </table></para>
+    </section>
+    <section>
+        <title>Przekazywanie parametrów do zdarzenia</title>
+        <para> Spójrz na poniższy
+            przykład:<programlisting>
+&lt;?php
+
+class Foo extends Controller
+{
+    public function Bar($comment)
+    {
+        echo 'System wykrył akcje dodawania komentarza: ' . $comment;
+    }
+    
+    function main()
+    {
+        Trigger::add('system.onBeforeSubmit', array('class' => 'Foo', 'function' => 'bar'));
+        
+        $comment = 'Przykładowy komentarz';
+        // pobieranie, analiza tresci itp
+        Trigger::call('system.onBeforeSubmit', $comment);
+        
+        // dodanie komentarza		
+    }
+}
+?></programlisting>W
+            metodzie <methodname>main()</methodname> dodaliśmy nowe zdarzenie dla triggera <command
+                >system.onBeforeSubmit</command>. Wywołanie zdarzeń przypisanych dla danego triggera
+            następuje za pomocą metody <methodname>call()</methodname> z klasy
+            <classname>Trigger</classname>. </para>
+        <para>Zwróć uwage, że w metodzie <methodname>Bar()</methodname> zadeklarowałem parametr. W
+            momencie wywołania triggera, zawartość komentarza zostanie przesłana do zdarzenia. </para>
+        <section>
+            <title>Przekazywanie parametrów przez referencję</title>
+            <para>Kolejny przykład: oprogramowanie triggera <emphasis>system.onDisplay</emphasis>.
+                Utwórz nowy widok <filename
+                >foo.php</filename>:<programlisting>Witam! To jest &lt;b>przyklad&lt;/b> oprogramowania triggera &lt;b>system.onDisplay&lt;/b>!</programlisting></para>
+            <para>Nasz trywialny przykład będzie polegał na zamianie znacznika &lt;b> na &lt;i> w
+                widoku. Oto nasz
+                kontroler:<programlisting>
+&lt;?php
+
+class Foo extends Controller
+{
+    public function Bar(&amp;$content)
+    { 
+        $content[0] = str_replace(array('&lt;b>', '&lt;/b>'), array('&lt;i>', '&lt;/i>'), $content[0]);
+    }
+    
+    function main()
+    {
+        Trigger::add('system.display', array('class' => 'Foo', 'function' => 'bar'));
+        
+        echo $this->load->view('foo');		
+    }
+}
+?></programlisting></para>
+            <para>W metodzie <methodname>main()</methodname> dodajemy zdarzenie dla triggera
+                    <command>system.onDisplay</command>. W metodzie <methodname>Bar</methodname>
+                wykonujemy prostą operację - zamianę znacznika &lt;b> na &lt;i>. W klasie <filename
+                    >view.class.php</filename> następuje wywołanie zdarzeń
+                triggera:<programlisting>Trigger::call('system.onDisplay', array(&amp;$this->content));</programlisting></para>
+            <para>Zwróć uwagę na sposób przekazania do zdarzenia, wartości pola
+                <varname>$content</varname>. Jeżeli chcemy przekazać do zdarzenia parametry w formie
+                referencji, należy przekazać je w formie tablicy. W ten sposób zdarzenia mogą
+                modyfikować parametr, a w naszym przypadku - treść strony, która jest przesyłana do
+                przeglądarki. </para>
+        </section>
+    </section>
+</chapter>

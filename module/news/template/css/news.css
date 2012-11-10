@@ -1,0 +1,308 @@
+#news-menu
+{
+		list-style-type:		none;
+		margin:					0;
+		position:				absolute;
+}
+
+#news-menu li
+{
+		float:					left;
+		border:					2px solid #e7e7e7;
+		background:				url('../../../../template/img/menuButtonBackground.gif') repeat-x;
+		padding:				2px 5px;
+		text-align:				center;
+		margin-right:			6px;
+		border-top-left-radius: 	8px;
+		border-top-right-radius: 8px;
+		border-bottom:			none;
+}
+
+#news-menu li a
+{
+		font-size:				13px;
+		color:					#999;
+		padding:				8px;
+}
+
+#news-menu li:hover
+{
+		background:				url('../../../../template/img/menuButtonBackground2.gif') repeat-x;
+}
+
+#news-menu li a:hover
+{
+		text-decoration:		none;
+}
+
+#news-menu li.active
+{
+		background:				#fff;
+		border-bottom:			2px solid #fff;
+}
+
+#news-menu li.active a
+{
+		color:					#000;
+}
+
+#news
+{
+		width:					70%;
+		margin-top:				23px;
+		border-left: 			2px solid #e7e7e7; 
+		float: 					left;
+}
+
+#recent-news
+{
+		width:					28%;
+		float:					right;
+}
+
+#recent-news ul
+{
+		list-style-type:		none;
+		margin:					0;
+}
+
+#recent-news li
+{
+		padding:				5px 0;
+		border-bottom:			1px solid #e5e5e5;
+}
+
+#news-form
+{
+		border-top:				2px solid #eeeeee;
+		margin-bottom:			15px;
+}
+
+#news-form fieldset
+{
+		float:					right;
+		background-color:		#eeeeee;
+		border-bottom-right-radius:	5px;
+		-moz-border-radius-bottomright: 5px;
+		-webkit-border-bottom-right-radius: 5px;
+		border-bottom-left-radius:	20px;
+		-moz-border-radius-bottomleft: 20px;
+		-webkit-border-bottom-left-radius: 20px;
+		padding:				3px 5px 6px 25px;
+}
+
+#news-form fieldset input
+{
+		font-size:				11px;
+}
+
+#news-form input[type=submit]
+{
+		background:				url('../img/plusIcon.png') no-repeat 50% 50%;
+		border:					none;
+		display:				none;
+}
+
+.news
+{
+		padding:				2px 7px 2px 5px;
+}
+
+#news div.news:nth-child(odd)
+{
+		background-color: 		#f8f8f8;
+		border-radius:			6px;
+		-moz-border-radius:		6px;
+		-webkit-border-radius:	6px;
+}
+
+.news h3
+{
+		font-size:				16px;
+		padding:				6px 0;
+}
+
+.news span
+{
+		float:					left;
+		color:					#999;
+		font-size:				12px;
+}
+
+.news .comment
+{
+		float:					right;
+		color:					#999;
+		font-size:				12px;
+		padding-left:			20px;
+		background:				url('../img/commentsIcon.png') no-repeat 0 50%;
+}
+
+.news div
+{
+		clear:					both;
+		border-top:				1px solid #e5e5e5;
+		text-align:				justify;	
+		padding:				5px 0 5px 0;
+		margin:					25px 0 10px 0;
+}
+
+.news div p
+{
+		height:					54px;	
+}
+
+.news div p a
+{
+		color:					#444;				
+}
+
+.news div p a:hover
+{
+		text-decoration:		none;
+}
+
+.news div p a.host
+{
+		text-decoration:		underline;
+		font-size:				11px;
+}
+
+.news div p img
+{
+		float:					left;
+		border:					1px solid #ccc;
+		padding:				1px;
+		margin-right:			5px;
+}
+
+.news div div, #recent-news li label
+{
+		background-color:		#eee;
+		border-radius:			4px;
+		-webkit-border-radius:	4px;
+		-moz-border-radius:		4px;
+		float:					left;
+		width:					25px;
+		margin:					0 15px 0 2px;
+		padding:				0;
+		
+		
+}
+
+.news div div .top, .news div div .bottom
+{
+		background:				url('../img/plusIcon.png') no-repeat;
+		width:					16px;
+		height:					16px;
+		display:				block;
+		margin:					auto;
+		cursor:					pointer;
+}
+
+.news div div .bottom
+{
+		background-image:		url('../img/minusIcon.png');
+}
+
+.news div div strong, #recent-news li label strong
+{
+		font-size:				12px;
+		display:				block;
+		margin:					auto;
+		text-align:				center;
+}
+
+#thumbnail img
+{
+		border:					1px solid #ccc;
+		padding:				2px;
+		float:					left;
+}
+
+#thumbnail-120
+{
+		border:					1px solid #ccc;
+		padding:				2px;
+		float:					left;
+		margin-right:			10px;
+}
+
+#thumbnail .prev, #thumbnail .next
+{
+		width:					16px;
+		height:					16px;
+		display:				block;	
+		cursor:					pointer;
+		margin-top:				20px;
+}
+
+#thumbnail div
+{
+		overflow: 				hidden;
+}
+
+#thumbnail .prev
+{
+		background:				url('../img/thumbnailLeft.png') no-repeat;
+		float:					left;
+}
+
+
+#thumbnail .next
+{
+		background:				url('../img/thumbnailRight.png') no-repeat;
+		float:					left;
+}
+
+#news-info
+{
+		border-top:				1px solid #ccc;
+		margin:					15px 0 0 0 !important;
+		padding-top:			15px;
+}
+
+#news-info li
+{
+		padding:				3px 0;
+		color:					#888;
+		background-position:	 0px 11px !important;
+}
+
+#news-info li label
+{
+		font-size:				13px;
+		font-weight:			bold;
+}
+
+#news-info li a
+{
+		color:					#888;
+		text-decoration:		underline;
+}
+
+#news-loader-layer
+{
+		background:				#fff;
+		opacity:				0.5;
+		position:				absolute;
+		z-index:				600;
+		width:					100%;
+		height:					100%;
+		top:					0;
+		left:					0;
+}
+
+#news-loader
+{
+		position:				absolute;
+		top:					20%;
+		left:					50%;
+		margin-left:			-80px;
+		background:				#ededed url('../img/ajax-loader-circle.gif') no-repeat 10px 7px;
+		border-radius:			5px;
+		-webkit-border-radius:	5px;
+		-moz-border-radius:		5px;
+		padding:				6px 16px 6px 35px;
+		z-index:				900;
+}

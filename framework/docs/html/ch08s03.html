@@ -1,0 +1,35 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Elementy j&#261;dra</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1"><link rel="up" href="ch08.html" title="Rozdzia&#322; 8. Klasa Core"><link rel="prev" href="ch08s02.html" title="Korzystanie ze sk&#322;adowych aplikacji"><link rel="next" href="ch09.html" title="Rozdzia&#322; 9. Loader"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Elementy j&#261;dra</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch08s02.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 8. Klasa Core</th><td width="20%" align="right"> <a accesskey="n" href="ch09.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id387283"></a>Elementy j&#261;dra</h2></div></div></div><p>Do elementów j&#261;dra mo&#380;esz odwo&#322;ywa&#263; si&#281; w ka&#380;dym miejscu aplikacji. Dla przyk&#322;adu:
+            utwórzmy nowy helper. Utwórz w swoim projekcie katalog <tt class="filename">/helper</tt>, a w
+            nim plik <tt class="filename">ip.helper.php</tt>. Napiszemy w nim funkcj&#281; <tt class="function">ip()</tt>, która b&#281;dzie zwraca&#263; adres IP, lecz ka&#380;dy cz&#322;on adresu b&#281;dzie posiada&#322;
+            inny kolor (nie jest to zbyt u&#380;yteczna funkcja, lecz zale&#380;y nam jedynie na
+            zaprezentowaniu idei). </p><p>Ca&#322;y plik <tt class="filename">ip.helper.php</tt> mo&#380;e prezentowa&#263; si&#281;
+            nast&#281;puj&#261;co:</p><pre class="programlisting">
+&lt;?php
+            
+function ip()
+{
+    // pobranie instancji jadra
+    $core = &amp;Core::getInstance();
+    
+    $color = array('silver', 'red', 'green', 'blue');
+    $ip = explode('.', $core-&gt;input-&gt;getIp());
+    
+    foreach ($ip as $k =&gt; $value)
+    {
+    $ip[$k] = '&lt;span style="color: ' . $color[$k] . '"&gt;' . $value . '&lt;/span&gt;';
+    }
+    return implode('.', $ip);
+}
+            
+ ?&gt;</pre><p>Najwa&#380;niejsze w tej funkcji jest pobieranie instancji j&#261;dra. Metoda
+                <tt class="methodname">getInstance()</tt> jest metod&#261; statyczn&#261; (na tym polega wzorzec
+            singletonu). Uzyskujemy dzi&#281;ki temu dost&#281;p do biblioteki <tt class="classname">input</tt>, z
+            której wykorzystujemy metod&#281; <tt class="methodname">ip()</tt> do pobrania adresu IP. </p><p>W kontrolerze nale&#380;y za&#322;adowa&#263; nasz helper, tak, aby by&#322; dost&#281;pny globalnie, w ca&#322;ej
+            aplikacji:</p><pre class="programlisting">            
+// zaladowanie helpera
+$this-&gt;load-&gt;helper('ip');
+
+// wyswietlenie widoku
+echo $this-&gt;load-&gt;view('foo');</pre><p>Helpery s&#261; przewa&#380;nie wykorzystywane w widokach, wi&#281;c nasz widok <tt class="filename">foo.php</tt> mo&#380;e wygl&#261;da&#263;
+            tak:</p><pre class="programlisting">Mój IP: &lt;?= ip(); ?&gt;</pre><p>Spowoduje to wygenerowanie nast&#281;puj&#261;cego kodu HTML:
+            </p><pre class="programlisting">Mój IP: &lt;span style="color: silver"&gt;127&lt;/span&gt;.&lt;span style="color: red"&gt;0&lt;/span&gt;.&lt;span style="color: green"&gt;0&lt;/span&gt;.&lt;span style="color: blue"&gt;1&lt;/span&gt;</pre></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch08s02.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch08.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch09.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Korzystanie ze sk&#322;adowych aplikacji </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Rozdzia&#322; 9. Loader</td></tr></table></div></body></html>

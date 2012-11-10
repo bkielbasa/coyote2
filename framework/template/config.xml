@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<all>
+		<layout>layout</layout>
+		<title>%site.name%</title>
+		<stylesheet>main</stylesheet>
+		<meta>
+			<keywords>programowanie, php, framework, coyote</keywords>
+			<description>Coyote, framework dla programistów PHP</description>
+		</meta>
+	</all>
+</config>

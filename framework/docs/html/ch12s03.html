@@ -1,0 +1,15 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Wysy&#322;anie zapyta&#324; SQL</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1"><link rel="up" href="ch12.html" title="Rozdzia&#322; 12. Obs&#322;uga baz danych"><link rel="prev" href="ch12s02.html" title="Zamykanie po&#322;&#261;czenia z baz&#261;"><link rel="next" href="ch12s04.html" title="Dodawanie rekordów w tabeli"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Wysy&#322;anie zapyta&#324; SQL</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch12s02.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 12. Obs&#322;uga baz danych</th><td width="20%" align="right"> <a accesskey="n" href="ch12s04.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id388843"></a>Wysy&#322;anie zapyta&#324; SQL</h2></div></div></div><p>Na potrzeby tego rozdzia&#322;u utworzy&#322;em, prost&#261;, przyk&#322;adow&#261; tabel&#281; w mojej bazie
+      danych:</p><pre class="programlisting">CREATE TABLE `coyote_dev`.`coyote_dev` (
+`id` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`value` VARCHAR( 100 ) NOT NULL 
+) ENGINE = MYISAM</pre><p>W Coyote, a dok&#322;adnie w bibliotece <tt class="classname">Db</tt>, za wysy&#322;anie zapyta&#324; SQL do
+      systemu bazodanowego, odpowiada metoda <tt class="methodname">query()</tt>. Wys&#322;anie prostego
+      zapytania <span><b class="command">INSERT</b></span>, mo&#380;e wygl&#261;da&#263;
+      nast&#281;puj&#261;co:</p><pre class="programlisting">// zaladowanie biblioteki db
+		$this-&gt;load-&gt;library('db', 'mysql');
+		// laczenie...
+		$this-&gt;db-&gt;connect('localhost', 'root', 'root', 'coyote_dev');
+
+		$sql = 'INSERT INTO `coyote_dev` (value) VALUES("adam");';
+		$this-&gt;db-&gt;query($sql);</pre><p>Taki kod wstawi nowy rekord do naszej przyk&#322;adowej tabeli <span class="emphasis"><em>coyote_dev</em></span>.
+    </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch12s02.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch12.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch12s04.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Zamykanie po&#322;&#261;czenia z baz&#261; </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Dodawanie rekordów w tabeli</td></tr></table></div></body></html>

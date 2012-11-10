@@ -1,0 +1,707 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pl" lang="pl">
+<head>
+<meta http-equiv="Content-Language" content="pl" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<head>
+	<title>phpDocumentor Parser Errors and Warnings</title>
+	<link rel="stylesheet" type="text/css" href="media/style.css">
+</head>
+<body>
+
+
+<div id="container">
+	<div id="topBg"></div>
+	
+	<a href=""><img alt="Logo" id="logo" src="media/logo.gif" /></a>
+
+	<ul id="menu">
+		<li><a href="/index.php/Index/API"><span>API Doc</span></a></li>
+		<li><a href="/index.php/Index/Manual"><span>Manual</span></a></li>
+	</ul>
+
+	<div id="content">
+
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="20%" class="menu">
+		<div class="package-title">Coyote-F</div>
+  <div class="package">
+	<div id="todolist">
+			<p><a href="todolist.html">Todo List</a></p>
+	</div>
+	</div>
+      <b>Packages:</b><br />
+  <div class="package">
+              <a href="li_Coyote-F.html">Coyote-F</a><br />
+      	</div>
+      <br />
+                </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<a href="#Post-parsing">Post-parsing</a><br>
+<a href="#acl.class.php">acl.class.php</a><br>
+<a href="#array.class.php">array.class.php</a><br>
+<a href="#array.helper.php">array.helper.php</a><br>
+<a href="#atom.class.php">atom.class.php</a><br>
+<a href="#benchmark.class.php">benchmark.class.php</a><br>
+<a href="#box.helper.php">box.helper.php</a><br>
+<a href="#breadcrumb.helper.php">breadcrumb.helper.php</a><br>
+<a href="#button.class.php">button.class.php</a><br>
+<a href="#cache.class.php">cache.class.php</a><br>
+<a href="#checkbox.class.php">checkbox.class.php</a><br>
+<a href="#config.class.php">config.class.php</a><br>
+<a href="#confirm_box.php">confirm_box.php</a><br>
+<a href="#context.class.php">context.class.php</a><br>
+<a href="#controller.class.php">controller.class.php</a><br>
+<a href="#core.class.php">core.class.php</a><br>
+<a href="#csv.class.php">csv.class.php</a><br>
+<a href="#db.class.php">db.class.php</a><br>
+<a href="#db.php">db.php</a><br>
+<a href="#debug.class.php">debug.class.php</a><br>
+<a href="#debug.php">debug.php</a><br>
+<a href="#default.php">default.php</a><br>
+<a href="#description.class.php">description.class.php</a><br>
+<a href="#dispatcher.class.php">dispatcher.class.php</a><br>
+<a href="#docs.php">docs.php</a><br>
+<a href="#eaccelerator.class.php">eaccelerator.class.php</a><br>
+<a href="#email.class.php">email.class.php</a><br>
+<a href="#equal.class.php">equal.class.php</a><br>
+<a href="#errors.class.php">errors.class.php</a><br>
+<a href="#Exception.php">Exception.php</a><br>
+<a href="#feed.class.php">feed.class.php</a><br>
+<a href="#fieldset.class.php">fieldset.class.php</a><br>
+<a href="#file.class.php">file.class.php</a><br>
+<a href="#FileNotFoundException.php">FileNotFoundException.php</a><br>
+<a href="#filter.class.php">filter.class.php</a><br>
+<a href="#float.class.php">float.class.php</a><br>
+<a href="#foo.php">foo.php</a><br>
+<a href="#form.class.php">form.class.php</a><br>
+<a href="#form.helper.php">form.helper.php</a><br>
+<a href="#forms.class.php">forms.class.php</a><br>
+<a href="#forms.php">forms.php</a><br>
+<a href="#ftp.class.php">ftp.class.php</a><br>
+<a href="#gpc.class.php">gpc.class.php</a><br>
+<a href="#hash.class.php">hash.class.php</a><br>
+<a href="#hidden.class.php">hidden.class.php</a><br>
+<a href="#html.helper.php">html.helper.php</a><br>
+<a href="#image.class.php">image.class.php</a><br>
+<a href="#index.php">index.php</a><br>
+<a href="#information_box.php">information_box.php</a><br>
+<a href="#ini.class.php">ini.class.php</a><br>
+<a href="#input.class.php">input.class.php</a><br>
+<a href="#int.class.php">int.class.php</a><br>
+<a href="#Kopia time.helper.php">Kopia time.helper.php</a><br>
+<a href="#label.class.php">label.class.php</a><br>
+<a href="#lang.class.php">lang.class.php</a><br>
+<a href="#layout.php">layout.php</a><br>
+<a href="#load.class.php">load.class.php</a><br>
+<a href="#loader.php">loader.php</a><br>
+<a href="#log.class.php">log.class.php</a><br>
+<a href="#manual.php">manual.php</a><br>
+<a href="#match.class.php">match.class.php</a><br>
+<a href="#model.class.php">model.class.php</a><br>
+<a href="#mysql.class.php">mysql.class.php</a><br>
+<a href="#nip.class.php">nip.class.php</a><br>
+<a href="#notempty.class.php">notempty.class.php</a><br>
+<a href="#option.class.php">option.class.php</a><br>
+<a href="#orm.class.php">orm.class.php</a><br>
+<a href="#output.class.php">output.class.php</a><br>
+<a href="#pagination.class.php">pagination.class.php</a><br>
+<a href="#password.class.php">password.class.php</a><br>
+<a href="#pdo.class.php">pdo.class.php</a><br>
+<a href="#php.class.php">php.class.php</a><br>
+<a href="#postgres.php">postgres.php</a><br>
+<a href="#profiler.class.php">profiler.class.php</a><br>
+<a href="#radio.class.php">radio.class.php</a><br>
+<a href="#regon.class.php">regon.class.php</a><br>
+<a href="#replace.class.php">replace.class.php</a><br>
+<a href="#router.class.php">router.class.php</a><br>
+<a href="#rss.class.php">rss.class.php</a><br>
+<a href="#select.class.php">select.class.php</a><br>
+<a href="#session.class.php">session.class.php</a><br>
+<a href="#sort.helper.php">sort.helper.php</a><br>
+<a href="#sql.helper.php">sql.helper.php</a><br>
+<a href="#string.class.php">string.class.php</a><br>
+<a href="#submit.class.php">submit.class.php</a><br>
+<a href="#system.helper.php">system.helper.php</a><br>
+<a href="#tag.class.php">tag.class.php</a><br>
+<a href="#test.php">test.php</a><br>
+<a href="#text.class.php">text.class.php</a><br>
+<a href="#text.helper.php">text.helper.php</a><br>
+<a href="#textarea.class.php">textarea.class.php</a><br>
+<a href="#time.helper.php">time.helper.php</a><br>
+<a href="#trigger.class.php">trigger.class.php</a><br>
+<a href="#TriggerException.class.php">TriggerException.class.php</a><br>
+<a href="#unit_test.class.php">unit_test.class.php</a><br>
+<a href="#upload.class.php">upload.class.php</a><br>
+<a href="#url.class.php">url.class.php</a><br>
+<a href="#url.helper.php">url.helper.php</a><br>
+<a href="#validate.class.php">validate.class.php</a><br>
+<a href="#view.class.php">view.class.php</a><br>
+<a href="#xhtml.class.php">xhtml.class.php</a><br>
+<a href="#xml.class.php">xml.class.php</a><br>
+<a href="#xss.class.php">xss.class.php</a><br>
+<a href="#zip.class.php">zip.class.php</a><br>
+<a name="Post-parsing"></a>
+<h1>Post-parsing</h1>
+<h2>Warnings:</h2><br>
+<b>Warning</b> - 
+duplicate class element "Db_Mysql" in file C:\usr\src\coyote\coyote-1-0\lib\db\postgres.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning</b> - Class Sql_Query parent Sql_Query_Abstract not found<br>
+<b>Warning</b> - 
+duplicate class element "Element_Textarea" in file C:\usr\src\coyote\coyote-1-0\lib\element\textarea.class.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning</b> - Class index parent controller not found<br>
+<b>Warning</b> - 
+duplicate class element "Time" in file C:\usr\src\coyote\coyote-1-0\helper\time.helper.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<a name="abstract.class.php"></a>
+<h1>abstract.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Form_Element_Abstract", use another DocBlock to document the file<br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Form_Decorator_Abstract", use another DocBlock to document the file<br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Db_Abstract", use another DocBlock to document the file<br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "Element_Abstract", use another DocBlock to document the file<br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Feed_Abstract<br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Validate_Abstract<br>
+<a name="acl.class.php"></a>
+<h1>acl.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Acl<br>
+<a name="array.class.php"></a>
+<h1>array.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Lang_Array<br>
+<a name="array.helper.php"></a>
+<h1>array.helper.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 19</b> - example file "<code>
+ element(Foo(), 1); // element o indeksie = 1, zwracany przez Foo()
+ </code>" does not exist<br>
+<b>Warning on line 66</b> - example file " // pobrane zostana wartosci name oraz active z HTTP POST." does not exist<br>
+<b>Warning on line 91</b> - example file " // pobrane zostana wartosci name oraz active z HTTP GET." does not exist<br>
+<a name="atom.class.php"></a>
+<h1>atom.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Feed_Atom<br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Feed_Element_Atom<br>
+<h2>Errors:</h2><br>
+<b>Error on line 89</b> - "@return" tag was used without any parameters, illegal<br>
+<a name="benchmark.class.php"></a>
+<h1>benchmark.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 8</b> - Page-level DocBlock precedes "define SYSTEM_UNIQ", use another DocBlock to document the source element<br>
+<b>Warning on line 14</b> - no @package tag was used in a DocBlock for class Benchmark<br>
+<b>Warning on line 73</b> - example file " // kod ..." does not exist<br>
+<a name="box.helper.php"></a>
+<h1>box.helper.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Box<br>
+<a name="breadcrumb.helper.php"></a>
+<h1>breadcrumb.helper.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Breadcrumb<br>
+<a name="button.class.php"></a>
+<h1>button.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Form_Element_Button", use another DocBlock to document the file<br>
+<a name="cache.class.php"></a>
+<h1>cache.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for interface ICache<br>
+<b>Warning on line 27</b> - no @package tag was used in a DocBlock for class Cache<br>
+<a name="checkbox.class.php"></a>
+<h1>checkbox.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class Element_Checkbox<br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Form_Element_Checkbox", use another DocBlock to document the file<br>
+<b>Warning on line 53</b> - File "C:\usr\src\coyote\coyote-1-0\lib\element\checkbox.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="config.class.php"></a>
+<h1>config.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class View_Config<br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class ConfigFileNotFoundException<br>
+<b>Warning on line 25</b> - no @package tag was used in a DocBlock for interface IConfig<br>
+<b>Warning on line 39</b> - no @package tag was used in a DocBlock for class Config<br>
+<b>Warning on line 107</b> - example file "setItem('core.version', '1.0');" does not exist<br>
+<a name="confirm_box.php"></a>
+<h1>confirm_box.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 79</b> - File "C:\usr\src\coyote\coyote-1-0\template\confirm_box.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="context.class.php"></a>
+<h1>context.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "IContext", use another DocBlock to document the file<br>
+<b>Warning on line 17</b> - no @package tag was used in a DocBlock for class Context<br>
+<a name="controller.class.php"></a>
+<h1>controller.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 14</b> - no @package tag was used in a DocBlock for class Controller<br>
+<a name="core.class.php"></a>
+<h1>core.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 20</b> - no @package tag was used in a DocBlock for class Core<br>
+<a name="csv.class.php"></a>
+<h1>csv.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Lang_CSV<br>
+<a name="db.class.php"></a>
+<h1>db.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Session_Db", use another DocBlock to document the file<br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class SQLCouldNotConnectException<br>
+<b>Warning on line 26</b> - no @package tag was used in a DocBlock for class SQLQueryException<br>
+<b>Warning on line 83</b> - no @package tag was used in a DocBlock for class SQLCouldNotSelectDbException<br>
+<b>Warning on line 89</b> - no @package tag was used in a DocBlock for interface IDB<br>
+<b>Warning on line 103</b> - no @package tag was used in a DocBlock for class Db_Result<br>
+<b>Warning on line 357</b> - no @package tag was used in a DocBlock for class Db<br>
+<a name="db.php"></a>
+<h1>db.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class Db_Controller<br>
+<b>Warning on line 13</b> - File "C:\usr\src\coyote\coyote-1-0\controller\db.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="debug.class.php"></a>
+<h1>debug.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Debug<br>
+<a name="debug.php"></a>
+<h1>debug.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 395</b> - File "C:\usr\src\coyote\coyote-1-0\template\debug\debug.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="default.php"></a>
+<h1>default.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 18</b> - File "C:\usr\src\coyote\coyote-1-0\template\form\default.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 77</b> - File "C:\usr\src\coyote\coyote-1-0\template\pagination\default.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="description.class.php"></a>
+<h1>description.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Form_Decorator_Description<br>
+<a name="dispatcher.class.php"></a>
+<h1>dispatcher.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Dispatcher<br>
+<a name="docs.php"></a>
+<h1>docs.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - File "C:\usr\src\coyote\coyote-1-0\template\docs.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="eaccelerator.class.php"></a>
+<h1>eaccelerator.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Cache_EAccelerator<br>
+<a name="email.class.php"></a>
+<h1>email.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Email<br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Validate_Email<br>
+<b>Warning on line 45</b> - Unknown tag "@value" used<br>
+<a name="equal.class.php"></a>
+<h1>equal.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Validate_Equal<br>
+<a name="errors.class.php"></a>
+<h1>errors.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Form_Decorator_Errors<br>
+<a name="Exception.php"></a>
+<h1>Exception.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 69</b> - File "C:\usr\src\coyote\coyote-1-0\template\error\Exception.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="feed.class.php"></a>
+<h1>feed.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Feed<br>
+<a name="fieldset.class.php"></a>
+<h1>fieldset.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 13</b> - no @package tag was used in a DocBlock for class Form_Decorator_Fieldset<br>
+<a name="file.class.php"></a>
+<h1>file.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class Element_File<br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Form_Element_File", use another DocBlock to document the file<br>
+<b>Warning on line 13</b> - no @package tag was used in a DocBlock for class Cache_File<br>
+<b>Warning on line 13</b> - no @package tag was used in a DocBlock for class Session_File<br>
+<b>Warning on line 28</b> - File "C:\usr\src\coyote\coyote-1-0\lib\element\file.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="FileNotFoundException.php"></a>
+<h1>FileNotFoundException.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 68</b> - File "C:\usr\src\coyote\coyote-1-0\template\error\FileNotFoundException.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="filter.class.php"></a>
+<h1>filter.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for interface IFilter<br>
+<b>Warning on line 20</b> - no @package tag was used in a DocBlock for class Filter<br>
+<h2>Errors:</h2><br>
+<b>Error on line 161</b> - "@return" tag was used without any parameters, illegal<br>
+<a name="float.class.php"></a>
+<h1>float.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Validate_Float<br>
+<b>Warning on line 74</b> - Unknown tag "@value" used<br>
+<a name="foo.php"></a>
+<h1>foo.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class Foo<br>
+<b>Warning on line 18</b> - File "C:\usr\src\coyote\coyote-1-0\controller\foo.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="form.class.php"></a>
+<h1>form.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Form_Decorator_Form<br>
+<a name="form.helper.php"></a>
+<h1>form.helper.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Form<br>
+<a name="forms.class.php"></a>
+<h1>forms.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 13</b> - no @package tag was used in a DocBlock for interface IElement<br>
+<b>Warning on line 21</b> - no @package tag was used in a DocBlock for class Forms<br>
+<a name="forms.php"></a>
+<h1>forms.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class Forms_Controller<br>
+<b>Warning on line 71</b> - File "C:\usr\src\coyote\coyote-1-0\controller\forms.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="ftp.class.php"></a>
+<h1>ftp.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - no @package tag was used in a DocBlock for class FtpCouldNotConnectException<br>
+<b>Warning on line 15</b> - no @package tag was used in a DocBlock for class FtpCouldNotLoginException<br>
+<b>Warning on line 21</b> - no @package tag was used in a DocBlock for class Ftp<br>
+<b>Warning on line 240</b> - Unknown tag "@rerun" used<br>
+<a name="gpc.class.php"></a>
+<h1>gpc.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 13</b> - no @package tag was used in a DocBlock for class Gpc<br>
+<b>Warning on line 122</b> - example file "$this->foo($nonExists, $exists); // metoda zwroci wartosc zmiennej $exists" does not exist<br>
+<b>Warning on line 170</b> - example file "isset($this->get->id)" does not exist<br>
+<a name="hash.class.php"></a>
+<h1>hash.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Form_Element_Hash<br>
+<a name="hidden.class.php"></a>
+<h1>hidden.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class Element_Hidden<br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Form_Element_Hidden", use another DocBlock to document the file<br>
+<b>Warning on line 14</b> - File "C:\usr\src\coyote\coyote-1-0\lib\element\hidden.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="html.helper.php"></a>
+<h1>html.helper.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Html<br>
+<a name="image.class.php"></a>
+<h1>image.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Image", use another DocBlock to document the file<br>
+<a name="index.php"></a>
+<h1>index.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "index", use another DocBlock to document the file<br>
+<b>Warning on line 42</b> - File "C:\usr\src\coyote\coyote-1-0\template\index.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="information_box.php"></a>
+<h1>information_box.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 74</b> - File "C:\usr\src\coyote\coyote-1-0\template\information_box.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="ini.class.php"></a>
+<h1>ini.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Config_INI<br>
+<a name="input.class.php"></a>
+<h1>input.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class Element_Textarea<br>
+<b>Warning on line 9</b> - File "C:\usr\src\coyote\coyote-1-0\lib\element\input.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Filter_Input<br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Get<br>
+<b>Warning on line 33</b> - no @package tag was used in a DocBlock for class Post<br>
+<b>Warning on line 47</b> - no @package tag was used in a DocBlock for class Cookie<br>
+<b>Warning on line 76</b> - no @package tag was used in a DocBlock for class Server<br>
+<b>Warning on line 89</b> - no @package tag was used in a DocBlock for class Input<br>
+<b>Warning on line 213</b> - example file "var_dump($this->isMethod('POST'));" does not exist<br>
+<a name="int.class.php"></a>
+<h1>int.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Validate_Int<br>
+<b>Warning on line 74</b> - Unknown tag "@value" used<br>
+<a name="Kopia time.helper.php"></a>
+<h1>Kopia time.helper.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - DocBlock would be page-level, but precedes class "Time", use another DocBlock to document the file<br>
+<a name="label.class.php"></a>
+<h1>label.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Form_Decorator_Label<br>
+<a name="lang.class.php"></a>
+<h1>lang.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Lang_Abstract<br>
+<b>Warning on line 83</b> - Unknown tag "@experimental" used<br>
+<b>Warning on line 84</b> - no @package tag was used in a DocBlock for class Lang<br>
+<a name="layout.php"></a>
+<h1>layout.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 38</b> - File "C:\usr\src\coyote\coyote-1-0\template\layout.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="load.class.php"></a>
+<h1>load.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Load<br>
+<b>Warning on line 64</b> - example file "Load::loadFile('lib/*.php', true);" does not exist<br>
+<b>Warning on line 224</b> - example file "array('library' => array('input', 'output'))" does not exist<br>
+<b>Warning on line 305</b> - example file "$this->library('example');" does not exist<br>
+<b>Warning on line 326</b> - example file "$this->helper('example');" does not exist<br>
+<a name="loader.php"></a>
+<h1>loader.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class Loader<br>
+<b>Warning on line 36</b> - File "C:\usr\src\coyote\coyote-1-0\controller\loader.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="log.class.php"></a>
+<h1>log.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 17</b> - no @package tag was used in a DocBlock for class Log<br>
+<b>Warning on line 73</b> - example file "<code>
+ Log::setLogType(E_WARNING);
+ </code>" does not exist<br>
+<a name="manual.php"></a>
+<h1>manual.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 2</b> - File "C:\usr\src\coyote\coyote-1-0\template\manual.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="match.class.php"></a>
+<h1>match.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Validate_Match<br>
+<b>Warning on line 51</b> - Unknown tag "@value" used<br>
+<a name="model.class.php"></a>
+<h1>model.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Model", use another DocBlock to document the file<br>
+<a name="mysql.class.php"></a>
+<h1>mysql.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Db_Mysql<br>
+<b>Warning on line 182</b> - example file "<code>
+ $this->lock('foo WRITE', 'bar READ');
+ </code>" does not exist<br>
+<b>Warning on line 237</b> - no @package tag was used in a DocBlock for class Mysql_Result<br>
+<a name="nip.class.php"></a>
+<h1>nip.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Validate_Nip<br>
+<a name="notempty.class.php"></a>
+<h1>notempty.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Validate_NotEmpty<br>
+<b>Warning on line 25</b> - Unknown tag "@value" used<br>
+<a name="option.class.php"></a>
+<h1>option.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class Element_Option<br>
+<b>Warning on line 6</b> - File "C:\usr\src\coyote\coyote-1-0\lib\element\option.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Form_Element_Option", use another DocBlock to document the file<br>
+<a name="orm.class.php"></a>
+<h1>orm.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 13</b> - no @package tag was used in a DocBlock for class Orm<br>
+<a name="output.class.php"></a>
+<h1>output.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Output<br>
+<a name="pagination.class.php"></a>
+<h1>pagination.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Pagination<br>
+<a name="password.class.php"></a>
+<h1>password.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class Element_Password<br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Form_Element_Password", use another DocBlock to document the file<br>
+<b>Warning on line 9</b> - File "C:\usr\src\coyote\coyote-1-0\lib\element\password.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="pdo.class.php"></a>
+<h1>pdo.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Db_PDO", use another DocBlock to document the file<br>
+<b>Warning on line 98</b> - no @package tag was used in a DocBlock for class Pdo_Result<br>
+<a name="php.class.php"></a>
+<h1>php.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 13</b> - no @package tag was used in a DocBlock for class Config_PHP<br>
+<a name="postgres.php"></a>
+<h1>postgres.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Sql_Query<br>
+<b>Warning on line 177</b> - no @package tag was used in a DocBlock for class Db_Mysql<br>
+<a name="profiler.class.php"></a>
+<h1>profiler.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Db_Profiler_Query<br>
+<b>Warning on line 56</b> - no @package tag was used in a DocBlock for class Db_Profiler<br>
+<a name="radio.class.php"></a>
+<h1>radio.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class Element_Radio<br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Form_Element_Radio", use another DocBlock to document the file<br>
+<b>Warning on line 46</b> - File "C:\usr\src\coyote\coyote-1-0\lib\element\radio.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="regon.class.php"></a>
+<h1>regon.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Validate_Regon<br>
+<a name="replace.class.php"></a>
+<h1>replace.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Filter_Replace<br>
+<a name="router.class.php"></a>
+<h1>router.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Router<br>
+<b>Warning on line 64</b> - example file "$router = new Router($foo, SORT_ASC);" does not exist<br>
+<b>Warning on line 97</b> - example file "$this->setSort(SORT_ASC);" does not exist<br>
+<a name="rss.class.php"></a>
+<h1>rss.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Feed_Element_Rss", use another DocBlock to document the file<br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Feed_Rss", use another DocBlock to document the file<br>
+<h2>Errors:</h2><br>
+<b>Error on line 39</b> - "@return" tag was used without any parameters, illegal<br>
+<a name="select.class.php"></a>
+<h1>select.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class Element_Select<br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Form_Element_Select", use another DocBlock to document the file<br>
+<b>Warning on line 47</b> - File "C:\usr\src\coyote\coyote-1-0\lib\element\select.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="session.class.php"></a>
+<h1>session.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for interface ISession<br>
+<b>Warning on line 25</b> - no @package tag was used in a DocBlock for class Session<br>
+<b>Warning on line 33</b> - Unknown tag "@bool" used<br>
+<a name="sort.helper.php"></a>
+<h1>sort.helper.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Sort<br>
+<b>Warning on line 66</b> - example file "setDefaultSort('user_id', Sort::ASC);" does not exist<br>
+<a name="sql.helper.php"></a>
+<h1>sql.helper.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Sql<br>
+<a name="string.class.php"></a>
+<h1>string.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Validate_String<br>
+<a name="submit.class.php"></a>
+<h1>submit.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class Element_Submit<br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Form_Element_Submit", use another DocBlock to document the file<br>
+<b>Warning on line 14</b> - File "C:\usr\src\coyote\coyote-1-0\lib\element\submit.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="system.helper.php"></a>
+<h1>system.helper.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 78</b> - Unknown tag "@retun" used<br>
+<a name="tag.class.php"></a>
+<h1>tag.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Form_Decorator_Tag<br>
+<a name="test.php"></a>
+<h1>test.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class Test<br>
+<b>Warning on line 108</b> - File "C:\usr\src\coyote\coyote-1-0\controller\test.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="text.class.php"></a>
+<h1>text.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class Element_Text<br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Form_Element_Text", use another DocBlock to document the file<br>
+<b>Warning on line 16</b> - File "C:\usr\src\coyote\coyote-1-0\lib\element\text.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="text.helper.php"></a>
+<h1>text.helper.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Text", use another DocBlock to document the file<br>
+<b>Warning on line 99</b> - example file "echo Text::alternate('Adam', 'Boduch'); // Boduch" does not exist<br>
+<b>Warning on line 99</b> - example file "echo Text::alternate('Adam', 'Boduch'); // Adam" does not exist<br>
+<a name="textarea.class.php"></a>
+<h1>textarea.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class Element_Textarea<br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Form_Element_Textarea", use another DocBlock to document the file<br>
+<b>Warning on line 9</b> - File "C:\usr\src\coyote\coyote-1-0\lib\element\textarea.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="time.helper.php"></a>
+<h1>time.helper.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Time", use another DocBlock to document the file<br>
+<a name="trigger.class.php"></a>
+<h1>trigger.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Trigger<br>
+<a name="TriggerException.class.php"></a>
+<h1>TriggerException.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class TriggerException<br>
+<b>Warning on line 58</b> - no @package tag was used in a DocBlock for class FileNotFoundException<br>
+<a name="unit_test.class.php"></a>
+<h1>unit_test.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Unit_test<br>
+<a name="upload.class.php"></a>
+<h1>upload.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 8</b> - DocBlock would be page-level, but precedes class "DirNotFoundException", use another DocBlock to document the file<br>
+<b>Warning on line 9</b> - no @package tag was used in a DocBlock for class DirNotWriteable<br>
+<b>Warning on line 10</b> - no @package tag was used in a DocBlock for class FileSendingFailedException<br>
+<b>Warning on line 11</b> - no @package tag was used in a DocBlock for class FileExistsException<br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Validate_Upload<br>
+<b>Warning on line 17</b> - no @package tag was used in a DocBlock for class Upload<br>
+<b>Warning on line 176</b> - Unknown tag "@value" used<br>
+<a name="url.class.php"></a>
+<h1>url.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Validate_Url<br>
+<b>Warning on line 45</b> - Unknown tag "@value" used<br>
+<a name="url.helper.php"></a>
+<h1>url.helper.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Url<br>
+<b>Warning on line 17</b> - example file "http://server.com/coyote/index.php" does not exist<br>
+<b>Warning on line 33</b> - example file " echo base(); // http://localhost/coyote/index.php" does not exist<br>
+<a name="validate.class.php"></a>
+<h1>validate.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for interface IValidate<br>
+<b>Warning on line 20</b> - no @package tag was used in a DocBlock for class Validate<br>
+<a name="view.class.php"></a>
+<h1>view.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "IView", use another DocBlock to document the file<br>
+<b>Warning on line 19</b> - no @package tag was used in a DocBlock for class View<br>
+<b>Warning on line 67</b> - example file "$view = new view('subdir/my.php', array('foo' => 'bar'));" does not exist<br>
+<a name="xhtml.class.php"></a>
+<h1>xhtml.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class View_XHTML<br>
+<a name="xml.class.php"></a>
+<h1>xml.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - no @package tag was used in a DocBlock for class Config_XML<br>
+<a name="xss.class.php"></a>
+<h1>xss.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 14</b> - no @package tag was used in a DocBlock for class Filter_XSS<br>
+<a name="zip.class.php"></a>
+<h1>zip.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 24</b> - DocBlock would be page-level, but precedes class "IZip", use another DocBlock to document the file<br>
+<b>Warning on line 36</b> - no @package tag was used in a DocBlock for class Zip_Gz<br>
+<b>Warning on line 165</b> - no @package tag was used in a DocBlock for class Zip_Zip<br>
+<b>Warning on line 399</b> - no @package tag was used in a DocBlock for class Zip<br>
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Tue, 22 Jun 2010 16:43:18 +0200 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.0a2</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

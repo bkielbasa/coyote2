@@ -1,0 +1,4 @@
+aplikacji,aplikacja
+kurs,kursy
+język,jezyk
+programowania,programowanie,programowaniu

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter>
+    <title>Helpery</title>
+    
+    <para>
+        Helpery to pliki PHP zawierające funkcje lub
+        klasy, które mogą być przydatne na etapie projektowania aplikacji. Coyote zawiera kilka
+        helperów, które możesz użyć w swojej aplikacji:
+        
+        <table frame="none">
+        <title>Helpery w Coyote</title>
+        <tgroup cols="2">
+            <colspec colname="c1" colnum="1"/>
+            <colspec colname="c2" colnum="2"/>
+            <thead>
+                <row>
+                    <entry>Nazwa pliku helpera</entry>
+                    <entry>Opis</entry>
+                </row>
+            </thead>
+            <tbody>
+                <row>
+                    <entry>system.helper.php</entry>
+                    <entry>Zawiera funkcje systemowe, przydatne w widokach</entry>
+                </row>
+                <row>
+                    <entry>url.helper.php</entry>
+                    <entry>Zawiera funkcje url() oraz klasę Url</entry>
+                </row>
+                <row>
+                    <entry>html.helper.php</entry>
+                    <entry>Zawiera klasę HTML ułatwiającą tworzenie znaczników HTML</entry>
+                </row>
+                <row>
+                    <entry>form.helper.php</entry>
+                    <entry>Zawiera klasę służącą do tworzenia formularzy HTML</entry>
+                </row>
+                <row>
+                    <entry>box.helper.php</entry>
+                    <entry>Zawiera klasę Box umożliwiającą tworzenie komunikatów informacyjnych</entry>
+                </row>
+                <row>
+                    <entry>array.helper.php</entry>
+                    <entry>Zawiera funkcje do operowania na tablicach.</entry>
+                </row>
+                <row>
+                    <entry>text.helper.php</entry>
+                    <entry>Zawiera klasę Text służącą do operowaniu na tekście</entry>
+                </row>
+                <row>
+                    <entry>time.helper.php</entry>
+                    <entry>Zawiera klasę Time służącą do operacji na datach</entry>
+                </row>
+                <row>
+                    <entry>sort.helper.php</entry>
+                    <entry>Klasa Sort umożliwia tworzenie linków sortujących tabele</entry>
+                </row>
+                <row>
+                    <entry>sql.helper.php</entry>
+                    <entry>Klasa SQL umożliwiająca wykonanie instrukcji SQL znajdujących się w
+                        zewnętrznym pliku</entry>
+                </row>
+                <row>
+                    <entry>breadcrumb.helper.php</entry>
+                    <entry>Klasa umożliwiająca tworzenie mechanizmu breadcrumb</entry>
+                </row>
+            </tbody>
+        </tgroup>
+        </table>
+        
+        <note>
+            Pliki helperów muszą znajdować się w katalogu <filename>/helper</filename> projektu.
+        </note>
+    </para>
+    
+    <para>
+        Helpery mogą być ładowane automatycznie (więcej informacji na ten temat
+        znajdziesz w rozdziale Konfiguracja projektu) lub jawnie w trakcie działania aplikacji. Do
+        tego celu należy wykorzystać metodę <classname>helper()</classname> z klasy
+        <classname>load</classname>:
+        
+        <programlisting>
+$this->load->helper('box');
+Box::information('Informacja', 'Hello World!');
+        </programlisting>
+     </para>
+        
+    <para>
+        Jak
+        widzisz, helpery wykorzystuje się podobnie jak biblioteki. Raz załadowany helper włącza do
+        projektu funkcje lub klasy, które mogą być wykorzystywane w obrębie całego projektu.
+    </para>
+    
+    <para>
+        Oczywiście możesz pisać własne helpery i włączać je do projektu. Zasada
+        działania jest podobna jak w przypadku bibliotek. Nazwy plików helperów muszą mieć formę
+        <filename>xxx.helper.php</filename>, np. <filename>foo.helper.php</filename> i muszą znajdować
+        się w katalogu <filename>/helper</filename> projektu. 
+    </para>
+    
+    <section>
+        <title>Pisanie własnych helperów</title>
+        
+        <para>
+            Tworzenie własnych helperów jest bajecznie proste. Zakładając, że w swoim projekcie posiadasz
+            katalog <filename>/helper</filename>, utwórz w nim plik <filename>foo.helper.php</filename>. 
+        </para>
+        
+        <para>
+            Helpery mogą zawierać zarówno funkcje jak i klasy. Zalecanym rozwiązaniem jest grupowanie w metody
+            klasy. Dzięki temu, nie ma konieczności jawnego załadowania  helpera do projektu - zostanie on 
+            załadowany w momencie, gdy zajdzie taka konieczność.
+            
+            <note>
+                W rzeczywistości załadowaniem helpera zajmuje się klasa loadera.
+            </note>
+        </para>
+        
+        <para>
+            Przykładowy helper może mieć następującą postać:
+            <programlisting>
+<![CDATA[
+<?php
+
+class Foo
+{
+    public static function fooBar()
+    {
+        echo 'Hello from helper Foo';
+    }
+}
+]]>
+            </programlisting>
+            
+            Teraz, w dowolnym miejscu projektu, czy to w kontrolerze, czy w widoku, możesz użyć helpera:
+            
+            <programlisting>
+<![CDATA[
+Foo::fooBar();
+]]>                
+            </programlisting>
+            
+            <note>
+                Zauważ, że metoda <methodname>fooBar</methodname> jest metodą statyczną!
+            </note>
+        </para>
+    </section>
+</chapter>

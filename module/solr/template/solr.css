@@ -1,0 +1,244 @@
+#box-solr
+{
+		margin:				auto;
+		width:				700px;
+}
+
+#box-solr input[name=q]
+{
+		width:				400px;
+		border:				1px solid #dadddd;
+		margin-right:		0;
+		padding:			3px 5px 3px 5px;
+}
+
+#box-solr input[type=submit]
+{
+		background:			url('img/searchButton.gif') no-repeat;
+		margin-left:		0;
+		border:				0;
+		width:				31px;
+		height:				26px;
+}
+
+#box-solr label
+{
+		width:				120px;
+}
+
+.bar-solr
+{
+		border-top:			1px solid #e5e2de;
+		padding:			5px;
+		text-align:			right;
+		background:			#f6f3f0;
+		overflow:			hidden;
+}
+
+.bar-solr a
+{
+		float:				left;
+		cursor:				pointer;
+}
+
+.bar-solr div
+{
+		float:				right;
+}
+
+#search-box
+{
+		margin-top:			10px;
+}
+
+#search-option
+{
+		float:				left;
+		width:				170px;
+		margin-right:		10px;
+		padding-right:		10px;
+		border-right:		1px solid #ddd;
+}
+
+#search-option ul
+{
+		list-style-type:	none;
+		margin:				0;
+		margin-bottom:		25px;
+}
+
+#search-option ul li
+{
+		margin:				2px 0 2px 0;
+		background:			url('img/arrow.gif') no-repeat 0 50%;
+		padding-left:		10px;
+}
+
+#search-option ul li a
+{
+		font-size:			13px;
+}
+
+#search-option ul li a:hover
+{
+		text-decoration:	none;
+}
+
+#search-results
+{
+		overflow:			hidden;
+}
+
+#search-results ul
+{
+		list-style:			none;
+		margin:				5px 0 5px 0;
+}
+
+#search-results ul li
+{
+		margin:				10px 0 10px 0;
+}
+
+#search-results ul li h2
+{
+		font-size:			16px;
+		margin-bottom:		2px;
+		font-weight:		normal;
+}
+
+#search-results ul li h2 a
+{
+		text-decoration:	underline;
+}
+
+#search-results ul li p
+{
+		font-family:		Verdana, sans-serif;
+		font-size:			12px;
+		padding:			2px 10px 2px 0;
+}
+
+#search-results ul li span
+{
+		color:				gray;
+}
+
+.search-link
+{
+		display:			block;
+		font-size:			12px;
+		margin:				4px 0 1px 0;
+}
+
+.search-link small
+{
+		color:				gray;
+}
+
+.search-link:hover small
+{
+		text-decoration:	none;
+}
+
+.search-information
+{
+		font-size:			14px;
+		margin-top:			5px;
+}
+
+.search-information ul
+{
+		margin:				10px 0 0 25px;
+		text-indent:		10px;
+}
+
+.search-suggestion
+{
+		font-size:			16px;
+		padding:			10px 0 10px 0;
+}
+
+.search-suggestion a
+{
+		font-weight:		bold;
+		font-style:			italic;
+}
+
+.pager
+{
+		text-align:			center;
+		margin:				10px auto 10px auto;
+		font-size:			16px;
+}
+
+.auto-complete
+{
+	list-style-type:	none;
+	position:			absolute;
+	border:				1px solid #595959;
+	background:			#fff;
+	z-index:			10000;
+	border-top:			none;
+	margin:				0;
+	box-shadow:			0 1px 2px rgba(0,0,0,0.3);
+	-moz-box-shadow:	0 1px 2px rgba(0,0,0,0.3);
+	-webkit-box-shadow:	0 1px 2px rgba(0,0,0,0.3);
+	border-radius:		4px;
+	-moz-border-radius:	4px;
+	-webkit-border-radius: 4px;
+}
+
+.auto-complete li
+{
+	padding:			5px 0 5px 5px;
+	cursor:				pointer;
+	color:				gray;
+}
+
+.auto-complete li b
+{
+	color:				#000;
+}
+
+.auto-complete li.hover
+{
+	background:			#ddd;
+}
+
+/* stronnicowanie */
+
+div.pagination
+{
+		text-align:				center;
+		padding:				15px 0 15px 0;
+		font-size:				16px;
+		font-weight:			bold;
+}
+
+span.pagination
+{
+		font-size:				13px;
+		font-weight:			normal;
+}
+
+span.pagination a
+{
+		border:					1px solid #939797;
+		padding:				4px;
+		font-size:				13px;
+		background:				#fafafa;
+}
+
+span.pagination strong
+{
+		border:					1px solid #939797;
+		padding:				4px;
+		font-size:				14px;
+		background:				#e1e1e1;
+}
+
+span.pagination a:hover
+{
+		text-decoration:		none;
+}

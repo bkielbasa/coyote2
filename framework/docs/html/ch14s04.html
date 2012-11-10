@@ -1,0 +1,35 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>U&#380;ywanie kodu PHP w szablonach</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch14.html" title="Rozdzia&#322; 14. Widoki"><link rel="prev" href="ch14s03.html" title="Przekazywanie danych do widoku"><link rel="next" href="ch14s05.html" title="Klasa View"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">U&#380;ywanie kodu PHP w szablonach</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch14s03.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 14. Widoki</th><td width="20%" align="right"> <a accesskey="n" href="ch14s05.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id487128"></a>U&#380;ywanie kodu PHP w szablonach</h2></div></div></div><p>Generalnie warstwa widoku odpowiada za warstw&#281; prezentacji, a szablony - konkretnie -
+            za wy&#347;wietlenie danych otrzymanych od kontrolera w akceptowalnej formie. Teoretycznie
+            mo&#380;liwe jest u&#380;ywanie w szablonach systemu metaznaczników oraz dodatkowej klasy (np.
+            Smarty), lecz ze wzgl&#281;dów wydajno&#347;ciowych oraz praktycznych - zalecane jest u&#380;ywanie
+            kodu PHP do wstawiania w okre&#347;lone miejsce pewnych danych. Mo&#380;na do tego u&#380;y&#263; skrótowego
+            znacznika dostepnego w
+                PHP:</p><pre class="programlisting">&lt;?= $foo; ?&gt;
+&lt;?php echo $foo; // to samo do wy&#380;ej ?&gt;</pre><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>Aby
+                skrótowy zapis zadzia&#322;a&#322;, w pliku PHP musi by&#263; w&#322;&#261;czona opcja short_open_tags.
+            </div><p>Powracaj&#261;c do tematu: jakkolwiek logika aplikacji powinna by&#263; umiejscowiona w
+            kontrolerze, nie wyklucza to u&#380;ywania kodu PHP w
+            widokach:</p><pre class="programlisting">&lt;h1&gt;Witaj &lt;?= $username; ?&gt;&lt;/h1&gt;
+&lt;hr /&gt;
+&lt;?php foreach ($names as $key =&gt; $name) : ?&gt;
+&lt;b&gt;&lt;?= $key; ?&gt;&lt;/b&gt; &lt;?= $name; ?&gt;&lt;/br &gt;
+&lt;?php endforeach; ?&gt;
+
+&lt;hr /&gt;
+&lt;?= Benchmark::elapsed(); ?&gt;</pre><p>W tym przypadku w szablonie zostanie wstawiony czas generowania strony (metoda
+                <tt class="methodname">elapsed()</tt>). Nale&#380;y jednak unika&#263; wstawiania w szablonach
+            rozbudowanego kodu PHP, gdy&#380; takowy powinien zosta&#263; wykonany w kontrolerze (wzorzec MVC
+            zak&#322;ada rozdzielenie warstwy logiki oraz warstwy prezentacji, aby nie miesza&#263; kodu PHP z
+            kodem XHTML). </p><p>W widokach oraz w szablonach mo&#380;liwe jest odwo&#322;ywanie si&#281; do obiektów j&#261;dra. Coyote
+            umo&#380;liwia skrócony zapis, z pomini&#281;ciem odwo&#322;ania do samego obiektu j&#261;dra. Poni&#380;sze
+            instrukcje s&#261; sobie
+            równowa&#380;ne:</p><pre class="programlisting">&lt;hr /&gt;
+IP: &lt;?= $input-&gt;getIp(); ?&gt;&lt;br /&gt;
+IP: &lt;?= $core-&gt;input-&gt;getIp(); ?&gt;</pre><p>UWAGA! Odwo&#322;ywanie si&#281; do elementów obiektu poprzez operator <tt class="varname">$this</tt>
+            umo&#380;liwia odwo&#322;ywanie si&#281; do klasy widoku (domy&#347;lnie <tt class="classname">View_XHTML</tt>),
+            a nie do elementów j&#261;dra. Spójrz na poni&#380;sze dwie
+            instrukcje:</p><pre class="programlisting">B&#322;&#261;d: &lt;?= $this-&gt;input-&gt;getIp(); ?&gt;
+Nazwa szablonu: &lt;?= $this-&gt;context-&gt;getName(); ?&gt;</pre><p>Pierwsza instrukcja umieszczona w szablonie próbuje odwo&#322;a&#263; si&#281; do nieistniej&#261;cego
+            elementu <tt class="varname">input</tt>, klasy <tt class="classname">View_XHTML</tt>. Druga
+            instrukcja wy&#347;wietla nazw&#281; widoku (metoda <tt class="methodname">getName()</tt> z klasy
+                <tt class="classname">View</tt>). </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch14s03.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch14.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch14s05.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Przekazywanie danych do widoku </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Klasa View</td></tr></table></div></body></html>

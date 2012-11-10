@@ -1,0 +1,33 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Rozdzia&#322; 12. Dispatcher</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="pt01.html" title="Cz&#281;&#347;&#263; I. Dokumentacja techniczna"><link rel="prev" href="ch11s16.html" title="W&#322;asna klasa loadera"><link rel="next" href="ch13.html" title="Rozdzia&#322; 13. Obs&#322;uga baz danych"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Rozdzia&#322; 12. Dispatcher</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch11s16.html">Poprzedni</a> </td><th width="60%" align="center">Cz&#281;&#347;&#263; I. Dokumentacja techniczna</th><td width="20%" align="right"> <a accesskey="n" href="ch13.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="chapter" lang="pl"><div class="titlepage"><div><div><h2 class="title"><a name="id483057"></a>Rozdzia&#322; 12. Dispatcher</h2></div></div></div><p>W klasie <tt class="classname">Core</tt>, po odczytaniu nazwy kontrolera oraz akcji (z klasy
+            <tt class="classname">Router</tt>), te dane przekazywane s&#261; do klasy
+        <tt class="classname">Dispatcher</tt>. Ona bowiem tworzy obiekt klasy kontrolera i wywo&#322;uje
+        odpowiedni&#261; akcj&#281;. Dzieje si&#281; to jedna bez Twojego udzia&#322;u wi&#281;c nie jest zbyt istotne z
+        punktu widzenia programisty. </p><p>System umo&#380;liwia równie&#380; na przeskok z jednego kontrolera do drugiego. Na pewno nie b&#281;dzie
+        to zbyt cz&#281;sto u&#380;ywana funkcja, ale warto wiedzie&#263;, i&#380; co&#347; takiego jest mo&#380;liwe. </p><p>Klasa <tt class="classname">Dispatcher</tt> posiada jedn&#261; statyczn&#261; metod&#281; -
+            <tt class="methodname">dispatch()</tt>:</p><pre class="programlisting">public static function dispatch($controller, $action, $folder = '', array $args = array())</pre><p>Pierwszym parametrem jest nazwa kontrolera, który ma zosta&#263; wywo&#322;any. Kolejnym jest nazwa
+        akcji, a trzecim - nazwa ewentualnego podkatalogu, w którym znajduje si&#281; kontroler. Ostatni
+        parametr to tablica parametrów, ktore zostan&#261; przekazane do akcji. Dla przyk&#322;adu utwórzmy
+        kontroler
+        bar:</p><pre class="programlisting">
+ class Bar extends Controller
+ {
+    function __construct()
+    {
+    }
+    
+    function FooBar($name)
+    {
+        echo $name;
+    }
+}</pre><p>Chcemy przekierowa&#263; dzia&#322;anie aplikacji do kontrolera <tt class="classname">Bar</tt>, z
+        kontrolera <tt class="classname">Foo</tt>. Mo&#380;liwe jest to dzi&#281;ki takiemu u&#380;yciu metody
+            <tt class="methodname">dispatch()</tt>:</p><pre class="programlisting">Dispatcher::dispatch('bar', 'foobar', '', array('Adam'));</pre><p>Metoda <tt class="methodname">dispatch()</tt> przed wywo&#322;aniem danego kontrolera, sprawdza,
+        czy odpowiedni plik i akcja - istniej&#261;. Je&#380;eli nie - wykonywany jest wy&#261;tek
+            <tt class="classname">FileNotFoundException</tt>, co spowoduje wy&#347;wietlenie b&#322;&#281;du. Je&#380;eli w
+        kontrolerze nie istnieje dana akcja - system poszukuje metody
+        <tt class="methodname">__call()</tt>. Je&#380;eli i ona nie zostanie odnaleziona - system
+        sygnalizuje brak odpowiedniej metody. </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>Pami&#281;taj, i&#380; po utworzeniu instancji klasy
+            kontrolera (czyli de facto - wywo&#322;aniu jego konstruktora), a przed wykonaniem akcji,
+            metoda <tt class="methodname">dispatch()</tt> spróbuje odnale&#378;&#263;, a nast&#281;pnie wykona&#263; metod&#281;
+                <tt class="methodname">_start()</tt>. Mo&#380;esz w niej umie&#347;ci&#263; dodatkowy kod, który
+            zostanie wykonany pomi&#281;dzy kodem konstroktora a akcji. </div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch11s16.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="pt01.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch13.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">W&#322;asna klasa loadera </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Rozdzia&#322; 13. Obs&#322;uga baz danych</td></tr></table></div></body></html>

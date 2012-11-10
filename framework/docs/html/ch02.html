@@ -1,0 +1,58 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Rozdzia&#322; 2. Instalacja</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="pt01.html" title="Cz&#281;&#347;&#263; I. Dokumentacja techniczna"><link rel="prev" href="ch01s03.html" title="Autorzy"><link rel="next" href="ch02s02.html" title="Konfiguracja"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Rozdzia&#322; 2. Instalacja</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch01s03.html">Poprzedni</a> </td><th width="60%" align="center">Cz&#281;&#347;&#263; I. Dokumentacja techniczna</th><td width="20%" align="right"> <a accesskey="n" href="ch02s02.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="chapter" lang="pl"><div class="titlepage"><div><div><h2 class="title"><a name="id423750"></a>Rozdzia&#322; 2. Instalacja</h2></div></div></div><div class="toc"><p><b>Spis tre&#347;ci</b></p><dl><dt><span class="section"><a href="ch02.html#id423788">Pasek debug</a></span></dt><dt><span class="section"><a href="ch02s02.html">Konfiguracja</a></span></dt></dl></div><p>
+        Od samego pocz&#261;tku autorom projektu przy&#347;wieca&#322;a my&#347;l, aby framework nie wymaga&#322;
+        instalacji oraz konfiguracji. Wystarczy &#347;ci&#261;gn&#261;&#263; spakowane pliki projektu ze strony: <a href="http://boduch.net/coyote" target="_top">http://boduch.net/coyote/</a> i rozpakowa&#263; w
+        odopwiednim katalogu serwera. Nast&#281;pnie wystarczy wej&#347;&#263; w odpowiedni katalog projektu - np.:
+        <span><b class="command">http://127.0.0.1/coyote</b></span>
+    </p><p>
+        Je&#380;eli wszystko posz&#322;o dobrze, Twoim oczom uka&#380;e si&#281; powitalna strona projektu. Od tej
+        chwili mo&#380;esz zacz&#261;&#263; programowa&#263; przy u&#380;yciu Coyote'a. 
+        
+        </p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Uwaga!</h3>
+            Strona powitalna nie stanowi integralnej cz&#281;&#347;ci frameworka. 
+            S&#322;u&#380;y ona jedynie do prezentacji g&#322;ównych w&#322;a&#347;ciwo&#347;ci projektu. 
+            Z powodzeniem mo&#380;esz usun&#261;&#263; niepotrzebne pliki kikaj&#261;c w przycisk 
+            <span class="italic">Usu&#324; teraz</span> na stronie powitalnej. 
+        </div><p>
+    </p><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id423788"></a>Pasek debug</h2></div></div></div><p>
+            Domy&#347;lnie, w prawym, górnym rogu strony znajduje si&#281;
+            pasek <span class="italic">debug</span>. Jest on generowany automatycznie PO
+            wygenerowaniu w&#322;a&#347;ciwej strony. Zawiera kilka informacji o samym projekcie jak i o
+            zmiennych/sta&#322;ych wykorzystywanych w systemie. S&#261; to informacje przydatne na etapie
+            projektowania. Aby ujrze&#263; szczególy wystarczy klikn&#261;c na dan&#261; pozycj&#281;. Rozwinie si&#281;
+            wówczas okno z dodatkowymi informacjami.
+        </p><p>
+            Pierwsza ikona umo&#380;liwia wy&#347;wietlenie informacji o samej wersji frameworka, wersji 
+            PHP oraz systemie operacyjnym.
+        </p><p>
+            Druga zak&#322;adka (ikona) ilo&#347;&#263; pami&#281;ci zu&#380;ytej na wygenerowanie
+            strony.
+        </p><p>
+            Trzecia zak&#322;adka prezentuje zawarto&#347;&#263; dziennika (logi), który zosta&#322;
+            wygenerowany w trakcie. Tutaj mo&#380;esz znale&#378;&#263; informacje z ostrze&#380;eniami, wskzówkami (równie&#380;
+            ostrze&#380;eniami samego interpretera PHP).
+        </p><p>
+            Czwarta zak&#322;adka prezentuje zawarto&#347;&#263;
+            zmiennych globalnych. Znajduje si&#281; tutaj równie&#380; konfiguracja projektu oraz lista sta&#322;ych
+            zadeklarowanych w projekcie. 
+        </p><p>
+            Ostatnia zak&#322;adka prezentuje czasy wygenerowania poszczególnych elementów strony. 
+        </p><p>
+            Pasek mo&#380;esz zamkn&#261;&#263; klikaj&#261;c na czerwon&#261; ikonk&#281; na pasku. 
+        </p><p>
+            </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>
+                Domy&#347;lnie aplikacja dzia&#322;a w trybie <span class="bold"><b>DEBUG</b></span>. Oznacza
+                to, &#380;e czas generowania strony jest d&#322;u&#380;szy. Program podczas generowania gromadzi
+                informacje na temat projektu (logi, czas generowania poszczególnych podzespo&#322;ów), a na
+                ko&#324;cu prezentuje wszystko w formie paska debug. W prosty sposób mo&#380;esz wy&#322;aczy&#263;
+                generowanie samego paska jak i dzia&#322;anie w trybie deweloperskim (DEBUG). Wystarczy, &#380;e
+                odnajdziesz w pliku index.php (g&#322;ównym pliku projektu) sta&#322;&#261; <tt class="constant">DEBUG</tt>,
+                a nast&#281;pnie zmienisz jej warto&#347;&#263; na false. 
+            </div><p>
+            
+            
+            </p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Ostrze&#380;enie</h3>
+                Pami&#281;taj o tym, aby wy&#322;&#261;czy&#263; tryb DEBUG w finalnej wersji produktu umieszczonej
+                na serwerze. Ze wzgledów bezpiecze&#324;stwa.
+            </div><p>
+                    
+        </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch01s03.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="pt01.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch02s02.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Autorzy </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Konfiguracja</td></tr></table></div></body></html>

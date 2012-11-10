@@ -1,0 +1,19 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Metoda loadFile()</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch11.html" title="Rozdzia&#322; 11. Loader"><link rel="prev" href="ch11.html" title="Rozdzia&#322; 11. Loader"><link rel="next" href="ch11s03.html" title="Metoda setIncludePath()"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Metoda loadFile()</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch11.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 11. Loader</th><td width="20%" align="right"> <a accesskey="n" href="ch11s03.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id481505"></a>Metoda loadFile()</h2></div></div></div><p>
+            Dzia&#322;anie metody <tt class="methodname">loadFile()</tt> jest proste. Wczytuje ona do aplikacji dany
+            plik PHP. Wywo&#322;uje ona instrukcj&#281; <tt class="function">include_once()</tt>. Statyczna metoda
+            <tt class="methodname">loadFile()</tt> umo&#380;liwia za&#322;adowanie do projektu ca&#322;ej grupy plików korzystaj&#261;c
+            z maski:
+            
+            </p><pre class="programlisting">
+
+Load::loadFile('lib/foo/*.php', true); 
+                
+            </pre><p>
+            
+            Taka instrukcja za&#322;aduje wszystkie pliki z rozszerzeniem .php, z katalogu <tt class="filename">/lib/foo.</tt>
+        </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>
+            Zwró&#263; uwage, &#380;e drugim parametrem metody <tt class="methodname">loadFile()</tt> jest typ bool. Warto&#347;&#263;
+            TRUE oznacza, &#380;e uwzgl&#281;dniana b&#281;dzie maska w pierwszym parametrze tej metody.
+        </div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>
+            Metoda <tt class="methodname">loadFile()</tt> umo&#380;liwia za&#322;adowanie tak&#380;e pliku znajduj&#261;cego si&#281; w module.
+        </div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch11.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch11.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch11s03.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Rozdzia&#322; 11. Loader </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Metoda setIncludePath()</td></tr></table></div></body></html>

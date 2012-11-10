@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<autoload>
+		<library>session</library>
+		<library>module</library>
+		<library>lang</library>
+		<library>cache</library>
+		<library>router</library>	
+		<helper>system</helper>
+		<helper>url</helper>
+		<helper>media</helper>
+		<lang>date</lang>
+	</autoload>
+</config>

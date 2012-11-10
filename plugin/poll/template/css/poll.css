@@ -1,0 +1,23 @@
+.box-poll table
+{
+		border-spacing:			0;
+		border:					none;
+}
+
+.box-poll table td.poll
+{
+		background:				#fff;
+		padding:				10px 5px 10px 5px;
+}
+
+.box-poll .percentage
+{
+		width:					100px;
+}
+
+.box-poll .percentage strong
+{
+		background:				#ddd;
+		height:					10px;
+		display:				block;
+}

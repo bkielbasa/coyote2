@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<installation type="plugin">
+	<name>menu</name>
+	<text>Menu</text>
+	<version>1.0-pre1</version>
+	<system>1.0-pre1</system>
+	<author>Adam Boduch</author>
+
+	<menu parent="plugin">
+		<name>Menu</name>
+		<controller>menu</controller>
+		<action>main</action>
+		<auth>a_</auth>
+	</menu>
+
+	<setup>
+		<table>menu_group</table>
+		<table>menu_item</table>
+		<table>menu</table>
+
+		<schema>install/schema.sql</schema>
+	</setup>
+</installation>

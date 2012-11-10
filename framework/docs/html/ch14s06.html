@@ -1,0 +1,123 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Klasa widoku</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch14.html" title="Rozdzia&#322; 14. Widoki"><link rel="prev" href="ch14s05.html" title="Klasa View"><link rel="next" href="ch14s07.html" title="&#321;adowanie klasy View przy pomocy loadera"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Klasa widoku</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch14s05.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 14. Widoki</th><td width="20%" align="right"> <a accesskey="n" href="ch14s07.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id487652"></a>Klasa widoku</h2></div></div></div><p>Domy&#347;lnie klasa <tt class="classname">View</tt> u&#380;ywa adaptera
+            <tt class="classname">View_XHTML</tt>. Oznacza to, &#380;e domy&#347;lnym typem danych zwracanych
+            przez widok jest typ XHTML. Napiszemy nowy widok, który zwróci dane w formacie XML.
+            Mo&#380;na powiedzie&#263;, &#380;e kontroler nie ma wp&#322;ywu na sposób prezentowanych danych i nie
+            powinien w to ingerowa&#263;. W naszym przyk&#322;adowym kontrolerze, w zale&#380;no&#347;ci od wybranej
+            opcji - dane zostan&#261; zwrócone w formacie XHTML lub XML. </p><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id487680"></a>W&#322;asna klasa widoku</h3></div></div></div><p>Utwórz w katalogu z aplikacja, w folderze <tt class="filename">lib</tt>, katalog
+                    <tt class="filename">view</tt>. Umie&#347;&#263; w nim plik <tt class="filename">xml.class.php</tt>.
+                Klasa widoku musi implementowa&#263; interfejs <tt class="interfacename">IView</tt>,
+                który zadeklarowany jest w pliku
+                view.class.php:</p><pre class="programlisting">interface IView
+{
+	public function initialize(&amp;$context);
+	public function display($display = true);
+}</pre><p>Nasza klasa musi wi&#281;c posiada&#263; dwie metody - <tt class="methodname">initialize()</tt>
+                oraz <tt class="methodname">display()</tt>. W parametrze metody
+                    <tt class="methodname">initialize()</tt> zostanie przekazana referencja do obiektu
+                klasy View. Dzi&#281;ki temu, w naszej klasie mo&#380;emy pobiera&#263; dane przekazane do klasy
+                    <tt class="classname">View</tt>. </p><p>Ok, nasza klasa widoku powinna generowa&#263; dane w postaci XML. Na nasze potrzeby
+                napiszemy bardzo prost&#261;
+                klas&#281;:</p><pre class="programlisting">&lt;?php
+
+class View_Xml implements IView
+{
+	/**
+	 * Instancja klasy View
+	 */
+	private $context;
+	
+	/**
+	 * Inicjalizacja klasy. Przekazanie do metody instancji do klasy View
+	 * @param mixed &amp;$context Referencja do obiektu klasy View
+	 */
+	public function initialize(&amp;$context)
+	{
+		$this-&gt;context = $context;
+	}
+
+	public function display($display = true)
+	{
+		$xml = '&lt;?xml version="1.0" encoding="UTF-8" ?&gt;';
+		$xml .= '&lt;page&gt;';
+
+		foreach ($this-&gt;context-&gt;getData() as $element =&gt; $value)
+		{
+			$value = htmlspecialchars($value);
+			$xml .= "&lt;$element&gt;$value&lt;/$element&gt;";
+		}
+		$xml .= '&lt;/page&gt;';
+
+		if ($display)
+		{
+			echo $xml;
+		}
+		else
+		{
+			return $xml;
+		}
+	}
+}
+?&gt;</pre><p>Metoda <tt class="methodname">display()</tt> jest wywo&#322;ywana w momencie, gdy
+                u&#380;ytkownik za&#380;&#261;da wy&#347;wietlenia widoku. Pobieramy tutaj wszystkie dane przekazane do
+                widoku, a nast&#281;pnie wy&#347;wietlamy je w postaci znaczników XML. </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Notatka</h3>Metoda getData()
+                    z klasy View zwraca wszystkie elementy przypisane do widoku. </div><p>Wida&#263;, &#380;e ta klasa nie operuje na szablonach - nie jest to w tej chwili konieczne.
+                Niewa&#380;ne wi&#281;c jak&#261; nazw&#281; szablonu poda u&#380;ytkownik - klasa
+                <tt class="classname">View_XML</tt> i tak j&#261; ignoruje. </p></div><div class="section" lang="pl"><div class="titlepage"><div><div><h3 class="title"><a name="id487812"></a>Wywo&#322;ywanie widoku</h3></div></div></div><p>Dobrze, czas napisa&#263; kontroler. Jest on banalnie prosty. Przypisuje warto&#347;ci do
+                dwóch pól, a nast&#281;pnie - w zale&#380;no&#347;ci od &#380;&#261;dania - wywo&#322;uje odpowiedni
+                widok:</p><pre class="programlisting">&lt;?php
+
+class Foo extends Controller
+{
+	function main()
+	{
+		$this-&gt;version = Core::version;
+		$this-&gt;foo = "Lorem ipsum ... ";
+
+		if ($this-&gt;get-&gt;type == 'xml')
+		{
+			return View::getView('xmlData', array(), new View_XML);
+		}		
+		return View::getView('foo');
+	}
+}
+?&gt;</pre><p>Czyli domy&#347;lnie, dane zostan&#261; wy&#347;wietone w formie strony WWW. Je&#380;eli natomiast do
+                adresu URL do&#322;&#261;czony zostanie parametr <span class="emphasis"><em>type</em></span> - np.
+                    <span class="emphasis"><em>http://127.0.0.1/demo/index.php/Foo?type=xml </em></span>- dane zostan&#261;
+                wy&#347;wietlone w formacie XML. Teraz, jeszcze szablon HTML, który mo&#380;e wygl&#261;da&#263;
+                tak:</p><pre class="programlisting">&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Test&lt;/title&gt;
+&lt;head&gt;
+
+&lt;style&gt;
+body
+{
+		margin:			10px auto 10px auto;
+		border:			1px solid #ccc;
+		width:			80%;
+		background-color:		#f8f8f8;
+		padding:		10px;
+		font-family:	Arial;
+}
+&lt;/style&gt;
+
+&lt;body&gt;
+&lt;p&gt;&lt;?= $version; ?&gt;&lt;/p&gt;
+&lt;b&gt;&lt;?= $foo; ?&gt;&lt;/b&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre><p>Bardzo wa&#380;ne w tym kodzie jest nazewnictwo widoku. Klasy widoków musz&#261; by&#263;
+                umieszczane w katalogu <tt class="filename">/lib/view</tt>, czy to projektu, czy
+                frameworka. Klasa natomiast musi nosi&#263; przedrostek <span class="emphasis"><em>View</em></span>. Jest
+                to istotne dla loadera Coyote. Ten, próbuje odnale&#378;&#263; klas&#281;
+                <tt class="classname">View_XML</tt> (np.) i w momencie, gdy nie mo&#380;e jej odnale&#378;&#263;
+                próbuje przeszuka&#263; podkatalogi folderu <tt class="filename">lib</tt>. Na podstawie
+                przedrostka <span class="emphasis"><em>view</em></span>, lokalizuje folder <tt class="filename">view</tt>,
+                a w nim plik <tt class="filename">xml.class.php</tt> który odpowiada wzorcowi. W ten
+                sposób &#322;aduje ten plik do projektu. </p><p>Konstruktor klasy <tt class="classname">View</tt>, równie&#380; posiada trzeci, opcjonalny
+                parametr <i class="parameter"><tt>$instance</tt></i>, który umo&#380;liwia przekazanie klasy widoku
+                w
+                konstruktorze:</p><pre class="programlisting">$view = new View('xmlData', array(), new View_XML);
+		$view-&gt;version = Core::version;
+		$view-&gt;foo = "Lorem ipsum ... ";
+
+		echo $view;</pre></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch14s05.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch14.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch14s07.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">Klasa View </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> &#321;adowanie klasy View przy pomocy loadera</td></tr></table></div></body></html>

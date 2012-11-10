@@ -1,0 +1,27 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Konfiguracja modu&#322;ów</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Dokumentacja projektu Coyote Framework 1.1.2"><link rel="up" href="ch31.html" title="Rozdzia&#322; 31. Budowa modu&#322;owa"><link rel="prev" href="ch31s02.html" title="&#321;adowanie modu&#322;ów do aplikacji"><link rel="next" href="ch31s04.html" title="Zasoby modu&#322;ów"></head><body bgcolor="white" text="black" link="" vlink="" alink="" style="font-family: Arial;"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Konfiguracja modu&#322;ów</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch31s02.html">Poprzedni</a> </td><th width="60%" align="center">Rozdzia&#322; 31. Budowa modu&#322;owa</th><td width="20%" align="right"> <a accesskey="n" href="ch31s04.html">Nast&#281;pny</a></td></tr></table><hr></div><div class="section" lang="pl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id503295"></a>Konfiguracja modu&#322;ów</h2></div></div></div><p>
+            Nieroz&#322;&#261;cznym elementem aplikacji jest jej konfiguracja. Modu&#322;y równie&#380; mog&#261; posiada&#263; 
+            pliki konfiguracyjne, które b&#281;d&#261; w&#322;&#261;czane do aplikacji. Przy &#322;adowaniu modu&#322;u,
+            przy pomocy metody <tt class="methodname">loadModule()</tt> lub <tt class="methodname">module()</tt>,
+            system odszukuje plików konfiguracyjnych, których nazwy odpowiadaj&#261; plikom konfiguracyjnym
+            samej aplikacji. Poniewa&#380; &#322;atwiej wyt&#322;umaczy&#263; to na przyk&#322;adzie, spójrz na poni&#380;sz&#261;
+            struktur&#281; plików:
+        </p><pre class="programlisting">
+- config
+    - config.xml
+    - route.xml
+- controller
+- module
+    - foo
+        - config
+            - config.xml
+            - route.xml
+        - controller
+        - ...
+- ...
+
+        </pre><p>
+            Je&#380;eli pliki <tt class="filename">config.xml</tt> oraz <tt class="filename">route.xml</tt> s&#261; plikami
+            konfiguracyjnymi aplikacji, to przy &#322;adowaniu modu&#322;u <span class="emphasis"><em>foo</em></span>, system
+            odszukuje w tym module, równie&#380; - plików <tt class="filename">config.xml</tt> oraz 
+            <tt class="filename">route.xml</tt>.
+        </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch31s02.html">Poprzedni</a> </td><td width="20%" align="center"><a accesskey="u" href="ch31.html">Pocz&#261;tek rozdzia&#322;u</a></td><td width="40%" align="right"> <a accesskey="n" href="ch31s04.html">Nast&#281;pny</a></td></tr><tr><td width="40%" align="left" valign="top">&#321;adowanie modu&#322;ów do aplikacji </td><td width="20%" align="center"><a accesskey="h" href="index.html">Spis tre&#347;ci</a></td><td width="40%" align="right" valign="top"> Zasoby modu&#322;ów</td></tr></table></div></body></html>
